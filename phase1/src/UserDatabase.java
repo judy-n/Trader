@@ -4,15 +4,19 @@ import java.util.ArrayList;
  * Stores all Users in the system
  * @author Ning Zhang
  * created 2020-06-26
- * last modified 2020-06-26
+ * last modified 2020-06-27
  */
 public class UserDatabase {
-    private ArrayList<User> allUser;
+    private static ArrayList<User> allUser;
     public UserDatabase(){
         allUser = new ArrayList<>();
     }
 
-    public void addUser(User u){
+    public static void addUser(User u){
         allUser.add(u);
+    }
+
+    public static ArrayList<User> getAllUser(){
+        return allUser;
     }
 }
