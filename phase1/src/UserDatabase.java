@@ -3,6 +3,7 @@ import java.util.ArrayList;
  * UserDatabase.java
  * Stores all Users in the system
  * @author Ning Zhang
+ * @author Judy Naamani
  * created 2020-06-26
  * last modified 2020-06-27
  */

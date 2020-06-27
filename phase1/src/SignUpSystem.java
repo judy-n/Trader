@@ -4,6 +4,7 @@ import java.util.ArrayList;
  * TradeDatabase.java
  * Stores all Trades
  * @author ???
+ * @author Judy Naamani
  * created 2020-06-26
  * last modified 2020-06-27
  */
