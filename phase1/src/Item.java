@@ -20,6 +20,6 @@ public class Item {
     }
 
     public String toString(){
-        return name +" "+ description;
+        return name +": "+ description;
     }
 }
