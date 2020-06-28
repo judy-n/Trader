@@ -15,7 +15,6 @@ public class LoginSystem {
     private String email;
     private String validPw;
     private User user;
-
     public LoginSystem(){
         String s = "";
         UserDatabase udb = new UserDatabase();

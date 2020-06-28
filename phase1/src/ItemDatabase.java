@@ -11,17 +11,16 @@ public class ItemDatabase {
     private static ArrayList<Item> allItems;
 
     public ItemDatabase(){
-        allItems = new ArrayList<Item>();
+        allItems = new ArrayList<>();
     }
     public static ArrayList<Item> getAllItems(){
         return allItems;
     }
-    public void update() {
-        ArrayList<User> users = UserDatabase.getAllUser();
+    public static void update() {
+        ArrayList<User> users = UserDatabase.getAllUsers();
         for (User u: users){
             allItems.addAll(u.inventory);
         }
     }
-
 
 }

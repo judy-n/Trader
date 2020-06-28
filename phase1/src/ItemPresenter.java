@@ -1,6 +1,3 @@
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
-
-import java.util.ArrayList;
 /**
  * ItemPresenter.java
  * Shows all items available in all user's inventory
@@ -10,9 +7,10 @@ import java.util.ArrayList;
  */
 public class ItemPresenter {
     public ItemPresenter(){
-        UserDatabase udb = new UserDatabase();
         System.out.println("This is all the item(s) available for trade:");
-        for (Item i : udb.allUserInventory()){
+
+        ItemDatabase.update();
+        for (Item i : ItemDatabase.getAllItems()){
             System.out.println(i.toString());
         }
 
