@@ -58,7 +58,7 @@ public class SignUpSystem {
         System.out.println("Thank you for signing up!");
         User u = new User(username, email, password);
         udb.addUser(u);
-        udb.printAllUser();
+        new UserDashboard(u);
     }
 
 

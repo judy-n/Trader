@@ -14,6 +14,7 @@ public class LoginSystem {
     public String username;
     private String email;
     private String validPw;
+    private User user;
 
     public LoginSystem(){
         String s = "";
@@ -37,6 +38,7 @@ public class LoginSystem {
                     username = br.readLine();
                 }
                 validPw = udb.usernamePassword(username);
+                user = udb.getUserByUsername(username);
             } catch (IOException e){
                 System.out.println("Plz try again.");
             }
@@ -52,6 +54,7 @@ public class LoginSystem {
                 System.out.println("Plz try again.");
             }
             validPw = udb.emailPassword(email);
+            user = udb.getUserByEmail(email);
         }
 
         System.out.println("Please enter your password: ");
@@ -65,6 +68,6 @@ public class LoginSystem {
             System.out.println("Plz try again.");
         }
         System.out.println("Logged in!");
-
+        new UserDashboard(user);
     }
 }
