@@ -1,9 +1,10 @@
 /**
  * MeetingSystem.java
- * Represents a MeetingSystem
+ * Represents a meeting system for a trade.
+ *
  * @author Judy Naamani
  * created 2020-06-27
- * last modified 2020-06-27
+ * last modified 2020-06-28
  */
 
 public class MeetingSystem {

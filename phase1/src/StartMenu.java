@@ -5,10 +5,11 @@ import java.io.InputStreamReader;
 /**
  * StartMenu.java
  * Lets the user choose to sign up, log in, or exit the program.
+ *
  * @author Ning Zhang
  * @author Yingjia Liu
  * created 2020-06-26
- * last modified 2020-06-27
+ * last modified 2020-06-28
  */
 public class StartMenu {
     public StartMenu() {
@@ -17,14 +18,13 @@ public class StartMenu {
 
         System.out.println("---------- Welcome ---------- \nWould you like to:");
         do {
-            System.out.println(" 1) Sign up \n 2) Log in \n 3) Exit the program" +
-                    "\nPlease select an option by entering the number 1, 2, or 3.");
+            System.out.println(" 1) Sign up \n 2) Log in \n 3) Exit the program");
+            System.out.print("Please select an option by entering the number 1, 2, or 3: ");
             try {
-
                 userInput = br.readLine();
 
                 if (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3")) {
-                    System.out.println("! Please enter a valid option.");
+                    System.out.print("Invalid input. Please enter 1, 2, or 3: ");
                 }
 
             } catch (IOException e) {
@@ -42,7 +42,7 @@ public class StartMenu {
             } catch (IOException e) {
                 System.out.println("Error closing input stream.");
             }
-            System.out.println("Exiting the program. Goodbye!");
+            System.out.println("Exiting the program. Hope to see you again soon!");
             System.exit(0);
         }
     }

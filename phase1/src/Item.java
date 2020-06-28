@@ -1,9 +1,10 @@
 /**
  * Item.java
- * Represents an Item
+ * Represents an item.
+ *
  * @author Ning Zhang
  * created 2020-06-26
- * last modified 2020-06-26
+ * last modified 2020-06-28
  */
 
 public class Item {
@@ -12,14 +13,14 @@ public class Item {
     public String description;
     public static int numItems;
 
-    public Item (String name, String description){
+    public Item(String name, String description) {
         this.name = name;
         this.description = description;
         id = numItems;
-        numItems ++;
+        numItems++;
     }
 
-    public String toString(){
-        return name +": "+ description;
+    public String toString() {
+        return name + ": " + description;
     }
 }
