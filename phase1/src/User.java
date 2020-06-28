@@ -16,7 +16,7 @@ public class User {
     public ArrayList<Item> wishlist;
     public Boolean isFrozen;
     public int tradeThreshold = 3;
-   // public ArrayList<Trade> lastestThree;
+    // public ArrayList<Trade> lastestThree;
 
     /**
      * User
@@ -33,7 +33,9 @@ public class User {
         wishlist = new ArrayList<>();
         isFrozen = false;
     }
-
+    public String getUsername(){
+        return username;
+    }
     public ArrayList<Item> getInventory(){
         return inventory;
     }
@@ -56,7 +58,13 @@ public class User {
         tradeThreshold = t;
     }
     public void setIsFrozen(){
-        isFrozen = !isFrozen;
+        isFrozen = true;
+    }
+    public String getEmail(){
+        return email;
+    }
+    public String getPassword(){
+        return password;
     }
 
 }

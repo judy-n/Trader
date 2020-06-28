@@ -4,15 +4,59 @@ import java.util.ArrayList;
  * Stores all Users in the system
  * @author Ning Zhang
  * created 2020-06-26
- * last modified 2020-06-26
+ * last modified 2020-06-27
  */
 public class UserDatabase {
-    private ArrayList<User> allUser;
+    private static ArrayList<User> allUser = new ArrayList<>();
     public UserDatabase(){
-        allUser = new ArrayList<>();
+
+        //This is just for testing rn will delete later
+        User u1 = new User("username", "example@email.com", "pa55word");
+        allUser.add(u1);
     }
 
     public void addUser(User u){
         allUser.add(u);
     }
+    public String usernamePassword(String username){
+        for (User u : allUser){
+            if(u.getUsername().equals(username))
+                return u.getPassword();
+        }
+        return null;
+    }
+
+    public String emailPassword(String email){
+        for(User u : allUser){
+            if(u.getEmail().equals(email))
+                return u.getPassword();
+        }
+        return null;
+    }
+
+    public boolean emailExists(String email){
+        for(User u : allUser){
+            if(u.getEmail().equals(email))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean usernameExists(String username){
+        for (User u : allUser){
+            if(u.getUsername().equals(username))
+                return true;
+        }
+        return false;
+    }
+
+
+    //This method is just for testing!! Delete later
+    public void printAllUser(){
+        for(User u : allUser){
+            System.out.println(u.getUsername());
+        }
+    }
+
+
 }

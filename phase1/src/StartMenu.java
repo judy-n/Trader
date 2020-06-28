@@ -1,6 +1,6 @@
-import sun.rmi.runtime.Log;
-
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * StartMenu.java
@@ -11,11 +11,15 @@ import java.util.Scanner;
  */
 public class StartMenu {
     public StartMenu(){
-        String s;
-        Scanner sc = new Scanner(System.in);
+        String s = "";
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         do {
             System.out.println("Would you like to signup or login?");
-            s = sc.nextLine();
+            try{
+                s = br.readLine();
+            }catch (IOException e) {
+                System.out.println("Plz try again.");
+            }
         }while (!s.equals("signup") && !s.equals("login"));
 
         if(s.equals("signup")){
