@@ -12,8 +12,8 @@ import java.io.InputStreamReader;
 
 public class LoginSystem {
     public String username;
-    public String password;
-    public String email;
+    private String email;
+    private String validPw;
 
     public LoginSystem(){
         String s = "";
@@ -28,7 +28,7 @@ public class LoginSystem {
             }
         }while (!s.equals("username") && !s.equals("email"));
 
-        if(s.equals("username")){
+        if (s.equals("username")){
             System.out.println("Please enter your username: ");
             try {
                 username = br.readLine();
@@ -36,21 +36,10 @@ public class LoginSystem {
                     System.out.println("Username does not exist! Please try again: ");
                     username = br.readLine();
                 }
+                validPw = udb.usernamePassword(username);
             } catch (IOException e){
                 System.out.println("Plz try again.");
             }
-            System.out.println("Please enter your password: ");
-            String validPw = udb.usernamePassword(username);
-            try{
-                password = br.readLine();
-                while(!password.equals(validPw)){
-                    System.out.println("Password invalid! Please try again: ");
-                    password = br.readLine();
-                }
-            }catch (IOException e){
-                System.out.println("Plz try again.");
-            }
-            System.out.println("Logged in!");
         } else {
             System.out.println("Please enter your email: ");
             try {
@@ -62,20 +51,20 @@ public class LoginSystem {
             } catch (IOException e){
                 System.out.println("Plz try again.");
             }
-            System.out.println("Please enter your password: ");
-            String validPw = udb.emailPassword(email);
-            try{
-                password = br.readLine();
-                while(!password.equals(validPw)){
-                    System.out.println("Password invalid! Please try again: ");
-                    password = br.readLine();
-                }
-            }catch (IOException e){
-                System.out.println("Plz try again.");
-            }
-            System.out.println("Logged in!");
-
+            validPw = udb.emailPassword(email);
         }
+
+        System.out.println("Please enter your password: ");
+        try{
+            String password = br.readLine();
+            while(!password.equals(validPw)){
+                System.out.println("Password invalid! Please try again: ");
+                password = br.readLine();
+            }
+        }catch (IOException e){
+            System.out.println("Plz try again.");
+        }
+        System.out.println("Logged in!");
 
     }
 }
