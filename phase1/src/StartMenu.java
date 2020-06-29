@@ -8,10 +8,16 @@ import java.io.InputStreamReader;
  *
  * @author Ning Zhang
  * @author Yingjia Liu
- * created 2020-06-26
+ * @version 1.0
+ * @since 2020-06-26
  * last modified 2020-06-28
  */
 public class StartMenu {
+
+    /**
+     * StartMenu
+     * Creates a start menu that takes in user input
+     */
     public StartMenu() {
         String userInput = "";
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

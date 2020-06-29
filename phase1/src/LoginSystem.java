@@ -8,7 +8,8 @@ import java.io.InputStreamReader;
  *
  * @author Ning Zhang
  * @author Yingjia Liu
- * created 2020-06-26
+ * @version 1.0
+ * @since 2020-06-26
  * last modified 2020-06-28
  */
 
@@ -17,6 +18,11 @@ public class LoginSystem {
     private String email;
     private String validPw;
     private User user;
+
+    /**
+     * LoginSystem
+     * Creates a log in system that takes in user input
+     */
 
     public LoginSystem() {
         String optionInput = "";

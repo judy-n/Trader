@@ -7,7 +7,8 @@ import java.io.InputStreamReader;
  * Displays a dashboard once the user logs in.
  *
  * @author Ning Zhang
- * created 2020-06-27
+ * @version 1.0
+ * @since 2020-06-26
  * last modified 2020-06-28
  */
 
@@ -16,6 +17,11 @@ public class UserDashboard {
     public User user;
     private int input;
 
+    /**
+     * UserDashboard
+     * Creates a userDashboard with a user
+     * @param u user
+     */
     public UserDashboard(User u) {
         user = u;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

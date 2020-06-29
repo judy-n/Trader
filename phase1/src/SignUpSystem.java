@@ -8,7 +8,8 @@ import java.io.InputStreamReader;
  *
  * @author Ning Zhang
  * @author Yingjia Liu
- * created 2020-06-26
+ * @version 1.0
+ * @since 2020-06-26
  * last modified 2020-06-28
  */
 public class SignUpSystem {
@@ -16,6 +17,10 @@ public class SignUpSystem {
     public String email;
     public String password;
 
+    /**
+     * SignUpSystem
+     * Creates a sign up system that takes in user input
+     */
     public SignUpSystem() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("\n--- Signup ---");
