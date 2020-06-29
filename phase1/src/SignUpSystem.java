@@ -32,20 +32,7 @@ public class SignUpSystem {
                 invalidInput = false;
                 if (UserDatabase.emailExists(emailInput)) {
                     invalidInput = true;
-                    System.out.print("Email is already associated with an account! Would you like to log in instead? (Y/N): ");
-                    String optionInput;
-                    do {
-                        optionInput = br.readLine();
-                        if (optionInput.equalsIgnoreCase("Y")) {
-                            new LoginSystem();
-                        } else if (optionInput.equalsIgnoreCase("N")) {
-                            System.out.print("Please enter a different email: ");
-                        } else {
-                            System.out.print("Invalid input. Please enter Y or N: ");
-                        }
-                    } while (!optionInput.equalsIgnoreCase("Y") &&
-                            !optionInput.equalsIgnoreCase("N"));
-
+                    System.out.print("Email is already associated with an account! Please enter a different email: ");
                     emailInput = br.readLine();
                 }
 //              valid email check commented out for quicker testing
@@ -68,19 +55,7 @@ public class SignUpSystem {
                 invalidInput = false;
                 if (UserDatabase.usernameExists(usernameInput)) {
                     invalidInput = true;
-                    System.out.print("Username already exists! Would you like to log in instead? (Y/N): ");
-                    String optionInput;
-                    do {
-                        optionInput = br.readLine();
-                        if (optionInput.equalsIgnoreCase("Y")) {
-                            new LoginSystem();
-                        } else if (optionInput.equalsIgnoreCase("N")) {
-                            System.out.print("Please enter a different username: ");
-                        } else {
-                            System.out.print("Invalid input. Please enter Y or N: ");
-                        }
-                    } while (!optionInput.equalsIgnoreCase("Y") &&
-                            !optionInput.equalsIgnoreCase("N"));
+                    System.out.print("Username already exists! Please enter a different username: ");
                     usernameInput = br.readLine();
                 } else if (usernameInput.trim().isEmpty()) {
                     invalidInput = true;
@@ -114,6 +89,7 @@ public class SignUpSystem {
         System.out.println("\n Thank you for signing up! \n You are now logged in. \n");
         User newUser = new User(username, email, password);
         UserDatabase.addUser(newUser);
-        new UserDashboard(newUser);
+        new StartMenu();
+        //new UserDashboard(newUser);
     }
 }
