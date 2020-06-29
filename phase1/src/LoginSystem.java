@@ -27,6 +27,8 @@ public class LoginSystem {
     public LoginSystem() {
         String optionInput = "";
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        UserDatabase.update();
+
         System.out.println("\n--- Login ---");
         do {
             System.out.println("Would you like to login with username or email?");

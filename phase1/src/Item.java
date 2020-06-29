@@ -12,7 +12,8 @@ public class Item {
     public int id;
     public String name;
     public String description;
-    public static int numItems;
+    public static int numItems = 1;
+    public String owner;
 
     /**
      * Item
@@ -32,8 +33,7 @@ public class Item {
      * This method returns a string representation of the item
      * @return item name and description as a string
      */
-
     public String toString() {
-        return name + ": " + description;
+        return id +". "+ name + ": " + description;
     }
 }

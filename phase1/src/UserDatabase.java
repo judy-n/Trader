@@ -12,12 +12,21 @@ import java.util.ArrayList;
 public class UserDatabase {
     private static ArrayList<User> allUser = new ArrayList<>();
 
-    public UserDatabase() {
+    /**
+     * This method updates the userdatabase with all the current users
+     */
+    public static void update (){
 
         //This is just for testing rn will delete later
-        User u1 = new User("username", "example@email.com", "pa55word");
+        User u1 = new User("u", "e", "p");
+        Item i1 = new Item("Item", "This is an item.");
+        Item i2 = new Item("Item", "This is another item.");
+        u1.addInventory(i1);
+        u1.addInventory(i2);
         allUser.add(u1);
     }
+
+
 
     /**
      * This method adds a user to the user database

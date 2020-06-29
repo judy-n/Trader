@@ -14,8 +14,13 @@ public class Launcher {
      * main method
      * creates a start menu
      */
-    public static void main(String[] args) {
+    public Launcher(){
         new StartMenu();
+    }
+
+
+    public static void main(String[] args) {
+        new Launcher();
 
     }
 

@@ -59,6 +59,7 @@ public class User {
      */
     public void addInventory(Item i) {
         inventory.add(i);
+        i.owner = username;
     }
 
     /**
