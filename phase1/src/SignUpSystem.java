@@ -89,7 +89,6 @@ public class SignUpSystem {
         System.out.println("\n Thank you for signing up! \n You are now logged in. \n");
         User newUser = new User(username, email, password);
         UserDatabase.addUser(newUser);
-        new StartMenu();
-        //new UserDashboard(newUser);
+        new UserDashboard(newUser);
     }
 }
