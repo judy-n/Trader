@@ -23,8 +23,8 @@ public class Trade implements Serializable {
     private int[] numEdits = {0, 0};
 
     /**
-     * Trade
      * Creates a Trade
+     *
      * @param usernames an array containing the usernames of the two Users involved in this Trade
      * @param itemIDs an array containing the IDs of the Items being traded (parallel to usernames)
      * @param firstDateTime the first date and time suggested for this Trade's meeting
@@ -47,6 +47,11 @@ public class Trade implements Serializable {
         tempItem2.setAvailability(false);
     }
 
+    /**
+     * Getter for the usernames of the two Users involved in this Trade
+     *
+     * @return the
+     */
     public String[] getInvolvedUsernames() {
         return involvedUsernames;
     }

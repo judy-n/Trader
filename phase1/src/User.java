@@ -18,25 +18,27 @@ public class User implements Serializable {
     private String password;
     public ArrayList<Item> inventory;
     public ArrayList<Integer> wishlist;
-    public Boolean isFrozen;
-    public int tradeThreshold = 3;
-    HashMap<String [], Integer[]> tradeRequests;
+    private HashMap<String [], Integer[]> tradeRequests;
 
+    private Boolean isFrozen;
 
-    // public ArrayList<Trade> lastestThree;
+    private int weeklyTradeLimit = 3;
+    private int meetingEditLimit = 3;
+    private int lendMinimum = 1; //to borrow in a one-way trade, user must have lent at least lendMinimum item(s) more than they have borrowed
+
+    // private Item[] lastestThreeItems = new Item[3];
 
     /**
-     * User
-     * Creates a User object with username, email, and password
+     * Creates a User object with given username, email, and password
      *
-     * @param u username
-     * @param e email
-     * @param p password
+     * @param username the given username
+     * @param email the given email address
+     * @param password the given password
      */
-    public User(String u, String e, String p) {
-        username = u;
-        email = e;
-        password = p;
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
         inventory = new ArrayList<>();
         wishlist = new ArrayList<>();
         tradeRequests = new HashMap<>();
@@ -94,14 +96,6 @@ public class User implements Serializable {
      */
     public void removeWishlist(Item i) {
         wishlist.remove(i.id);
-    }
-
-    /**
-     * This method sets the user's trade threshold
-     * @param t trade threshold
-     */
-    public void setTradeThreshold(int t) {
-        tradeThreshold = t;
     }
 
     /**
