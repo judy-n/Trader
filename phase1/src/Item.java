@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * Item.java
  * Represents an item.
@@ -9,7 +11,7 @@
  * last modified 2020-06-30
  */
 
-public class Item {
+public class Item implements Serializable {
     public int id;
     public String name;
     public String description;
