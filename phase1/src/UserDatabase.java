@@ -1,4 +1,8 @@
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.logging.Level;
 
 /**
  * UserDatabase.java
@@ -9,7 +13,7 @@ import java.util.ArrayList;
  * @since 2020-06-26
  * last modified 2020-06-28
  */
-public class UserDatabase {
+public class UserDatabase implements Serializable {
     private static ArrayList<User> allUser = new ArrayList<>();
 
     /**
@@ -125,6 +129,43 @@ public class UserDatabase {
         }
         return false;
     }
+
+
+    /**
+     * @param path the ser filepath
+     * @throws ClassNotFoundException throws this if class isnt found
+     */
+    public static void readFromFile(String path) throws ClassNotFoundException {
+
+        try {
+            InputStream file = new FileInputStream(path);
+            InputStream buffer = new BufferedInputStream(file);
+            ObjectInput input = new ObjectInputStream(buffer);
+
+            // deserialize the Map
+            allUser = (ArrayList<User>) input.readObject();
+            input.close();
+        } catch (IOException ex) {
+            System.out.println("IO Error Occured");
+        }
+    }
+
+    /**
+     * @param filePath the ser filepath
+     * @throws IOException throws IOException
+     */
+    public static void saveToFile(String filePath) throws IOException {
+
+        OutputStream file = new FileOutputStream(filePath);
+        OutputStream buffer = new BufferedOutputStream(file);
+        ObjectOutput output = new ObjectOutputStream(buffer);
+
+        // serialize the Map
+        output.writeObject(allUser);
+        output.close();
+    }
+
+
 
 
     //This method is just for testing!! Delete later
