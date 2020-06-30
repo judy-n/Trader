@@ -2,8 +2,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Trade.java
  * Represents an approved trade between 2 Users.
+ * Trade stores the usernames of both Users in an array which is parallel to an array
+ * containing the IDs of the Items each User is lending in this trade.
+ * Note that an ID of 0 means the associated User is not lending an Item (aka a one-way trade).
  *
  * @author Ning Zhang
  * @author Yingjia Liu
@@ -23,7 +25,9 @@ public class Trade implements Serializable {
     private int[] numEdits = {0, 0};
 
     /**
-     * Creates a Trade
+     * Class constructor.
+     * Creates a Trade with given username array, item ID array, and first suggestions for meeting time/date/location.
+     * Automatically sets status of all Items being traded to unavailable.
      *
      * @param usernames an array containing the usernames of the two Users involved in this Trade
      * @param itemIDs an array containing the IDs of the Items being traded (parallel to usernames)
@@ -41,41 +45,72 @@ public class Trade implements Serializable {
         hasAgreedMeeting = false;
         Item tempItem1 = ItemDatabase.getItem(involvedItemIDs[0]);
         Item tempItem2 = ItemDatabase.getItem(involvedItemIDs[1]);
-        assert tempItem1 != null;
-        assert tempItem2 != null;
-        tempItem1.setAvailability(false);
-        tempItem2.setAvailability(false);
+        if (tempItem1 != null) {
+            tempItem1.setAvailability(false);
+        }
+        if (tempItem2 != null) {
+            tempItem2.setAvailability(false);
+        }
     }
 
     /**
-     * Getter for the usernames of the two Users involved in this Trade
+     * Getter for the usernames of the two Users involved in this Trade.
      *
-     * @return the
+     * @return an array containing the usernames of the two Users involved in this Trade
      */
     public String[] getInvolvedUsernames() {
         return involvedUsernames;
     }
 
+    /**
+     * Getter for the IDs of the Items involved in this Trade.
+     *
+     * @return an array containing the IDs of the Items involved in this Trade
+     */
     public int[] getInvolvedItemIDs() {
         return involvedItemIDs;
     }
 
+    /**
+     * Get whether or not this Trade is complete.
+     *
+     * @return a boolean representing whether or not this Trade is complete
+     */
     public boolean getIsComplete() {
         return isComplete;
     }
 
+    /**
+     * Get whether or not this Trade has a meeting that both Users have agreed upon.
+     *
+     * @return a boolean representing wwhether or not this Trade has a meeting that both Users have agreed upon
+     */
     public boolean getHasAgreedMeeting() {
         return hasAgreedMeeting;
     }
 
+    /**
+     * Confirms that both Users have agreed on a meeting time and place.
+     *
+     */
     public void confirmAgreedMeeting() {
         hasAgreedMeeting = true;
     }
 
+    /**
+     * Getter for this Trade's current meeting date and time.
+     *
+     * @return a LocalDateTime object representing this Trade's current meeting date and time
+     */
     public LocalDateTime getMeetingDateTime() {
         return meetingDateTime;
     }
 
+    /**
+     * Setter for this Trade's meeting date and time.
+     *
+     * @param dateTime the given date and time
+     */
     public void setMeetingDateTime(LocalDateTime dateTime) {
         meetingDateTime = dateTime;
     }
