@@ -20,7 +20,7 @@ public class User implements Serializable {
     public ArrayList<Integer> wishlist;
     public Boolean isFrozen;
     public int tradeThreshold = 3;
-    HashMap<String [], Integer> tradeRequests;
+    HashMap<String [], Integer[]> tradeRequests;
 
 
     // public ArrayList<Trade> lastestThree;
@@ -49,14 +49,6 @@ public class User implements Serializable {
      */
     public String getUsername() {
         return username;
-    }
-
-    /**
-     * This method returns a certain user's inventory
-     * @return inventory
-     */
-    public ArrayList<Item> getInventory() {
-        return inventory;
     }
 
     /**
@@ -139,7 +131,7 @@ public class User implements Serializable {
     /**
      * This method adds to the user's traderequests
      */
-    public void addTradeRequest(String [] usernames, int itemId){
+    public void addTradeRequest(String [] usernames, Integer[] itemId){
         tradeRequests.put(usernames, itemId);
     }
 

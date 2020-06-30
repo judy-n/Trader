@@ -55,8 +55,9 @@ public class ItemPresenter {
                         User trader = UserDatabase.getUserByUsername(i.owner);
                         assert trader != null;
                         String[] traders = {user.getUsername(), trader.getUsername()};
-                        trader.addTradeRequest(traders, i.id);
-                        user.addTradeRequest(traders, i.id);
+                        Integer [] items = {0, i.id};
+                        trader.addTradeRequest(traders, items);
+                        user.addTradeRequest(traders, items);
                         user.addWishlist(i);
                     } else {
                         System.out.println("Cancelled.");

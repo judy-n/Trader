@@ -19,8 +19,8 @@ import java.util.HashMap;
 
 
 public class TradeRequestPresenter {
-    public HashMap<String[], Integer> initiatedTrades = new HashMap<>();
-    public HashMap<String[], Integer> receiveTrades = new HashMap<>();
+    public HashMap<String[], Integer[]> initiatedTrades = new HashMap<>();
+    public HashMap<String[], Integer[]> receiveTrades = new HashMap<>();
 
     /**
      * TradeRequestPresenter
@@ -34,7 +34,7 @@ public class TradeRequestPresenter {
 
 
         for (String[] key : user.tradeRequests.keySet()) {
-            if (user.getUsername() == key[0]) {
+            if (user.getUsername().equals(key[0])) {
                 initiatedTrades.put(key, user.tradeRequests.get(key));
             } else {
                 receiveTrades.put(key, user.tradeRequests.get(key));
@@ -45,7 +45,7 @@ public class TradeRequestPresenter {
             System.out.println("None!");
         } else {
             for (String[] key : initiatedTrades.keySet()) {
-                Item i = ItemDatabase.getItem(initiatedTrades.get(key));
+                Item i = ItemDatabase.getItem(initiatedTrades.get(key)[1]);
                 System.out.println("Trade for " + i.name + " from user " + key[1]);
             }
         }
@@ -57,7 +57,7 @@ public class TradeRequestPresenter {
             System.out.println("None!");
         } else {
             for (String[] key : receiveTrades.keySet()) {
-                Item i = ItemDatabase.getItem(receiveTrades.get(key));
+                Item i = ItemDatabase.getItem(receiveTrades.get(key)[1]);
                 System.out.println("Trade for " + i.name + "(" + i.id + ") from user " + key[0]);
             }
             System.out.println("Would you like to accept any of these requests?(0 to quit)");
@@ -117,13 +117,18 @@ public class TradeRequestPresenter {
     public String[] getTradeHelper(int itemId) {
         String itemName = ItemDatabase.getItem(itemId).name;
         for (String[] key : receiveTrades.keySet()) {
-            if (itemId == (receiveTrades.get(key))) {
+            if (itemId == (receiveTrades.get(key)[1])) {
                 return new String[]{key[0], itemName};
             }
         }
         return null;
     }
 
+    /**
+     * This method checks if the user input time is valid
+     * @param s user input
+     * @return true if valid false otherwise
+     */
     public boolean isThisTimeValid(String s){
         String [] arr = s.split("/");
         int hr = Integer.parseInt(arr[0]);
@@ -136,7 +141,7 @@ public class TradeRequestPresenter {
 
     public void printInventory(String username){
         User u = UserDatabase.getUserByUsername(username);
-        for(Item i : u.getInventory()){
+        for(Item i : u.inventory){
             System.out.println(i.toString());
         }
     }

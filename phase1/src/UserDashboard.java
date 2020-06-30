@@ -50,6 +50,7 @@ public class UserDashboard {
                 }
                 System.out.println("Logging out of the program. Bye!");
                 System.exit(0);
+
             case 1:
                 new ItemPresenter(user);
                 break;
@@ -60,9 +61,9 @@ public class UserDashboard {
             case 3:
 
                 break;
+
             case 4:
                 new TradeRequestPresenter(user);
-
                 break;
             case 5:
 
