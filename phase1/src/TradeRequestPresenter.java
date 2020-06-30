@@ -33,11 +33,11 @@ public class TradeRequestPresenter {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 
-        for (String[] key : user.tradeRequests.keySet()) {
+        for (String[] key : user.getTradeRequest().keySet()) {
             if (user.getUsername().equals(key[0])) {
-                initiatedTrades.put(key, user.tradeRequests.get(key));
+                initiatedTrades.put(key, user.getTradeRequest().get(key));
             } else {
-                receiveTrades.put(key, user.tradeRequests.get(key));
+                receiveTrades.put(key, user.getTradeRequest().get(key));
             }
         }
         System.out.println("Here is all the trade request(s) you sent:");

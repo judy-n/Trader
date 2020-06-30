@@ -137,4 +137,9 @@ public class User implements Serializable {
 
     }
 
+
+    public HashMap<String [], Integer[]> getTradeRequest(){
+        return tradeRequests;
+    }
+
 }
