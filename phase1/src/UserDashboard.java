@@ -61,6 +61,7 @@ public class UserDashboard {
 
                 break;
             case 4:
+                new TradeRequestPresenter(user);
 
                 break;
             case 5:

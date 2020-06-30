@@ -16,7 +16,8 @@ public class ItemPresenter {
     public int max;
     /**
      * ItemPresenter
-     * Creates an item present at prints to the screen all items available for trade
+     * Creates an item presenter at prints to the screen all items available for trade
+     * @param u user
      */
     public ItemPresenter(User u) {
         user = u;
@@ -40,7 +41,7 @@ public class ItemPresenter {
                 Item i = ItemDatabase.getItem(input);
                 //nullpointer :/
                 System.out.println("You have chosen: " + i.toString());
-                System.out.println("Are you sure u want to trade for this item with user, " + i.owner + " ?(Y/N)");
+                System.out.println("Are you sure you want to trade for this item with user, " + i.owner + " ?(Y/N)");
                 inputConfirm = br.readLine();
                 while(!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
                     System.out.println("Invalid input.");
@@ -48,8 +49,11 @@ public class ItemPresenter {
                 }
                 if(inputConfirm.equalsIgnoreCase("Y")){
                     System.out.println("Contacting user, "+ i.owner);
-
-
+                    User trader = UserDatabase.getUserByUsername(i.owner);
+                    String [] traders = {user.getUsername(), trader.getUsername()};
+                    trader.addTradeRequest(traders, i.id);
+                    user.addTradeRequest(traders, i.id);
+                    user.addWishlist(i);
                 }else{
                     System.out.println("Cancelled.");
                 }

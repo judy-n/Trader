@@ -1,4 +1,6 @@
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * User.java
@@ -10,7 +12,7 @@ import java.util.ArrayList;
  * last modified 2020-06-28
  */
 
-public class User {
+public class User implements Serializable {
     public String username;
     private String email;
     private String password;
@@ -18,6 +20,9 @@ public class User {
     public ArrayList<Item> wishlist;
     public Boolean isFrozen;
     public int tradeThreshold = 3;
+    HashMap<String [], Integer> tradeRequests;
+
+
     // public ArrayList<Trade> lastestThree;
 
     /**
@@ -34,6 +39,7 @@ public class User {
         password = p;
         inventory = new ArrayList<>();
         wishlist = new ArrayList<>();
+        tradeRequests = new HashMap<String [], Integer>();
         isFrozen = false;
     }
 
@@ -123,6 +129,22 @@ public class User {
      */
     public String getPassword() {
         return password;
+    }
+
+
+    /**
+     * This method adds to the user's traderequests
+     */
+    public void addTradeRequest(String [] usernames, int itemId){
+        tradeRequests.put(usernames, itemId);
+    }
+
+    /**
+     * This method removes a trade request by the item id
+     * @param itemId item id
+     */
+    public void removeTradeRequest(int itemId){
+
     }
 
 }
