@@ -9,7 +9,7 @@ import java.util.HashMap;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-29
+ * last modified 2020-06-30
  */
 
 public class User implements Serializable {
@@ -17,7 +17,7 @@ public class User implements Serializable {
     private String email;
     private String password;
     public ArrayList<Item> inventory;
-    public ArrayList<Item> wishlist;
+    public ArrayList<Integer> wishlist;
     public Boolean isFrozen;
     public int tradeThreshold = 3;
     HashMap<String [], Integer> tradeRequests;
@@ -81,7 +81,11 @@ public class User implements Serializable {
      * @return wishlist
      */
     public ArrayList<Item> getWishlist() {
-        return wishlist;
+        ArrayList<Item> tempItems = new ArrayList<>();
+        for (Integer itemID : wishlist) {
+            tempItems.add(ItemDatabase.getItem(itemID));
+        }
+        return tempItems;
     }
 
     /**
@@ -89,7 +93,7 @@ public class User implements Serializable {
      * @param i item
      */
     public void addWishlist(Item i) {
-        wishlist.add(i);
+        wishlist.add(i.id);
     }
 
     /**
@@ -97,7 +101,7 @@ public class User implements Serializable {
      * @param i item
      */
     public void removeWishlist(Item i) {
-        wishlist.remove(i);
+        wishlist.remove(i.id);
     }
 
     /**

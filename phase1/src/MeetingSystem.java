@@ -1,39 +1,43 @@
+import java.time.LocalDateTime;
+
 /**
  * MeetingSystem.java
- * Represents a meeting system for a trade.
+ * A meeting system for a trade that allows users to edit/confirm.
  *
  * @author Judy Naamani
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-28
+ * last modified 2020-06-30
  */
 
 public class MeetingSystem {
-    public String location;
-    public String date;
-    public Trade trade;
-    public User user1;
-    public User user2;
+    private final Trade trade;
+
 
     public MeetingSystem(Trade trade) {
         this.trade = trade;
-        user1 = trade.trades[0];
-        user2 = trade.trades[1];
     }
 
-    public String getDate() {
-        return date;
+    public LocalDateTime getSuggestedDateTime() {
+        return trade.getMeetingDateTime();
     }
 
-    public String getLocation() {
-        return location;
+    public void editDateTimeLocation (LocalDateTime newDateTime, String newLocation, String editorUsername) {
+        trade.setMeetingDateTime(newDateTime);
+        trade.setMeetingLocation(newLocation);
+        trade.addUserEditCount(editorUsername);
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public String getSuggestedLocation() {
+        return trade.getMeetingLocation();
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void confirmMeeting() {
+        trade.confirmAgreedMeeting();
+    }
+
+    public int getUserEditCount(String username) {
+        return trade.getUserEditCount(username);
     }
 }

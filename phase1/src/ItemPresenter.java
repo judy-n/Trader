@@ -7,9 +7,10 @@ import java.io.InputStreamReader;
  * Shows all Items available for trade in all users' inventory.
  *
  * @author Ning Zhang
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-29
+ * last modified 2020-06-30
  */
 public class ItemPresenter {
     public User user;
@@ -39,23 +40,29 @@ public class ItemPresenter {
             }
 
                 Item i = ItemDatabase.getItem(input);
-                //nullpointer :/
+                assert i!= null;
                 System.out.println("You have chosen: " + i.toString());
-                System.out.println("Are you sure you want to trade for this item with user, " + i.owner + " ?(Y/N)");
-                inputConfirm = br.readLine();
-                while(!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-                    System.out.println("Invalid input.");
+
+                if (i.getAvailability()) {
+                    System.out.println("Are you sure you want to trade for this item with user, " + i.owner + " ?(Y/N)");
                     inputConfirm = br.readLine();
-                }
-                if(inputConfirm.equalsIgnoreCase("Y")){
-                    System.out.println("Contacting user, "+ i.owner);
-                    User trader = UserDatabase.getUserByUsername(i.owner);
-                    String [] traders = {user.getUsername(), trader.getUsername()};
-                    trader.addTradeRequest(traders, i.id);
-                    user.addTradeRequest(traders, i.id);
-                    user.addWishlist(i);
-                }else{
-                    System.out.println("Cancelled.");
+                    while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
+                        System.out.println("Invalid input.");
+                        inputConfirm = br.readLine();
+                    }
+                    if (inputConfirm.equalsIgnoreCase("Y")) {
+                        System.out.println("Contacting user, " + i.owner);
+                        User trader = UserDatabase.getUserByUsername(i.owner);
+                        assert trader != null;
+                        String[] traders = {user.getUsername(), trader.getUsername()};
+                        trader.addTradeRequest(traders, i.id);
+                        user.addTradeRequest(traders, i.id);
+                        user.addWishlist(i);
+                    } else {
+                        System.out.println("Cancelled.");
+                    }
+                } else {
+                    System.out.println("Sorry, this item is currently not available for trade. We suggest adding it to your wishlist!");
                 }
             new UserDashboard(user);
         } catch (IOException e){

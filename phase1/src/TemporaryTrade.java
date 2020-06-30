@@ -1,26 +1,46 @@
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * TemporaryTrade.java
- * Represents a TemporaryTrade
+ * Represents a temporary trade.
  *
  * @author Ning Zhang
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-28
+ * last modified 2020-06-30
  */
 
 public class TemporaryTrade extends Trade {
-    public Date endDate;
+    public LocalDateTime endDateTime;
 
     /**
-     * TemporaryTrade
-     * Creates a temporary trade with two users
-     * @param u1 user 1
-     * @param u2 user 2
+     * Trade
+     * Creates a TemporaryTrade
+     * @param usernames an array containing the usernames of the two Users involved in this TemporaryTrade
+     * @param itemIDs an array containing the IDs of the Items being traded (parallel to usernames)
+     * @param firstDateTime the first date and time suggested for this TemporaryTrade's meeting
+     * @param firstLocation the first location suggested for this TemporaryTrade's meeting
      */
-    public TemporaryTrade(User u1, User u2) {
-        super(u1, u2);
-        //endDate =
+    public TemporaryTrade(String[] usernames, int[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
+        super(usernames, itemIDs, firstDateTime, firstLocation);
+    }
+
+    @Override
+    public void confirmAgreedMeeting() {
+        super.confirmAgreedMeeting();
+        endDateTime = getMeetingDateTime().plusMonths(1); //wow that's satisfying
+    }
+
+    public void closeTransaction() {
+        if (getIsComplete()) {
+            int[] itemIDs = getInvolvedItemIDs();
+            Item tempItem1 = ItemDatabase.getItem(itemIDs[0]);
+            Item tempItem2 = ItemDatabase.getItem(itemIDs[1]);
+            assert tempItem1 != null;
+            assert tempItem2 != null;
+            tempItem1.setAvailability(true);
+            tempItem2.setAvailability(true);
+        }
     }
 }

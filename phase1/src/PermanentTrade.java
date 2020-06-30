@@ -1,22 +1,52 @@
+import java.time.LocalDateTime;
+
 /**
  * PermanentTrade.java
  * Represents a permanent trade.
  *
  * @author Ning Zhang
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-28
+ * last modified 2020-06-30
  */
 public class PermanentTrade extends Trade {
 
     /**
      * PermanentTrade
-     * Creates a permanent trade with two users
-     * @param u1 user 1
-     * @param u2 user 2
+     * Creates a PermanentTrade
+     * @param usernames an array containing the usernames of the two Users involved in this TemporaryTrade
+     * @param itemIDs an array containing the IDs of the Items being traded (parallel to usernames)
+     * @param firstDateTime the first date and time suggested for this TemporaryTrade's meeting
+     * @param firstLocation the first location suggested for this TemporaryTrade's meeting
      */
-    public PermanentTrade(User u1, User u2) {
-        super(u1, u2);
+    public PermanentTrade(String[] usernames, int[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
+        super(usernames, itemIDs, firstDateTime, firstLocation);
+    }
+
+    @Override
+    public void confirmTransaction(String username) {
+        super.confirmTransaction(username);
+        String[] usernames = getInvolvedUsernames();
+
+        if (getUserTransactionConfirmation(usernames[0]) && getUserTransactionConfirmation(usernames[1])) {
+            User tempUser1 = UserDatabase.getUserByUsername(usernames[0]);
+            User tempUser2 = UserDatabase.getUserByUsername(usernames[1]);
+            assert tempUser1 != null && tempUser2 != null;
+            int[] itemIDs = getInvolvedItemIDs();
+            if (itemIDs[0] != 0) {
+                Item tempItem1 = ItemDatabase.getItem(itemIDs[0]);
+                assert tempItem1 != null;
+                tempUser1.removeInventory(tempItem1);
+                tempUser2.removeWishlist(tempItem1);
+            }
+            if (itemIDs[1] != 0) {
+                Item tempItem2 = ItemDatabase.getItem(itemIDs[1]);
+                assert tempItem2 != null;
+                tempUser2.removeInventory(tempItem2);
+                tempUser1.removeWishlist(tempItem2);
+            }
+        }
     }
 }
 

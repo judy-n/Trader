@@ -3,9 +3,10 @@
  * Represents an item.
  *
  * @author Ning Zhang
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-28
+ * last modified 2020-06-30
  */
 
 public class Item {
@@ -14,6 +15,7 @@ public class Item {
     public String description;
     public static int numItems = 1;
     public String owner;
+    private boolean isAvailable;
 
     /**
      * Item
@@ -27,6 +29,7 @@ public class Item {
         this.description = description;
         id = numItems;
         numItems++;
+        isAvailable = true;
     }
 
     /**
@@ -34,6 +37,18 @@ public class Item {
      * @return item name and description as a string
      */
     public String toString() {
-        return id +". "+ name + ": " + description;
+        if (isAvailable) {
+            return id + ". " + name + ": " + description;
+        } else {
+            return id + ". " + name + ": " + description + ("\n   (currently unavailable)");
+        }
+    }
+
+    public boolean getAvailability() {
+        return isAvailable;
+    }
+
+    public void setAvailability(boolean newAvailability) {
+        isAvailable = newAvailability;
     }
 }
