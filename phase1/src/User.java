@@ -3,8 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * User.java
- * Represents a user.
+ * User is a class that represents a user of our trade program.
  *
  * @author Ning Zhang
  * @version 1.0
@@ -22,14 +21,17 @@ public class User implements Serializable {
 
     private Boolean isFrozen;
 
-    private int weeklyTradeLimit = 3;
-    private int meetingEditLimit = 3;
+    private int weeklyTradeMax = 3;
+    private int meetingEditMax = 3;
     private int lendMinimum = 1; //to borrow in a one-way trade, user must have lent at least lendMinimum item(s) more than they have borrowed
+    private int incompleteMax = 5; //the limit on how many incomplete trades the user can have before their account is at risk of being frozen
 
     // private Item[] lastestThreeItems = new Item[3];
 
     /**
-     * Creates a User object with given username, email, and password
+     * Class constructor.
+     * Creates a User with given username, email, and password.
+     * Also initializes default empty inventory, wishlist, and tradeRequests, and account status non-frozen.
      *
      * @param username the given username
      * @param email the given email address
@@ -46,35 +48,48 @@ public class User implements Serializable {
     }
 
     /**
-     * This method returns a user by username
-     * @return username
+     * Getter for this User's email.
+     *
+     * @return this User's email
      */
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
     /**
-     * This method adds an item to the user's inventory
-     * @param i item
+     * Getter for this User's password.
+     *
+     * @return this User's password
      */
-    public void addInventory(Item i) {
-        inventory.add(i);
-        i.owner = username;
+    public String getPassword() {
+        return password;
     }
 
     /**
-     * This method removes an item from the user's inventory
-     * @param i item
+     * Adds a given Item to this User's inventory.
+     *
+     * @param itemToAdd the Item being added to inventory
      */
-    public void removeInventory(Item i) {
-        inventory.remove(i);
+    public void addInventory(Item itemToAdd) {
+        inventory.add(itemToAdd);
+        itemToAdd.owner = username;
     }
 
     /**
-     * This method returns the user's wishlist
-     * @return wishlist
+     * Removes a given Item from this User's inventory.
+     *
+     * @param itemToRemove the Item being removed from inventory
      */
-    public ArrayList<Item> getWishlist() {
+    public void removeInventory(Item itemToRemove) {
+        inventory.remove(itemToRemove);
+    }
+
+    /**
+     * Getter for this User's wishlist.
+     *
+     * @return this User's wishlist with IDs converted to their corresponding Items.
+     */
+    public ArrayList<Item> getItemWishlist() {
         ArrayList<Item> tempItems = new ArrayList<>();
         for (Integer itemID : wishlist) {
             tempItems.add(ItemDatabase.getItem(itemID));
@@ -83,63 +98,137 @@ public class User implements Serializable {
     }
 
     /**
-     * This method adds an item to the user's wishlist
-     * @param i item
+     * Adds a given Item to this User's wishlist.
+     *
+     * @param itemToAdd the Item being added to the wishlist
      */
-    public void addWishlist(Item i) {
-        wishlist.add(i.id);
+    public void addWishlist(Item itemToAdd) {
+        wishlist.add(itemToAdd.id);
     }
 
     /**
-     * This method removes an item from the user's wishlist
-     * @param i item
+     * Removes a given Item from this User's wishlist.
+     *
+     * @param itemToRemove the Item being removed from the wishlist
      */
-    public void removeWishlist(Item i) {
-        wishlist.remove(i.id);
+    public void removeWishlist(Item itemToRemove) {
+        wishlist.remove(itemToRemove.id);
     }
 
     /**
-     * This method sets the user's status to frozen
+     * Gets whether or not this User is frozen.
+     *
+     * @return this User's account status
+     */
+    public boolean getIsFrozen() {
+        return isFrozen;
+    }
+
+    /**
+     * Sets this User's status to frozen.
+     *
      */
     public void setIsFrozen() {
         isFrozen = true;
     }
 
     /**
-     * This method returns the user's email
-     * @return email
+     * Adds to the user's trade requests.
+     *
+     * @param usernames an array containing the usernames of the two traders
+     * @param itemIDs an array containing the IDs of the Items involved in the trade request
      */
-    public String getEmail() {
-        return email;
+    public void addTradeRequest(String [] usernames, Integer[] itemIDs){
+        tradeRequests.put(usernames, itemIDs);
     }
 
     /**
-     * This method returns the user's password
-     * @return password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-
-    /**
-     * This method adds to the user's traderequests
-     */
-    public void addTradeRequest(String [] usernames, Integer[] itemId){
-        tradeRequests.put(usernames, itemId);
-    }
-
-    /**
-     * This method removes a trade request by the item id
+     * Removes a trade request by the item id.
+     *
      * @param itemId item id
      */
     public void removeTradeRequest(int itemId){
 
     }
 
-
+    /**
+     * Getter for this User's trade requests.
+     *
+     * @return a HashMap containing all of this User's trade requests
+     */
     public HashMap<String [], Integer[]> getTradeRequest(){
         return tradeRequests;
     }
 
+    /**
+     * Getter for this User's weekly trade limit.
+     *
+     * @return this User's weekly limit for trades
+     */
+    public int getWeeklyTradeMax() {
+        return weeklyTradeMax;
+    }
+
+    /**
+     * Setter for this User's weekly trade limit.
+     *
+     * @param newMax the given weekly trade limit
+     */
+    public void setWeeklyTradeMax(int newMax) {
+        weeklyTradeMax = newMax;
+    }
+
+    /**
+     * Getter for this User's meeting edit limit.
+     *
+     * @return this User's limit on how many times they can edit a meeting
+     */
+    public int getMeetingEditMax() {
+        return meetingEditMax;
+    }
+
+    /**
+     * Setter for this User's meeting edit limit.
+     *
+     * @param newMax the given limit on how many times they can edit a meeting
+     */
+    public void setMeetingEditMax(int newMax) {
+        meetingEditMax = newMax;
+    }
+
+    /**
+     * Getter for this User's minimum lending over borrowing limit.
+     *
+     * @return this User's minimum lending over borrowing limit
+     */
+    public int getLendMinimum() {
+        return lendMinimum;
+    }
+
+    /**
+     * Setter for this User's minimum lending over borrowing limit.
+     *
+     * @param newMin the given minimum lending over borrowing limit
+     */
+    public void setLendMinimum(int newMin) {
+        lendMinimum = newMin;
+    }
+
+    /**
+     * Getter for this User's limit on incomplete trades.
+     *
+     * @return this User's limit on incomplete trades
+     */
+    public int getIncompleteMax() {
+        return incompleteMax;
+    }
+
+    /**
+     * Setter for this User's limit on incomplete trades.
+     *
+     * @param newMax the given limit on incomplete trades
+     */
+    public void setIncompleteMax(int newMax) {
+        incompleteMax = newMax;
+    }
 }
