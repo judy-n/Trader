@@ -9,7 +9,7 @@ import java.util.HashMap;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-28
+ * last modified 2020-06-29
  */
 
 public class User implements Serializable {
@@ -39,7 +39,7 @@ public class User implements Serializable {
         password = p;
         inventory = new ArrayList<>();
         wishlist = new ArrayList<>();
-        tradeRequests = new HashMap<String [], Integer>();
+        tradeRequests = new HashMap<>();
         isFrozen = false;
     }
 

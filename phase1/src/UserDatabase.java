@@ -9,9 +9,10 @@ import java.util.logging.Level;
  * Stores all Users in the system.
  *
  * @author Ning Zhang
+ * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-28
+ * last modified 2020-06-29
  */
 public class UserDatabase implements Serializable {
     private static ArrayList<User> allUser = new ArrayList<>();
@@ -133,7 +134,7 @@ public class UserDatabase implements Serializable {
 
     /**
      * @param path the ser filepath
-     * @throws ClassNotFoundException throws this if class isnt found
+     * @throws ClassNotFoundException throws this if class isn't found
      */
     public static void readFromFile(String path) throws ClassNotFoundException {
 
@@ -146,7 +147,7 @@ public class UserDatabase implements Serializable {
             allUser = (ArrayList<User>) input.readObject();
             input.close();
         } catch (IOException ex) {
-            System.out.println("IO Error Occured");
+            System.out.println("IO Error Occurred");
         }
     }
 

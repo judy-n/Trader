@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-28
+ * last modified 2020-06-29
  */
 public class ItemPresenter {
     public User user;
