@@ -6,9 +6,10 @@ import java.util.HashMap;
  * User is a class that represents a user of our trade program.
  *
  * @author Ning Zhang
+ * @author Liam
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-30
+ * last modified 2020-07-01
  */
 
 public class User implements Serializable {
@@ -231,4 +232,14 @@ public class User implements Serializable {
     public void setIncompleteMax(int newMax) {
         incompleteMax = newMax;
     }
+
+    /**
+     * Getter for this user's username
+     * @return this user's username
+     */
+    public String getUsername() {return username;}
 }
+
+
+
+
