@@ -12,7 +12,7 @@ import java.util.logging.Level;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-29
+ * last modified 2020-07-01
  */
 public class UserDatabase implements Serializable {
     private static ArrayList<User> allUser = new ArrayList<>();
@@ -133,6 +133,7 @@ public class UserDatabase implements Serializable {
 
 
     /**
+     * This method reads a .ser file of a list of Users to this UserDatabase's allUser
      * @param path the ser filepath
      * @throws ClassNotFoundException throws this if class isn't found
      */
@@ -152,6 +153,7 @@ public class UserDatabase implements Serializable {
     }
 
     /**
+     * This method writes allUser to a .ser file with path filePath
      * @param filePath the ser filepath
      * @throws IOException throws IOException
      */
