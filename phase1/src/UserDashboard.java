@@ -135,12 +135,12 @@ public class UserDashboard {
 
                 }
             case 3:
-                // This lets the User add/remove Items from the wish list.
+                // This lets the User remove Items from the wish list. Assuming that they only add Items to
+                // the wishlist when browsing items available for trade.
 
                 System.out.println("Choose one of the options: ");
-                System.out.println("1 - Add item to wish list" +
-                        "\n2 - Remove item from wish list" +
-                        "\n3 - Cancel ");
+                System.out.println("1 - Remove item from wish list" +
+                        "\n2 - Cancel ");
                 try {
                     input = Integer.parseInt(br.readLine());
                     while (input <0 || input >2){
@@ -150,70 +150,40 @@ public class UserDashboard {
                 } catch (IOException e) {
                     System.out.println("Plz try again.");
                 }
-                switch(input) {
-                    case 1:
-                        System.out.println("Enter the ID of the item you would like to add:");
-                        try {
-                            input = Integer.parseInt(br.readLine());
-                        } catch (IOException e) {
-                            System.out.println("Plz try again.");
-                        }
-                        Item item = ItemDatabase.getItem(input);
-                        if (item != null) {
-                            System.out.println("The item you've selected is:");
-                            System.out.println(item);
-                            System.out.println("Would you like to add it to your wish list? (y/n)");
-                            String userAnswer = " ";
-                            try {
-                                userAnswer = br.readLine();
-                            } catch (IOException e) {
-                                System.out.println("Plz try again.");
-                            }
-                            if (userAnswer.equals("y")) {
-                                user.addWishlist(item);
-                                System.out.println("Item added successfully!");
-                                new UserDashboard(user);
-                            }
-                            new UserDashboard(user);
-                        }
-                        else {
-                            System.out.println("Invalid ID.");
-                            new UserDashboard(user);
-                        }
-
-                    case 2:
-
-                        if (user.wishlist.isEmpty()) {
-                            System.out.println("Your wish list is empty.");
-                        } else {
-                            System.out.println("Enter the ID of the item you would like to remove:");
-                            ArrayList<Item> wishlistItems = user.getItemWishlist();
-                            for (Item i : wishlistItems) {
-                                System.out.println(i);
-                            }
-                            try {
-                                input = Integer.parseInt(br.readLine());
-                            } catch (IOException e) {
-                                System.out.println("Plz try again.");
-                            }
-                            boolean removed = false;
-                            for (Integer id : user.wishlist) {
-                                if (id == input) {
-                                    Item itemToRemove = ItemDatabase.getItem(id);
-                                    assert itemToRemove != null;
-                                    user.removeWishlist(itemToRemove);
-                                    removed = true;
-                                }
-                            }
-                            if (removed) {
-                                System.out.println("Item removed successfully!");
-                            } else {
-                                System.out.println("Invalid ID. Please try again.");
-                            }
-
-                        }
-                        new UserDashboard(user);
+                if (input == 2){ new UserDashboard(user);}
+                if (user.wishlist.isEmpty()) {
+                    System.out.println("Your wish list is empty.");
                 }
+                else{
+                    System.out.println("Enter the ID of the item you would like to remove:");
+                    ArrayList<Item> wishlistItems = user.getItemWishlist();
+                    for (Item i: wishlistItems){
+                        System.out.println(i);
+                    }
+                    int itemIdInput = 0;
+                    try {
+                        itemIdInput = Integer.parseInt(br.readLine());
+                    } catch (IOException e) {
+                        System.out.println("Plz try again.");
+                    }
+                    boolean removed = false;
+                    for (Integer id: user.wishlist){
+                        if (id == itemIdInput) {
+                            Item itemToRemove = ItemDatabase.getItem(id);
+                            assert itemToRemove != null;
+                            user.removeWishlist(itemToRemove);
+                            removed = true;
+                        }
+                    }
+                    if (removed) {
+                        System.out.println("Item removed successfully!");
+                    }
+                    else {
+                        System.out.println("Invalid ID. Please try again.");
+                    }
+
+                }
+                new UserDashboard(user);
 
             case 4:
                 new TradeRequestPresenter(user);
