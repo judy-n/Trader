@@ -49,6 +49,15 @@ public class User implements Serializable {
     }
 
     /**
+     * Getter for this User's username.
+     *
+     * @return this User's username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
      * Getter for this User's email.
      *
      * @return this User's email
@@ -129,8 +138,16 @@ public class User implements Serializable {
      * Sets this User's status to frozen.
      *
      */
-    public void setIsFrozen() {
+    public void freeze() {
         isFrozen = true;
+    }
+
+    /**
+     * Sets this User's status to NOT frozen.
+     *
+     */
+    public void unfreeze() {
+        isFrozen = false;
     }
 
     /**
@@ -233,11 +250,6 @@ public class User implements Serializable {
         incompleteMax = newMax;
     }
 
-    /**
-     * Getter for this user's username
-     * @return this user's username
-     */
-    public String getUsername() {return username;}
 }
 
 

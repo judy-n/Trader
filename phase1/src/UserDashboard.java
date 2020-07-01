@@ -11,6 +11,7 @@ import java.sql.SQLOutput;
  *
  * @author Ning Zhang
  * @author Judy Naamani
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
  * last modified 2020-07-01
@@ -20,35 +21,78 @@ import java.sql.SQLOutput;
 public class UserDashboard {
     public User user;
     private int input;
+    int maxChoice = 5;
+    int specialCase = 0;
 
     /**
-     * UserDashboard
-     * Creates a userDashboard with a user
-     * @param u user
+     * Creates a UserDashboard that stores the given user.
+     *
+     * @param user the given User
      */
-    public UserDashboard(User u) {
-        user = u;
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public UserDashboard(User user) {
+        this.user = user;
+
         System.out.println("What would you like to do: ");
+        if (user.getIsFrozen()) {
+            System.out.println("-- Your account is currently frozen due to you reaching the limit on incomplete trades --");
+        }
         System.out.println(" 1 - see all items available for trade" +
                 "\n 2 - edit inventory " +
                 "\n 3 - edit wishlist " +
                 "\n 4 - view trade requests " +
-                "\n 5 - view latest trades " +
-                "\n 0 - log out ");
+                "\n 5 - view latest trades ");
+        if (!(user instanceof AdminUser) && user.getIsFrozen()) {     //frozen non-admin
+            maxChoice = 6;
+            specialCase = 1;
+            System.out.println(" 6 - request to unfreeze account");
+        } else if (user instanceof AdminUser) {    //admin
+            maxChoice = 9;
+            specialCase = 2;
+            System.out.println(" 6 - view items waiting for approval " +
+                    "\n 7 - view accounts to freeze " +
+                    "\n 8 - view requests to unfreeze account " +
+                    "\n 9 - edit a user's threshold values ");
+            if (user.getIsFrozen() && (((AdminUser) user).getAdminID() == 1)) {   //initial admin allowed to add subsequent admins
+                maxChoice = 11;
+                specialCase = 3;
+                System.out.println(" 10 - request to unfreeze account");
+                System.out.println(" 11 - add a new admin to the system");
+            } else if (user.getIsFrozen()) {
+                maxChoice = 10;
+                specialCase = 4;
+                System.out.println(" 10 - request to unfreeze account");
+            } else if (((AdminUser) user).getAdminID() == 1) {
+                maxChoice = 10;
+                specialCase = 5;
+                System.out.println(" 10 - add a new admin to the system");
+            }
+        }
+        System.out.println(" 0 - log out ");
+        System.out.print("Please enter the number of the action you wish to take: ");
+
+        selectChoice();
+
+    }
+
+    private void selectChoice() {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         try {
             input = Integer.parseInt(br.readLine());
-            while(input<0 || input>5){
-                System.out.println("Invalid input try again.");
+            while (input < 0 || input > maxChoice) {
+                System.out.print("Invalid input. Try again: ");
                 input = Integer.parseInt(br.readLine());
             }
         } catch (IOException e) {
-            System.out.println("Plz try again.");
+            System.out.println("Error reading user input.");
         }
+
         switch (input) {
             case 0:
                 try {
                     br.close();
+
+                    // TODO: write everything to file :(
+
                 } catch (IOException e) {
                     System.out.println("Error closing input stream.");
                 }
@@ -192,7 +236,39 @@ public class UserDashboard {
 
                 break;
 
-        }
+            case 6:
+                if (specialCase == 1) {
+                    // unfreeze request option for frozen non-admin
+                    break;
+                } else {
+                    // view items waiting for approval option for admin
+                    break;
+                }
 
+            case 7:
+                //view account to freeze option for admin
+                break;
+
+            case 8:
+                // view requests to unfreeze account option for admin
+                break;
+
+            case 9:
+                // edit a user's threshold values option for admin
+                break;
+
+            case 10:
+                if (specialCase == 3 || specialCase == 4) {
+                    // request to unfreeze account option for frozen admin
+                    break;
+                } else {
+                    // add a new admin to the system option for frozen init admin
+                    break;
+                }
+
+            case 11:
+                // add a new admin to the system option for NON-frozen init admin
+                break;
+        }
     }
 }

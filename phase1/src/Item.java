@@ -1,8 +1,7 @@
 import java.io.Serializable;
 
 /**
- * Item.java
- * Represents an item.
+ * Represents an item with a name, description, ID, and owner.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
@@ -12,31 +11,37 @@ import java.io.Serializable;
  */
 
 public class Item implements Serializable {
-    public int id;
+    public final int id;
     public String name;
     public String description;
-    public static int numItems = 1;
+    public static int numItems = 1; //maybe replace Item ID assignment by checking against ItemDatabase.allItemIDs (needs a getter)
     public String owner;
     private boolean isAvailable;
 
     /**
-     * Item
-     * Creates an item with a name and a description and id
-     * @param name name
-     * @param description description
+     * Class constructor.
+     * Creates an Item with the given name and description.
+     * Also assigns a unique ID to the item and makes the item available for trade by default.
+     *
+     * @param name the given name
+     * @param description the given description
      */
 
     public Item(String name, String description) {
         this.name = name;
         this.description = description;
+
+        //TODO: figure out what to do about item ID (reading in Items doesn't add to numItems, messing up the whole ID order)
         id = numItems;
         numItems++;
+
         isAvailable = true;
     }
 
     /**
-     * This method returns a string representation of the item
-     * @return item name and description as a string
+     * Returns a string representation of this Item.
+     *
+     * @return this Item's ID, name, description, and availability as a string
      */
     public String toString() {
         if (isAvailable) {
@@ -46,10 +51,20 @@ public class Item implements Serializable {
         }
     }
 
+    /**
+     * Getter for this Item's availability.
+     *
+     * @return whether or not this Item is currently available for trade
+     */
     public boolean getAvailability() {
         return isAvailable;
     }
 
+    /**
+     * Setter for this Item's availability.
+     *
+     * @param newAvailability whether or not this Item is currently available for trade
+     */
     public void setAvailability(boolean newAvailability) {
         isAvailable = newAvailability;
     }

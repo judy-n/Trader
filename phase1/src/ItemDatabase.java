@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class ItemDatabase {
     private static ArrayList<Item> allItems = new ArrayList<>();
+    private static ArrayList<Integer> allItemIDs = new ArrayList<>(); //tentative
 
     public static ArrayList<Item> getAllItems() {
         return allItems;

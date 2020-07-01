@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 /**
- * AdminUser.java
- * Represents an administrative user.
+ * Represents an administrative user in our trade program.
+ * An AdminUser with adminID 1 represents the initial admin.
  *
  * @author Ning Zhang
  * @version 1.0
@@ -12,62 +12,109 @@ import java.util.ArrayList;
 
 public class AdminUser extends User {
 
+    public static int numAdmins = 1; //doesn't work with serialization
+    private final int adminID;
     private ArrayList<User> needToFreeze;
 
     /**
-     * AdminUser
-     * Creates a User object with username, email, and password
+     * Class constructor.
+     * Creates an AdminUser with the given username, email, and password.
+     * Also assigns this AdminUser a unique ID.
      *
-     * @param u username
-     * @param e email
-     * @param p password
+     * @param username the given username
+     * @param email the given email
+     * @param password the given password
      */
-    public AdminUser(String u, String e, String p) {
-        super(u, e, p);
+    public AdminUser(String username, String email, String password) {
+        super(username, email, password);
         needToFreeze = new ArrayList<>();
+        adminID = numAdmins;
+        numAdmins++;
     }
 
     /**
-     * This method removes a certain item from a certain user's inventory
-     * @param u user
-     * @param i item
+     * Getter for this AdminUser's admin ID.
+     *
+     * @return this AdminUser's adminID
      */
-    public void removeUserInventory(User u, Item i) {
-        u.removeInventory(i);
+    public int getAdminID() {
+        return adminID;
     }
 
     /**
-     * This method changes a certain user's status to frozen
-     * @param u user
+     * Changes the given User's status to frozen.
+     *
+     * @param user the given User
      */
-    public void setUserIsFrozen(User u) {
-        u.setIsFrozen();
+    public void freezeUser(User user) {
+        user.freeze();
     }
 
     /**
-     * This method adds a user to the list of users that need to be frozen
-     * @param u user
+     * Adds the given user to the list of users that need to be frozen.
+     *
+     * @param user the given User
      */
-    public void addNeedToFreeze(User u) {
-        needToFreeze.add(u);
+    public void addNeedToFreeze(User user) {
+        needToFreeze.add(user);
     }
 
     /**
-     * This method sets all users in the list to frozen
+     * Sets all user accounts in the list to frozen.
+     *
      */
-    public void setAllToFrozen() {
+    public void freezeAll() {
         for (User u : needToFreeze) {
-            setUserIsFrozen(u);
+            freezeUser(u);
         }
     }
 
     /**
-     * This method sets a certain user's trade threshold
-     * @param u user
-     * @param i trade threshold
+     * Sets the given User's status to NOT frozen.
+     *
+     * @param user the User whose account is being unfrozen
      */
-    public void setUserThreshold(User u, int i) {
-        u.setTradeThreshold(i);
+    public void unfreezeUser(User user) {
+        user.unfreeze();
     }
 
+    /**
+     * Setter for the given User's weekly trade limit.
+     *
+     * @param user the given User
+     * @param newMax the given weekly trade limit
+     */
+    public void setUserWeeklyTradeMax(User user, int newMax) {
+        user.setWeeklyTradeMax(newMax);
+    }
+
+    /**
+     * Setter for the given User's meeting edit limit.
+     *
+     * @param user the given User
+     * @param newMax the given limit on how many times the user can edit a meeting
+     */
+    public void setUserMeetingEditMax(User user, int newMax) {
+        user.setMeetingEditMax(newMax);
+    }
+
+    /**
+     * Setter for the given User's minimum lending over borrowing limit.
+     *
+     * @param user the given User
+     * @param newMin the given limit on incomplete trades
+     */
+    public void setUserLendMinimum(User user, int newMin) {
+        user.setLendMinimum(newMin);
+    }
+
+    /**
+     * Setter for the given User's limit on incomplete trades.
+     *
+     * @param user the given User
+     * @param newMax the given limit on incomplete trades
+     */
+    public void setUserIncompleteMax(User user, int newMax) {
+        user.setIncompleteMax(newMax);
+    }
 }
