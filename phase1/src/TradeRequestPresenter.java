@@ -19,8 +19,8 @@ import java.util.HashMap;
 
 
 public class TradeRequestPresenter {
-    public HashMap<String[], double[]> initiatedTrades = new HashMap<>();
-    public HashMap<String[], double[]> receiveTrades = new HashMap<>();
+    public HashMap<String[], long[]> initiatedTrades = new HashMap<>();
+    public HashMap<String[], long[]> receiveTrades = new HashMap<>();
 
     /**
      * TradeRequestPresenter
@@ -58,7 +58,7 @@ public class TradeRequestPresenter {
         } else {
             for (String[] key : receiveTrades.keySet()) {
                 Item i = ItemDatabase.getItem(receiveTrades.get(key)[1]);
-                System.out.println("Trade for " + i.name + "(" + i.id + ") from user " + key[0]);
+                System.out.println("Trade for " + i.name + " from user " + key[0]);
             }
             System.out.println("Would you like to accept any of these requests?(0 to quit)");
             try {

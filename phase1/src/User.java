@@ -18,8 +18,8 @@ public class User implements Serializable {
     private String password;
     public ArrayList<Item> inventory;
     private ArrayList<Item> pendingInventory;
-    public ArrayList<Double> wishlist;
-    private HashMap<String[], double[]> tradeRequests;
+    public ArrayList<Long> wishlist;
+    private HashMap<String[], long[]> tradeRequests;
 
     private Boolean isFrozen;
 
@@ -178,7 +178,7 @@ public class User implements Serializable {
      * @param usernames an array containing the usernames of the two traders
      * @param itemIDs an array containing the IDs of the Items involved in the trade request
      */
-    public void addTradeRequest(String[] usernames, double[] itemIDs){
+    public void addTradeRequest(String[] usernames, long[] itemIDs){
         tradeRequests.put(usernames, itemIDs);
     }
 
@@ -196,7 +196,7 @@ public class User implements Serializable {
      *
      * @return a HashMap containing all of this User's trade requests
      */
-    public HashMap<String [], double[]> getTradeRequest(){
+    public HashMap<String [], long[]> getTradeRequest(){
         return tradeRequests;
     }
 

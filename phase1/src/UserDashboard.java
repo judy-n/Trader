@@ -211,7 +211,7 @@ public class UserDashboard {
                         System.out.println("Plz try again.");
                     }
                     boolean removed = false;
-                    for (Double id: currentUser.wishlist){
+                    for (Long id: currentUser.wishlist){
                         if (id == itemIdInput) {
                             Item itemToRemove = ItemDatabase.getItem(id);
                             assert itemToRemove != null;

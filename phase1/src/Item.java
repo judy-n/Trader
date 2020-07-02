@@ -1,5 +1,5 @@
 import java.io.Serializable;
-import static java.lang.System.currentTimeMillis;
+import java.util.Date;
 
 /**
  * Represents an item with a name, description, ID, and owner.
@@ -12,7 +12,7 @@ import static java.lang.System.currentTimeMillis;
  */
 
 public class Item implements Serializable {
-    public double id;
+    public long id;
     public String name;
     public String description;
     public String ownerUsername;
@@ -38,12 +38,9 @@ public class Item implements Serializable {
         for (int i = 0; i < ownerUsername.length(); i++) {
             sb.append((int) ownerUsername.charAt(i));
         }
-        id = Double.parseDouble(sb.toString() + (double) System.currentTimeMillis());
-
-        //test
-        System.out.println(System.currentTimeMillis() + "VS");
-        //System.out.println(id + "VS");
-        System.out.println(sb);
+//        id = Double.parseDouble(sb.toString() + (double) System.currentTimeMillis());
+        id = Long.parseLong(sb.toString() + (new Date().getTime())/1000);
+        System.out.println(id);
     }
 
     /**

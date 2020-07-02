@@ -59,7 +59,7 @@ public class ItemPresenter {
                         User trader = UserDatabase.getUserByUsername(i.ownerUsername);
                         assert trader != null;
                         String[] traders = {user.getUsername(), trader.getUsername()};
-                        double [] items = {0.0, i.id};
+                        long [] items = {0, i.id};
                         trader.addTradeRequest(traders, items);
                         user.addTradeRequest(traders, items);
                         user.addWishlist(i);
