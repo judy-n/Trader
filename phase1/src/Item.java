@@ -53,9 +53,9 @@ public class Item implements Serializable {
      */
     public String toString() {
         if (isAvailable) {
-            return id + ". " + name + ": " + description;
+            return  ". " + name + ": " + description;
         } else {
-            return id + ". " + name + ": " + description + ("\n   (currently unavailable)");
+            return  ". " + name + ": " + description + ("\n   (currently unavailable)");
         }
     }
 

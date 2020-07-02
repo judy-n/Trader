@@ -24,12 +24,14 @@ public class ItemPresenter {
         user = u;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int input;
+        int index = 1;
         String inputConfirm;
         System.out.println("This is all the item(s) available for trade:");
         max = ItemDatabase.getNumItems();
         ItemDatabase.update();
         for (Item i : ItemDatabase.getAllItems()) {
-            System.out.println(i.toString());
+            System.out.println(index+i.toString());
+            index ++;
         }
         System.out.println("Is there an Item you would like to trade for? (0 to quit)");
         try{
@@ -38,10 +40,12 @@ public class ItemPresenter {
                 System.out.println("Invalid input try again.");
                 input = Integer.parseInt(br.readLine());
             }
-
+                if(input == 0){
+                    new UserDashboard(user);
+                }
                 Item i = ItemDatabase.getItem(input);
                 assert i!= null;
-                System.out.println("You have chosen: " + i.toString());
+                System.out.println("You have chosen: " + input + i.toString());
 
                 if (i.getAvailability()) {
                     System.out.println("Are you sure you want to trade for this item with user, " + i.ownerUsername + " ?(Y/N)");
@@ -72,5 +76,4 @@ public class ItemPresenter {
 
 
     }
-
 }

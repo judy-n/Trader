@@ -42,6 +42,16 @@ public class ItemDatabase {
         return null;
     }
 
+    /**
+     * This method returns an item by its index
+     * @param index index
+     * @return Item
+     */
+    public static Item getItem(int index){
+        return allItems.get(index - 1);
+    }
+
+
     public static void update() {
         allItems.clear();
         for ( User u : UserDatabase.getAllUsers()) {
