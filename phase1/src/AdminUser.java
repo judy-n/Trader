@@ -5,14 +5,15 @@ import java.util.ArrayList;
  * An AdminUser with adminID 1 represents the initial admin.
  *
  * @author Ning Zhang
+ * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-28
+ * last modified 2020-07-02
  */
 
 public class AdminUser extends User {
 
-    public static int numAdmins = 1; //doesn't work with serialization
+    private static int numAdmins = 1; //doesn't work with serialization
     private final int adminID;
     private ArrayList<User> needToFreeze;
 
@@ -117,4 +118,16 @@ public class AdminUser extends User {
     public void setUserIncompleteMax(User user, int newMax) {
         user.setIncompleteMax(newMax);
     }
+
+    /**
+     * Getter for the number of admin classes that have been instantiated
+     * @return numAdmins
+     */
+    public int getNumAdmins() {return numAdmins;}
+
+    /**
+     * Setter for total number of Admins
+     * @param numAdmins The number of AdminUsers to set
+     */
+    public void setNumAdmins(int numAdmins) {AdminUser.numAdmins = numAdmins;}
 }
