@@ -6,16 +6,17 @@ import java.util.Date;
  *
  * @author Ning Zhang
  * @author Yingjia Liu
+ * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
  * last modified 2020-07-02
  */
 
 public class Item implements Serializable {
-    public long id;
-    public String name;
-    public String description;
-    public String ownerUsername;
+    private long id;
+    private String name;
+    private String description;
+    private String ownerUsername;
     private boolean isAvailable;
 
     /**
@@ -32,6 +33,54 @@ public class Item implements Serializable {
         this.description = description;
         isAvailable = true;
     }
+
+    /**
+     * Getter for Item's id
+     * @return id
+     */
+    public long getId() {return id;}
+
+    /**
+     * Setter for this item's id
+     * @param id this item's id
+     */
+    public void setId(long id) {this.id = id; }
+
+    /**
+     * Getter for this item's name
+     * @return this item's name
+     */
+    public String getName() {return name;}
+
+    /**
+     * Setter for this item's name
+     * @param name this item's name
+     */
+    public void setName(String name) {this.name = name;}
+
+    /**
+     * Getter for this item's description
+     * @return this item's description
+     */
+    public String getDescription() {return description;}
+
+    /**
+     * Setter for this item's description
+     * @param description this item's new description
+     */
+    public void setDescription(String description) {this.description = description;}
+
+    /**
+     * Getter for the owner of this item's username
+     * @return ownerUsername
+     */
+    public String getOwnerUsername() {return ownerUsername;}
+
+    /**
+     * Setter for this item's owner's username
+     * @param ownerUsername this item's new owner's username
+     */
+    public void setOwnerUsername(String ownerUsername) {this.ownerUsername = ownerUsername;}
 
     public void assignID() {
         StringBuilder sb = new StringBuilder();
