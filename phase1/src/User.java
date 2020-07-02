@@ -13,12 +13,12 @@ import java.util.HashMap;
  */
 
 public class User implements Serializable {
-    public String username;
+    private String username;
     private String email;
     private String password;
-    public ArrayList<Item> inventory;
+    private ArrayList<Item> inventory;
     private ArrayList<Item> pendingInventory;
-    public ArrayList<Long> wishlist;
+    private ArrayList<Long> wishlist;
     private HashMap<String[], long[]> tradeRequests;
 
     private Boolean isFrozen;
@@ -272,6 +272,36 @@ public class User implements Serializable {
         incompleteMax = newMax;
     }
 
+    /**
+     * Setter for this user's username
+     * @param username the new username
+     */
+    public void setUsername(String username) {this.username = username;}
+
+    /**
+     * Getter for this user's inventory
+     * @return This user's inventory
+     */
+    public ArrayList<Item> getInventory() {return inventory;}
+
+    /**
+     * Setter for this user's inventory
+     * @param inventory new inventory
+     */
+    public void setInventory(ArrayList<Item> inventory) {this.inventory = inventory;}
+
+
+    /**
+     * Getter for this user's wishlist
+     * @return this user's Wishlist
+     */
+    public ArrayList<Long> getWishlist() {return wishlist;}
+
+    /**
+     * Setter for this user's wishlist
+     * @param wishlist new wishlist
+     */
+    public void setWishlist(ArrayList<Long> wishlist) {this.wishlist = wishlist;}
 }
 
 
