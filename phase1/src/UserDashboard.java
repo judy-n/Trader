@@ -113,7 +113,8 @@ public class UserDashboard {
 
             case 4:
                 new TradeRequestPresenter(currentUser);
-                new UserDashboard(currentUser);
+                break;
+
             case 5:
 
                 break;
