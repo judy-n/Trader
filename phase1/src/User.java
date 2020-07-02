@@ -112,7 +112,7 @@ public class User implements Serializable {
      */
     public void addPendingInventory(Item itemToAdd) {
         pendingInventory.add(itemToAdd);
-        itemToAdd.ownerUsername = username;
+        itemToAdd.setOwnerUsername(username);
         itemToAdd.assignID();
     }
 
@@ -135,7 +135,7 @@ public class User implements Serializable {
      * @param itemToAdd the Item being added to this User's wishlist
      */
     public void addWishlist(Item itemToAdd) {
-        wishlist.add(itemToAdd.id);
+        wishlist.add(itemToAdd.getId());
     }
 
     /**
@@ -144,7 +144,7 @@ public class User implements Serializable {
      * @param itemToRemove the Item being removed from this User's wishlist
      */
     public void removeWishlist(Item itemToRemove) {
-        wishlist.remove(itemToRemove.id);
+        wishlist.remove(itemToRemove.getId());
     }
 
     /**

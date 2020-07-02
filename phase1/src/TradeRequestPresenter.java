@@ -159,11 +159,12 @@ public class TradeRequestPresenter {
     }
 
     /**
-     * This method is plagiarized how do we credit
-     * https://mkyong.com/java/how-to-check-if-date-is-valid-in-java/
-     * @param dateToValidate the user input
-     * @param dateFromat the format of the user input
-     * @return true if valid false otherwise
+     * Checks if the given date is valid.
+     * based on code by mkyong from https://mkyong.com/java/how-to-check-if-date-is-valid-in-java/.
+     *
+     * @param dateToValidate the date being validated
+     * @param dateFromat the format of the date being validated
+     * @return true if valid, false otherwise
      */
     public boolean isThisDateValid(String dateToValidate, String dateFromat) {
 
