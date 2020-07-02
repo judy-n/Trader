@@ -19,8 +19,8 @@ import java.util.HashMap;
 
 
 public class TradeRequestPresenter {
-    public HashMap<String[], long[]> initiatedTrades = new HashMap<>();
-    public HashMap<String[], long[]> receiveTrades = new HashMap<>();
+    private HashMap<String[], long[]> initiatedTrades = new HashMap<>();
+    private HashMap<String[], long[]> receiveTrades = new HashMap<>();
 
     /**
      * TradeRequestPresenter

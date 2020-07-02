@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 
 public class WishlistEditor {
-    public User currentUser;
+    private User currentUser;
 
     public WishlistEditor(User user){
         // This lets the User remove Items from the wish list. Assuming that they only add Items to

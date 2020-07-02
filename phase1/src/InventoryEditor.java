@@ -13,9 +13,9 @@ import java.io.InputStreamReader;
  */
 
 public class InventoryEditor {
-    public User currentUser;
-    public String itemNameInput;
-    public String itemDescriptionInput;
+    private User currentUser;
+    private String itemNameInput;
+    private String itemDescriptionInput;
 
     public InventoryEditor(User user) {
         // This allows the User to request adding Items to their inventory, or to remove an existing Item.
