@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
  */
 
 public class LoginSystem {
-    public String username;
+    private String username;
     private String email;
     private String validPw;
     private User user;

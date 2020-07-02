@@ -13,8 +13,8 @@ import java.io.InputStreamReader;
  * last modified 2020-06-30
  */
 public class ItemPresenter {
-    public User user;
-    public int max;
+    private User user;
+    private int max;
     /**
      * ItemPresenter
      * Creates an item presenter at prints to the screen all items available for trade

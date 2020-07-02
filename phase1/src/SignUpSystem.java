@@ -13,9 +13,9 @@ import java.io.InputStreamReader;
  * last modified 2020-06-28
  */
 public class SignUpSystem {
-    public String username;
-    public String email;
-    public String password;
+    private String username;
+    private String email;
+    private String password;
 
     /**
      * SignUpSystem

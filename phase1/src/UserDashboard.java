@@ -19,10 +19,10 @@ import java.sql.SQLOutput;
 
 
 public class UserDashboard {
-    public User currentUser;
+    private User currentUser;
     private int input;
-    int maxChoice = 5;
-    int specialCase = 0;
+    private int maxChoice = 5;
+    private int specialCase = 0;
 
     /**
      * Creates a UserDashboard that stores the given user who is currently logged in.
