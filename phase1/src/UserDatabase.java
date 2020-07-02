@@ -30,6 +30,7 @@ public class UserDatabase implements Serializable {
         u1.addPendingInventory(i2);
         u1.addApprovedInventory(i1);
         u1.addApprovedInventory(i2);
+        u1.addWishlist(i1);
         allUser.add(u1);
     }
 
