@@ -16,8 +16,11 @@ public class ItemRequestDatabase {
         return allItemRequests;
     }
 
-    public static void add(Item newItemRequest) {
-        allItemRequests.add(newItemRequest);
+    public static void update() {
+        allItemRequests.clear();
+        for ( User u : UserDatabase.getAllUsers()) {
+            allItemRequests.addAll(u.getPendingInventory());
+        }
     }
 
     public static void remove(Item item) {

@@ -13,7 +13,6 @@ import java.util.ArrayList;
  */
 public class ItemDatabase {
     private static ArrayList<Item> allItems = new ArrayList<>();
-    private static ArrayList<Integer> allItemIDs = new ArrayList<>(); //tentative
 
     public static ArrayList<Item> getAllItems() {
         return allItems;
@@ -33,7 +32,7 @@ public class ItemDatabase {
      * @param id id number
      * @return Item
      */
-    public static Item getItem(int id){
+    public static Item getItem(double id){
         update();
         for(Item i : allItems){
             if (i.id == id){

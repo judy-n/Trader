@@ -22,7 +22,7 @@ public class TemporaryTrade extends Trade {
      * @param firstDateTime the first date and time suggested for this TemporaryTrade's meeting
      * @param firstLocation the first location suggested for this TemporaryTrade's meeting
      */
-    public TemporaryTrade(String[] usernames, int[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
+    public TemporaryTrade(String[] usernames, double[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
         super(usernames, itemIDs, firstDateTime, firstLocation);
     }
 
@@ -34,7 +34,7 @@ public class TemporaryTrade extends Trade {
 
     public void closeTransaction() {
         if (getIsComplete()) {
-            int[] itemIDs = getInvolvedItemIDs();
+            double[] itemIDs = getInvolvedItemIDs();
             Item tempItem1 = ItemDatabase.getItem(itemIDs[0]);
             Item tempItem2 = ItemDatabase.getItem(itemIDs[1]);
             assert tempItem1 != null;

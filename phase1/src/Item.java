@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import static java.lang.System.currentTimeMillis;
 
 /**
  * Represents an item with a name, description, ID, and owner.
@@ -7,20 +8,19 @@ import java.io.Serializable;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-30
+ * last modified 2020-07-01
  */
 
 public class Item implements Serializable {
-    public final int id;
+    public double id;
     public String name;
     public String description;
-    public static int numItems = 1; //maybe replace Item ID assignment by checking against ItemDatabase.allItemIDs (needs a getter)
-    public String owner;
+    public String ownerUsername;
     private boolean isAvailable;
 
     /**
      * Class constructor.
-     * Creates an Item with the given name and description.
+     * Creates an Item with the given name, description.
      * Also assigns a unique ID to the item and makes the item available for trade by default.
      *
      * @param name the given name
@@ -30,12 +30,20 @@ public class Item implements Serializable {
     public Item(String name, String description) {
         this.name = name;
         this.description = description;
-
-        //TODO: figure out what to do about item ID (reading in Items doesn't add to numItems, messing up the whole ID order)
-        id = numItems;
-        numItems++;
-
         isAvailable = true;
+    }
+
+    public void assignID() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < ownerUsername.length(); i++) {
+            sb.append((int) ownerUsername.charAt(i));
+        }
+        id = Double.parseDouble(sb.toString() + (double) System.currentTimeMillis());
+
+        //test
+        System.out.println(System.currentTimeMillis() + "VS");
+        //System.out.println(id + "VS");
+        System.out.println(sb);
     }
 
     /**

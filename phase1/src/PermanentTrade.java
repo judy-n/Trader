@@ -20,7 +20,7 @@ public class PermanentTrade extends Trade {
      * @param firstDateTime the first date and time suggested for this TemporaryTrade's meeting
      * @param firstLocation the first location suggested for this TemporaryTrade's meeting
      */
-    public PermanentTrade(String[] usernames, int[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
+    public PermanentTrade(String[] usernames, double[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
         super(usernames, itemIDs, firstDateTime, firstLocation);
     }
 
@@ -33,7 +33,7 @@ public class PermanentTrade extends Trade {
             User tempUser1 = UserDatabase.getUserByUsername(usernames[0]);
             User tempUser2 = UserDatabase.getUserByUsername(usernames[1]);
             assert tempUser1 != null && tempUser2 != null;
-            int[] itemIDs = getInvolvedItemIDs();
+            double[] itemIDs = getInvolvedItemIDs();
             if (itemIDs[0] != 0) {
                 Item tempItem1 = ItemDatabase.getItem(itemIDs[0]);
                 assert tempItem1 != null;

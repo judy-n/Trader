@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
  * Represents an approved trade between 2 Users.
  * Trade stores the usernames of both Users in an array which is parallel to an array
  * containing the IDs of the Items each User is lending in this trade.
- * Note that an ID of 0 means the associated User is not lending an Item (aka a one-way trade).
+ * Note that an ID of 0.0 means the associated User is not lending an Item (aka a one-way trade).
  *
  * @author Ning Zhang
  * @author Yingjia Liu
@@ -18,7 +18,7 @@ public class Trade implements Serializable {
     private boolean hasAgreedMeeting;
     private boolean isComplete;
     private final String[] involvedUsernames = new String[2];
-    private final int[] involvedItemIDs = new int[2];
+    private final double[] involvedItemIDs = new double[2];
     private LocalDateTime meetingDateTime;
     private String meetingLocation;
     private boolean[] transactionConfirmed = new boolean[2];
@@ -34,7 +34,7 @@ public class Trade implements Serializable {
      * @param firstDateTime the first date and time suggested for this Trade's meeting
      * @param firstLocation the first location suggested for this Trade's meeting
      */
-    public Trade(String[] usernames, int[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
+    public Trade(String[] usernames, double[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
         involvedUsernames[0] = usernames[0];
         involvedUsernames[1] = usernames[1];
         involvedItemIDs[0] = itemIDs[0];
@@ -67,7 +67,7 @@ public class Trade implements Serializable {
      *
      * @return an array containing the IDs of the Items involved in this Trade
      */
-    public int[] getInvolvedItemIDs() {
+    public double[] getInvolvedItemIDs() {
         return involvedItemIDs;
     }
 

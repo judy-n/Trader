@@ -26,8 +26,10 @@ public class UserDatabase implements Serializable {
         User u1 = new User("u", "e", "p");
         Item i1 = new Item("Item", "This is an item.");
         Item i2 = new Item("Item", "This is another item.");
-        u1.addInventory(i1);
-        u1.addInventory(i2);
+        u1.addPendingInventory(i1);
+        u1.addPendingInventory(i2);
+        u1.addApprovedInventory(i1);
+        u1.addApprovedInventory(i2);
         allUser.add(u1);
     }
 

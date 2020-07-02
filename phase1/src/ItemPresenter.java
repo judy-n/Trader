@@ -44,18 +44,18 @@ public class ItemPresenter {
                 System.out.println("You have chosen: " + i.toString());
 
                 if (i.getAvailability()) {
-                    System.out.println("Are you sure you want to trade for this item with user, " + i.owner + " ?(Y/N)");
+                    System.out.println("Are you sure you want to trade for this item with user, " + i.ownerUsername + " ?(Y/N)");
                     inputConfirm = br.readLine();
                     while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
                         System.out.println("Invalid input.");
                         inputConfirm = br.readLine();
                     }
                     if (inputConfirm.equalsIgnoreCase("Y")) {
-                        System.out.println("Contacting user, " + i.owner);
-                        User trader = UserDatabase.getUserByUsername(i.owner);
+                        System.out.println("Contacting user, " + i.ownerUsername);
+                        User trader = UserDatabase.getUserByUsername(i.ownerUsername);
                         assert trader != null;
                         String[] traders = {user.getUsername(), trader.getUsername()};
-                        Integer [] items = {0, i.id};
+                        double [] items = {0.0, i.id};
                         trader.addTradeRequest(traders, items);
                         user.addTradeRequest(traders, items);
                         user.addWishlist(i);

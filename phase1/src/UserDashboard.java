@@ -19,21 +19,21 @@ import java.sql.SQLOutput;
 
 
 public class UserDashboard {
-    public User user;
+    public User currentUser;
     private int input;
     int maxChoice = 5;
     int specialCase = 0;
 
     /**
-     * Creates a UserDashboard that stores the given user.
+     * Creates a UserDashboard that stores the given user who is currently logged in.
      *
      * @param user the given User
      */
     public UserDashboard(User user) {
-        this.user = user;
+        currentUser = user;
 
         System.out.println("What would you like to do: ");
-        if (user.getIsFrozen()) {
+        if (currentUser.getIsFrozen()) {
             System.out.println("-- Your account is currently frozen due to you reaching the limit on incomplete trades --");
         }
         System.out.println(" 1 - see all items available for trade" +
@@ -41,27 +41,27 @@ public class UserDashboard {
                 "\n 3 - edit wishlist " +
                 "\n 4 - view trade requests " +
                 "\n 5 - view latest trades ");
-        if (!(user instanceof AdminUser) && user.getIsFrozen()) {     //frozen non-admin
+        if (!(currentUser instanceof AdminUser) && currentUser.getIsFrozen()) {     //frozen non-admin
             maxChoice = 6;
             specialCase = 1;
             System.out.println(" 6 - request to unfreeze account");
-        } else if (user instanceof AdminUser) {    //admin
+        } else if (currentUser instanceof AdminUser) {    //admin
             maxChoice = 9;
             specialCase = 2;
             System.out.println(" 6 - view items waiting for approval " +
                     "\n 7 - view accounts to freeze " +
                     "\n 8 - view requests to unfreeze account " +
                     "\n 9 - edit a user's threshold values ");
-            if (user.getIsFrozen() && (((AdminUser) user).getAdminID() == 1)) {   //initial admin allowed to add subsequent admins
+            if (currentUser.getIsFrozen() && (((AdminUser) currentUser).getAdminID() == 1)) {   //initial admin allowed to add subsequent admins
                 maxChoice = 11;
                 specialCase = 3;
                 System.out.println(" 10 - request to unfreeze account");
                 System.out.println(" 11 - add a new admin to the system");
-            } else if (user.getIsFrozen()) {
+            } else if (currentUser.getIsFrozen()) {
                 maxChoice = 10;
                 specialCase = 4;
                 System.out.println(" 10 - request to unfreeze account");
-            } else if (((AdminUser) user).getAdminID() == 1) {
+            } else if (((AdminUser) currentUser).getAdminID() == 1) {
                 maxChoice = 10;
                 specialCase = 5;
                 System.out.println(" 10 - add a new admin to the system");
@@ -100,7 +100,7 @@ public class UserDashboard {
                 System.exit(0);
 
             case 1:
-                new ItemPresenter(user);
+                new ItemPresenter(currentUser);
                 break;
 
             case 2:
@@ -137,21 +137,21 @@ public class UserDashboard {
                         }
                         Item requestedItem = new Item(itemNameInput, itemDescriptionInput);
                         if (itemNameInput != null && itemDescriptionInput != null){
-                            ItemRequestDatabase.add(requestedItem);
+                            currentUser.addPendingInventory(requestedItem);
                             System.out.println("Your item has been requested! Please wait for an admin to review it.");
                         }
                         else {
                             System.out.println("Request failed.");
                         }
-                        new UserDashboard(user);
+                        new UserDashboard(currentUser);
 
                     case 2:
-                        if (user.inventory.isEmpty()){
+                        if (currentUser.inventory.isEmpty()){
                             System.out.println("No items to remove.");
                             break;
                         }
                         System.out.println("Enter the ID of the item you would like to remove:");
-                        for(Item i: user.inventory){
+                        for(Item i: currentUser.inventory){
                             System.out.println(i);
                         }
                         int itemIdInput = 0;
@@ -161,9 +161,9 @@ public class UserDashboard {
                             System.out.println("Plz try again.");
                         }
                         boolean removed = false;
-                        for(Item i: user.inventory){
+                        for(Item i: currentUser.inventory){
                             if (i.id == itemIdInput){
-                                user.removeInventory(i);
+                                currentUser.removeInventory(i);
                                 removed = true;
                             }
                         }
@@ -173,9 +173,9 @@ public class UserDashboard {
                         else {
                             System.out.println("Invalid ID. Please try again.");
                         }
-                        new UserDashboard(user);
+                        new UserDashboard(currentUser);
                     case 3:
-                        new UserDashboard(user);
+                        new UserDashboard(currentUser);
 
                 }
             case 3:
@@ -194,13 +194,13 @@ public class UserDashboard {
                 } catch (IOException e) {
                     System.out.println("Plz try again.");
                 }
-                if (input == 2){ new UserDashboard(user);}
-                if (user.wishlist.isEmpty()) {
+                if (input == 2){ new UserDashboard(currentUser);}
+                if (currentUser.wishlist.isEmpty()) {
                     System.out.println("Your wish list is empty.");
                 }
                 else{
                     System.out.println("Enter the ID of the item you would like to remove:");
-                    ArrayList<Item> wishlistItems = user.getItemWishlist();
+                    ArrayList<Item> wishlistItems = currentUser.getItemWishlist();
                     for (Item i: wishlistItems){
                         System.out.println(i);
                     }
@@ -211,11 +211,11 @@ public class UserDashboard {
                         System.out.println("Plz try again.");
                     }
                     boolean removed = false;
-                    for (Integer id: user.wishlist){
+                    for (Double id: currentUser.wishlist){
                         if (id == itemIdInput) {
                             Item itemToRemove = ItemDatabase.getItem(id);
                             assert itemToRemove != null;
-                            user.removeWishlist(itemToRemove);
+                            currentUser.removeWishlist(itemToRemove);
                             removed = true;
                         }
                     }
@@ -227,11 +227,11 @@ public class UserDashboard {
                     }
 
                 }
-                new UserDashboard(user);
+                new UserDashboard(currentUser);
 
             case 4:
-                new TradeRequestPresenter(user);
-                new UserDashboard(user);
+                new TradeRequestPresenter(currentUser);
+                new UserDashboard(currentUser);
             case 5:
 
                 break;

@@ -17,8 +17,9 @@ public class User implements Serializable {
     private String email;
     private String password;
     public ArrayList<Item> inventory;
-    public ArrayList<Integer> wishlist;
-    private HashMap<String [], Integer[]> tradeRequests;
+    private ArrayList<Item> pendingInventory;
+    public ArrayList<Double> wishlist;
+    private HashMap<String[], double[]> tradeRequests;
 
     private Boolean isFrozen;
 
@@ -43,6 +44,7 @@ public class User implements Serializable {
         this.email = email;
         this.password = password;
         inventory = new ArrayList<>();
+        pendingInventory = new ArrayList<>();
         wishlist = new ArrayList<>();
         tradeRequests = new HashMap<>();
         isFrozen = false;
@@ -76,13 +78,13 @@ public class User implements Serializable {
     }
 
     /**
-     * Adds a given Item to this User's inventory.
+     * Moves the given approved Item from this User's pending inventory to their regular inventory.
      *
-     * @param itemToAdd the Item being added to inventory
+     * @param itemToAdd the approved Item being added to inventory
      */
-    public void addInventory(Item itemToAdd) {
+    public void addApprovedInventory(Item itemToAdd) {
         inventory.add(itemToAdd);
-        itemToAdd.owner = username;
+        pendingInventory.remove(itemToAdd);
     }
 
     /**
@@ -95,13 +97,33 @@ public class User implements Serializable {
     }
 
     /**
+     * Getter for this User's inventory of Items waiting for approval.
+     *
+     * @return this User's pending inventory
+     */
+    public ArrayList<Item> getPendingInventory() {
+        return pendingInventory;
+    }
+
+    /**
+     * Adds the given Item waiting for approval to this User's pending inventory.
+     *
+     * @param itemToAdd the Item being added to pending inventory
+     */
+    public void addPendingInventory(Item itemToAdd) {
+        pendingInventory.add(itemToAdd);
+        itemToAdd.ownerUsername = username;
+        itemToAdd.assignID();
+    }
+
+    /**
      * Getter for this User's wishlist.
      *
      * @return this User's wishlist with IDs converted to their corresponding Items.
      */
     public ArrayList<Item> getItemWishlist() {
         ArrayList<Item> tempItems = new ArrayList<>();
-        for (Integer itemID : wishlist) {
+        for (double itemID : wishlist) {
             tempItems.add(ItemDatabase.getItem(itemID));
         }
         return tempItems;
@@ -156,7 +178,7 @@ public class User implements Serializable {
      * @param usernames an array containing the usernames of the two traders
      * @param itemIDs an array containing the IDs of the Items involved in the trade request
      */
-    public void addTradeRequest(String [] usernames, Integer[] itemIDs){
+    public void addTradeRequest(String[] usernames, double[] itemIDs){
         tradeRequests.put(usernames, itemIDs);
     }
 
@@ -174,7 +196,7 @@ public class User implements Serializable {
      *
      * @return a HashMap containing all of this User's trade requests
      */
-    public HashMap<String [], Integer[]> getTradeRequest(){
+    public HashMap<String [], double[]> getTradeRequest(){
         return tradeRequests;
     }
 
