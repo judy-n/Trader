@@ -4,8 +4,7 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * TradeRequestPresenter.java
@@ -46,24 +45,25 @@ public class TradeRequestPresenter {
         } else {
             for (String[] key : initiatedTrades.keySet()) {
                 Item i = ItemDatabase.getItem(initiatedTrades.get(key)[1]);
-                System.out.println("Trade for " + i.name + " from user " + key[1]);
+                System.out.println("Trade for " + i.getName() + " from user " + key[1]);
             }
         }
 
 
         System.out.println("Here is all the trade request(s) you received:");
-
+        int index = 1;
         if (receiveTrades.isEmpty()) {
             System.out.println("None!");
         } else {
             for (String[] key : receiveTrades.keySet()) {
                 Item i = ItemDatabase.getItem(receiveTrades.get(key)[1]);
-                System.out.println("Trade for " + i.name + " from user " + key[0]);
+                System.out.println(index+". Trade for " + i.getName() + " from user " + key[0]);
+                index ++;
             }
             System.out.println("Would you like to accept any of these requests?(0 to quit)");
             try {
                 int input = Integer.parseInt(br.readLine());
-                while (input != 0 && !receiveTrades.containsValue(input)) {
+                while (input != 0 && input > index) {
                     System.out.println("Invalid input!");
                     input = Integer.parseInt(br.readLine());
                 }
@@ -103,7 +103,7 @@ public class TradeRequestPresenter {
             } catch (IOException e) {
                 System.out.println("No");
             }
-
+            new UserDashboard(user);
         }
     }
 
@@ -111,17 +111,29 @@ public class TradeRequestPresenter {
      * This method return an array of strings with item name and username from the
      * item ID
      *
-     * @param itemId item ID
+     * @param index item ID
      * @return array of username and item name
      */
-    public String[] getTradeHelper(int itemId) {
-        String itemName = ItemDatabase.getItem(itemId).name;
-        for (String[] key : receiveTrades.keySet()) {
-            if (itemId == (receiveTrades.get(key)[1])) {
-                return new String[]{key[0], itemName};
-            }
-        }
-        return null;
+    public String[] getTradeHelper(int index) {
+        Set<String[]> keySet = receiveTrades.keySet();
+        ArrayList<String[]> listOfKeys = (ArrayList<String[]>) keySet;
+        Collection<long[]> keyValues = receiveTrades.values();
+        ArrayList<long[]> listOfKeyValues = (ArrayList<long[]>) keyValues;
+        assert ItemDatabase.getItem(listOfKeyValues.get(index-1)[1]) != null;
+        String itemName = ItemDatabase.getItem(listOfKeyValues.get(index-1)[1]).getName();
+        String traderName = listOfKeys.get(index-1)[0];
+        return new String[] {traderName, itemName};
+
+
+
+//
+//        String itemName = ItemDatabase.getItem(itemId).name;
+//        for (String[] key : receiveTrades.keySet()) {
+//            if (itemId == (receiveTrades.get(key)[1])) {
+//                return new String[]{key[0], itemName};
+//            }
+//        }
+//        return null;
     }
 
     /**
@@ -141,7 +153,7 @@ public class TradeRequestPresenter {
 
     public void printInventory(String username){
         User u = UserDatabase.getUserByUsername(username);
-        for(Item i : u.inventory){
+        for(Item i : u.getInventory()){
             System.out.println(i.toString());
         }
     }

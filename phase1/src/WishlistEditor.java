@@ -40,7 +40,7 @@ public class WishlistEditor {
             System.out.println("Plz try again.");
         }
 
-        if (currentUser.wishlist.isEmpty()) {
+        if (currentUser.getWishlist().isEmpty()) {
             System.out.println("Your wish list is empty.");
             new UserDashboard(currentUser);
         }
@@ -57,7 +57,7 @@ public class WishlistEditor {
             try {
                 indexInput = Integer.parseInt(br.readLine());
                 Item selected = wishlistItems.get(indexInput - 1);
-                System.out.println("Remove "+selected.name+" from your wishlist?(Y/N)");
+                System.out.println("Remove "+selected.getName()+" from your wishlist?(Y/N)");
                 String confirmInput = br.readLine();
                 while (!confirmInput.equalsIgnoreCase("Y")&&!confirmInput.equalsIgnoreCase("N")){
                     System.out.println("Invalid input try again.");
@@ -65,7 +65,7 @@ public class WishlistEditor {
                 }
                 if(confirmInput.equalsIgnoreCase("y")){
                     currentUser.removeWishlist(selected);
-                    System.out.println(selected.name + " is removed from your wishlist!");
+                    System.out.println(selected.getName() + " is removed from your wishlist!");
                 }else{
                     System.out.println("Cancelled.");
                 }

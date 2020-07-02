@@ -35,7 +35,7 @@ public class ItemDatabase {
     public static Item getItem(double id){
         update();
         for(Item i : allItems){
-            if (i.id == id){
+            if (i.getId() == id){
                 return i;
             }
         }
@@ -55,7 +55,7 @@ public class ItemDatabase {
     public static void update() {
         allItems.clear();
         for ( User u : UserDatabase.getAllUsers()) {
-            allItems.addAll(u.inventory);
+            allItems.addAll(u.getInventory());
         }
     }
 

@@ -75,7 +75,7 @@ public class InventoryEditor {
                 }
 
             } else {
-                if (currentUser.inventory.isEmpty()) {
+                if (currentUser.getInventory().isEmpty()) {
                     System.out.println("No items to remove.");
                     new UserDashboard(currentUser);
                 }
@@ -83,7 +83,7 @@ public class InventoryEditor {
                 int index = 1;
                 System.out.println("Enter the ID of the item you would like to remove:");
 
-                for (Item i : currentUser.inventory) {
+                for (Item i : currentUser.getInventory()) {
                     System.out.println(index + i.toString());
                     index++;
                 }
@@ -92,8 +92,8 @@ public class InventoryEditor {
 
                 try {
                     indexInput = Integer.parseInt(br.readLine());
-                    Item selected = currentUser.inventory.get(indexInput - 1);
-                    System.out.println("Remove " + indexInput + ". " + selected.name + " from your inventory?(Y/N)");
+                    Item selected = currentUser.getInventory().get(indexInput - 1);
+                    System.out.println("Remove " + indexInput + ". " + selected.getName() + " from your inventory?(Y/N)");
                     String confirmInput = br.readLine();
                     while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
                         System.out.println("Invalid input try again.");
@@ -101,7 +101,7 @@ public class InventoryEditor {
                     }
                     if (confirmInput.equalsIgnoreCase("y")) {
                         currentUser.removeInventory(selected);
-                        System.out.println(selected.name + " is removed from your inventory!");
+                        System.out.println(selected.getName() + " is removed from your inventory!");
                     } else {
                         System.out.println("Cancelled.");
                     }
