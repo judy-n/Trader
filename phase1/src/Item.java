@@ -8,7 +8,7 @@ import java.util.Date;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-01
+ * last modified 2020-07-02
  */
 
 public class Item implements Serializable {
@@ -23,8 +23,8 @@ public class Item implements Serializable {
      * Creates an Item with the given name, description.
      * Also assigns a unique ID to the item and makes the item available for trade by default.
      *
-     * @param name the given name
-     * @param description the given description
+     * @param name the name being assigned to this Item
+     * @param description the description being assigned to this Item
      */
 
     public Item(String name, String description) {

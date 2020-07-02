@@ -9,7 +9,7 @@ import java.util.HashMap;
  * @author Liam
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-01
+ * last modified 2020-07-02
  */
 
 public class User implements Serializable {
@@ -35,9 +35,9 @@ public class User implements Serializable {
      * Creates a User with given username, email, and password.
      * Also initializes default empty inventory, wishlist, and tradeRequests, and account status non-frozen.
      *
-     * @param username the given username
-     * @param email the given email address
-     * @param password the given password
+     * @param username the username being assigned to this User
+     * @param email the email address being assigned to this User
+     * @param password the password being assigned to this User
      */
     public User(String username, String email, String password) {
         this.username = username;
@@ -80,7 +80,7 @@ public class User implements Serializable {
     /**
      * Moves the given approved Item from this User's pending inventory to their regular inventory.
      *
-     * @param itemToAdd the approved Item being added to inventory
+     * @param itemToAdd the approved Item being added to this User's inventory
      */
     public void addApprovedInventory(Item itemToAdd) {
         inventory.add(itemToAdd);
@@ -90,7 +90,7 @@ public class User implements Serializable {
     /**
      * Removes a given Item from this User's inventory.
      *
-     * @param itemToRemove the Item being removed from inventory
+     * @param itemToRemove the Item being removed from this User's inventory
      */
     public void removeInventory(Item itemToRemove) {
         inventory.remove(itemToRemove);
@@ -108,7 +108,7 @@ public class User implements Serializable {
     /**
      * Adds the given Item waiting for approval to this User's pending inventory.
      *
-     * @param itemToAdd the Item being added to pending inventory
+     * @param itemToAdd the Item being added to this User's pending inventory
      */
     public void addPendingInventory(Item itemToAdd) {
         pendingInventory.add(itemToAdd);
@@ -117,9 +117,9 @@ public class User implements Serializable {
     }
 
     /**
-     * Getter for this User's wishlist.
+     * Converts and returns this User's wishlist of IDs to a list containing their associated Items.
      *
-     * @return this User's wishlist with IDs converted to their corresponding Items.
+     * @return this User's wishlist with IDs converted to their corresponding Items
      */
     public ArrayList<Item> getItemWishlist() {
         ArrayList<Item> tempItems = new ArrayList<>();
@@ -132,7 +132,7 @@ public class User implements Serializable {
     /**
      * Adds a given Item to this User's wishlist.
      *
-     * @param itemToAdd the Item being added to the wishlist
+     * @param itemToAdd the Item being added to this User's wishlist
      */
     public void addWishlist(Item itemToAdd) {
         wishlist.add(itemToAdd.id);
@@ -141,7 +141,7 @@ public class User implements Serializable {
     /**
      * Removes a given Item from this User's wishlist.
      *
-     * @param itemToRemove the Item being removed from the wishlist
+     * @param itemToRemove the Item being removed from this User's wishlist
      */
     public void removeWishlist(Item itemToRemove) {
         wishlist.remove(itemToRemove.id);
@@ -150,7 +150,7 @@ public class User implements Serializable {
     /**
      * Gets whether or not this User is frozen.
      *
-     * @return this User's account status
+     * @return true if this User's account is frozen, false otherwise
      */
     public boolean getIsFrozen() {
         return isFrozen;
@@ -183,9 +183,9 @@ public class User implements Serializable {
     }
 
     /**
-     * Removes a trade request by the item id.
+     * Removes a trade request by the given item id.
      *
-     * @param itemId item id
+     * @param itemId the ID of an Item involved in the trade request being removed
      */
     public void removeTradeRequest(int itemId){
 
@@ -212,7 +212,7 @@ public class User implements Serializable {
     /**
      * Setter for this User's weekly trade limit.
      *
-     * @param newMax the given weekly trade limit
+     * @param newMax the new weekly trade limit
      */
     public void setWeeklyTradeMax(int newMax) {
         weeklyTradeMax = newMax;
@@ -230,7 +230,7 @@ public class User implements Serializable {
     /**
      * Setter for this User's meeting edit limit.
      *
-     * @param newMax the given limit on how many times they can edit a meeting
+     * @param newMax the new limit on how many times they can edit a meeting
      */
     public void setMeetingEditMax(int newMax) {
         meetingEditMax = newMax;
@@ -248,7 +248,7 @@ public class User implements Serializable {
     /**
      * Setter for this User's minimum lending over borrowing limit.
      *
-     * @param newMin the given minimum lending over borrowing limit
+     * @param newMin the new minimum lending over borrowing limit
      */
     public void setLendMinimum(int newMin) {
         lendMinimum = newMin;
@@ -266,7 +266,7 @@ public class User implements Serializable {
     /**
      * Setter for this User's limit on incomplete trades.
      *
-     * @param newMax the given limit on incomplete trades
+     * @param newMax the new limit on incomplete trades
      */
     public void setIncompleteMax(int newMax) {
         incompleteMax = newMax;

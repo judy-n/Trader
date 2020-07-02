@@ -17,7 +17,7 @@ public class MeetingSystem {
      * Class constructor.
      * Creates a MeetingSystem storing the given Trade.
      *
-     * @param trade the given Trade
+     * @param trade the Trade to store in this MeetingSystem
      */
     public MeetingSystem(Trade trade) {
         this.trade = trade;
@@ -45,8 +45,8 @@ public class MeetingSystem {
      * Sets the date, time, and location of the trade's meeting to the given values.
      * Then increments the number of edits made by the given user.
      *
-     * @param newDateTime the given date and time
-     * @param newLocation the given location
+     * @param newDateTime the new date and time for the meeting
+     * @param newLocation the new location for the meeting
      * @param editorUsername the username of the User making this edit
      */
     public void editDateTimeLocation (LocalDateTime newDateTime, String newLocation, String editorUsername) {
@@ -66,7 +66,7 @@ public class MeetingSystem {
     /**
      * Getter for the number of times the given user has edited the meeting details.
      *
-     * @param username the given user's username
+     * @param username the username of the User whose number of edits is being searched for
      * @return the number of times the user has edited the meeting details
      */
     public int getUserEditCount(String username) {

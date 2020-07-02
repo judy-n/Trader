@@ -8,14 +8,14 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-30
+ * last modified 2020-07-02
  */
 
 public class TemporaryTrade extends Trade {
     public LocalDateTime endDateTime;
 
     /**
-     * Trade
+     * Class constructor.
      * Creates a TemporaryTrade
      * @param usernames an array containing the usernames of the two Users involved in this TemporaryTrade
      * @param itemIDs an array containing the IDs of the Items being traded (parallel to usernames)

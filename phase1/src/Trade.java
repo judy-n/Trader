@@ -109,7 +109,7 @@ public class Trade implements Serializable {
     /**
      * Setter for this Trade's meeting date and time.
      *
-     * @param dateTime the given date and time
+     * @param dateTime the new date and time for the meeting
      */
     public void setMeetingDateTime(LocalDateTime dateTime) {
         meetingDateTime = dateTime;
