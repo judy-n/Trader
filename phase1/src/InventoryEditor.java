@@ -20,17 +20,15 @@ public class InventoryEditor {
     public InventoryEditor(User user) {
         // This allows the User to request adding Items to their inventory, or to remove an existing Item.
         currentUser = user;
+        SystemPresenter sp = new SystemPresenter(currentUser);
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int input;
-        System.out.println("Choose one of the options: ");
-        System.out.println("1 - Add an item to inventory" +
-                "\n2 - Remove item from inventory " +
-                "\n3 - Cancel ");
+        sp.inventoryEditor();
         try {
             input = Integer.parseInt(br.readLine());
 
             while (input < 1 || input > 3) {
-                System.out.println("Invalid input try again.");
+                sp.invalidInput();
                 input = Integer.parseInt(br.readLine());
             }
 
@@ -42,47 +40,44 @@ public class InventoryEditor {
 
                 try {
                     do {
-                        System.out.println("Enter the name of the item to add(at least 3 letters):");
+                        sp.inventoryAddItem(1);
                         itemNameInput = br.readLine();
                     }while (itemNameInput.length() < 3);
 
                     do {
-                        System.out.println("Enter a description(at least 2 words):");
+                        sp.inventoryAddItem(2);
                         itemDescriptionInput = br.readLine();
                     }while(!itemDescriptionInput.contains(" "));
-
-                    System.out.println("Are you sure you want to add this item?(Y/N)");
-                    System.out.println(itemNameInput + " : "+itemDescriptionInput);
-
+                    sp.inventoryAddItem(3);
+                    sp.inventoryAddItem(itemNameInput, itemDescriptionInput);
                     String confirmInput = br.readLine();
 
                     while(!confirmInput.equalsIgnoreCase("Y")&&!confirmInput.equalsIgnoreCase("N")){
-                        System.out.println("Invalid Input try again.");
+                        sp.invalidInput();
                         confirmInput = br.readLine();
                     }
 
                     if(confirmInput.equalsIgnoreCase("Y")) {
                         Item requestedItem = new Item(itemNameInput, itemDescriptionInput);
                         currentUser.addPendingInventory(requestedItem);
-                        System.out.println("Your item has been requested! Please wait for an admin to review it.");
+                        sp.inventoryAddItem(4);
                     }else{
-                        System.out.println("Cancelled!");
+                        sp.cancelled();
                     }
                     new UserDashboard(currentUser);
 
                 } catch (IOException e) {
-                    System.out.println("Plz try again.");
+                    sp.exceptionMessage();
                 }
 
             } else {
                 if (currentUser.getInventory().isEmpty()) {
-                    System.out.println("No items to remove.");
+                    sp.inventoryRemoveItem(1);
                     new UserDashboard(currentUser);
                 }
 
                 int index = 1;
-                System.out.println("Enter the ID of the item you would like to remove:");
-
+                sp.inventoryRemoveItem(2);
                 for (Item i : currentUser.getInventory()) {
                     System.out.println(index + i.toString());
                     index++;
@@ -93,27 +88,27 @@ public class InventoryEditor {
                 try {
                     indexInput = Integer.parseInt(br.readLine());
                     Item selected = currentUser.getInventory().get(indexInput - 1);
-                    System.out.println("Remove " + indexInput + ". " + selected.getName() + " from your inventory?(Y/N)");
+                    sp.inventoryRemoveItem(selected.getName(), indexInput, 1);
                     String confirmInput = br.readLine();
                     while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
-                        System.out.println("Invalid input try again.");
+                        sp.invalidInput();
                         confirmInput = br.readLine();
                     }
                     if (confirmInput.equalsIgnoreCase("y")) {
                         currentUser.removeInventory(selected);
-                        System.out.println(selected.getName() + " is removed from your inventory!");
+                        sp.inventoryRemoveItem(selected.getName(),0,2);
                     } else {
-                        System.out.println("Cancelled.");
+                        sp.cancelled();
                     }
                     new UserDashboard(currentUser);
 
                 } catch (IOException e) {
-                    System.out.println("Plz try again.");
+                    sp.exceptionMessage();
                 }
             }
 
         } catch (IOException e) {
-            System.out.println("Plz try again.");
+            sp.exceptionMessage();
         }
     }
 }
