@@ -28,9 +28,8 @@ public class ItemPresenter {
         int index = 1;
         String inputConfirm;
         System.out.println("This is all the item(s) available for trade:");
-        max = ItemDatabase.getNumItems();
-        ItemDatabase.update();
-        for (Item i : ItemDatabase.getAllItems()) {
+        max = ItemManager.getNumApprovedItems();
+        for (Item i : ItemManager.getApprovedItems()) {
             System.out.println(index+i.toString());
             index ++;
         }
@@ -44,7 +43,7 @@ public class ItemPresenter {
                 if(input == 0){
                     new UserDashboard(user);
                 }
-                Item i = ItemDatabase.getItem(input);
+                Item i = ItemManager.getApprovedItem(input);
                 assert i!= null;
                 System.out.println("You have chosen: " + input + i.toString());
 
