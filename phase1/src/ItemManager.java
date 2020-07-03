@@ -13,30 +13,47 @@ import java.util.ArrayList;
  * last modified 2020-07-03
  */
 public class ItemManager {
-    private static ArrayList<Item> allItems = new ArrayList<>();
+    private static ArrayList<Item> approvedItems = new ArrayList<>();
 
-    public static ArrayList<Item> getAllItems() {
-        return allItems;
+    private static ArrayList<Item> pendingItems = new ArrayList<>();
+
+    /**
+     * Getter for the approved items of this item manager
+     *
+     * @return approvedItems
+     */
+    public static ArrayList<Item> getApprovedItems() {
+        return approvedItems;
+    }
+
+    /**
+     * Getter for the pending items of this item manager
+     *
+     * @return pendingItems
+     */
+    public static ArrayList<Item> getPendingItems() {
+        return pendingItems;
     }
 
     /**
      * This method returns the number of items in the item database
+     *
      * @return numItems
      */
-    public static int getNumItems(){
-        update();
-        return allItems.size();
+    public static int getNumApprovedItems() {
+        return approvedItems.size();
     }
 
     /**
-     * This method returns an item by its id
-     * @param id id number
-     * @return Item
+     * Private helper function for finding items in ArrayLists based on item ids
+     *
+     * @param items  the list to be searched through
+     * @param itemid the id of the item to find
+     * @return the item that matches the id within the list, or null if none exists
      */
-    public static Item getItem(double id){
-        update();
-        for(Item i : allItems){
-            if (i.getId() == id){
+    private static Item idGetItem(ArrayList<Item> items, long itemid) {
+        for (Item i : items) {
+            if (i.getId() == itemid) {
                 return i;
             }
         }
@@ -44,31 +61,81 @@ public class ItemManager {
     }
 
     /**
-     * This method returns an item by its index
+     * This method returns an ApprovedItem by its id
+     *
+     * @param itemid id number
+     * @return Item
+     */
+    public static Item getApprovedItem(long itemid) {
+        return idGetItem(getApprovedItems(), itemid);
+    }
+
+    /**
+     * This method returns an approvedItem by its index
+     *
      * @param index index
      * @return Item
      */
-    public static Item getItem(int index){
-        return allItems.get(index - 1);
+    public static Item getApprovedItem(int index) {
+        return getApprovedItems().get(index - 1);
     }
 
+    /**
+     * This method returns a pendingItem by its id
+     *
+     * @param itemid id number
+     * @return Item
+     */
+    public static Item getPendingItem(long itemid) {
+        return idGetItem(getPendingItems(), itemid);
+    }
 
-    public static void update() {
-        allItems.clear();
-        for ( User u : UserDatabase.getAllUsers()) {
-            allItems.addAll(u.getInventory());
+    /**
+     * This method returns a pendingItem by its index
+     *
+     * @param index index
+     * @return Item
+     */
+    public static Item getPendingItem(int index) {
+        return getPendingItems().get(index - 1);
+    }
+
+    /**
+     * Adds item to the list of approved items
+     * @param item item to be added
+     */
+    public static void addApprovedItem(Item item) {
+        approvedItems.add(item);
+    }
+
+    /**
+     * Adds item to the list of pending items
+     * @param item item to be added
+     */
+    public static void addPendingItem(Item item) {
+        pendingItems.add(item);
+    }
+
+    public static void deleteItem(long itemid) {
+        try {
+            getPendingItems().remove(getPendingItem(itemid));
+        } catch (Exception e) {
+            System.out.println("Item Is Not Pending");
         }
     }
 
-    // Add Setters for items
-    // @Kushagra Mehta
-
     /**
-     * Adds item to the list of items
-     * @param item item to be added    */
-    public void addItem(Item item) {allItems.add(item);}
-
-    //public static setItem(int index){}
-
-
+     * Removes an item from the pending items and adds it to the approved items, if that item is pending.
+     * @param itemid the item to be added
+     */
+    public void approveItem(long itemid) {
+        try {
+        Item item = getPendingItem(itemid);
+        getPendingItems().remove(item);
+        addApprovedItem(item);
+        // should catch an exception if the item isn't pending:
+        } catch (Exception e)  {
+            System.out.println("Item Is Not Pending");
+        }
+    }
 }
