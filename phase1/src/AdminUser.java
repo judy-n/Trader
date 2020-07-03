@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * Represents an administrative user in our trade program.
@@ -8,35 +8,30 @@ import java.util.ArrayList;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-02
+ * last modified 2020-07-03
  */
 
-public class AdminUser extends User {
-
-    private static int numAdmins = 1; //doesn't work with serialization
+public class AdminUser extends User implements Serializable {
     private final int adminID;
-    private ArrayList<User> needToFreeze;
 
     /**
      * Class constructor.
-     * Creates an AdminUser with the given username, email, and password.
-     * Also assigns this AdminUser a unique ID.
+     * Creates an AdminUser with the given username, email, password, and admin ID.
      *
-     * @param username the given username
-     * @param email the given email
-     * @param password the given password
+     * @param username the username being assigned to this AdminUser
+     * @param email the email being assigned to this AdminUser
+     * @param password the password being assigned to this AdminUser
+     * @param adminID the admin ID being assigned to this AdminUser
      */
-    public AdminUser(String username, String email, String password) {
+    public AdminUser(String username, String email, String password, int adminID) {
         super(username, email, password);
-        needToFreeze = new ArrayList<>();
-        adminID = numAdmins;
-        numAdmins++;
+        this.adminID = adminID;
     }
 
     /**
      * Getter for this AdminUser's admin ID.
      *
-     * @return this AdminUser's adminID
+     * @return this AdminUser's admin ID
      */
 
     public int getAdminID() {
@@ -44,91 +39,60 @@ public class AdminUser extends User {
     }
 
     /**
-     * Changes the given User's status to frozen.
+     * Changes the given NormalUser's status to frozen.
      *
-     * @param user the given User
+     * @param user the NormalUser whose account is being frozen
      */
-    public void freezeUser(User user) {
+    public void freezeUser(NormalUser user) {
         user.freeze();
     }
 
     /**
-     * Adds the given user to the list of users that need to be frozen.
+     * Sets the given NormalUser's status to NOT frozen.
      *
-     * @param user the given User
+     * @param user the NormalUser whose account is being unfrozen
      */
-    public void addNeedToFreeze(User user) {
-        needToFreeze.add(user);
-    }
-
-    /**
-     * Sets all user accounts in the list to frozen.
-     *
-     */
-    public void freezeAll() {
-        for (User u : needToFreeze) {
-            freezeUser(u);
-        }
-    }
-
-    /**
-     * Sets the given User's status to NOT frozen.
-     *
-     * @param user the User whose account is being unfrozen
-     */
-    public void unfreezeUser(User user) {
+    public void unfreezeUser(NormalUser user) {
         user.unfreeze();
     }
 
     /**
-     * Setter for the given User's weekly trade limit.
+     * Setter for the given NormalUser's weekly trade limit.
      *
-     * @param user the given User
-     * @param newMax the given weekly trade limit
+     * @param user the NormalUser whose weekly trade limit is being changed
+     * @param newMax the new weekly trade limit
      */
-    public void setUserWeeklyTradeMax(User user, int newMax) {
+    public void setUserWeeklyTradeMax(NormalUser user, int newMax) {
         user.setWeeklyTradeMax(newMax);
     }
 
     /**
-     * Setter for the given User's meeting edit limit.
+     * Setter for the given NormalUser's meeting edit limit.
      *
-     * @param user the given User
-     * @param newMax the given limit on how many times the user can edit a meeting
+     * @param user the NormalUser whose meeting edit limit is being changed
+     * @param newMax the new limit on how many times the given user can edit a meeting
      */
-    public void setUserMeetingEditMax(User user, int newMax) {
+    public void setUserMeetingEditMax(NormalUser user, int newMax) {
         user.setMeetingEditMax(newMax);
     }
 
     /**
-     * Setter for the given User's minimum lending over borrowing limit.
+     * Setter for the given NormalUser's minimum lending over borrowing limit.
      *
-     * @param user the given User
-     * @param newMin the given limit on incomplete trades
+     * @param user the NormalUser whose minimum lending over borrowing limit is being changed
+     * @param newMin the new limit on minimum lending over borrowing
      */
-    public void setUserLendMinimum(User user, int newMin) {
+    public void setUserLendMinimum(NormalUser user, int newMin) {
         user.setLendMinimum(newMin);
     }
 
     /**
-     * Setter for the given User's limit on incomplete trades.
+     * Setter for the given NormalUser's limit on incomplete trades.
      *
-     * @param user the given User
-     * @param newMax the given limit on incomplete trades
+     * @param user the NormalUser whose limit on incomplete trades is being changed
+     * @param newMax the new limit on incomplete trades
      */
-    public void setUserIncompleteMax(User user, int newMax) {
+    public void setUserIncompleteMax(NormalUser user, int newMax) {
         user.setIncompleteMax(newMax);
     }
-
-    /**
-     * Getter for the number of admin classes that have been instantiated
-     * @return numAdmins
-     */
-    public int getNumAdmins() {return numAdmins;}
-
-    /**
-     * Setter for total number of Admins
-     * @param numAdmins The number of AdminUsers to set
-     */
-    public void setNumAdmins(int numAdmins) {AdminUser.numAdmins = numAdmins;}
 }
