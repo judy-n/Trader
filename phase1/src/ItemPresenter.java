@@ -23,26 +23,31 @@ public class ItemPresenter {
      */
     public ItemPresenter(NormalUser u) {
         user = u;
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int input;
         int index = 1;
         String inputConfirm;
-        System.out.println("This is all the item(s) available for trade:");
         max = ItemManager.getNumApprovedItems();
+
+        SystemPresenter sp = new SystemPresenter(user); // to call strings to print
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        sp.itemPresenter("available Items");
+
         for (Item i : ItemManager.getApprovedItems()) {
             System.out.println(index+i.toString());
             index ++;
         }
-        System.out.println("Is there an Item you would like to trade for? (0 to quit)");
+        sp.itemPresenter("choose trade");
+
         try{
             input = Integer.parseInt(br.readLine());
             while(input < 0 || input > max){
-                System.out.println("Invalid input try again.");
+                sp.itemPresenter("try again");
                 input = Integer.parseInt(br.readLine());
             }
                 if(input == 0){
                     new UserDashboard(user);
                 }
+
                 Item i = ItemManager.getApprovedItem(input);
                 assert i!= null;
                 System.out.println("You have chosen: " + input + i.toString());
@@ -50,10 +55,12 @@ public class ItemPresenter {
                 if (i.getAvailability()) {
                     System.out.println("Are you sure you want to trade for this item with user, " + i.getOwnerUsername() + " ?(Y/N)");
                     inputConfirm = br.readLine();
+
                     while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-                        System.out.println("Invalid input.");
+                        sp.itemPresenter("try again");
                         inputConfirm = br.readLine();
                     }
+
                     if (inputConfirm.equalsIgnoreCase("Y")) {
                         System.out.println("Contacting user, " + i.getOwnerUsername());
                         User trader = UserDatabase.getUserByUsername(i.getOwnerUsername());
@@ -63,17 +70,20 @@ public class ItemPresenter {
                         trader.addTradeRequest(traders, items);
                         user.addTradeRequest(traders, items);
                         user.addWishlist(i);
-                    } else {
-                        System.out.println("Cancelled.");
                     }
-                } else {
-                    System.out.println("Sorry, this item is currently not available for trade. We suggest adding it to your wishlist!");
+
+                    else {
+                        sp.itemPresenter("cancelled");
+                    }
+                }
+
+                else {
+                    sp.itemPresenter("not available");
                 }
             new UserDashboard(user);
-        } catch (IOException e){
-            System.out.println("You kinda suck bruh.");
         }
-
-
+        catch (IOException e){
+            sp.itemPresenter("error");
+        }
     }
 }

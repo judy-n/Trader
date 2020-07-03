@@ -30,7 +30,7 @@ public class TradeRequestPresenter {
     public TradeRequestPresenter(User user) {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+        SystemPresenter sp = new SystemPresenter(user);
 
         for (String[] key : user.getTradeRequest().keySet()) {
             if (user.getUsername().equals(key[0])) {
@@ -39,9 +39,9 @@ public class TradeRequestPresenter {
                 receiveTrades.put(key, user.getTradeRequest().get(key));
             }
         }
-        System.out.println("Here is all the trade request(s) you sent:");
+        sp.tradeRequestPresenter("sent requests");
         if (initiatedTrades.isEmpty()) {
-            System.out.println("None!");
+            sp.tradeRequestPresenter("none");
         } else {
             for (String[] key : initiatedTrades.keySet()) {
                 Item i = ItemDatabase.getItem(initiatedTrades.get(key)[1]);
@@ -50,21 +50,21 @@ public class TradeRequestPresenter {
         }
 
 
-        System.out.println("Here is all the trade request(s) you received:");
+        sp.tradeRequestPresenter("received requests");
         int index = 1;
         if (receiveTrades.isEmpty()) {
-            System.out.println("None!");
+            sp.tradeRequestPresenter("none");
         } else {
             for (String[] key : receiveTrades.keySet()) {
                 Item i = ItemDatabase.getItem(receiveTrades.get(key)[1]);
                 System.out.println(index+". Trade for " + i.getName() + " from user " + key[0]);
                 index ++;
             }
-            System.out.println("Would you like to accept any of these requests?(0 to quit)");
+            sp.tradeRequestPresenter("to accept");
             try {
                 int input = Integer.parseInt(br.readLine());
                 while (input != 0 && input > index) {
-                    System.out.println("Invalid input!");
+                    sp.tradeRequestPresenter("invalid");
                     input = Integer.parseInt(br.readLine());
                 }
                 if (input == 0) {
@@ -74,16 +74,16 @@ public class TradeRequestPresenter {
                 System.out.println("Are you sure you want to trade " + a[1] + " with " + a[0] + "?(Y/N)");
                 String inputConfirm = br.readLine();
                 while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-                    System.out.println("Invalid input try again why don't you");
+                    sp.tradeRequestPresenter("invalid");
                     inputConfirm = br.readLine();
                 }
                 if (inputConfirm.equalsIgnoreCase("y")) {
                     System.out.println("Initiating Trade with " + a[0]);
-                    System.out.println("Please suggest a time(YYYY/MM/DD-HH/MM): ");
+                    sp.tradeRequestPresenter("suggest time");
                     String t = br.readLine();
                     String [] temp = t.split("-");
                     if (!isThisDateValid(temp[0], "dd/MM/yyyy") || !isThisTimeValid(temp[1])) {
-                        System.out.println("Invalid input try again");
+                        sp.tradeRequestPresenter("invalid");
                         t = br.readLine();
                         temp = t.split("-");
                         isThisDateValid(temp[0], "dd/MM/yyyy");
@@ -92,16 +92,15 @@ public class TradeRequestPresenter {
                     String [] temp2 = temp[0].split("/");
                     String [] temp3 = temp[1].split("/");
 
-                    LocalDateTime time = LocalDateTime.of(Integer.parseInt(temp2[2]), Integer.parseInt(temp2[1]), Integer.parseInt(temp2[0])
-                            , Integer.parseInt(temp3[0]), Integer.parseInt(temp3[1]));
-                    System.out.println("Please suggest a place: ");
+                    LocalDateTime time = LocalDateTime.of(Integer.parseInt(temp2[2]), Integer.parseInt(temp2[1]),
+                            Integer.parseInt(temp2[0]), Integer.parseInt(temp3[0]), Integer.parseInt(temp3[1]));
+                    sp.tradeRequestPresenter("suggest place");
                     String place = br.readLine();
-
 
                 }
 
             } catch (IOException e) {
-                System.out.println("No");
+                sp.tradeRequestPresenter("error");
             }
             new UserDashboard(user);
         }

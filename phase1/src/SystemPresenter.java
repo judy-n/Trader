@@ -90,9 +90,6 @@ public class SystemPresenter {
         }
     }
 
-
-
-
     public void cancelled(){
         System.out.println("Cancelled!");
     }
@@ -101,9 +98,60 @@ public class SystemPresenter {
         System.out.println("Error reading user input! Please try again.");
     }
 
-
     public void invalidInput(){
         System.out.println("Invalid input try again.");
     }
 
+    // doesn't need user to work, (need another SystemPresenter contructor for other classes that need this too)
+    public void itemPresenter(String input){
+        switch(input){
+            case "available Items":
+                System.out.println("This is all the item(s) available for trade:");
+                break;
+            case "choose trade":
+                System.out.println("Is there an Item you would like to trade for? (0 to quit)");
+                break;
+            case "try again":
+                System.out.println("Invalid input try again.");
+                break;
+            case "cancelled":
+                System.out.println("Cancelled.");
+                break;
+            case "not available":
+                System.out.println("Sorry, this item is currently not available for trade. We suggest adding " +
+                        "it to your wishlist!");
+                break;
+            case "error":
+                System.out.println("Trade has resulted in error due to invalid input.");
+                break;
+        }
+    }
+
+    public void tradeRequestPresenter(String input){
+        switch(input){
+            case "sent requests":
+                System.out.println("Here is all the trade request(s) you sent:");
+                break;
+            case "no requests found":
+                System.out.println("None!");
+                break;
+            case "received requests":
+                System.out.println("Here is all the trade request(s) you received:");
+                break;
+            case "to accept":
+                System.out.println("Would you like to accept any of these requests?(0 to quit)");
+                break;
+            case "invalid":
+                System.out.println("Invalid input! Please try again.");
+                break;
+            case "suggest time":
+                System.out.println("Please suggest a time(YYYY/MM/DD-HH/MM): ");
+                break;
+            case "suggest place":
+                System.out.println("Please suggest a place: ");
+                break;
+            case "error":
+                System.out.println("Trade has resulted in error due to invalid input.");
+                break;
+        }
 }
