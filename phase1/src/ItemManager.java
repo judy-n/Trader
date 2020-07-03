@@ -9,9 +9,9 @@ import java.util.ArrayList;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-29
+ * last modified 2020-07-03
  */
-public class ItemDatabase {
+public class ItemManager {
     private static ArrayList<Item> allItems = new ArrayList<>();
 
     public static ArrayList<Item> getAllItems() {
@@ -62,7 +62,10 @@ public class ItemDatabase {
     // Add Setters for items
     // @Kushagra Mehta
 
-    //public static setItem(Item newItem){}
+    /**
+     * Adds item to the list of items
+     * @param item item to be added    */
+    public void addItem(Item item) {allItems.add(item);}
 
     //public static setItem(int index){}
 
