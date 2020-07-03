@@ -20,16 +20,15 @@ public class WishlistEditor {
     public WishlistEditor(User user){
         // This lets the User remove Items from the wish list. Assuming that they only add Items to
         // the wishlist when browsing items available for trade.
+        SystemPresenter sp = new SystemPresenter(user);
         currentUser = user;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int input;
-        System.out.println("Choose one of the options: ");
-        System.out.println("1 - Remove item from wish list" +
-                "\n2 - Cancel ");
+        sp.wishlistEditor();
         try {
             input = Integer.parseInt(br.readLine());
             while (input <1 || input >2){
-                System.out.println("Invalid input try again.");
+                sp.invalidInput();
                 input = Integer.parseInt(br.readLine());
             }
 
@@ -37,15 +36,15 @@ public class WishlistEditor {
 
 
         } catch (IOException e) {
-            System.out.println("Plz try again.");
+            sp.exceptionMessage();
         }
 
         if (currentUser.getWishlist().isEmpty()) {
-            System.out.println("Your wish list is empty.");
+            sp.wishlistAddItem(1);
             new UserDashboard(currentUser);
         }
         else{
-            System.out.println("Enter the ID of the item you would like to remove:");
+            sp.wishlistAddItem(2);
             ArrayList<Item> wishlistItems = currentUser.getItemWishlist();
             int index = 1;
 
@@ -57,21 +56,21 @@ public class WishlistEditor {
             try {
                 indexInput = Integer.parseInt(br.readLine());
                 Item selected = wishlistItems.get(indexInput - 1);
-                System.out.println("Remove "+selected.getName()+" from your wishlist?(Y/N)");
+                sp.wishlistRemoveItem(selected.getName(), 1);
                 String confirmInput = br.readLine();
                 while (!confirmInput.equalsIgnoreCase("Y")&&!confirmInput.equalsIgnoreCase("N")){
-                    System.out.println("Invalid input try again.");
+                    sp.invalidInput();
                     confirmInput = br.readLine();
                 }
                 if(confirmInput.equalsIgnoreCase("y")){
                     currentUser.removeWishlist(selected);
-                    System.out.println(selected.getName() + " is removed from your wishlist!");
+                    sp.wishlistRemoveItem(selected.getName(), 2);
                 }else{
-                    System.out.println("Cancelled.");
+                    sp.cancelled();
                 }
                 new UserDashboard(currentUser);
             } catch (IOException e) {
-                System.out.println("Plz try again.");
+                sp.invalidInput();
             }
         }
     }

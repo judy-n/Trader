@@ -10,6 +10,7 @@
 
 public class SystemPresenter {
     private User currentUser;
+
     public SystemPresenter(User user){
         currentUser = user;
     }
@@ -61,9 +62,33 @@ public class SystemPresenter {
         }
     }
 
+    public void wishlistEditor(){
+        System.out.println("Choose one of the options: ");
+        System.out.println("1 - Remove item from wish list" +
+                "\n2 - Cancel ");
+    }
 
+    public void wishlistAddItem(int input){
+        switch (input){
+            case 1:
+                System.out.println("Your wish list is empty.");
+                break;
+            case 2:
+                System.out.println("Enter the ID of the item you would like to remove:");
+                break;
+        }
+    }
 
-
+    public void wishlistRemoveItem(String name, int input){
+        switch (input){
+            case 1:
+                System.out.println("Remove "+ name +" from your wishlist?(Y/N)");
+                break;
+            case 2:
+                System.out.println(name + " is removed from your wishlist!");
+                break;
+        }
+    }
 
 
 
