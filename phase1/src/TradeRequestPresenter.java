@@ -49,7 +49,6 @@ public class TradeRequestPresenter {
             }
         }
 
-
         sp.tradeRequestPresenter("received requests");
         int index = 1;
         if (receiveTrades.isEmpty()) {

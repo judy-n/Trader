@@ -31,49 +31,43 @@ public class UserDashboard {
      */
     public UserDashboard(User user) {
         currentUser = user;
-
-        System.out.println("What would you like to do: ");
+        SystemPresenter sp = new SystemPresenter(User currentUser);
         if (currentUser.getIsFrozen()) {
-            System.out.println("-- Your account is currently frozen due to you reaching the limit on incomplete trades --");
+            sp.userDashboard("frozen");
         }
-        System.out.println(" 1 - see all items available for trade" +
-                "\n 2 - edit inventory " +
-                "\n 3 - edit wishlist " +
-                "\n 4 - view trade requests " +
-                "\n 5 - view latest trades ");
+
+        sp.userDashboard("menu");
         if (!(currentUser instanceof AdminUser) && currentUser.getIsFrozen()) {     //frozen non-admin
             maxChoice = 6;
             specialCase = 1;
-            System.out.println(" 6 - request to unfreeze account");
+            sp.userDashboard("unfreeze option");
         } else if (currentUser instanceof AdminUser) {    //admin
             maxChoice = 9;
             specialCase = 2;
-            System.out.println(" 6 - view items waiting for approval " +
-                    "\n 7 - view accounts to freeze " +
-                    "\n 8 - view requests to unfreeze account " +
-                    "\n 9 - edit a user's threshold values ");
-            if (currentUser.getIsFrozen() && (((AdminUser) currentUser).getAdminID() == 1)) {   //initial admin allowed to add subsequent admins
+            sp.userDashboard("admin options");
+            if (currentUser.getIsFrozen() && (((AdminUser) currentUser).getAdminID() == 1)) {
+                //initial admin allowed to add subsequent admins
                 maxChoice = 11;
                 specialCase = 3;
-                System.out.println(" 10 - request to unfreeze account");
-                System.out.println(" 11 - add a new admin to the system");
+                sp.userDashboard("initial admin");
             } else if (currentUser.getIsFrozen()) {
                 maxChoice = 10;
                 specialCase = 4;
-                System.out.println(" 10 - request to unfreeze account");
+                sp.userDashboard("admin frozen option");
             } else if (((AdminUser) currentUser).getAdminID() == 1) {
                 maxChoice = 10;
                 specialCase = 5;
-                System.out.println(" 10 - add a new admin to the system");
+                sp.userDashboard("new admin");
             }
         }
-        System.out.println(" 0 - log out ");
-        System.out.print("Please enter the number of the action you wish to take: ");
+        sp.userDashboard("logout");
+        sp.userDashboard("action");
 
         selectChoice();
 
     }
 
+    // no SystemPresenter as private
     private void selectChoice() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         try {

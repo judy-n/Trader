@@ -127,8 +127,8 @@ public class SystemPresenter {
         }
     }
 
-    public void tradeRequestPresenter(String input){
-        switch(input){
+    public void tradeRequestPresenter(String input) {
+        switch (input) {
             case "sent requests":
                 System.out.println("Here is all the trade request(s) you sent:");
                 break;
@@ -154,4 +154,49 @@ public class SystemPresenter {
                 System.out.println("Trade has resulted in error due to invalid input.");
                 break;
         }
+    }
+
+    public void userDashboard(String input){
+        switch (input) {
+            case "frozen":
+                System.out.println("-- Your account is currently frozen due to you reaching the limit on incomplete trades --");
+                break;
+            case "menu":
+                System.out.println("What would you like to do: ");
+                System.out.println(" 1 - see all items available for trade" +
+                        "\n 2 - edit inventory " +
+                        "\n 3 - edit wishlist " +
+                        "\n 4 - view trade requests " +
+                        "\n 5 - view latest trades ");
+                break;
+            case "unfreeze option":
+                System.out.println(" 6 - request to unfreeze account");
+                break;
+            case "admin options":
+                System.out.println(" 6 - view items waiting for approval " +
+                        "\n 7 - view accounts to freeze " +
+                        "\n 8 - view requests to unfreeze account " +
+                        "\n 9 - edit a user's threshold values ");
+                break;
+            case "initial admin option":
+                System.out.println(" 10 - request to unfreeze account");
+                System.out.println(" 11 - add a new admin to the system");
+                break;
+            case "admin frozen option":
+                System.out.println(" 10 - request to unfreeze account");
+                break;
+            case "new admin":
+                System.out.println(" 10 - add a new admin to the system");
+                break;
+            case "logout":
+                System.out.println(" 0 - logout ");
+                break;
+            case "action":
+                System.out.print("Please enter the number of the action you wish to take: ");
+                break;
+            case "invalid":
+                System.out.print("Invalid input. Try again: ");
+                break;
+
+    }
 }
