@@ -38,6 +38,7 @@ public class AdminUser extends User {
      *
      * @return this AdminUser's adminID
      */
+
     public int getAdminID() {
         return adminID;
     }
