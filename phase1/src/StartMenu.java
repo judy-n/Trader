@@ -24,7 +24,12 @@ public class StartMenu {
 
         System.out.println("---------- Welcome ---------- \nWould you like to:");
         do {
-            System.out.println(" 1) Sign up \n 2) Log in \n 3) Exit the program");
+            User newUser = new User("firstUser", "firstEmail", "firstPassword");
+            UserDatabase.addUser(newUser);
+            new UserDashboard(newUser);
+            //System.out.println("Very First User details (email, name, password):");
+            //System.out.println("veryFirstEmail, veryFirstName, veryFirstPassword");
+            //System.out.println(" 1) Sign up \n 2) Log in \n 3) Exit the program");
             System.out.print("Please select an option by entering the number 1, 2, or 3: ");
             try {
                 userInput = br.readLine();
