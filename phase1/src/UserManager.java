@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @since 2020-06-26
  * last modified 2020-07-02
  */
-public class UserDatabase implements Serializable {
+public class UserManager implements Serializable {
     private static ArrayList<User> allNormals = new ArrayList<>();
     private static ArrayList<AdminUser> allAdmins = new ArrayList<>();
 
