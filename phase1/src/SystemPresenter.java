@@ -1,3 +1,13 @@
+/**
+ * SystemPresenter.java
+ * All the print stuff
+ *
+ * @author Ning Zhang
+ * @version 1.0
+ * @since 2020-07-03
+ * last modified 2020-07-03
+ */
+
 public class SystemPresenter {
     private User currentUser;
     public SystemPresenter(User user){
