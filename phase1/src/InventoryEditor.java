@@ -13,11 +13,11 @@ import java.io.InputStreamReader;
  */
 
 public class InventoryEditor {
-    private User currentUser;
+    private NormalUser currentUser;
     private String itemNameInput;
     private String itemDescriptionInput;
 
-    public InventoryEditor(User user) {
+    public InventoryEditor(NormalUser user) {
         // This allows the User to request adding Items to their inventory, or to remove an existing Item.
         currentUser = user;
         SystemPresenter sp = new SystemPresenter(currentUser);
@@ -59,7 +59,7 @@ public class InventoryEditor {
 
                     if(confirmInput.equalsIgnoreCase("Y")) {
                         Item requestedItem = new Item(itemNameInput, itemDescriptionInput);
-                        currentUser.addPendingInventory(requestedItem);
+                        currentUser.addPendingInventory(requestedItem.getId());
                         sp.inventoryAddItem(4);
                     }else{
                         sp.cancelled();
@@ -78,8 +78,9 @@ public class InventoryEditor {
 
                 int index = 1;
                 sp.inventoryRemoveItem(2);
-                for (Item i : currentUser.getInventory()) {
-                    System.out.println(index + i.toString());
+                for (Long id : currentUser.getInventory()) {
+                    Item tempItem = ItemManager.getApprovedItem(id);
+                    System.out.println(index + tempItem.toString());
                     index++;
                 }
 
@@ -95,7 +96,7 @@ public class InventoryEditor {
                         confirmInput = br.readLine();
                     }
                     if (confirmInput.equalsIgnoreCase("y")) {
-                        currentUser.removeInventory(selected);
+                        currentUser.removeInventory(selected.getId());
                         sp.inventoryRemoveItem(selected.getName(),0,2);
                     } else {
                         sp.cancelled();

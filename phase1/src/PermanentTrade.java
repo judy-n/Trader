@@ -30,21 +30,23 @@ public class PermanentTrade extends Trade {
         String[] usernames = getInvolvedUsernames();
 
         if (getUserTransactionConfirmation(usernames[0]) && getUserTransactionConfirmation(usernames[1])) {
-            User tempUser1 = UserDatabase.getUserByUsername(usernames[0]);
-            User tempUser2 = UserDatabase.getUserByUsername(usernames[1]);
+            NormalUser tempUser1 = UserDatabase.getUserByUsername(usernames[0]);
+            NormalUser tempUser2 = UserDatabase.getUserByUsername(usernames[1]);
             assert tempUser1 != null && tempUser2 != null;
             double[] itemIDs = getInvolvedItemIDs();
             if (itemIDs[0] != 0) {
                 Item tempItem1 = ItemDatabase.getItem(itemIDs[0]);
                 assert tempItem1 != null;
-                tempUser1.removeInventory(tempItem1);
-                tempUser2.removeWishlist(tempItem1);
+                tempUser1.removeInventory(tempItem1.getId());
+                // [remove from ItemManager arraylist]
+                tempUser2.removeWishlist(tempItem1.getId());
             }
             if (itemIDs[1] != 0) {
                 Item tempItem2 = ItemDatabase.getItem(itemIDs[1]);
                 assert tempItem2 != null;
-                tempUser2.removeInventory(tempItem2);
-                tempUser1.removeWishlist(tempItem2);
+                tempUser2.removeInventory(tempItem2.getId());
+                // [remove from ItemManager arraylist]
+                tempUser1.removeWishlist(tempItem2.getId());
             }
         }
     }

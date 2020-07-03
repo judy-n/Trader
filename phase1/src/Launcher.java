@@ -10,13 +10,12 @@
 
 
 public class Launcher {
+
     /**
-     * main method
+     * Main method.
      * creates a start menu
+     *
      */
-
-
-
     public static void main(String[] args) {
         new StartMenu();
     }

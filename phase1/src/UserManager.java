@@ -12,14 +12,14 @@ import java.util.ArrayList;
  * last modified 2020-07-02
  */
 public class UserManager implements Serializable {
-    private static ArrayList<User> allNormals = new ArrayList<>();
-    private static ArrayList<AdminUser> allAdmins = new ArrayList<>();
+    private ArrayList<User> allNormals = new ArrayList<>();
+    private ArrayList<AdminUser> allAdmins = new ArrayList<>();
 
     /**
      * Updates the userdatabase with all the current users.
      *
      */
-    public static void update (){
+    public void update (){
 
         //This is just for testing rn will delete later
         User u1 = new User("u", "e", "p");
@@ -38,7 +38,7 @@ public class UserManager implements Serializable {
      *
      * @param userToAdd the User being added to the database
      */
-    public static void addUser(User userToAdd) {
+    public void addUser(User userToAdd) {
         if (userToAdd instanceof AdminUser) {
             allAdmins.add((AdminUser) userToAdd);
         } else {
@@ -52,7 +52,7 @@ public class UserManager implements Serializable {
      * @param username the username of the User being searched for
      * @return the User associated with the given username
      */
-    public static User getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         for (User u : getAllUsers()) {
             if (u.getUsername().equals(username)) {
                 return u;
@@ -67,7 +67,7 @@ public class UserManager implements Serializable {
      * @param email the email of the User being searched for
      * @return the User associated with the given email
      */
-    public static User getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         for (User u : getAllUsers()) {
             if (u.getEmail().equals(email)) {
                 return u;
@@ -81,7 +81,7 @@ public class UserManager implements Serializable {
      *
      * @return an ArrayList of all Users in the database
      */
-    public static ArrayList<User> getAllUsers() {
+    public ArrayList<User> getAllUsers() {
         ArrayList<User> allUsers = new ArrayList<>();
         allUsers.addAll(allNormals);
         allUsers.addAll(allAdmins);
@@ -94,7 +94,7 @@ public class UserManager implements Serializable {
      * @param username the username of the User whose password is being searched for
      * @return the account password associated with the given username
      */
-    public static String usernamePassword(String username) {
+    public String usernamePassword(String username) {
         for (User u : getAllUsers()) {
             if (u.getUsername().equals(username))
                 return u.getPassword();
@@ -108,7 +108,7 @@ public class UserManager implements Serializable {
      * @param email the email of the User whose password is being searched for
      * @return the account password associated with the given email
      */
-    public static String emailPassword(String email) {
+    public String emailPassword(String email) {
         for (User u : getAllUsers()) {
             if (u.getEmail().equals(email))
                 return u.getPassword();
@@ -122,7 +122,7 @@ public class UserManager implements Serializable {
      * @param email the email being checked for whether it's already taken or not
      * @return true if User with the given email exists, false otherwise
      */
-    public static boolean emailExists(String email) {
+    public boolean emailExists(String email) {
         for (User u : getAllUsers()) {
             if (u.getEmail().equals(email))
                 return true;
@@ -136,7 +136,7 @@ public class UserManager implements Serializable {
      * @param username the username being checked for whether it's already taken or not
      * @return true if User with the given username exists, false otherwise
      */
-    public static boolean usernameExists(String username) {
+    public boolean usernameExists(String username) {
         for (User u : getAllUsers()) {
             if (u.getUsername().equals(username))
                 return true;
@@ -150,7 +150,7 @@ public class UserManager implements Serializable {
      * @param path the ser filepath
      * @throws ClassNotFoundException throws this if class isn't found
      */
-    public static void readNormalsFromFile(String path) throws ClassNotFoundException {
+    public void readNormalsFromFile(String path) throws ClassNotFoundException {
         try {
             InputStream file = new FileInputStream(path);
             InputStream buffer = new BufferedInputStream(file);
@@ -170,7 +170,7 @@ public class UserManager implements Serializable {
      * @param path the ser filepath
      * @throws ClassNotFoundException throws this if class isn't found
      */
-    public static void readAdminsFromFile(String path) throws ClassNotFoundException {
+    public void readAdminsFromFile(String path) throws ClassNotFoundException {
         try {
             InputStream file = new FileInputStream(path);
             InputStream buffer = new BufferedInputStream(file);
@@ -190,7 +190,7 @@ public class UserManager implements Serializable {
      * @param filePath the ser filepath
      * @throws IOException throws IOException
      */
-    public static void saveNormalsToFile(String filePath) throws IOException {
+    public void saveNormalsToFile(String filePath) throws IOException {
 
         OutputStream file = new FileOutputStream(filePath);
         OutputStream buffer = new BufferedOutputStream(file);
@@ -207,7 +207,7 @@ public class UserManager implements Serializable {
      * @param filePath the ser filepath
      * @throws IOException throws IOException
      */
-    public static void saveAdminsToFile(String filePath) throws IOException {
+    public void saveAdminsToFile(String filePath) throws IOException {
 
         OutputStream file = new FileOutputStream(filePath);
         OutputStream buffer = new BufferedOutputStream(file);
@@ -222,7 +222,7 @@ public class UserManager implements Serializable {
 
 
     //This method is just for testing!! Delete later
-    public static void printAllUser() {
+    public void printAllUser() {
         for (User u : getAllUsers()) {
             System.out.println(u.getUsername());
         }

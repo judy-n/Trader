@@ -14,14 +14,14 @@ import java.io.InputStreamReader;
  * last modified 2020-07-03
  */
 public class ItemPresenter {
-    private User user;
+    private NormalUser user;
     private int max;
     /**
      * ItemPresenter
      * Creates an item presenter at prints to the screen all items available for trade
      * @param u user
      */
-    public ItemPresenter(User u) {
+    public ItemPresenter(NormalUser u) {
         user = u;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int input;
