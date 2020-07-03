@@ -59,6 +59,12 @@ public class ItemDatabase {
         }
     }
 
+    // Add Setters for items
+    // @Kushagra Mehta
+
+    //public static setItem(Item newItem){}
+
+    //public static setItem(int index){}
 
 
 }
