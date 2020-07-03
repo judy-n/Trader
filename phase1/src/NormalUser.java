@@ -6,7 +6,7 @@ import java.util.HashMap;
  * NormalUser is a class that represents a non-administrative user of our trade program.
  *
  * @author Ning Zhang
- * @author Liam
+ * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
  * last modified 2020-07-03
