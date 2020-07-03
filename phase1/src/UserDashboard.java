@@ -32,6 +32,7 @@ public class UserDashboard {
     public UserDashboard(User user) {
         currentUser = user;
         SystemPresenter sp = new SystemPresenter(User currentUser);
+
         if (currentUser.getIsFrozen()) {
             sp.userDashboard("frozen");
         }
@@ -41,20 +42,26 @@ public class UserDashboard {
             maxChoice = 6;
             specialCase = 1;
             sp.userDashboard("unfreeze option");
+
         } else if (currentUser instanceof AdminUser) {    //admin
             maxChoice = 9;
             specialCase = 2;
             sp.userDashboard("admin options");
+
             if (currentUser.getIsFrozen() && (((AdminUser) currentUser).getAdminID() == 1)) {
                 //initial admin allowed to add subsequent admins
                 maxChoice = 11;
                 specialCase = 3;
                 sp.userDashboard("initial admin");
-            } else if (currentUser.getIsFrozen()) {
+            }
+
+            else if (currentUser.getIsFrozen()) {
                 maxChoice = 10;
                 specialCase = 4;
                 sp.userDashboard("admin frozen option");
-            } else if (((AdminUser) currentUser).getAdminID() == 1) {
+            }
+
+            else if (((AdminUser) currentUser).getAdminID() == 1) {
                 maxChoice = 10;
                 specialCase = 5;
                 sp.userDashboard("new admin");
