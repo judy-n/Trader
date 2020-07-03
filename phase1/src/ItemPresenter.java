@@ -8,9 +8,10 @@ import java.io.InputStreamReader;
  *
  * @author Ning Zhang
  * @author Yingjia Liu
+ * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-30
+ * last modified 2020-07-03
  */
 public class ItemPresenter {
     private User user;
@@ -48,18 +49,18 @@ public class ItemPresenter {
                 System.out.println("You have chosen: " + input + i.toString());
 
                 if (i.getAvailability()) {
-                    System.out.println("Are you sure you want to trade for this item with user, " + i.ownerUsername + " ?(Y/N)");
+                    System.out.println("Are you sure you want to trade for this item with user, " + i.getOwnerUsername() + " ?(Y/N)");
                     inputConfirm = br.readLine();
                     while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
                         System.out.println("Invalid input.");
                         inputConfirm = br.readLine();
                     }
                     if (inputConfirm.equalsIgnoreCase("Y")) {
-                        System.out.println("Contacting user, " + i.ownerUsername);
-                        User trader = UserDatabase.getUserByUsername(i.ownerUsername);
+                        System.out.println("Contacting user, " + i.getOwnerUsername());
+                        User trader = UserDatabase.getUserByUsername(i.getOwnerUsername());
                         assert trader != null;
                         String[] traders = {user.getUsername(), trader.getUsername()};
-                        long [] items = {0, i.id};
+                        long [] items = {0, i.getId()};
                         trader.addTradeRequest(traders, items);
                         user.addTradeRequest(traders, items);
                         user.addWishlist(i);
