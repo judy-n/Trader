@@ -25,7 +25,7 @@ public class UserManager implements Serializable {
      * Updates the userdatabase with all the current users.
      *
      */
-    public void update (){
+    /*public void update (){
 
         //This is just for testing rn will delete later
         NormalUser u1 = new NormalUser("u", "e", "p");
@@ -37,7 +37,7 @@ public class UserManager implements Serializable {
         u1.addInventory(i2.getId());
         u1.addWishlist(i1.getId());
         allNormals.add(u1);
-    }
+    }*/
 
     /**
      * Adds the given User to the user database.
@@ -154,83 +154,6 @@ public class UserManager implements Serializable {
         }
         return false;
     }
-
-    /**
-     * Reads in a .ser file of a list of non-admin Users to this UserDatabase's allNormals.
-     *
-     * @param path the ser filepath
-     * @throws ClassNotFoundException throws this if class isn't found
-     */
-    public void readNormalsFromFile(String path) throws ClassNotFoundException {
-        try {
-            InputStream file = new FileInputStream(path);
-            InputStream buffer = new BufferedInputStream(file);
-            ObjectInput input = new ObjectInputStream(buffer);
-
-            // deserialize the Map
-            allNormals = (ArrayList<NormalUser>) input.readObject();
-            input.close();
-        } catch (IOException ex) {
-            System.out.println("IO Error Occurred");
-        }
-    }
-
-    /**
-     * Reads in a .ser file of a list of AdminUsers to this UserDatabase's allAdmins.
-     *
-     * @param path the ser filepath
-     * @throws ClassNotFoundException throws this if class isn't found
-     */
-    public void readAdminsFromFile(String path) throws ClassNotFoundException {
-        try {
-            InputStream file = new FileInputStream(path);
-            InputStream buffer = new BufferedInputStream(file);
-            ObjectInput input = new ObjectInputStream(buffer);
-
-            // deserialize the Map
-            allAdmins = (ArrayList<AdminUser>) input.readObject();
-            input.close();
-        } catch (IOException ex) {
-            System.out.println("IO Error Occurred");
-        }
-    }
-
-    /**
-     * Writes allNormals to a .ser file with path filePath.
-     *
-     * @param filePath the ser filepath
-     * @throws IOException throws IOException
-     */
-    public void saveNormalsToFile(String filePath) throws IOException {
-
-        OutputStream file = new FileOutputStream(filePath);
-        OutputStream buffer = new BufferedOutputStream(file);
-        ObjectOutput output = new ObjectOutputStream(buffer);
-
-        // serialize the Map
-        output.writeObject(allNormals);
-        output.close();
-    }
-
-    /**
-     * Writes allAdmins to a .ser file with path filePath.
-     *
-     * @param filePath the ser filepath
-     * @throws IOException throws IOException
-     */
-    public void saveAdminsToFile(String filePath) throws IOException {
-
-        OutputStream file = new FileOutputStream(filePath);
-        OutputStream buffer = new BufferedOutputStream(file);
-        ObjectOutput output = new ObjectOutputStream(buffer);
-
-        // serialize the Map
-        output.writeObject(allAdmins);
-        output.close();
-    }
-
-
-
 
     //This method is just for testing!! Delete later
     public void printAllUser() {
