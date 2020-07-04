@@ -3,14 +3,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * LoginSystem.java
  * Logs the user into the system.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-28
+ * last modified 2020-07-04
  */
 
 public class LoginSystem {
@@ -20,6 +19,7 @@ public class LoginSystem {
     private User user;
     private UserManager um;
     private boolean isLoggedIn;
+
     /**
      * LoginSystem
      * Creates a log in system that takes in user input
@@ -107,10 +107,12 @@ public class LoginSystem {
         System.out.println("\n Logged in! \n");
         isLoggedIn = true;
     }
-    public boolean getIsLoggedIn(){
+
+    public boolean getIsLoggedIn() {
         return isLoggedIn;
     }
-    public User getUser(){
+
+    public User getUser() {
         return user;
     }
 }

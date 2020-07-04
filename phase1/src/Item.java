@@ -24,8 +24,8 @@ public class Item implements Serializable {
      * Creates an Item with the given name, description, and owner username.
      * Also assigns a unique ID to the item and makes the item available for trade by default.
      *
-     * @param name the name being assigned to this Item
-     * @param description the description being assigned to this Item
+     * @param name          the name being assigned to this Item
+     * @param description   the description being assigned to this Item
      * @param ownerUsername the username of the user who owns this Item
      */
 
@@ -43,33 +43,45 @@ public class Item implements Serializable {
         for (int i = 0; i < ownerUsername.length(); i++) {
             sb.append((int) ownerUsername.charAt(i));
         }
-        id = Long.parseLong(sb.toString() + (new Date().getTime())/1000);
+        id = Long.parseLong(sb.toString() + (new Date().getTime()) / 1000);
         System.out.println(id);
     }
 
     /**
      * Getter for Item's id
+     *
      * @return id
      */
-    public long getId() {return id;}
+    public long getId() {
+        return id;
+    }
 
     /**
      * Getter for this item's name
+     *
      * @return this item's name
      */
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
 
     /**
      * Getter for this item's description
+     *
      * @return this item's description
      */
-    public String getDescription() {return description;}
+    public String getDescription() {
+        return description;
+    }
 
     /**
      * Getter for the owner of this item's username
+     *
      * @return ownerUsername
      */
-    public String getOwnerUsername() {return ownerUsername;}
+    public String getOwnerUsername() {
+        return ownerUsername;
+    }
 
     /**
      * Getter for this Item's availability.
@@ -96,9 +108,9 @@ public class Item implements Serializable {
      */
     public String toString() {
         if (isAvailable) {
-            return  ". " + name + ": " + description;
+            return name + ": " + description;
         } else {
-            return  ". " + name + ": " + description + ("\n   (currently unavailable)");
+            return name + ": " + description + ("\n   (currently unavailable)");
         }
     }
 }

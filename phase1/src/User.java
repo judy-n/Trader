@@ -18,7 +18,7 @@ public abstract class User {
      * A constructor that can be called when creating instances of a subclass of User.
      *
      * @param username the username being assigned to the user
-     * @param email the email address being assigned to the user
+     * @param email    the email address being assigned to the user
      * @param password the password being assigned to the user
      */
     public User(String username, String email, String password) {

@@ -9,10 +9,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+
 /**
  * UserGateway is a class that allows UserManagers to be serialized and de-serialized.
  * It will hold a UserManager, and have getters and setters for that UserManager.
  * It will also be able to read and write that user manager to a .ser file.
+ *
  * @author Liam Huff
  * @author Ning Zhang
  * @version 1.0
@@ -27,6 +29,7 @@ public class UserGateway {
 
     /**
      * Constructor for UserGateway, sets the UserManager
+     *
      * @param uManager UserManager
      */
     public UserGateway(UserManager uManager) {
@@ -35,6 +38,7 @@ public class UserGateway {
 
     /**
      * De-serializes a .ser file and makes that file's usermanager this Gateway's usermanager.
+     *
      * @param path the path of the file
      * @throws ClassNotFoundException - if the de-serialized class can't be made
      */
@@ -55,6 +59,7 @@ public class UserGateway {
 
     /**
      * Saves serialized UserManager to .ser file
+     *
      * @param filePath the path of the file
      * @throws IOException throws IOException when there is an error with input
      */

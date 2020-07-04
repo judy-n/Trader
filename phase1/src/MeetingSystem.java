@@ -45,11 +45,11 @@ public class MeetingSystem {
      * Sets the date, time, and location of the trade's meeting to the given values.
      * Then increments the number of edits made by the given user.
      *
-     * @param newDateTime the new date and time for the meeting
-     * @param newLocation the new location for the meeting
+     * @param newDateTime    the new date and time for the meeting
+     * @param newLocation    the new location for the meeting
      * @param editorUsername the username of the User making this edit
      */
-    public void editDateTimeLocation (LocalDateTime newDateTime, String newLocation, String editorUsername) {
+    public void editDateTimeLocation(LocalDateTime newDateTime, String newLocation, String editorUsername) {
         trade.setMeetingDateTime(newDateTime);
         trade.setMeetingLocation(newLocation);
         trade.addUserEditCount(editorUsername);
@@ -57,7 +57,6 @@ public class MeetingSystem {
 
     /**
      * Confirms the meeting of the Trade stored in this MeetingSystem.
-     *
      */
     public void confirmMeeting() {
         trade.confirmAgreedMeeting();

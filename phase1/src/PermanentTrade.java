@@ -1,21 +1,21 @@
 import java.time.LocalDateTime;
 
 /**
- * PermanentTrade.java
  * Represents a permanent trade.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-30
+ * last modified 2020-07-04
  */
 public class PermanentTrade extends Trade {
     /**
      * PermanentTrade
      * Creates a PermanentTrade
-     * @param usernames an array containing the usernames of the two Users involved in this TemporaryTrade
-     * @param itemIDs an array containing the IDs of the Items being traded (parallel to usernames)
+     *
+     * @param usernames     an array containing the usernames of the two Users involved in this TemporaryTrade
+     * @param itemIDs       an array containing the IDs of the Items being traded (parallel to usernames)
      * @param firstDateTime the first date and time suggested for this TemporaryTrade's meeting
      * @param firstLocation the first location suggested for this TemporaryTrade's meeting
      */

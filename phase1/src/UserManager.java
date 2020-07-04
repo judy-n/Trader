@@ -15,16 +15,12 @@ public class UserManager implements Serializable {
     private ArrayList<NormalUser> allNormals;
     private ArrayList<AdminUser> allAdmins;
 
-    public UserManager(){
+    public UserManager() {
         allNormals = new ArrayList<>();
         allAdmins = new ArrayList<>();
     }
 
 
-    /**
-     * Updates the userdatabase with all the current users.
-     *
-     */
     /*public void update (){
 
         //This is just for testing rn will delete later
@@ -48,7 +44,7 @@ public class UserManager implements Serializable {
         if (userToAdd instanceof AdminUser) {
             allAdmins.add((AdminUser) userToAdd);
         } else {
-            allNormals.add((NormalUser)userToAdd);
+            allNormals.add((NormalUser) userToAdd);
         }
     }
 
@@ -95,7 +91,7 @@ public class UserManager implements Serializable {
     }
 
 
-    public ArrayList<NormalUser> getAllNormalUsers(){
+    public ArrayList<NormalUser> getAllNormalUsers() {
         return allNormals;
     }
 

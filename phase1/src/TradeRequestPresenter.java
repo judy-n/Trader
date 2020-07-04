@@ -7,13 +7,12 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 /**
- * TradeRequestPresenter.java
- * Shows all trade requests received/sent by a user
+ * Shows all trade requests received/sent by a user and lets them take actions through user input.
  *
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-29
- * last modified 2020-06-29
+ * last modified 2020-07-04
  */
 
 
@@ -23,16 +22,20 @@ public class TradeRequestPresenter {
     private ItemManager im;
     private UserManager um;
     private NormalUser currentUser;
+
     /**
-     * TradeRequestPresenter
-     * Creates an trade request presenter at prints to the screen all trade requests received/sent
+     * Class constructor.
+     * Creates an TradeRequestPresenter with the given logged-in user, item manager, and user manager.
+     * Prints to the screen all trade requests received/sent by the given user and options on actions to take.
      *
-     * @param user user
+     * @param user the non-admin user who's currently logged in
+     * @param im   the system's item manager
+     * @param um   the system's user manager
      */
     public TradeRequestPresenter(NormalUser user, ItemManager im, UserManager um) {
         currentUser = user;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        SystemPresenter sp = new SystemPresenter(user);
+        SystemPresenter sp = new SystemPresenter();
         initiatedTrades = new HashMap<>();
         receiveTrades = new HashMap<>();
         this.im = im;
@@ -62,8 +65,8 @@ public class TradeRequestPresenter {
         } else {
             for (String[] key : receiveTrades.keySet()) {
                 Item i = im.getApprovedItem(receiveTrades.get(key)[1]);
-                System.out.println(index+". Trade for " + i.getName() + " from user " + key[0]);
-                index ++;
+                System.out.println(index + ". Trade for " + i.getName() + " from user " + key[0]);
+                index++;
             }
             sp.tradeRequestPresenter("to accept");
             try {
@@ -86,7 +89,7 @@ public class TradeRequestPresenter {
                     System.out.println("Initiating Trade with " + a[0]);
                     sp.tradeRequestPresenter("suggest time");
                     String t = br.readLine();
-                    String [] temp = t.split("-");
+                    String[] temp = t.split("-");
                     if (!isThisDateValid(temp[0], "dd/MM/yyyy") || !isThisTimeValid(temp[1])) {
                         sp.tradeRequestPresenter("invalid");
                         t = br.readLine();
@@ -94,8 +97,8 @@ public class TradeRequestPresenter {
                         isThisDateValid(temp[0], "dd/MM/yyyy");
                         isThisTimeValid(temp[1]);
                     }
-                    String [] temp2 = temp[0].split("/");
-                    String [] temp3 = temp[1].split("/");
+                    String[] temp2 = temp[0].split("/");
+                    String[] temp3 = temp[1].split("/");
 
                     LocalDateTime time = LocalDateTime.of(Integer.parseInt(temp2[2]), Integer.parseInt(temp2[1]),
                             Integer.parseInt(temp2[0]), Integer.parseInt(temp3[0]), Integer.parseInt(temp3[1]));
@@ -123,32 +126,33 @@ public class TradeRequestPresenter {
         ArrayList<String[]> listOfKeys = (ArrayList<String[]>) keySet;
         Collection<long[]> keyValues = receiveTrades.values();
         ArrayList<long[]> listOfKeyValues = (ArrayList<long[]>) keyValues;
-        assert im.getApprovedItem(listOfKeyValues.get(index-1)[1]) != null;
-        String itemName = im.getApprovedItem(listOfKeyValues.get(index-1)[1]).getName();
-        String traderName = listOfKeys.get(index-1)[0];
-        return new String[] {traderName, itemName};
+        assert im.getApprovedItem(listOfKeyValues.get(index - 1)[1]) != null;
+        String itemName = im.getApprovedItem(listOfKeyValues.get(index - 1)[1]).getName();
+        String traderName = listOfKeys.get(index - 1)[0];
+        return new String[]{traderName, itemName};
     }
 
     /**
      * This method checks if the user input time is valid
+     *
      * @param s user input
      * @return true if valid false otherwise
      */
-    public boolean isThisTimeValid(String s){
-        String [] arr = s.split("/");
+    private boolean isThisTimeValid(String s) {
+        String[] arr = s.split("/");
         int hr = Integer.parseInt(arr[0]);
         int min = Integer.parseInt(arr[1]);
-        if(hr < 0|| hr > 23){
+        if (hr < 0 || hr > 23) {
             return false;
         }
         return min >= 0 && min <= 59;
     }
 
-    public void printInventory(String username){
+    public void printInventory(String username) {
         NormalUser u = um.getUserByUsername(username);
-        ArrayList<Item> items = im.getItemsByIDs(u.getInventory());
-        for(Item i : items){
-            System.out.println(i.toString());
+        ArrayList<Item> items = im.getApprovedItemsByIDs(u.getInventory());
+        for (Item i : items) {
+            System.out.println(i);
         }
     }
 
@@ -157,16 +161,16 @@ public class TradeRequestPresenter {
      * based on code by mkyong from https://mkyong.com/java/how-to-check-if-date-is-valid-in-java/.
      *
      * @param dateToValidate the date being validated
-     * @param dateFromat the format of the date being validated
+     * @param dateFormat     the format of the date being validated
      * @return true if valid, false otherwise
      */
-    public boolean isThisDateValid(String dateToValidate, String dateFromat) {
+    private boolean isThisDateValid(String dateToValidate, String dateFormat) {
 
         if (dateToValidate == null) {
             return false;
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFromat);
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
         sdf.setLenient(false);
 
         try {

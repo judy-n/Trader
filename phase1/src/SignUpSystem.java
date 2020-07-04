@@ -3,14 +3,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * SignUpSystem.java
  * Lets the user sign up.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-28
+ * last modified 2020-07-04
  */
 public class SignUpSystem {
     private String username;
@@ -19,9 +18,13 @@ public class SignUpSystem {
     private UserManager um;
     private NormalUser newUser;
     private boolean isSignedUp;
+
     /**
-     * SignUpSystem
-     * Creates a sign up system that takes in user input
+     * Class constructor.
+     * Creates a SignUpSystem with the given user manager.
+     * Lets the user sign up through user input.
+     *
+     * @param um the system's user manager
      */
     public SignUpSystem(UserManager um) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -38,9 +41,7 @@ public class SignUpSystem {
                     invalidInput = true;
                     System.out.print("Email is already associated with an account! Please enter a different email: ");
                     emailInput = br.readLine();
-                }
-//              valid email check commented out for quicker testing
-               else if (!(emailInput.contains("@") && emailInput.contains(".")) || emailInput.contains(" ")) {
+                } else if (!(emailInput.contains("@") && emailInput.contains(".")) || emailInput.contains(" ")) {
                     invalidInput = true;
                     System.out.print("That's not an email address! Please enter a valid email: ");
                     emailInput = br.readLine();
@@ -89,16 +90,17 @@ public class SignUpSystem {
         } catch (IOException e) {
             System.out.println("Error reading user input.");
         }
-
-        System.out.println("\n Thank you for signing up! \n You are now logged in. \n");
         newUser = new NormalUser(username, email, password);
         um.addUser(newUser);
+        System.out.println("\n Thank you for signing up! \n You are now logged in.");
+        isSignedUp = true;
     }
-    public NormalUser getNewUser(){
+
+    public NormalUser getNewUser() {
         return newUser;
     }
 
-    public boolean getSignedUp(){
+    public boolean getSignedUp() {
         return isSignedUp;
     }
 

@@ -10,13 +10,14 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-28
+ * last modified 2020-07-04
  */
 public class StartMenu {
-    public int userInput;
+    private int userInput;
+
     /**
-     * StartMenu
-     * Creates a start menu that takes in user input
+     * Class constructor.
+     * Creates a start menu that takes in user input.
      */
     public StartMenu() {
         //This does not need system presenter because this is a presenter
@@ -36,7 +37,7 @@ public class StartMenu {
             System.out.println("Error reading user input.");
         }
 
-        if(userInput == 3) {
+        if (userInput == 3) {
             try {
                 br.close();
             } catch (IOException e) {
@@ -45,8 +46,9 @@ public class StartMenu {
             System.out.println("Exiting the program. Hope to see you again soon!");
             System.exit(0);
         }
-        }
-    public int getChoice(){
+    }
+
+    public int getChoice() {
         return userInput;
     }
 }

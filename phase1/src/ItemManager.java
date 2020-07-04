@@ -2,7 +2,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * ItemDatabase.java
  * Stores all Items in the system (approved and non-approved).
  *
  * @author Judy Naamani
@@ -11,42 +10,82 @@ import java.util.ArrayList;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-03
+ * last modified 2020-07-04
  */
 public class ItemManager implements Serializable {
     private ArrayList<Item> approvedItems;
     private ArrayList<Item> pendingItems;
 
-    public ItemManager(){
+    public ItemManager() {
         approvedItems = new ArrayList<>();
         pendingItems = new ArrayList<>();
     }
 
     /**
-     * Getter for the approved items of this item manager
+     * Getter for all approved items in the system.
      *
-     * @return approvedItems
+     * @return a list of all approved items in the system
      */
     public ArrayList<Item> getApprovedItems() {
         return approvedItems;
     }
 
     /**
-     * Getter for the pending items of this item manager
+     * Getter for all items waiting for approval in the system.
      *
-     * @return pendingItems
+     * @return a list of all items waiting for approval in the system
      */
     public ArrayList<Item> getPendingItems() {
         return pendingItems;
     }
 
     /**
-     * This method returns the number of items in the item database
+     * Returns the total number of approved items in the system.
      *
-     * @return numItems
+     * @return the total number of approved items in the system
      */
     public int getNumApprovedItems() {
         return approvedItems.size();
+    }
+
+    /**
+     * Takes in an approved item ID and returns the associated Item object.
+     *
+     * @param itemID the ID of an approved item
+     * @return the Item associated with the given ID
+     */
+    public Item getApprovedItem(long itemID) {
+        return idGetItem(approvedItems, itemID);
+    }
+
+    /**
+     * Returns the approved item found at the given index.
+     *
+     * @param index the index of an Item in the list of approved items
+     * @return the Item at the given index
+     */
+    public Item getApprovedItem(int index) {
+        return approvedItems.get(index - 1);
+    }
+
+    /**
+     * Takes in a pending item ID and returns the associated Item object.
+     *
+     * @param itemID the ID of an item waiting for approval
+     * @return the Item associated with the given ID
+     */
+    public Item getPendingItem(long itemID) {
+        return idGetItem(pendingItems, itemID);
+    }
+
+    /**
+     * This method returns a pendingItem by its index
+     *
+     * @param index index
+     * @return Item
+     */
+    public Item getPendingItem(int index) {
+        return pendingItems.get(index - 1);
     }
 
     //prof said private methods don't need javadoc
@@ -60,52 +99,40 @@ public class ItemManager implements Serializable {
     }
 
     /**
-     * This method returns an ApprovedItem by its id
+     * Takes in a list of approved item IDs and returns a parallel list of the associated Item objects.
      *
-     * @param itemid id number
-     * @return Item
+     * @param itemIDs a list of IDs belonging to approved items
+     * @return the corresponding list of associated Item objects
      */
-    public Item getApprovedItem(long itemid) {
-        return idGetItem(approvedItems, itemid);
-    }
-
-    /**
-     * This method returns an approvedItem by its index
-     *
-     * @param index index
-     * @return Item
-     */
-    public Item getApprovedItem(int index) {
-        return approvedItems.get(index - 1);
-    }
-
-
-    public ArrayList<Item> getItemsByIDs(ArrayList<Long> ids){
+    public ArrayList<Item> getApprovedItemsByIDs(ArrayList<Long> itemIDs) {
         ArrayList<Item> items = new ArrayList<>();
-        for(long l : ids){
-             items.add(getApprovedItem(l));
+        for (long l : itemIDs) {
+            items.add(getApprovedItem(l));
         }
         return items;
     }
 
     /**
-     * This method returns a pendingItem by its id
+     * Takes in a list of pending item IDs and returns a parallel list of the associated Item objects.
      *
-     * @param itemid id number
-     * @return Item
+     * @param itemIDs a list of IDs belonging to items waiting for approval
+     * @return the corresponding list of associated Item objects
      */
-    public Item getPendingItem(long itemid) {
-        return idGetItem(pendingItems, itemid);
+    public ArrayList<Item> getPendingItemsByIDs(ArrayList<Long> itemIDs) {
+        ArrayList<Item> items = new ArrayList<>();
+        for (long l : itemIDs) {
+            items.add(getPendingItem(l));
+        }
+        return items;
     }
 
     /**
-     * This method returns a pendingItem by its index
+     * Removes the given approved item from the system.
      *
-     * @param index index
-     * @return Item
+     * @param itemToRemove the approved Item being removed
      */
-    public Item getPendingItem(int index) {
-        return pendingItems.get(index - 1);
+    public void removeApprovedItem(Item itemToRemove) {
+        approvedItems.remove(itemToRemove);
     }
 
     /**

@@ -15,7 +15,6 @@ public class TradeManager {
     /**
      * Class constructor.
      * Creates a new ArrayList of Trades and assigns its reference to allTrades.
-     *
      */
     public TradeManager() {
         allTrades = new ArrayList<>();

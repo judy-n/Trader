@@ -1,7 +1,6 @@
 import java.time.LocalDateTime;
 
 /**
- * TemporaryTrade.java
  * Represents a temporary trade.
  *
  * @author Ning Zhang
@@ -16,9 +15,10 @@ public class TemporaryTrade extends Trade {
 
     /**
      * Class constructor.
-     * Creates a TemporaryTrade
-     * @param usernames an array containing the usernames of the two Users involved in this TemporaryTrade
-     * @param itemIDs an array containing the IDs of the Items being traded (parallel to usernames)
+     * Creates a TemporaryTrade.
+     *
+     * @param usernames     an array containing the usernames of the two Users involved in this TemporaryTrade
+     * @param itemIDs       an array containing the IDs of the Items being traded (parallel to usernames)
      * @param firstDateTime the first date and time suggested for this TemporaryTrade's meeting
      * @param firstLocation the first location suggested for this TemporaryTrade's meeting
      */

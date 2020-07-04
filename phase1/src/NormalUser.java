@@ -33,7 +33,7 @@ public class NormalUser extends User implements Serializable {
      * Also initializes default empty inventory, wishlist, and tradeRequests, and account status non-frozen.
      *
      * @param username the username being assigned to this NormalUser
-     * @param email the email address being assigned to this NormalUser
+     * @param email    the email address being assigned to this NormalUser
      * @param password the password being assigned to this NormalUser
      */
     public NormalUser(String username, String email, String password) {

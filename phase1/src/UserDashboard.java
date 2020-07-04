@@ -6,7 +6,6 @@ import java.sql.Array;
 import java.sql.SQLOutput;
 
 /**
- * UserDashboard.java
  * Displays a dashboard once the user logs in.
  *
  * @author Ning Zhang
@@ -25,16 +24,19 @@ public class UserDashboard {
     private int specialCase = 0;
     private ItemManager im;
     private UserManager um;
+
     /**
      * Creates a UserDashboard that stores the given user who is currently logged in.
      *
      * @param user the given User
+     * @param im   the system's item manager
+     * @param um   the system's user manager
      */
     public UserDashboard(NormalUser user, ItemManager im, UserManager um) {
         currentUser = user;
         this.im = im;
         this.um = um;
-        SystemPresenter sp = new SystemPresenter(currentUser);
+        SystemPresenter sp = new SystemPresenter();
 
         if (currentUser.getIsFrozen()) {
             sp.userDashboard("frozen");
@@ -114,7 +116,7 @@ public class UserDashboard {
                 break;
 
             case 3:
-                new WishlistEditor(currentUser,im, um);
+                new WishlistEditor(currentUser, im, um);
                 break;
 
             case 4:
