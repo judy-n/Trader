@@ -95,4 +95,14 @@ public class AdminUser extends User implements Serializable {
     public void setUserIncompleteMax(NormalUser user, int newMax) {
         user.setIncompleteMax(newMax);
     }
+
+
+    /**
+     * Adds an approved item to the NormalUser's inventory
+     * @param user user
+     * @param itemID item id
+     */
+    public void addApprovedItem(NormalUser user, long itemID){
+        user.addInventory(itemID);
+    }
 }

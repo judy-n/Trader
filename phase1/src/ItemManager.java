@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -12,10 +13,14 @@ import java.util.ArrayList;
  * @since 2020-06-26
  * last modified 2020-07-03
  */
-public class ItemManager {
-    private ArrayList<Item> approvedItems = new ArrayList<>();
+public class ItemManager implements Serializable {
+    private ArrayList<Item> approvedItems;
+    private ArrayList<Item> pendingItems;
 
-    private ArrayList<Item> pendingItems = new ArrayList<>();
+    public ItemManager(){
+        approvedItems = new ArrayList<>();
+        pendingItems = new ArrayList<>();
+    }
 
     /**
      * Getter for the approved items of this item manager
@@ -72,6 +77,15 @@ public class ItemManager {
      */
     public Item getApprovedItem(int index) {
         return approvedItems.get(index - 1);
+    }
+
+
+    public ArrayList<Item> getItemsByIDs(ArrayList<Long> ids){
+        ArrayList<Item> items = new ArrayList<>();
+        for(long l : ids){
+             items.add(getApprovedItem(l));
+        }
+        return items;
     }
 
     /**

@@ -12,8 +12,14 @@ import java.util.ArrayList;
  * last modified 2020-07-02
  */
 public class UserManager implements Serializable {
-    private ArrayList<User> allNormals = new ArrayList<>();
-    private ArrayList<AdminUser> allAdmins = new ArrayList<>();
+    private ArrayList<NormalUser> allNormals;
+    private ArrayList<AdminUser> allAdmins;
+
+    public UserManager(){
+        allNormals = new ArrayList<>();
+        allAdmins = new ArrayList<>();
+    }
+
 
     /**
      * Updates the userdatabase with all the current users.
@@ -22,14 +28,14 @@ public class UserManager implements Serializable {
     public void update (){
 
         //This is just for testing rn will delete later
-        User u1 = new User("u", "e", "p");
-        Item i1 = new Item("Item", "This is an item.");
-        Item i2 = new Item("Item", "This is another item.");
-        u1.addPendingInventory(i1);
-        u1.addPendingInventory(i2);
-        u1.addApprovedInventory(i1);
-        u1.addApprovedInventory(i2);
-        u1.addWishlist(i1);
+        NormalUser u1 = new NormalUser("u", "e", "p");
+        Item i1 = new Item("Item", "This is an item.",u1.getUsername());
+        Item i2 = new Item("Item", "This is another item.", u1.getUsername());
+        u1.addPendingInventory(i1.getId());
+        u1.addPendingInventory(i2.getId());
+        u1.addInventory(i1.getId());
+        u1.addInventory(i2.getId());
+        u1.addWishlist(i1.getId());
         allNormals.add(u1);
     }
 
@@ -42,7 +48,7 @@ public class UserManager implements Serializable {
         if (userToAdd instanceof AdminUser) {
             allAdmins.add((AdminUser) userToAdd);
         } else {
-            allNormals.add(userToAdd);
+            allNormals.add((NormalUser)userToAdd);
         }
     }
 
@@ -52,8 +58,8 @@ public class UserManager implements Serializable {
      * @param username the username of the User being searched for
      * @return the User associated with the given username
      */
-    public User getUserByUsername(String username) {
-        for (User u : getAllUsers()) {
+    public NormalUser getUserByUsername(String username) {
+        for (NormalUser u : getAllNormalUsers()) {
             if (u.getUsername().equals(username)) {
                 return u;
             }
@@ -67,8 +73,8 @@ public class UserManager implements Serializable {
      * @param email the email of the User being searched for
      * @return the User associated with the given email
      */
-    public User getUserByEmail(String email) {
-        for (User u : getAllUsers()) {
+    public NormalUser getUserByEmail(String email) {
+        for (NormalUser u : getAllNormalUsers()) {
             if (u.getEmail().equals(email)) {
                 return u;
             }
@@ -86,6 +92,11 @@ public class UserManager implements Serializable {
         allUsers.addAll(allNormals);
         allUsers.addAll(allAdmins);
         return allUsers;
+    }
+
+
+    public ArrayList<NormalUser> getAllNormalUsers(){
+        return allNormals;
     }
 
     /**
@@ -157,7 +168,7 @@ public class UserManager implements Serializable {
             ObjectInput input = new ObjectInputStream(buffer);
 
             // deserialize the Map
-            allNormals = (ArrayList<User>) input.readObject();
+            allNormals = (ArrayList<NormalUser>) input.readObject();
             input.close();
         } catch (IOException ex) {
             System.out.println("IO Error Occurred");

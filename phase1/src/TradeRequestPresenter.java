@@ -18,19 +18,25 @@ import java.util.*;
 
 
 public class TradeRequestPresenter {
-    private HashMap<String[], long[]> initiatedTrades = new HashMap<>();
-    private HashMap<String[], long[]> receiveTrades = new HashMap<>();
-
+    private HashMap<String[], long[]> initiatedTrades;
+    private HashMap<String[], long[]> receiveTrades;
+    private ItemManager im;
+    private UserManager um;
+    private NormalUser currentUser;
     /**
      * TradeRequestPresenter
      * Creates an trade request presenter at prints to the screen all trade requests received/sent
      *
      * @param user user
      */
-    public TradeRequestPresenter(User user) {
-
+    public TradeRequestPresenter(NormalUser user, ItemManager im, UserManager um) {
+        currentUser = user;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         SystemPresenter sp = new SystemPresenter(user);
+        initiatedTrades = new HashMap<>();
+        receiveTrades = new HashMap<>();
+        this.im = im;
+        this.um = um;
 
         for (String[] key : user.getTradeRequest().keySet()) {
             if (user.getUsername().equals(key[0])) {
@@ -44,7 +50,7 @@ public class TradeRequestPresenter {
             sp.tradeRequestPresenter("none");
         } else {
             for (String[] key : initiatedTrades.keySet()) {
-                Item i = ItemDatabase.getItem(initiatedTrades.get(key)[1]);
+                Item i = im.getApprovedItem(initiatedTrades.get(key)[1]);
                 System.out.println("Trade for " + i.getName() + " from user " + key[1]);
             }
         }
@@ -55,7 +61,7 @@ public class TradeRequestPresenter {
             sp.tradeRequestPresenter("none");
         } else {
             for (String[] key : receiveTrades.keySet()) {
-                Item i = ItemDatabase.getItem(receiveTrades.get(key)[1]);
+                Item i = im.getApprovedItem(receiveTrades.get(key)[1]);
                 System.out.println(index+". Trade for " + i.getName() + " from user " + key[0]);
                 index ++;
             }
@@ -67,7 +73,7 @@ public class TradeRequestPresenter {
                     input = Integer.parseInt(br.readLine());
                 }
                 if (input == 0) {
-                    new UserDashboard(user);
+                    new UserDashboard(currentUser, im, um);
                 }
                 String[] a = getTradeHelper(input);
                 System.out.println("Are you sure you want to trade " + a[1] + " with " + a[0] + "?(Y/N)");
@@ -101,7 +107,7 @@ public class TradeRequestPresenter {
             } catch (IOException e) {
                 sp.tradeRequestPresenter("error");
             }
-            new UserDashboard(user);
+            new UserDashboard(currentUser, im, um);
         }
     }
 
@@ -117,21 +123,10 @@ public class TradeRequestPresenter {
         ArrayList<String[]> listOfKeys = (ArrayList<String[]>) keySet;
         Collection<long[]> keyValues = receiveTrades.values();
         ArrayList<long[]> listOfKeyValues = (ArrayList<long[]>) keyValues;
-        assert ItemDatabase.getItem(listOfKeyValues.get(index-1)[1]) != null;
-        String itemName = ItemDatabase.getItem(listOfKeyValues.get(index-1)[1]).getName();
+        assert im.getApprovedItem(listOfKeyValues.get(index-1)[1]) != null;
+        String itemName = im.getApprovedItem(listOfKeyValues.get(index-1)[1]).getName();
         String traderName = listOfKeys.get(index-1)[0];
         return new String[] {traderName, itemName};
-
-
-
-//
-//        String itemName = ItemDatabase.getItem(itemId).name;
-//        for (String[] key : receiveTrades.keySet()) {
-//            if (itemId == (receiveTrades.get(key)[1])) {
-//                return new String[]{key[0], itemName};
-//            }
-//        }
-//        return null;
     }
 
     /**
@@ -150,8 +145,9 @@ public class TradeRequestPresenter {
     }
 
     public void printInventory(String username){
-        User u = UserDatabase.getUserByUsername(username);
-        for(Item i : u.getInventory()){
+        NormalUser u = um.getUserByUsername(username);
+        ArrayList<Item> items = im.getItemsByIDs(u.getInventory());
+        for(Item i : items){
             System.out.println(i.toString());
         }
     }

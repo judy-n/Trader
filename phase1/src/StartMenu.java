@@ -13,41 +13,30 @@ import java.io.InputStreamReader;
  * last modified 2020-06-28
  */
 public class StartMenu {
-
+    public int userInput;
     /**
      * StartMenu
      * Creates a start menu that takes in user input
      */
     public StartMenu() {
-        String userInput = "";
+        //This does not need system presenter because this is a presenter
+        userInput = 0;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        SystemPresenter systemPresenter; // to print strings from
+        System.out.println(" 1) Sign up \n 2) Log in \n 3) Exit the program");
+        System.out.print("Please select an option by entering the number 1, 2, or 3: ");
+        try {
+            userInput = Integer.parseInt(br.readLine());
 
-        do {
-            System.out.println("1st user: (username: firstUser, email: firstEmail, password: firstPassword)");
-            User newUser = new User("firstUser", "firstEmail", "firstPassword");
-            UserDatabase.addUser(newUser);
-            new UserDashboard(newUser);
-
-            System.out.println(" 1) Sign up \n 2) Log in \n 3) Exit the program");
-            System.out.print("Please select an option by entering the number 1, 2, or 3: ");
-            try {
-                userInput = br.readLine();
-
-                if (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3")) {
-                    System.out.print("Invalid input. Please enter 1, 2, or 3: ");
-                }
-
-            } catch (IOException e) {
-                System.out.println("Error reading user input.");
+            while (!(userInput == 1) && !(userInput == 2) && !(userInput == 3)) {
+                System.out.print("Invalid input. Please enter 1, 2, or 3: ");
+                userInput = Integer.parseInt(br.readLine());
             }
-        } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3"));
 
-        if (userInput.equals("1")) {
-            new SignUpSystem();
-        } else if (userInput.equals("2")) {
-            new LoginSystem();
-        } else {
+        } catch (IOException e) {
+            System.out.println("Error reading user input.");
+        }
+
+        if(userInput == 3) {
             try {
                 br.close();
             } catch (IOException e) {
@@ -56,5 +45,8 @@ public class StartMenu {
             System.out.println("Exiting the program. Hope to see you again soon!");
             System.exit(0);
         }
+        }
+    public int getChoice(){
+        return userInput;
     }
 }

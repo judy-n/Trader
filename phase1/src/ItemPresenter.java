@@ -14,25 +14,29 @@ import java.io.InputStreamReader;
  * last modified 2020-07-03
  */
 public class ItemPresenter {
-    private NormalUser user;
+    private NormalUser currentUser;
     private int max;
+    private ItemManager im;
+    private UserManager um;
     /**
      * ItemPresenter
      * Creates an item presenter at prints to the screen all items available for trade
      * @param u user
      */
-    public ItemPresenter(NormalUser u) {
-        user = u;
+    public ItemPresenter(NormalUser u, ItemManager im, UserManager um) {
+        currentUser = u;
+        this.im = im;
+        this.um = um;
         int input;
         int index = 1;
         String inputConfirm;
-        max = ItemManager.getNumApprovedItems();
+        max = im.getNumApprovedItems();
 
-        SystemPresenter sp = new SystemPresenter(user); // to call strings to print
+        SystemPresenter sp = new SystemPresenter(currentUser); // to call strings to print
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         sp.itemPresenter("available Items");
 
-        for (Item i : ItemManager.getApprovedItems()) {
+        for (Item i : im.getApprovedItems()) {
             System.out.println(index+i.toString());
             index ++;
         }
@@ -45,14 +49,14 @@ public class ItemPresenter {
                 input = Integer.parseInt(br.readLine());
             }
                 if(input == 0){
-                    new UserDashboard(user);
+                    new UserDashboard(currentUser, im, um);
                 }
 
-                Item i = ItemManager.getApprovedItem(input);
+                 Item i = im.getApprovedItem(input);
                 assert i!= null;
                 System.out.println("You have chosen: " + input + i.toString());
 
-                if (i.getAvailability()) {
+                     if (i.getAvailability()) {
                     System.out.println("Are you sure you want to trade for this item with user, " + i.getOwnerUsername() + " ?(Y/N)");
                     inputConfirm = br.readLine();
 
@@ -63,24 +67,24 @@ public class ItemPresenter {
 
                     if (inputConfirm.equalsIgnoreCase("Y")) {
                         System.out.println("Contacting user, " + i.getOwnerUsername());
-                        User trader = UserDatabase.getUserByUsername(i.getOwnerUsername());
+                        NormalUser trader = um.getUserByUsername(i.getOwnerUsername());
                         assert trader != null;
-                        String[] traders = {user.getUsername(), trader.getUsername()};
+                        String[] traders = {currentUser.getUsername(), trader.getUsername()};
                         long [] items = {0, i.getId()};
                         trader.addTradeRequest(traders, items);
-                        user.addTradeRequest(traders, items);
-                        user.addWishlist(i);
+                        currentUser.addTradeRequest(traders, items);
+                        currentUser.addWishlist(i.getId());
                     }
 
                     else {
                         sp.itemPresenter("cancelled");
                     }
-                }
+               }
 
                 else {
                     sp.itemPresenter("not available");
                 }
-            new UserDashboard(user);
+            new UserDashboard(currentUser, im, um);
         }
         catch (IOException e){
             sp.itemPresenter("error");

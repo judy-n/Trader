@@ -16,13 +16,17 @@ public class SignUpSystem {
     private String username;
     private String email;
     private String password;
-
+    private UserManager um;
+    private NormalUser newUser;
+    private boolean isSignedUp;
     /**
      * SignUpSystem
      * Creates a sign up system that takes in user input
      */
-    public SignUpSystem() {
+    public SignUpSystem(UserManager um) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        this.um = um;
+        isSignedUp = false;
         System.out.println("\n--- Signup ---");
         System.out.print("Please enter an email: ");
         try {
@@ -30,17 +34,17 @@ public class SignUpSystem {
             boolean invalidInput;
             do {
                 invalidInput = false;
-                if (UserDatabase.emailExists(emailInput)) {
+                if (um.emailExists(emailInput)) {
                     invalidInput = true;
                     System.out.print("Email is already associated with an account! Please enter a different email: ");
                     emailInput = br.readLine();
                 }
 //              valid email check commented out for quicker testing
-//                else if (!(emailInput.contains("@") && emailInput.contains(".")) || emailInput.contains(" ")) {
-//                    invalidInput = true;
-//                    System.out.print("That's not an email address! Please enter a valid email: ");
-//                    emailInput = br.readLine();
-//                }
+               else if (!(emailInput.contains("@") && emailInput.contains(".")) || emailInput.contains(" ")) {
+                    invalidInput = true;
+                    System.out.print("That's not an email address! Please enter a valid email: ");
+                    emailInput = br.readLine();
+                }
             } while (invalidInput);
             email = emailInput;
         } catch (IOException e) {
@@ -53,7 +57,7 @@ public class SignUpSystem {
             boolean invalidInput;
             do {
                 invalidInput = false;
-                if (UserDatabase.usernameExists(usernameInput)) {
+                if (um.usernameExists(usernameInput)) {
                     invalidInput = true;
                     System.out.print("Username already exists! Please enter a different username: ");
                     usernameInput = br.readLine();
@@ -87,8 +91,15 @@ public class SignUpSystem {
         }
 
         System.out.println("\n Thank you for signing up! \n You are now logged in. \n");
-        User newUser = new User(username, email, password);
-        UserDatabase.addUser(newUser);
-        new UserDashboard(newUser);
+        newUser = new NormalUser(username, email, password);
+        um.addUser(newUser);
     }
+    public NormalUser getNewUser(){
+        return newUser;
+    }
+
+    public boolean getSignedUp(){
+        return isSignedUp;
+    }
+
 }

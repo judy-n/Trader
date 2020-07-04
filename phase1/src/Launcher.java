@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 /**
  * Launcher.java
  * Starting point of the program.
@@ -16,8 +18,8 @@ public class Launcher {
      * creates a start menu
      *
      */
-    public static void main(String[] args) {
-        new StartMenu();
+    public static void main(String[] args){
+        new SystemController();
     }
 
 }

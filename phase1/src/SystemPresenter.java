@@ -9,21 +9,22 @@
  */
 
 public class SystemPresenter {
-    private User currentUser;
+    private NormalUser currentUser;
 
-    public SystemPresenter(User user){
+    public SystemPresenter(NormalUser user) {
         currentUser = user;
     }
 
-    public void inventoryEditor(){
+    public void inventoryEditor() {
         System.out.println("Choose one of the options: ");
         System.out.println("1 - Add an item to inventory" +
                 "\n2 - Remove item from inventory " +
                 "\n3 - Cancel ");
     }
-    public void inventoryAddItem(int input){
+
+    public void inventoryAddItem(int input) {
         switch (input) {
-            case 1 :
+            case 1:
                 System.out.println("Enter the name of the item to add(at least 3 letters):");
                 break;
 
@@ -40,12 +41,13 @@ public class SystemPresenter {
                 break;
         }
     }
-    public void inventoryAddItem(String name, String description){
-        System.out.println(name + " : "+description);
+
+    public void inventoryAddItem(String name, String description) {
+        System.out.println(name + " : " + description);
     }
 
-    public void inventoryRemoveItem(int input){
-        switch (input){
+    public void inventoryRemoveItem(int input) {
+        switch (input) {
             case 1:
                 System.out.println("No items to remove.");
                 break;
@@ -54,22 +56,23 @@ public class SystemPresenter {
                 break;
         }
     }
-    public void inventoryRemoveItem(String name, int index, int input){
-        if(input == 1){
+
+    public void inventoryRemoveItem(String name, int index, int input) {
+        if (input == 1) {
             System.out.println("Remove " + index + ". " + name + " from your inventory?(Y/N)");
-        }else{
+        } else {
             System.out.println(name + " is removed from your inventory!");
         }
     }
 
-    public void wishlistEditor(){
+    public void wishlistEditor() {
         System.out.println("Choose one of the options: ");
         System.out.println("1 - Remove item from wish list" +
                 "\n2 - Cancel ");
     }
 
-    public void wishlistAddItem(int input){
-        switch (input){
+    public void wishlistAddItem(int input) {
+        switch (input) {
             case 1:
                 System.out.println("Your wish list is empty.");
                 break;
@@ -79,10 +82,10 @@ public class SystemPresenter {
         }
     }
 
-    public void wishlistRemoveItem(String name, int input){
-        switch (input){
+    public void wishlistRemoveItem(String name, int input) {
+        switch (input) {
             case 1:
-                System.out.println("Remove "+ name +" from your wishlist?(Y/N)");
+                System.out.println("Remove " + name + " from your wishlist?(Y/N)");
                 break;
             case 2:
                 System.out.println(name + " is removed from your wishlist!");
@@ -90,21 +93,21 @@ public class SystemPresenter {
         }
     }
 
-    public void cancelled(){
+    public void cancelled() {
         System.out.println("Cancelled!");
     }
 
-    public void exceptionMessage(){
+    public void exceptionMessage() {
         System.out.println("Error reading user input! Please try again.");
     }
 
-    public void invalidInput(){
+    public void invalidInput() {
         System.out.println("Invalid input try again.");
     }
 
     // doesn't need user to work, (need another SystemPresenter contructor for other classes that need this too)
-    public void itemPresenter(String input){
-        switch(input){
+    public void itemPresenter(String input) {
+        switch (input) {
             case "available Items":
                 System.out.println("This is all the item(s) available for trade:");
                 break;
@@ -156,7 +159,7 @@ public class SystemPresenter {
         }
     }
 
-    public void userDashboard(String input){
+    public void userDashboard(String input) {
         switch (input) {
             case "frozen":
                 System.out.println("-- Your account is currently frozen due to you reaching the limit on incomplete trades --");
@@ -198,5 +201,6 @@ public class SystemPresenter {
                 System.out.print("Invalid input. Try again: ");
                 break;
 
+        }
     }
 }

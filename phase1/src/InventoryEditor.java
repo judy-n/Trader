@@ -16,10 +16,14 @@ public class InventoryEditor {
     private NormalUser currentUser;
     private String itemNameInput;
     private String itemDescriptionInput;
+    private ItemManager im;
+    private UserManager um;
 
-    public InventoryEditor(NormalUser user) {
+    public InventoryEditor(NormalUser user, ItemManager im, UserManager um) {
         // This allows the User to request adding Items to their inventory, or to remove an existing Item.
         currentUser = user;
+        this.im = im;
+        this.um = um;
         SystemPresenter sp = new SystemPresenter(currentUser);
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int input;
@@ -33,7 +37,7 @@ public class InventoryEditor {
             }
 
             if (input == 3) {
-                new UserDashboard(currentUser);
+                new UserDashboard(currentUser, im, um);
             }
 
             if (input == 1) {
@@ -58,13 +62,13 @@ public class InventoryEditor {
                     }
 
                     if(confirmInput.equalsIgnoreCase("Y")) {
-                        Item requestedItem = new Item(itemNameInput, itemDescriptionInput);
+                        Item requestedItem = new Item(itemNameInput, itemDescriptionInput, currentUser.getUsername());
                         currentUser.addPendingInventory(requestedItem.getId());
                         sp.inventoryAddItem(4);
                     }else{
                         sp.cancelled();
                     }
-                    new UserDashboard(currentUser);
+                    new UserDashboard(currentUser, im, um);
 
                 } catch (IOException e) {
                     sp.exceptionMessage();
@@ -73,13 +77,13 @@ public class InventoryEditor {
             } else {
                 if (currentUser.getInventory().isEmpty()) {
                     sp.inventoryRemoveItem(1);
-                    new UserDashboard(currentUser);
+                    new UserDashboard(currentUser, im, um);
                 }
 
                 int index = 1;
                 sp.inventoryRemoveItem(2);
                 for (Long id : currentUser.getInventory()) {
-                    Item tempItem = ItemManager.getApprovedItem(id);
+                    Item tempItem = im.getApprovedItem(id);
                     System.out.println(index + tempItem.toString());
                     index++;
                 }
@@ -88,7 +92,8 @@ public class InventoryEditor {
 
                 try {
                     indexInput = Integer.parseInt(br.readLine());
-                    Item selected = currentUser.getInventory().get(indexInput - 1);
+                    long idSelected = currentUser.getInventory().get(indexInput - 1);
+                    Item selected = im.getApprovedItem(idSelected);
                     sp.inventoryRemoveItem(selected.getName(), indexInput, 1);
                     String confirmInput = br.readLine();
                     while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
@@ -101,7 +106,7 @@ public class InventoryEditor {
                     } else {
                         sp.cancelled();
                     }
-                    new UserDashboard(currentUser);
+                    new UserDashboard(currentUser, im, um);
 
                 } catch (IOException e) {
                     sp.exceptionMessage();

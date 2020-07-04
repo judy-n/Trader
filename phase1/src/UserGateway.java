@@ -1,6 +1,14 @@
-import java.io.*;
-import java.util.ArrayList;
-
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 /**
  * UserGateway is a class that allows UserManagers to be serialized and de-serialized.
  * It will hold a UserManager, and have getters and setters for that UserManager.
@@ -40,7 +48,7 @@ public class UserGateway {
             uManager = (UserManager) input.readObject();
             input.close();
         } catch (IOException ex) {
-            System.out.println("IO Error Occurred");
+            System.out.println("IO Error Occurred USER");
         }
     }
 

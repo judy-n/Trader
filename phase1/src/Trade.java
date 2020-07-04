@@ -18,11 +18,13 @@ public class Trade implements Serializable {
     private boolean hasAgreedMeeting;
     private boolean isComplete;
     private final String[] involvedUsernames = new String[2];
-    private final double[] involvedItemIDs = new double[2];
+    private final long[] involvedItemIDs = new long[2];
     private LocalDateTime meetingDateTime;
     private String meetingLocation;
     private boolean[] transactionConfirmed = new boolean[2];
     private int[] numEdits = {0, 0};
+    public ItemManager im;
+    public UserManager um;
 
     /**
      * Class constructor.
@@ -34,17 +36,20 @@ public class Trade implements Serializable {
      * @param firstDateTime the first date and time suggested for this Trade's meeting
      * @param firstLocation the first location suggested for this Trade's meeting
      */
-    public Trade(String[] usernames, double[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
+    public Trade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime,
+                 String firstLocation, ItemManager im, UserManager um) {
         involvedUsernames[0] = usernames[0];
         involvedUsernames[1] = usernames[1];
         involvedItemIDs[0] = itemIDs[0];
         involvedItemIDs[1] = itemIDs[1];
         meetingDateTime = firstDateTime;
         meetingLocation = firstLocation;
-
         hasAgreedMeeting = false;
-        Item tempItem1 = ItemDatabase.getItem(involvedItemIDs[0]);
-        Item tempItem2 = ItemDatabase.getItem(involvedItemIDs[1]);
+        this.im = im;
+        this.um = um;
+
+        Item tempItem1 = im.getApprovedItem(involvedItemIDs[0]);
+        Item tempItem2 = im.getApprovedItem(involvedItemIDs[1]);
         if (tempItem1 != null) {
             tempItem1.setAvailability(false);
         }
@@ -67,7 +72,7 @@ public class Trade implements Serializable {
      *
      * @return an array containing the IDs of the Items involved in this Trade
      */
-    public double[] getInvolvedItemIDs() {
+    public long[] getInvolvedItemIDs() {
         return involvedItemIDs;
     }
 

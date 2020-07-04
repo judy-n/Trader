@@ -15,13 +15,17 @@ import java.util.ArrayList;
  */
 
 public class WishlistEditor {
-    private User currentUser;
+    private NormalUser currentUser;
+    private ItemManager im;
+    private UserManager um;
 
-    public WishlistEditor(User user){
+    public WishlistEditor(NormalUser user, ItemManager im, UserManager um){
         // This lets the User remove Items from the wish list. Assuming that they only add Items to
         // the wishlist when browsing items available for trade.
         SystemPresenter sp = new SystemPresenter(user);
         currentUser = user;
+        this.im = im;
+        this.um = um;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int input;
         sp.wishlistEditor();
@@ -32,7 +36,7 @@ public class WishlistEditor {
                 input = Integer.parseInt(br.readLine());
             }
 
-            if (input == 2){ new UserDashboard(currentUser);}
+            if (input == 2){ new UserDashboard(currentUser, im, um);}
 
 
         } catch (IOException e) {
@@ -41,11 +45,12 @@ public class WishlistEditor {
 
         if (currentUser.getWishlist().isEmpty()) {
             sp.wishlistAddItem(1);
-            new UserDashboard(currentUser);
+            new UserDashboard(currentUser, im, um);
         }
         else{
             sp.wishlistAddItem(2);
-            ArrayList<Item> wishlistItems = currentUser.getItemWishlist();
+            ArrayList<Long> wishlistIds = currentUser.getWishlist();
+            ArrayList<Item> wishlistItems = im.getItemsByIDs(wishlistIds);
             int index = 1;
 
             for (Item i: wishlistItems){
@@ -63,12 +68,12 @@ public class WishlistEditor {
                     confirmInput = br.readLine();
                 }
                 if(confirmInput.equalsIgnoreCase("y")){
-                    currentUser.removeWishlist(selected);
+                    currentUser.removeWishlist(selected.getId());
                     sp.wishlistRemoveItem(selected.getName(), 2);
                 }else{
                     sp.cancelled();
                 }
-                new UserDashboard(currentUser);
+                new UserDashboard(currentUser, im, um);
             } catch (IOException e) {
                 sp.invalidInput();
             }

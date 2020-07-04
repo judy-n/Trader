@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
  * last modified 2020-06-30
  */
 public class PermanentTrade extends Trade {
-
     /**
      * PermanentTrade
      * Creates a PermanentTrade
@@ -20,8 +19,10 @@ public class PermanentTrade extends Trade {
      * @param firstDateTime the first date and time suggested for this TemporaryTrade's meeting
      * @param firstLocation the first location suggested for this TemporaryTrade's meeting
      */
-    public PermanentTrade(String[] usernames, double[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
-        super(usernames, itemIDs, firstDateTime, firstLocation);
+    public PermanentTrade(String[] usernames, long[] itemIDs,
+                          LocalDateTime firstDateTime, String firstLocation, ItemManager im, UserManager um) {
+        super(usernames, itemIDs, firstDateTime, firstLocation, im, um);
+
     }
 
     @Override
@@ -30,19 +31,19 @@ public class PermanentTrade extends Trade {
         String[] usernames = getInvolvedUsernames();
 
         if (getUserTransactionConfirmation(usernames[0]) && getUserTransactionConfirmation(usernames[1])) {
-            NormalUser tempUser1 = UserDatabase.getUserByUsername(usernames[0]);
-            NormalUser tempUser2 = UserDatabase.getUserByUsername(usernames[1]);
+            NormalUser tempUser1 = um.getUserByUsername(usernames[0]);
+            NormalUser tempUser2 = um.getUserByUsername(usernames[1]);
             assert tempUser1 != null && tempUser2 != null;
-            double[] itemIDs = getInvolvedItemIDs();
+            long[] itemIDs = getInvolvedItemIDs();
             if (itemIDs[0] != 0) {
-                Item tempItem1 = ItemDatabase.getItem(itemIDs[0]);
+                Item tempItem1 = im.getApprovedItem(itemIDs[0]);
                 assert tempItem1 != null;
                 tempUser1.removeInventory(tempItem1.getId());
                 // [remove from ItemManager arraylist]
                 tempUser2.removeWishlist(tempItem1.getId());
             }
             if (itemIDs[1] != 0) {
-                Item tempItem2 = ItemDatabase.getItem(itemIDs[1]);
+                Item tempItem2 = im.getApprovedItem(itemIDs[1]);
                 assert tempItem2 != null;
                 tempUser2.removeInventory(tempItem2.getId());
                 // [remove from ItemManager arraylist]

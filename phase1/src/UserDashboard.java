@@ -19,54 +19,59 @@ import java.sql.SQLOutput;
 
 
 public class UserDashboard {
-    private User currentUser;
+    private NormalUser currentUser;
     private int input;
     private int maxChoice = 5;
     private int specialCase = 0;
-
+    private ItemManager im;
+    private UserManager um;
     /**
      * Creates a UserDashboard that stores the given user who is currently logged in.
      *
      * @param user the given User
      */
-    public UserDashboard(User user) {
+    public UserDashboard(NormalUser user, ItemManager im, UserManager um) {
         currentUser = user;
-        SystemPresenter sp = new SystemPresenter(User currentUser);
+        this.im = im;
+        this.um = um;
+        SystemPresenter sp = new SystemPresenter(currentUser);
 
         if (currentUser.getIsFrozen()) {
             sp.userDashboard("frozen");
         }
 
         sp.userDashboard("menu");
-        if (!(currentUser instanceof AdminUser) && currentUser.getIsFrozen()) {     //frozen non-admin
-            maxChoice = 6;
-            specialCase = 1;
-            sp.userDashboard("unfreeze option");
 
-        } else if (currentUser instanceof AdminUser) {    //admin
-            maxChoice = 9;
-            specialCase = 2;
-            sp.userDashboard("admin options");
+//        if (!(currentUser instanceof AdminUser) && currentUser.getIsFrozen()) {     //frozen non-admin
+//            maxChoice = 6;
+//            specialCase = 1;
+//            sp.userDashboard("unfreeze option");
+//
+//        } else if (currentUser instanceof AdminUser) {    //admin
+//            maxChoice = 9;
+//            specialCase = 2;
+//            sp.userDashboard("admin options");
+//
+//            if (currentUser.getIsFrozen() && (((AdminUser) currentUser).getAdminID() == 1)) {
+//                //initial admin allowed to add subsequent admins
+//                maxChoice = 11;
+//                specialCase = 3;
+//                sp.userDashboard("initial admin");
+//            }
+//
+//            else if (currentUser.getIsFrozen()) {
+//                maxChoice = 10;
+//                specialCase = 4;
+//                sp.userDashboard("admin frozen option");
+//            }
+//
+//            else if (((AdminUser) currentUser).getAdminID() == 1) {
+//                maxChoice = 10;
+//                specialCase = 5;
+//                sp.userDashboard("new admin");
+//            }
+//        }
 
-            if (currentUser.getIsFrozen() && (((AdminUser) currentUser).getAdminID() == 1)) {
-                //initial admin allowed to add subsequent admins
-                maxChoice = 11;
-                specialCase = 3;
-                sp.userDashboard("initial admin");
-            }
-
-            else if (currentUser.getIsFrozen()) {
-                maxChoice = 10;
-                specialCase = 4;
-                sp.userDashboard("admin frozen option");
-            }
-
-            else if (((AdminUser) currentUser).getAdminID() == 1) {
-                maxChoice = 10;
-                specialCase = 5;
-                sp.userDashboard("new admin");
-            }
-        }
         sp.userDashboard("logout");
         sp.userDashboard("action");
 
@@ -101,19 +106,19 @@ public class UserDashboard {
                 System.exit(0);
 
             case 1:
-                new ItemPresenter(currentUser);
+                new ItemPresenter(currentUser, im, um);
                 break;
 
             case 2:
-                new InventoryEditor(currentUser);
+                new InventoryEditor(currentUser, im, um);
                 break;
 
             case 3:
-                new WishlistEditor(currentUser);
+                new WishlistEditor(currentUser,im, um);
                 break;
 
             case 4:
-                new TradeRequestPresenter(currentUser);
+                new TradeRequestPresenter(currentUser, im, um);
                 break;
 
             case 5:

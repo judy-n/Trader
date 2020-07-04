@@ -18,17 +18,17 @@ public class LoginSystem {
     private String email;
     private String validPw;
     private User user;
-
+    private UserManager um;
+    private boolean isLoggedIn;
     /**
      * LoginSystem
      * Creates a log in system that takes in user input
      */
-
-    public LoginSystem() {
+    public LoginSystem(UserManager um) {
         String optionInput = "";
+        isLoggedIn = false;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        UserDatabase.update();
-
+        this.um = um;
         System.out.println("\n--- Login ---");
         do {
             System.out.println("Would you like to login with username or email?");
@@ -46,13 +46,13 @@ public class LoginSystem {
             System.out.print("Please enter your username: ");
             try {
                 username = br.readLine();
-                while (!UserDatabase.usernameExists(username)) {
+                while (!um.usernameExists(username)) {
                     System.out.print("Username does not exist in our database!! Would you like to sign up instead? (Y/N): ");
                     String optionInput2;
                     do {
                         optionInput2 = br.readLine();
                         if (optionInput2.equalsIgnoreCase("Y")) {
-                            new SignUpSystem();
+                            new SignUpSystem(um);
                         } else if (optionInput2.equalsIgnoreCase("N")) {
                             System.out.print("Please enter the correct username: ");
                         } else {
@@ -62,8 +62,8 @@ public class LoginSystem {
                             !optionInput2.equalsIgnoreCase("N"));
                     username = br.readLine();
                 }
-                validPw = UserDatabase.usernamePassword(username);
-                user = UserDatabase.getUserByUsername(username);
+                validPw = um.usernamePassword(username);
+                user = um.getUserByUsername(username);
             } catch (IOException e) {
                 System.out.println("Error reading user input.");
             }
@@ -71,13 +71,13 @@ public class LoginSystem {
             System.out.print("Please enter your email: ");
             try {
                 email = br.readLine();
-                while (!UserDatabase.emailExists(email)) {
+                while (!um.emailExists(email)) {
                     System.out.print("Email does not exist in our database! Would you like to sign up instead? (Y/N): ");
                     String optionInput2;
                     do {
                         optionInput2 = br.readLine();
                         if (optionInput2.equalsIgnoreCase("Y")) {
-                            new SignUpSystem();
+                            new SignUpSystem(um);
                         } else if (optionInput2.equalsIgnoreCase("N")) {
                             System.out.print("Please enter the correct email: ");
                         } else {
@@ -90,8 +90,8 @@ public class LoginSystem {
             } catch (IOException e) {
                 System.out.println("Error reading user input.");
             }
-            validPw = UserDatabase.emailPassword(email);
-            user = UserDatabase.getUserByEmail(email);
+            validPw = um.emailPassword(email);
+            user = um.getUserByEmail(email);
         }
 
         System.out.print("Please enter your password: ");
@@ -105,6 +105,12 @@ public class LoginSystem {
             System.out.println("Error reading user input.");
         }
         System.out.println("\n Logged in! \n");
-        new UserDashboard(user);
+        isLoggedIn = true;
+    }
+    public boolean getIsLoggedIn(){
+        return isLoggedIn;
+    }
+    public User getUser(){
+        return user;
     }
 }
