@@ -2,9 +2,9 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * UserGateway is a class that allows UserManagers to be serialized and de-serialized.
- * It will hold a UserManager, and have getters and setters for that UserManager.
- * It will also be able to read and write that user manager to a .ser file.
+ * ItemGateway is a class that allows ItemManagers to be serialized and de-serialized.
+ * It will hold a ItemManager, and have getters and setters for that ItemManager.
+ * It will also be able to read and write that ItemManager to a .ser file.
  * @author Liam Huff
  * @author Ning Zhang
  * @version 1.0
@@ -13,20 +13,20 @@ import java.util.ArrayList;
  */
 
 
-public class UserGateway {
-    private UserManager uManager;
+public class ItemGateway {
+    private ItemManager iManager;
 
 
     /**
-     * Constructor for UserGateway, sets the UserManager
-     * @param uManager UserManager
+     * Constructor for UserGateway, sets the ItemManager
+     * @param iManager item manager
      */
-    public UserGateway(UserManager uManager) {
-        this.uManager = uManager;
+    public ItemGateway(ItemManager iManager) {
+        this.iManager = iManager;
     }
 
     /**
-     * De-serializes a .ser file and makes that file's usermanager this Gateway's usermanager.
+     * De-serializes a .ser file and makes that file's ItemManager this Gateway's ItemManager.
      * @param path the path of the file
      * @throws ClassNotFoundException - if the de-serialized class can't be made
      */
@@ -37,7 +37,7 @@ public class UserGateway {
             ObjectInput input = new ObjectInputStream(buffer);
 
             // deserialize the Map
-            uManager = (UserManager) input.readObject();
+            iManager = (ItemManager) input.readObject();
             input.close();
         } catch (IOException ex) {
             System.out.println("IO Error Occurred");
@@ -46,7 +46,7 @@ public class UserGateway {
 
 
     /**
-     * Saves serialized UserManager to .ser file
+     * Saves serialized ItemManager to .ser file
      * @param filePath the path of the file
      * @throws IOException throws IOException when there is an error with input
      */
@@ -57,7 +57,7 @@ public class UserGateway {
         ObjectOutput output = new ObjectOutputStream(buffer);
 
         // serialize the Map
-        output.writeObject(uManager);
+        output.writeObject(iManager);
         output.close();
     }
 }
