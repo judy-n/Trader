@@ -78,7 +78,7 @@ public class InventoryEditor {
                     } else {
                         sp.cancelled();
                     }
-                    new UserDashboard(currentUser, im, um);
+                    new NormalDashboard(currentUser, im, um);
 
                 } catch (IOException e) {
                     sp.exceptionMessage();
@@ -87,7 +87,7 @@ public class InventoryEditor {
             } else if (input == 2) {    //remove item
                 if (itemInventory.isEmpty()) {
                     sp.inventoryRemoveItem(1);
-                    new UserDashboard(currentUser, im, um);
+                    new NormalDashboard(currentUser, im, um);
                 }
 
                 sp.inventoryRemoveItem(2);
@@ -111,13 +111,13 @@ public class InventoryEditor {
                     } else {
                         sp.cancelled();
                     }
-                    new UserDashboard(currentUser, im, um);
+                    new NormalDashboard(currentUser, im, um);
 
                 } catch (IOException e) {
                     sp.exceptionMessage();
                 }
             } else {    //cancel
-                new UserDashboard(currentUser, im, um);
+                new NormalDashboard(currentUser, im, um);
             }
 
         } catch (IOException e) {

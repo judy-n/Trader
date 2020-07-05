@@ -16,7 +16,7 @@ import java.util.*;
  */
 
 
-public class TradeRequestPresenter {
+public class TradeRequestViewer {
     private HashMap<String[], long[]> initiatedTrades;
     private HashMap<String[], long[]> receiveTrades;
     private ItemManager im;
@@ -25,14 +25,14 @@ public class TradeRequestPresenter {
 
     /**
      * Class constructor.
-     * Creates an TradeRequestPresenter with the given logged-in user, item manager, and user manager.
+     * Creates an TradeRequestViewer with the given logged-in user, item manager, and user manager.
      * Prints to the screen all trade requests received/sent by the given user and options on actions to take.
      *
      * @param user the non-admin user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
      */
-    public TradeRequestPresenter(NormalUser user, ItemManager im, UserManager um) {
+    public TradeRequestViewer(NormalUser user, ItemManager im, UserManager um) {
         currentUser = user;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         SystemPresenter sp = new SystemPresenter();
@@ -83,7 +83,7 @@ public class TradeRequestPresenter {
                     input = Integer.parseInt(br.readLine());
                 }
                 if (input == 0) {
-                    new UserDashboard(currentUser, im, um);
+                    new NormalDashboard(currentUser, im, um);
                 }
                 String[] a = getTradeHelper(input);
 
@@ -118,7 +118,7 @@ public class TradeRequestPresenter {
             } catch (IOException e) {
                 sp.exceptionMessage();
             }
-            new UserDashboard(currentUser, im, um);
+            new NormalDashboard(currentUser, im, um);
         }
     }
 

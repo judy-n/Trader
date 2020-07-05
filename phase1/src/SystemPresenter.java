@@ -14,6 +14,7 @@ import java.util.HashMap;
  */
 
 public class SystemPresenter {
+    private String choicePrompt = "\nPlease enter your choice here: ";
 
     //helper method that prints inventory + pending
     private void presentInventory(ArrayList<Item> itemInventory, ArrayList<Item> pendingItems) {
@@ -53,7 +54,7 @@ public class SystemPresenter {
                 "\n   1 - Add an item to inventory" +
                 "\n   2 - Remove item from inventory" +
                 "\n   3 - Cancel");
-        System.out.print("\nPlease enter your choice here: ");
+        System.out.print(choicePrompt);
     }
 
     public void inventoryAddItem(int input) {
@@ -106,7 +107,7 @@ public class SystemPresenter {
         System.out.println("\n   Choose one of the options:" +
                 "\n   1 - Remove item from wish list" +
                 "\n   2 - Cancel ");
-        System.out.print("   Please enter your choice here: ");
+        System.out.print(choicePrompt);
     }
 
     public void wishlistRemoveItem(int input) {
@@ -235,22 +236,25 @@ public class SystemPresenter {
     }
 
 
-    public void userDashboard(int input){
+    public void normalDashboard(int input){
+        String frozenWarning = "\n-- Your account is currently frozen due to you reaching the limit on incomplete trades --";
+        String menuOneToFive = "\nWhat would you like to do:" +
+                "\n 1 - see all items available for trade" +
+                "\n 2 - edit inventory " +
+                "\n 3 - edit wishlist " +
+                "\n 4 - view trade requests " +
+                "\n 5 - view latest trades ";
+        String menuSix = "\n 6 - request to unfreeze account";
+        String logoutOption = "\n 0 - logout ";
+
         switch (input){
             case 1:
-                System.out.println("-- Your account is currently frozen due to you reaching the limit on incomplete trades --");
+                System.out.println(menuOneToFive + logoutOption);
+                System.out.print(choicePrompt);
                 break;
             case 2:
-                System.out.println("\nWhat would you like to do:" +
-                        "\n 1 - see all items available for trade" +
-                        "\n 2 - edit inventory " +
-                        "\n 3 - edit wishlist " +
-                        "\n 4 - view trade requests " +
-                        "\n 5 - view latest trades ");
-                break;
-            case 3:
-                System.out.println(" 0 - logout ");
-                System.out.print("Please enter your choice here: ");
+                System.out.println(frozenWarning + menuOneToFive + menuSix + logoutOption);
+                System.out.print(choicePrompt);
                 break;
         }
     }

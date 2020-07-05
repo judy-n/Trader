@@ -43,7 +43,7 @@ public class SystemController {
             while (!isSignedUp) {
                 isSignedUp = sus.getSignedUp();
             }
-            UserDashboard ud = new UserDashboard(sus.getNewUser(), im, um);
+            NormalDashboard ud = new NormalDashboard(sus.getNewUser(), im, um);
 
         } else {
             LoginSystem ls = new LoginSystem(um);
@@ -51,7 +51,8 @@ public class SystemController {
             while (!isLoggedIn) {
                 isLoggedIn = ls.getIsLoggedIn();
             }
-            UserDashboard ud = new UserDashboard((NormalUser) ls.getUser(), im, um);
+            NormalDashboard ud = new NormalDashboard((NormalUser) ls.getUser(), im, um);
+            //need to distinguish normal user from admin logging in
         }
     }
 

@@ -23,7 +23,7 @@ public class ItemPresenter {
      * Creates an ItemPresenter with the given logged-in user, item manager, and user manager.
      * Prints to the screen all items available for trade.
      *
-     * @param user the normal user who's currently logged in
+     * @param user the non-admin user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
      */
@@ -51,7 +51,7 @@ public class ItemPresenter {
                 input = Integer.parseInt(br.readLine());
             }
             if (input == 0) {
-                new UserDashboard(currentUser, im, um);
+                new NormalDashboard(currentUser, im, um);
             }
 
             Item i = im.getApprovedItem(input);
@@ -80,7 +80,7 @@ public class ItemPresenter {
             } else {
                 sp.itemPresenter(i, 4);
             }
-            new UserDashboard(currentUser, im, um);
+            new NormalDashboard(currentUser, im, um);
         } catch (IOException e) {
             sp.exceptionMessage();
         }

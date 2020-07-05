@@ -52,7 +52,7 @@ public class WishlistEditor {
             if (input == 1) {   //remove item
                 if (currentUser.getWishlist().isEmpty()) {
                     sp.wishlistRemoveItem(1);
-                    new UserDashboard(currentUser, im, um);
+                    new NormalDashboard(currentUser, im, um);
                 } else {
                     sp.wishlistRemoveItem(2);
                     int indexInput;
@@ -71,13 +71,13 @@ public class WishlistEditor {
                         } else {
                             sp.cancelled();
                         }
-                        new UserDashboard(currentUser, im, um);
+                        new NormalDashboard(currentUser, im, um);
                     } catch (IOException e) {
                         sp.invalidInput();
                     }
                 }
             } else {    //cancel
-                new UserDashboard(currentUser, im, um);
+                new NormalDashboard(currentUser, im, um);
             }
         } catch (IOException e) {
             sp.exceptionMessage();
