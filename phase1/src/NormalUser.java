@@ -48,7 +48,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Getter for this NormalUser's inventory.
      *
-     * @return this NormalUser's inventory
+     * @return this user's inventory
      */
     public ArrayList<Long> getInventory() {
         return inventory;
@@ -57,7 +57,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Moves the given ID of an approved Item from this NormalUser's pending inventory to their regular inventory.
      *
-     * @param itemIDToAdd the ID of the approved Item being added to this NormalUser's inventory
+     * @param itemIDToAdd the ID of the approved Item being added to this user's inventory
      */
     public void addInventory(Long itemIDToAdd) {
         inventory.add(itemIDToAdd);
@@ -67,7 +67,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Removes the given ID of an Item from this NormalUser's inventory.
      *
-     * @param itemIDToRemove the ID of the Item being removed from this NormalUser's inventory
+     * @param itemIDToRemove the ID of the Item being removed from this user's inventory
      */
     public void removeInventory(Long itemIDToRemove) {
         inventory.remove(itemIDToRemove);
@@ -76,7 +76,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Getter for this NormalUser's inventory of items waiting for approval.
      *
-     * @return this NormalUser's pending inventory
+     * @return this user's pending inventory
      */
     public ArrayList<Long> getPendingInventory() {
         return pendingInventory;
@@ -85,16 +85,26 @@ public class NormalUser extends User implements Serializable {
     /**
      * Adds the given ID of an Item waiting for approval to this NormalUser's pending inventory.
      *
-     * @param itemToAdd the ID of the Item being added to this NormalUser's pending inventory
+     * @param itemIDToAdd the ID of the Item being added to this user's pending inventory
      */
-    public void addPendingInventory(Long itemToAdd) {
-        pendingInventory.add(itemToAdd);
+    public void addPendingInventory(Long itemIDToAdd) {
+        pendingInventory.add(itemIDToAdd);
+    }
+
+    /**
+     * Removes the given ID of an Item waiting for approval from this NormalUser's pending inventory.
+     * Happens when this NormalUser's item is rejected.
+     *
+     * @param itemIDToRemove the ID of the Item being removed from this user's pending inventory
+     */
+    public void removePendingInventory(Long itemIDToRemove) {
+        pendingInventory.remove(itemIDToRemove);
     }
 
     /**
      * Getter for this NormalUser's wishlist.
      *
-     * @return this NormalUser's wishlist
+     * @return this user's wishlist
      */
     public ArrayList<Long> getWishlist() {
         return wishlist;
@@ -103,7 +113,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Adds the given ID of an Item to this NormalUser's wishlist.
      *
-     * @param itemIDToAdd the ID of the Item being added to this NormalUser's wishlist
+     * @param itemIDToAdd the ID of the Item being added to this user's wishlist
      */
     public void addWishlist(Long itemIDToAdd) {
         wishlist.add(itemIDToAdd);
@@ -112,7 +122,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Removes the given ID of an Item from this NormalUser's wishlist.
      *
-     * @param itemIDToRemove the ID of the Item being removed from this NormalUser's wishlist
+     * @param itemIDToRemove the ID of the Item being removed from this user's wishlist
      */
     public void removeWishlist(Long itemIDToRemove) {
         wishlist.remove(itemIDToRemove);
@@ -121,7 +131,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Gets whether or not this NormalUser is frozen.
      *
-     * @return true if this NormalUser's account is frozen, false otherwise
+     * @return true if this user's account is frozen, false otherwise
      */
     public boolean getIsFrozen() {
         return isFrozen;
@@ -129,6 +139,7 @@ public class NormalUser extends User implements Serializable {
 
     /**
      * Sets this NormalUser's status to frozen.
+     *
      */
     public void freeze() {
         isFrozen = true;
@@ -136,6 +147,7 @@ public class NormalUser extends User implements Serializable {
 
     /**
      * Sets this NormalUser's status to NOT frozen.
+     *
      */
     public void unfreeze() {
         isFrozen = false;
@@ -163,7 +175,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Getter for this NormalUser's trade requests.
      *
-     * @return a HashMap containing all of this NormalUser's trade requests
+     * @return a HashMap containing all of this user's trade requests
      */
     public HashMap<String[], long[]> getTradeRequest() {
         return tradeRequests;
@@ -190,7 +202,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Getter for this NormalUser's meeting edit limit.
      *
-     * @return this NormalUser's limit on how many times they can edit a meeting
+     * @return this user's limit on how many times they can edit a meeting
      */
     public int getMeetingEditMax() {
         return meetingEditMax;
@@ -199,7 +211,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Setter for this NormalUser's meeting edit limit.
      *
-     * @param newMax the new limit on how many times they can edit a meeting
+     * @param newMax the new limit on how many times this user can edit a meeting
      */
     public void setMeetingEditMax(int newMax) {
         meetingEditMax = newMax;
@@ -208,7 +220,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Getter for this NormalUser's minimum lending over borrowing limit.
      *
-     * @return this NormalUser's minimum lending over borrowing limit
+     * @return this user's minimum lending over borrowing limit
      */
     public int getLendMinimum() {
         return lendMinimum;
@@ -226,7 +238,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Getter for this NormalUser's limit on incomplete trades.
      *
-     * @return this NormalUser's limit on incomplete trades
+     * @return this user's limit on incomplete trades
      */
     public int getIncompleteMax() {
         return incompleteMax;

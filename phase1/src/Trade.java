@@ -77,6 +77,29 @@ public class Trade implements Serializable {
     }
 
     /**
+     * Takes in a username and returns whether or not they're a part of this Trade.
+     *
+     * @param username the username whose involvement in this Trade is being determined
+     * @return whether or not the given user is part of this Trade
+     */
+    public boolean isInvolved(String username) {
+        return involvedUsernames[0].equals(username) || involvedUsernames[1].equals(username);
+    }
+    /**
+     * Takes in the username of a user and returns the ID of the item they lent in this Trade.
+     *
+     * @param username the username of the user
+     * @return the ID of the item the given user lent in this Trade
+     */
+    public long getLentItemID (String username) {
+        if (involvedUsernames[0].equals(username)) {
+            return involvedItemIDs[0];
+        } else {
+            return involvedItemIDs[1];
+        }
+    }
+
+    /**
      * Get whether or not this Trade is complete.
      *
      * @return a boolean representing whether or not this Trade is complete

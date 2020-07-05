@@ -3,18 +3,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * All the print stuff.
+ * The presenter used for the entire program. Prints to text UI.
  *
  * @author Ning Zhang
  * @author Kushagra
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-04
+ * last modified 2020-07-05
  */
 
 public class SystemPresenter {
-    private String choicePrompt = "\nPlease enter your choice here: ";
+    private final String choicePrompt = "\nPlease enter your choice here: ";
 
     //helper method that prints inventory + pending
     private void presentInventory(ArrayList<Item> itemInventory, ArrayList<Item> pendingItems) {
@@ -47,9 +47,6 @@ public class SystemPresenter {
 
     public void inventoryEditor(ArrayList<Item> itemInventory, ArrayList<Item> pendingItems) {
         presentInventory(itemInventory, pendingItems);
-        // show user their inventory right after selecting from dashboard?
-        // (then edit option substitutes for a separate view inventory option)
-
         System.out.println("\n   Choose one of the options: " +
                 "\n   1 - Add an item to inventory" +
                 "\n   2 - Remove item from inventory" +
@@ -101,9 +98,7 @@ public class SystemPresenter {
     }
 
     public void wishlistEditor(ArrayList<Item> itemWishlist) {
-
-        presentWishlist(itemWishlist); //same reasoning as in inventoryEditor
-
+        presentWishlist(itemWishlist);
         System.out.println("\n   Choose one of the options:" +
                 "\n   1 - Remove item from wish list" +
                 "\n   2 - Cancel ");
@@ -238,49 +233,47 @@ public class SystemPresenter {
 
     public void normalDashboard(int input){
         String frozenWarning = "\n-- Your account is currently frozen due to you reaching the limit on incomplete trades --";
-        String menuOneToFive = "\nWhat would you like to do:" +
+        String menuUnfrozen = "\nWhat would you like to do:" +
                 "\n 1 - see all items available for trade" +
-                "\n 2 - edit inventory " +
-                "\n 3 - edit wishlist " +
-                "\n 4 - view trade requests " +
-                "\n 5 - view latest trades ";
-        String menuSix = "\n 6 - request to unfreeze account";
+                "\n 2 - edit inventory" +
+                "\n 3 - edit wishlist" +
+                "\n 4 - view trade requests" +
+                "\n 5 - view ongoing trades" +
+                "\n 6 - view most recent 3 trades" +
+                "\n 7 - view top 3 trade partners";
+        String menuFrozen = "\n 8 - request to unfreeze account";
         String logoutOption = "\n 0 - logout ";
 
         switch (input){
             case 1:
-                System.out.println(menuOneToFive + logoutOption);
+                System.out.println(menuUnfrozen + logoutOption);
                 System.out.print(choicePrompt);
                 break;
             case 2:
-                System.out.println(frozenWarning + menuOneToFive + menuSix + logoutOption);
+                System.out.println(frozenWarning + menuUnfrozen + menuFrozen + logoutOption);
                 System.out.print(choicePrompt);
+                break;
+            case 3:
+                System.out.println("\nLogging out of the program now. See ya!");
                 break;
         }
     }
 
+    public void adminDashboard(int input) {
+        String menuNotInitAdmin = "\nWhat would you like to do:" +
+                "\n 1 - view items awaiting approval" +
+                "\n 2 - view accounts to freeze" +
+                "\n 3 - view requests to unfreeze account" +
+                "\n 4 - edit a user's threshold values";
+        String menuInitAdmin = "\n 5 - add new admin to the system";
+        String logoutOption = "\n 0 - logout ";
 
-
-    public void userDashboard(String input) {
         switch (input) {
-            case "unfreeze option":
-                System.out.println(" 6 - request to unfreeze account");
+            case 1:
+                System.out.println(menuNotInitAdmin + logoutOption);
                 break;
-            case "admin options":
-                System.out.println(" 6 - view items waiting for approval " +
-                        "\n 7 - view accounts to freeze " +
-                        "\n 8 - view requests to unfreeze account " +
-                        "\n 9 - edit a user's threshold values ");
-                break;
-            case "initial admin option":
-                System.out.println(" 10 - request to unfreeze account");
-                System.out.println(" 11 - add a new admin to the system");
-                break;
-            case "admin frozen option":
-                System.out.println(" 10 - request to unfreeze account");
-                break;
-            case "new admin":
-                System.out.println(" 10 - add a new admin to the system");
+            case 2:
+                System.out.println(menuNotInitAdmin + menuInitAdmin + logoutOption);
                 break;
         }
     }

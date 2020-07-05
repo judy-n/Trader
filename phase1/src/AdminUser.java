@@ -98,12 +98,22 @@ public class AdminUser extends User implements Serializable {
 
 
     /**
-     * Adds an approved item to the NormalUser's inventory
+     * Adds the given item to the given NormalUser's inventory.
      *
-     * @param user   user
-     * @param itemID item id
+     * @param user   the user whose item is being approved
+     * @param itemID the ID of the item being approved
      */
-    public void addApprovedItem(NormalUser user, long itemID) {
+    public void approveUserItem(NormalUser user, long itemID) {
         user.addInventory(itemID);
+    }
+
+    /**
+     * Rejects the given item from the given NormalUser's pending inventory.
+     *
+     * @param user   the user whose item is being rejected
+     * @param itemID the ID of the item being rejected
+     */
+    public void rejectUserItem(NormalUser user, long itemID) {
+        user.removePendingInventory(itemID);
     }
 }

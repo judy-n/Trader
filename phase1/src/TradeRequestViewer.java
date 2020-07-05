@@ -18,7 +18,7 @@ import java.util.*;
 
 public class TradeRequestViewer {
     private HashMap<String[], long[]> initiatedTrades;
-    private HashMap<String[], long[]> receiveTrades;
+    private HashMap<String[], long[]> receivedTrades;
     private ItemManager im;
     private UserManager um;
     private NormalUser currentUser;
@@ -37,7 +37,7 @@ public class TradeRequestViewer {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         SystemPresenter sp = new SystemPresenter();
         initiatedTrades = new HashMap<>();
-        receiveTrades = new HashMap<>();
+        receivedTrades = new HashMap<>();
         this.im = im;
         this.um = um;
 
@@ -45,7 +45,7 @@ public class TradeRequestViewer {
             if (user.getUsername().equals(key[0])) {
                 initiatedTrades.put(key, user.getTradeRequest().get(key));
             } else {
-                receiveTrades.put(key, user.getTradeRequest().get(key));
+                receivedTrades.put(key, user.getTradeRequest().get(key));
             }
         }
         ArrayList<Item> initiatedItems = new ArrayList<>();
@@ -66,11 +66,11 @@ public class TradeRequestViewer {
         ArrayList<Item> receivedItems = new ArrayList<>();
         ArrayList<String> receivedOwners = new ArrayList<>();
         int index = 1;
-        if (receiveTrades.isEmpty()) {
+        if (receivedTrades.isEmpty()) {
             sp.tradeRequestPresenter(1);
         } else {
-            for (String[] key : receiveTrades.keySet()) {
-                Item i = im.getApprovedItem(receiveTrades.get(key)[1]);
+            for (String[] key : receivedTrades.keySet()) {
+                Item i = im.getApprovedItem(receivedTrades.get(key)[1]);
                 receivedItems.add(i);
                 receivedOwners.add(key[0]);
                 index++;
@@ -117,6 +117,7 @@ public class TradeRequestViewer {
 
             } catch (IOException e) {
                 sp.exceptionMessage();
+                System.exit(-1);
             }
             new NormalDashboard(currentUser, im, um);
         }
@@ -130,9 +131,9 @@ public class TradeRequestViewer {
      * @return array of username and item name
      */
     public String[] getTradeHelper(int index) {
-        Set<String[]> keySet = receiveTrades.keySet();
+        Set<String[]> keySet = receivedTrades.keySet();
         ArrayList<String[]> listOfKeys = (ArrayList<String[]>) keySet;
-        Collection<long[]> keyValues = receiveTrades.values();
+        Collection<long[]> keyValues = receivedTrades.values();
         ArrayList<long[]> listOfKeyValues = (ArrayList<long[]>) keyValues;
         assert im.getApprovedItem(listOfKeyValues.get(index - 1)[1]) != null;
         String itemName = im.getApprovedItem(listOfKeyValues.get(index - 1)[1]).getName();

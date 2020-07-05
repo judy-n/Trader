@@ -82,6 +82,7 @@ public class InventoryEditor {
 
                 } catch (IOException e) {
                     sp.exceptionMessage();
+                    System.exit(-1);
                 }
 
             } else if (input == 2) {    //remove item
@@ -115,6 +116,7 @@ public class InventoryEditor {
 
                 } catch (IOException e) {
                     sp.exceptionMessage();
+                    System.exit(-1);
                 }
             } else {    //cancel
                 new NormalDashboard(currentUser, im, um);
@@ -122,6 +124,7 @@ public class InventoryEditor {
 
         } catch (IOException e) {
             sp.exceptionMessage();
+            System.exit(-1);
         }
     }
 }

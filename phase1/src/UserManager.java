@@ -14,10 +14,12 @@ import java.util.ArrayList;
 public class UserManager implements Serializable {
     private ArrayList<NormalUser> allNormals;
     private ArrayList<AdminUser> allAdmins;
+    private ArrayList<String> usernamesToFreeze;
 
     public UserManager() {
         allNormals = new ArrayList<>();
         allAdmins = new ArrayList<>();
+        usernamesToFreeze = new ArrayList<>();
     }
 
 

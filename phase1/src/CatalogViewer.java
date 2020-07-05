@@ -4,15 +4,16 @@ import java.io.InputStreamReader;
 
 /**
  * Shows all Items available for trade in all users' inventory.
+ * Allows users to initiate trades and add items to their wishlist.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-03
+ * last modified 2020-07-05
  */
-public class ItemPresenter {
+public class CatalogViewer {
     private NormalUser currentUser;
     private int max;
     private ItemManager im;
@@ -27,12 +28,11 @@ public class ItemPresenter {
      * @param im   the system's item manager
      * @param um   the system's user manager
      */
-    public ItemPresenter(NormalUser user, ItemManager im, UserManager um) {
+    public CatalogViewer(NormalUser user, ItemManager im, UserManager um) {
         currentUser = user;
         this.im = im;
         this.um = um;
         int input;
-        int index = 1;
         String inputConfirm;
         max = im.getNumApprovedItems();
 
@@ -83,6 +83,7 @@ public class ItemPresenter {
             new NormalDashboard(currentUser, im, um);
         } catch (IOException e) {
             sp.exceptionMessage();
+            System.exit(-1);
         }
     }
 

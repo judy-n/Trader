@@ -81,6 +81,7 @@ public class WishlistEditor {
             }
         } catch (IOException e) {
             sp.exceptionMessage();
+            System.exit(-1);
         }
     }
 

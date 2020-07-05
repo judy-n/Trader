@@ -76,4 +76,36 @@ public class TradeManager {
     public void removeTrade(Trade tradeToRemove) {
         allTrades.remove(tradeToRemove);
     }
+
+    /**
+     * Takes in a user and returns a list of all their ongoing Trades.
+     *
+     * @param user the user whose list of ongoing trades is being retrieved
+     * @return a list of the given user's ongoing Trades
+     */
+    public ArrayList<Trade> getOngoingTrades(NormalUser user) {
+        ArrayList<Trade> ongoingTrades = new ArrayList<>();
+        for (Trade t : allTrades) {
+            if (t.isInvolved(user.getUsername()) && !t.getIsComplete()) {
+                ongoingTrades.add(t);
+            }
+        }
+        return ongoingTrades;
+    }
+
+    /**
+     * Takes in a user and returns a list of all their completed Trades.
+     *
+     * @param user the user whose list of completed trades is being retrieved
+     * @return a list of the given user's completed Trades
+     */
+    public ArrayList<Trade> getCompletedTrades(NormalUser user) {
+        ArrayList<Trade> completedTrades = new ArrayList<>();
+        for (Trade t : allTrades) {
+            if (t.isInvolved(user.getUsername()) && t.getIsComplete()) {
+                completedTrades.add(t);
+            }
+        }
+        return completedTrades;
+    }
 }

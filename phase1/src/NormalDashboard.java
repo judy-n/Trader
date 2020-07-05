@@ -13,14 +13,13 @@ import java.sql.SQLOutput;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-04
+ * last modified 2020-07-05
  */
 
 
 public class NormalDashboard {
     private NormalUser currentUser;
     private int input;
-    private int maxChoice = 5;
     private ItemManager im;
     private UserManager um;
 
@@ -37,40 +36,24 @@ public class NormalDashboard {
         this.um = um;
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int maxChoice = 7;
 
         if (currentUser.getIsFrozen()) {
+            maxChoice = 8;
             sp.normalDashboard(2);
         } else {
             sp.normalDashboard(1);
         }
 
-//        } else if (currentUser instanceof AdminUser) {    //admin
-//            maxChoice = 9;
-//            specialCase = 2;
-//            sp.userDashboard("admin options");
-//
-//            if (currentUser.getIsFrozen() && (((AdminUser) currentUser).getAdminID() == 1)) {
-//                //initial admin allowed to add subsequent admins
-//                maxChoice = 11;
-//                specialCase = 3;
-//                sp.userDashboard("initial admin");
-//            }
-//
-//            else if (((AdminUser) currentUser).getAdminID() == 1) {
-//                maxChoice = 10;
-//                specialCase = 5;
-//                sp.userDashboard("new admin");
-//            }
-//        }
-
         try {
             input = Integer.parseInt(br.readLine());
             while (input < 0 || input > maxChoice) {
-                System.out.print("Invalid input. Try again: ");
+                sp.invalidInput();
                 input = Integer.parseInt(br.readLine());
             }
         } catch (IOException e) {
-            System.out.println("Error reading user input.");
+            sp.exceptionMessage();
+            System.exit(-1);
         }
 
         switch (input) {
@@ -81,13 +64,13 @@ public class NormalDashboard {
                     // TODO: write everything to file :(
 
                 } catch (IOException e) {
-                    System.out.println("Error closing input stream.");
+                   sp.exceptionMessage();
                 }
-                System.out.println("Logging out of the program. Bye!");
+                sp.normalDashboard(3);
                 System.exit(0);
 
             case 1:
-                new ItemPresenter(currentUser, im, um);
+                new CatalogViewer(currentUser, im, um);
                 break;
 
             case 2:
@@ -103,13 +86,29 @@ public class NormalDashboard {
                 break;
 
             case 5:
-
+                // view ongoing trades
+                // use getOngoingTrades in TradeManager
+                // in the new class created for this option, handle the whole meeting suggestion thing?
                 break;
 
-            case 6: {
-                // unfreeze request option for frozen non-admin
+            case 6:
+                // view most recent three *completed* trades
+                // if trade was two-way, display smth like "Lent [item] and borrowed [item] from [username]"
+                // if trade was one-way, "Lent [item] to [username]" or "Borrowed [item] from [username]"
+                // you can get what a certain user lent in a Trade by using tradeInstance.getLentItemID(username)
                 break;
-            }
+
+            case 7:
+                // view top three most frequent trading partners (only counts if trades are completed)
+                // add a method in TradeManager that takes in a user and finds those top three most frequent trade partners
+                // TradeManager's getCompletedTrades method can help
+                // p.s. might wanna use an array of size three so no extra space in memory is used up
+                break;
+
+            case 8:
+                // unfreeze request option for frozen account
+                // might need a new class? not sure yet
+                break;
         }
     }
 }
