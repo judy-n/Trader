@@ -67,7 +67,7 @@ public class CatalogViewer {
 
                 if (inputConfirm.equalsIgnoreCase("Y")) {
                     sp.itemPresenter(i, 3);
-                    NormalUser trader = um.getUserByUsername(i.getOwnerUsername());
+                    NormalUser trader = um.getNormalByUsername(i.getOwnerUsername());
                     assert trader != null;
                     String[] traders = {currentUser.getUsername(), trader.getUsername()};
                     long[] items = {0, i.getId()};

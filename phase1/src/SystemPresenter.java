@@ -58,7 +58,7 @@ public class SystemPresenter {
         switch (input){
             case 1:
                 System.out.println("\n--- Login ---");
-                System.out.println("Are you an admin?(Y/N)");
+                System.out.print("Are you an admin? (Y/N): ");
                 break;
             case 2:
                 System.out.print("Please enter your username: ");
@@ -79,10 +79,10 @@ public class SystemPresenter {
                 System.out.print("Password does not match email/username! Please try again: ");
                 break;
             case 8:
-                System.out.println("\n Logged in! \n");
+                System.out.println("\n Logged in!");
                 break;
             case 9:
-                System.out.println("Would you like to login with 1) username or 2) email?");
+                System.out.print("Would you like to login with 1) username or 2) email?: ");
                 break;
         }
     }

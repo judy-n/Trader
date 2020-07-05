@@ -158,7 +158,7 @@ public class TradeRequestViewer {
     }
 
     public void printInventory(String username) {
-        NormalUser u = um.getUserByUsername(username);
+        NormalUser u = um.getNormalByUsername(username);
         ArrayList<Item> items = im.getApprovedItemsByIDs(u.getInventory());
         for (Item i : items) {
             System.out.println(i);

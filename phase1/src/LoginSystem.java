@@ -31,15 +31,16 @@ public class LoginSystem {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         SystemPresenter sp = new SystemPresenter();
         this.um = um;
+
         sp.loginSystem(1);
-        try{
+        try {
             optionInput = br.readLine();
-            while(!optionInput.equalsIgnoreCase("y")&& !optionInput.equalsIgnoreCase("n")){
+            while (!optionInput.equalsIgnoreCase("y") && !optionInput.equalsIgnoreCase("n")) {
                 sp.invalidInput();
                 optionInput = br.readLine();
             }
             isAdmin = optionInput.equalsIgnoreCase("y");
-        }catch (IOException e){
+        } catch (IOException e) {
             sp.exceptionMessage();
         }
 
@@ -47,10 +48,10 @@ public class LoginSystem {
 
         try {
             optionInput = br.readLine();
-        while (!optionInput.equals("1") && !optionInput.equals("2")) {
-            sp.invalidInput();
-            optionInput = br.readLine();
-        }
+            while (!optionInput.equals("1") && !optionInput.equals("2")) {
+                sp.invalidInput();
+                optionInput = br.readLine();
+            }
         } catch (IOException e) {
             sp.exceptionMessage();
         }
@@ -64,7 +65,11 @@ public class LoginSystem {
                     username = br.readLine();
                 }
                 validPw = um.usernamePassword(username);
-                user = um.getUserByUsername(username);
+                if (isAdmin){
+                    user = um.getAdminByUsername(username);
+                } else {
+                    user = um.getNormalByUsername(username);
+                }
             } catch (IOException e) {
                 sp.exceptionMessage();
             }
@@ -80,7 +85,11 @@ public class LoginSystem {
                 sp.exceptionMessage();
             }
             validPw = um.emailPassword(email);
-            user = um.getUserByEmail(email);
+            if (isAdmin) {
+                user = um.getAdminByEmail(email);
+            } else {
+                user = um.getNormalByEmail(email);
+            }
         }
 
         sp.loginSystem(6);
@@ -104,7 +113,8 @@ public class LoginSystem {
     public User getUser() {
         return user;
     }
-    public boolean getIsAdmin(){
+
+    public boolean getIsAdmin() {
         return isAdmin;
     }
 }

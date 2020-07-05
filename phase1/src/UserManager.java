@@ -51,13 +51,13 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given username and returns the associated User.
+     * Takes the given username that belongs to a non-admin user and returns the associated NormalUser.
      *
-     * @param username the username of the User being searched for
-     * @return the User associated with the given username
+     * @param username the username of the non-admin user being retrieved
+     * @return the non-admin user associated with the given username
      */
-    public NormalUser getUserByUsername(String username) {
-        for (NormalUser u : getAllNormalUsers()) {
+    public NormalUser getNormalByUsername(String username) {
+        for (NormalUser u : allNormals) {
             if (u.getUsername().equals(username)) {
                 return u;
             }
@@ -66,13 +66,63 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given email and returns the associated User.
+     * Takes the given username that belongs to an admin and returns the associated AdminUser.
      *
-     * @param email the email of the User being searched for
-     * @return the User associated with the given email
+     * @param username the username of the admin being retrieved
+     * @return the admin associated with the given username
      */
-    public NormalUser getUserByEmail(String email) {
-        for (NormalUser u : getAllNormalUsers()) {
+    public AdminUser getAdminByUsername(String username) {
+        for (AdminUser u : allAdmins) {
+            if (u.getUsername().equals(username)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Takes the given email that belongs to a non-admin user and returns the associated NormalUser.
+     *
+     * @param email the email of the non-admin user being retrieved
+     * @return the non-admin user associated with the given email
+     */
+    public NormalUser getNormalByEmail(String email) {
+        for (NormalUser u : allNormals) {
+            if (u.getEmail().equals(email)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Takes the given email that belongs to an admin and returns the associated AdminUser.
+     *
+     * @param email the email of the admin being retrieved
+     * @return the admin associated with the given email
+     */
+    public AdminUser getAdminByEmail(String email) {
+        for (AdminUser u : allAdmins) {
+            if (u.getEmail().equals(email)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Takes the given email and returns the associated user.
+     *
+     * @param email the email of the user being retrieved
+     * @return the user associated with the given email
+     */
+    public User getUserByEmail(String email) {
+        for (NormalUser u : allNormals) {
+            if (u.getEmail().equals(email)) {
+                return u;
+            }
+        }
+        for (AdminUser u : allAdmins) {
             if (u.getEmail().equals(email)) {
                 return u;
             }

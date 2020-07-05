@@ -31,8 +31,8 @@ public class PermanentTrade extends Trade {
         String[] usernames = getInvolvedUsernames();
 
         if (getUserTransactionConfirmation(usernames[0]) && getUserTransactionConfirmation(usernames[1])) {
-            NormalUser tempUser1 = um.getUserByUsername(usernames[0]);
-            NormalUser tempUser2 = um.getUserByUsername(usernames[1]);
+            NormalUser tempUser1 = um.getNormalByUsername(usernames[0]);
+            NormalUser tempUser2 = um.getNormalByUsername(usernames[1]);
             assert tempUser1 != null && tempUser2 != null;
             long[] itemIDs = getInvolvedItemIDs();
             if (itemIDs[0] != 0) {
