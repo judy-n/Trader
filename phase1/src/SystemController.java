@@ -10,8 +10,10 @@ import java.io.IOException;
  */
 
 public class SystemController {
-    public UserManager um;
-    public ItemManager im;
+    private UserManager um;
+    private ItemManager im;
+    private AdminDashboard ad;
+    private NormalDashboard ud;
 
     public SystemController() {
         String serializedUserManagerInfo = "usermanager.ser";
@@ -21,12 +23,10 @@ public class SystemController {
         UserGateway ug = new UserGateway(um);
         ItemGateway ig = new ItemGateway(im);
         try {
-            ug.saveToFile(serializedUserManagerInfo);
-            ig.saveToFile(serializedItemManagerInfo);
             ug.readFromFile(serializedUserManagerInfo);
             ig.readFromFile(serializedItemManagerInfo);
-        } catch (ClassNotFoundException | IOException ex) {
-            System.out.println("Stop.");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
         }
         AdminUser mod01 = new AdminUser("Hello_World", "admin01@email.com", "pa55word", 1);
         um.addUser(mod01);
@@ -43,7 +43,7 @@ public class SystemController {
             while (!isSignedUp) {
                 isSignedUp = sus.getSignedUp();
             }
-            NormalDashboard ud = new NormalDashboard(sus.getNewUser(), im, um);
+            ud = new NormalDashboard(sus.getNewUser(), im, um);
 
         } else {
             LoginSystem ls = new LoginSystem(um);
@@ -52,12 +52,24 @@ public class SystemController {
                 isLoggedIn = ls.getIsLoggedIn();
             }
           if(ls.getIsAdmin()){
-              AdminDashboard ad = new AdminDashboard((AdminUser) ls.getUser(), im, um);
+              ad = new AdminDashboard((AdminUser) ls.getUser(), im, um);
           }else {
-              NormalDashboard ud = new NormalDashboard((NormalUser) ls.getUser(), im, um);
+              ud = new NormalDashboard((NormalUser) ls.getUser(), im, um);
           }
 
         }
+        boolean isLoggedOut = (ad.getIsLoggedOut()||ud.getIsLoggedOut());
+        while(!isLoggedOut){
+            isLoggedOut = (ad.getIsLoggedOut()||ud.getIsLoggedOut());
+        }
+        try {
+            ug.saveToFile(serializedUserManagerInfo);
+            ig.saveToFile(serializedItemManagerInfo);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        System.exit(0);
+
     }
 
 }
