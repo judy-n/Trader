@@ -74,7 +74,7 @@ public class AdminDashboard {
                 // if admin chooses to freeze an account: remove from usernamesToFreeze and call freezeUser() in AdminUser
             case 3:
                 // view requests to unfreeze account
-                // haven't figured that out yet... new class or stuff it in UserManager too?
+                // new class or stuff it in UserManager too?
             case 4:
                 // edit a user's threshold values
                 // all the methods needed to set these values are in AdminUser

@@ -87,12 +87,23 @@ public class NormalDashboard {
 
             case 5:
                 // view ongoing trades
+                // heavily relies on temp trade and perm trade implementation
+                // so don't implement until Eric + Yiwei are done with that
+
                 // use getOngoingTrades in TradeManager
                 // in the new class created for this option, handle the whole meeting suggestion thing?
+                // make sure you check if the meeting is a suggestion or if it's already agreed upon
+                // before editing a meeting check if they've reached the max number of times they can edit (meetingEditMax in NormalUser)
+                // if both users have reached their max, the recipient of the last suggestion either accepts the suggestion or cancels the trade
+
+                // btw what to do about cancelled trades? (when both users have reached their max edits and the last suggestion is rejected)
+                // >> have to let both users know it got cancelled
                 break;
 
             case 6:
                 // view most recent three *completed* trades
+                // know that you might have to make changes to code later cuz trade classes are being remodeled
+
                 // if trade was two-way, display smth like "Lent [item] and borrowed [item] from [username]"
                 // if trade was one-way, "Lent [item] to [username]" or "Borrowed [item] from [username]"
                 // you can get what a certain user lent in a Trade by using tradeInstance.getLentItemID(username)
@@ -100,6 +111,8 @@ public class NormalDashboard {
 
             case 7:
                 // view top three most frequent trading partners (only counts if trades are completed)
+                // know that you might have to make changes to code later cuz trade classes are being remodeled
+
                 // add a method in TradeManager that takes in a user and finds those top three most frequent trade partners
                 // TradeManager's getCompletedTrades method can help
                 // p.s. might wanna use an array of size three so no extra space in memory is used up
@@ -107,7 +120,7 @@ public class NormalDashboard {
 
             case 8:
                 // unfreeze request option for frozen account
-                // might need a new class? not sure yet
+                // new class or stuff it in UserManager too?
                 break;
         }
     }
