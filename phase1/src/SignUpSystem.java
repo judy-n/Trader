@@ -28,10 +28,10 @@ public class SignUpSystem {
      */
     public SignUpSystem(UserManager um) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        SystemPresenter sp = new SystemPresenter();
         this.um = um;
         isSignedUp = false;
-        System.out.println("\n--- Signup ---");
-        System.out.print("Please enter an email: ");
+        sp.signUpSystem(1);
         try {
             String emailInput = br.readLine();
             boolean invalidInput;
@@ -39,20 +39,20 @@ public class SignUpSystem {
                 invalidInput = false;
                 if (um.emailExists(emailInput)) {
                     invalidInput = true;
-                    System.out.print("Email is already associated with an account! Please enter a different email: ");
+                    sp.signUpSystem(2);
                     emailInput = br.readLine();
                 } else if (!(emailInput.contains("@") && emailInput.contains(".")) || emailInput.contains(" ")) {
                     invalidInput = true;
-                    System.out.print("That's not an email address! Please enter a valid email: ");
+                    sp.signUpSystem(3);
                     emailInput = br.readLine();
                 }
             } while (invalidInput);
             email = emailInput;
         } catch (IOException e) {
-            System.out.println("Error reading user input.");
+            sp.exceptionMessage();
         }
 
-        System.out.print("Please enter an username: ");
+        sp.signUpSystem(4);
         try {
             String usernameInput = br.readLine();
             boolean invalidInput;
@@ -60,39 +60,39 @@ public class SignUpSystem {
                 invalidInput = false;
                 if (um.usernameExists(usernameInput)) {
                     invalidInput = true;
-                    System.out.print("Username already exists! Please enter a different username: ");
+                    sp.signUpSystem(5);
                     usernameInput = br.readLine();
                 } else if (usernameInput.trim().isEmpty()) {
                     invalidInput = true;
-                    System.out.print("Invalid username. Please try again: ");
+                    sp.signUpSystem(6);
                     usernameInput = br.readLine();
                 }
             } while (invalidInput);
             username = usernameInput;
         } catch (IOException e) {
-            System.out.println("Error reading user input.");
+            sp.exceptionMessage();
         }
 
-        System.out.print("Please enter a password: ");
+        sp.signUpSystem(7);
         try {
             String pwInput1 = br.readLine();
             while (pwInput1.trim().isEmpty()) {
-                System.out.print("Invalid password. Please try again: ");
+                sp.signUpSystem(8);
                 pwInput1 = br.readLine();
             }
-            System.out.print("Please verify your password: ");
+            sp.signUpSystem(9);
             String pwInput2 = br.readLine();
             while (!pwInput1.equals(pwInput2)) {
-                System.out.print("Passwords do not match. Please try again: ");
+                sp.signUpSystem(10);
                 pwInput2 = br.readLine();
             }
             password = pwInput1;
         } catch (IOException e) {
-            System.out.println("Error reading user input.");
+            sp.exceptionMessage();
         }
         newUser = new NormalUser(username, email, password);
         um.addUser(newUser);
-        System.out.println("\n Thank you for signing up! \n You are now logged in.");
+        sp.signUpSystem(11);
         isSignedUp = true;
     }
 

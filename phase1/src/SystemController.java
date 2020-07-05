@@ -6,7 +6,7 @@ import java.io.IOException;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-04
+ * last modified 2020-07-05
  */
 
 public class SystemController {
@@ -51,8 +51,12 @@ public class SystemController {
             while (!isLoggedIn) {
                 isLoggedIn = ls.getIsLoggedIn();
             }
-            NormalDashboard ud = new NormalDashboard((NormalUser) ls.getUser(), im, um);
-            //need to distinguish normal user from admin logging in
+          if(ls.getIsAdmin()){
+              AdminDashboard ad = new AdminDashboard((AdminUser) ls.getUser(), im, um);
+          }else {
+              NormalDashboard ud = new NormalDashboard((NormalUser) ls.getUser(), im, um);
+          }
+
         }
     }
 

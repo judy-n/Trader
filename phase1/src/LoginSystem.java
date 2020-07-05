@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-04
+ * last modified 2020-07-05
  */
 
 public class LoginSystem {
@@ -19,7 +19,9 @@ public class LoginSystem {
     private User user;
     private UserManager um;
     private boolean isLoggedIn;
-    private int optionInput;
+    private boolean isAdmin;
+    private String optionInput;
+
     /**
      * LoginSystem
      * Creates a log in system that takes in user input
@@ -27,84 +29,71 @@ public class LoginSystem {
     public LoginSystem(UserManager um) {
         isLoggedIn = false;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        SystemPresenter sp = new SystemPresenter();
         this.um = um;
-        System.out.println("\n--- Login ---");
-        System.out.println("Would you like to login with 1) username or 2) email?");
-        try {
-            optionInput = Integer.parseInt(br.readLine());
-        if (!(optionInput == 1) && !(optionInput == 2)) {
-            System.out.println("Invalid input. Please try again.");
-            optionInput = Integer.parseInt(br.readLine());
-        }
-        } catch (IOException e) {
-            System.out.println("Error reading user input.");
+        sp.loginSystem(1);
+        try{
+            optionInput = br.readLine();
+            while(!optionInput.equalsIgnoreCase("y")&& !optionInput.equalsIgnoreCase("n")){
+                sp.invalidInput();
+                optionInput = br.readLine();
+            }
+            isAdmin = optionInput.equalsIgnoreCase("y");
+        }catch (IOException e){
+            sp.exceptionMessage();
         }
 
-        if (optionInput==1) {
-            System.out.print("Please enter your username: ");
+        sp.loginSystem(9);
+
+        try {
+            optionInput = br.readLine();
+        while (!optionInput.equals("1") && !optionInput.equals("2")) {
+            sp.invalidInput();
+            optionInput = br.readLine();
+        }
+        } catch (IOException e) {
+            sp.exceptionMessage();
+        }
+
+        if (optionInput.equals("1")) {
+            sp.loginSystem(2);
             try {
                 username = br.readLine();
                 while (!um.usernameExists(username)) {
-                    System.out.print("Username does not exist in our database! Please try again: ");
-//                    System.out.print("Username does not exist in our database!! Would you like to sign up instead? (Y/N): ");
-//                    String optionInput2;
-//                    do {
-//                        optionInput2 = br.readLine();
-//                        if (optionInput2.equalsIgnoreCase("Y")) {
-//                            new SignUpSystem(um);
-//                        } else if (optionInput2.equalsIgnoreCase("N")) {
-//                            System.out.print("Please enter the correct username: ");
-//                        } else {
-//                            System.out.print("Invalid input. Please enter Y or N: ");
-//                        }
-//                    } while (!optionInput2.equalsIgnoreCase("Y") &&
-//                            !optionInput2.equalsIgnoreCase("N"));
+                    sp.loginSystem(3);
                     username = br.readLine();
                 }
                 validPw = um.usernamePassword(username);
                 user = um.getUserByUsername(username);
             } catch (IOException e) {
-                System.out.println("Error reading user input.");
+                sp.exceptionMessage();
             }
         } else {
-            System.out.print("Please enter your email: ");
+            sp.loginSystem(4);
             try {
                 email = br.readLine();
                 while (!um.emailExists(email)) {
-                    System.out.print("Email does not exist in our database! Please try again: ");
-//                    System.out.print("Email does not exist in our database! Would you like to sign up instead? (Y/N): ");
-//                    String optionInput2;
-//                    do {
-//                        optionInput2 = br.readLine();
-//                        if (optionInput2.equalsIgnoreCase("Y")) {
-//                            new SignUpSystem(um);
-//                        } else if (optionInput2.equalsIgnoreCase("N")) {
-//                            System.out.print("Please enter the correct email: ");
-//                        } else {
-//                            System.out.print("Invalid input. Please enter Y or N: ");
-//                        }
-//                    } while (!optionInput2.equalsIgnoreCase("Y") &&
-//                            !optionInput2.equalsIgnoreCase("N"));
+                    sp.loginSystem(5);
                     email = br.readLine();
                 }
             } catch (IOException e) {
-                System.out.println("Error reading user input.");
+                sp.exceptionMessage();
             }
             validPw = um.emailPassword(email);
             user = um.getUserByEmail(email);
         }
 
-        System.out.print("Please enter your password: ");
+        sp.loginSystem(6);
         try {
             String password = br.readLine();
             while (!password.equals(validPw)) {
-                System.out.print("Password does not match email/username! Please try again: ");
+                sp.loginSystem(7);
                 password = br.readLine();
             }
         } catch (IOException e) {
-            System.out.println("Error reading user input.");
+            sp.exceptionMessage();
         }
-        System.out.println("\n Logged in! \n");
+        sp.loginSystem(8);
         isLoggedIn = true;
     }
 
@@ -114,5 +103,8 @@ public class LoginSystem {
 
     public User getUser() {
         return user;
+    }
+    public boolean getIsAdmin(){
+        return isAdmin;
     }
 }

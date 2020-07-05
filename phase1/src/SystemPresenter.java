@@ -1,6 +1,4 @@
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * The presenter used for the entire program. Prints to text UI.
@@ -15,6 +13,81 @@ import java.util.HashMap;
 
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
+
+    public void signUpSystem(int input){
+        switch (input) {
+            case 1:
+                System.out.println("\n--- Signup ---");
+                System.out.print("Please enter an email: ");
+                break;
+            case 2:
+                System.out.print("Email is already associated with an account! Please enter a different email: ");
+                break;
+            case 3:
+                System.out.print("That's not an email address! Please enter a valid email: ");
+                break;
+            case 4:
+                System.out.print("Please enter an username: ");
+                break;
+            case 5:
+                System.out.print("Username already exists! Please enter a different username: ");
+                break;
+            case 6:
+                System.out.print("Invalid username. Please try again: ");
+                break;
+            case 7:
+                System.out.print("Please enter a password: ");
+                break;
+            case 8:
+                System.out.print("Invalid password. Please try again: ");
+                break;
+            case 9:
+                System.out.print("Please verify your password: ");
+                break;
+            case 10:
+                System.out.print("Passwords do not match. Please try again: ");
+                break;
+            case 11:
+                System.out.println("\n Thank you for signing up! \n You are now logged in.");
+                break;
+        }
+    }
+
+
+    public void loginSystem(int input){
+        switch (input){
+            case 1:
+                System.out.println("\n--- Login ---");
+                System.out.println("Are you an admin?(Y/N)");
+                break;
+            case 2:
+                System.out.print("Please enter your username: ");
+                break;
+            case 3:
+                System.out.print("Username does not exist in our database! Please try again: ");
+                break;
+            case 4:
+                System.out.print("Please enter your email: ");
+                break;
+            case 5:
+                System.out.print("Email does not exist in our database! Please try again: ");
+                break;
+            case 6:
+                System.out.print("Please enter your password: ");
+                break;
+            case 7:
+                System.out.print("Password does not match email/username! Please try again: ");
+                break;
+            case 8:
+                System.out.println("\n Logged in! \n");
+                break;
+            case 9:
+                System.out.println("Would you like to login with 1) username or 2) email?");
+                break;
+        }
+    }
+
+
 
     //helper method that prints inventory + pending
     private void presentInventory(ArrayList<Item> itemInventory, ArrayList<Item> pendingItems) {
