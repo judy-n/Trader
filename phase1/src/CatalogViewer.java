@@ -38,14 +38,15 @@ public class CatalogViewer {
 
         SystemPresenter sp = new SystemPresenter(); // to call strings to print
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        sp.itemPresenter(im.getApprovedItems());
+        sp.catalogViewer(im.getApprovedItems());
+        if(currentUser.getIsFrozen()){
+            sp.catalogViewer(2);
+            new NormalDashboard(currentUser, im, um);
+        }
 
+        sp.catalogViewer(1);
         try {
-            String tempInput = br.readLine();
-            while (!isInteger(tempInput)) {
-                tempInput = br.readLine();
-            }
-            input = Integer.parseInt(tempInput);
+            input = Integer.parseInt(br.readLine());
             while (input < 0 || input > max) {
                 sp.invalidInput();
                 input = Integer.parseInt(br.readLine());
@@ -56,9 +57,9 @@ public class CatalogViewer {
 
             Item i = im.getApprovedItem(input);
             assert i != null;
-            sp.itemPresenter(i, 1);
+            sp.catalogViewer(i, 1);
             if (i.getAvailability()) {
-                sp.itemPresenter(i, 2);
+                sp.catalogViewer(i, 2);
                 inputConfirm = br.readLine();
                 while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
                     sp.invalidInput();
@@ -66,7 +67,7 @@ public class CatalogViewer {
                 }
 
                 if (inputConfirm.equalsIgnoreCase("Y")) {
-                    sp.itemPresenter(i, 3);
+                    sp.catalogViewer(i, 3);
                     NormalUser trader = um.getNormalByUsername(i.getOwnerUsername());
                     assert trader != null;
                     String[] traders = {currentUser.getUsername(), trader.getUsername()};
@@ -78,7 +79,7 @@ public class CatalogViewer {
                     sp.cancelled();
                 }
             } else {
-                sp.itemPresenter(i, 4);
+                sp.catalogViewer(i, 4);
             }
             new NormalDashboard(currentUser, im, um);
         } catch (IOException e) {

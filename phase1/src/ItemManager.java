@@ -48,6 +48,14 @@ public class ItemManager implements Serializable {
         return approvedItems.size();
     }
 
+
+    /**
+     * Returns the total number of pending items in the system.
+     *
+     * @return the total number of pending items in the system
+     */
+    public int getNumPendingItems(){return pendingItems.size();}
+
     /**
      * Takes in an approved item ID and returns the associated Item object.
      *

@@ -200,13 +200,23 @@ public class SystemPresenter {
         }
     }
 
-    public void itemPresenter(ArrayList<Item> approvedItems){
+    public void catalogViewer(ArrayList<Item> approvedItems){
         System.out.println("\nThese are all the items available for trade:");
         presenterAllItems(approvedItems);
-        System.out.print("\nIs there an item you would like to trade for? (0 to quit): ");
+
+    }
+    public void catalogViewer(int input){
+        switch (input){
+            case 1:
+                System.out.print("\nIs there an item you would like to trade for? (0 to quit): ");
+                break;
+            case 2:
+                System.out.println("\nYour account is frozen!");
+                break;
+        }
     }
 
-    public void itemPresenter(Item item, int input){
+    public void catalogViewer(Item item, int input){
         switch (input){
             case 1:
                 System.out.println("You have chosen: " + item);
@@ -224,9 +234,34 @@ public class SystemPresenter {
         }
     }
 
-    private void presenterAllItems(ArrayList<Item> approvedItems){
+    public void catalogEditor(ArrayList<Item> pendingItems){
+        System.out.println("\nThese are all the items waiting for approval:");
+        presenterAllItems(pendingItems);
+
+    }
+    public void catalogEditor(int input){
+        switch (input){
+            case 1:
+                System.out.println("\nThere are no items waiting for approval!");
+                break;
+            case 2:
+                System.out.println("\nIs there an item you would like to approve/deny? (0 to quit)");
+                break;
+
+        }
+
+    }
+
+    public void catalogEditor(Item item){
+        System.out.println("You have chosen: " + item);
+        System.out.println("Would you like to 1) approve or 2) deny this item?");
+
+    }
+
+
+    private void presenterAllItems(ArrayList<Item> items){
         int index = 1;
-        for (Item i : approvedItems) {
+        for (Item i : items) {
             System.out.println(index + ". " + i);
             index++;
         }
