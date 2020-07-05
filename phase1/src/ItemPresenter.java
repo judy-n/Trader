@@ -38,13 +38,7 @@ public class ItemPresenter {
 
         SystemPresenter sp = new SystemPresenter(); // to call strings to print
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        sp.itemPresenter("available Items");
-
-        for (Item i : im.getApprovedItems()) {
-            System.out.println(index + ". " + i);
-            index++;
-        }
-        sp.itemPresenter("choose trade");
+        sp.itemPresenter(im.getApprovedItems());
 
         try {
             String tempInput = br.readLine();
@@ -53,7 +47,7 @@ public class ItemPresenter {
             }
             input = Integer.parseInt(tempInput);
             while (input < 0 || input > max) {
-                sp.itemPresenter("try again");
+                sp.invalidInput();
                 input = Integer.parseInt(br.readLine());
             }
             if (input == 0) {
@@ -62,19 +56,17 @@ public class ItemPresenter {
 
             Item i = im.getApprovedItem(input);
             assert i != null;
-            System.out.println("You have chosen: " + input + ". " + i);
-
+            sp.itemPresenter(i, 1);
             if (i.getAvailability()) {
-                System.out.println("Are you sure you want to trade for this item with user, " + i.getOwnerUsername() + " ?(Y/N)");
+                sp.itemPresenter(i, 2);
                 inputConfirm = br.readLine();
-
                 while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-                    sp.itemPresenter("try again");
+                    sp.invalidInput();
                     inputConfirm = br.readLine();
                 }
 
                 if (inputConfirm.equalsIgnoreCase("Y")) {
-                    System.out.println("Contacting user, " + i.getOwnerUsername());
+                    sp.itemPresenter(i, 3);
                     NormalUser trader = um.getUserByUsername(i.getOwnerUsername());
                     assert trader != null;
                     String[] traders = {currentUser.getUsername(), trader.getUsername()};
@@ -83,14 +75,14 @@ public class ItemPresenter {
                     currentUser.addTradeRequest(traders, items);
                     currentUser.addWishlist(i.getId());
                 } else {
-                    sp.itemPresenter("cancelled");
+                    sp.cancelled();
                 }
             } else {
-                sp.itemPresenter("not available");
+                sp.itemPresenter(i, 4);
             }
             new UserDashboard(currentUser, im, um);
         } catch (IOException e) {
-            sp.itemPresenter("error");
+            sp.exceptionMessage();
         }
     }
 

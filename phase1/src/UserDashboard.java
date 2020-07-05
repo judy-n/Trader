@@ -39,10 +39,10 @@ public class UserDashboard {
         SystemPresenter sp = new SystemPresenter();
 
         if (currentUser.getIsFrozen()) {
-            sp.userDashboard("frozen");
+            sp.userDashboard(1);
         }
 
-        sp.userDashboard("menu");
+        sp.userDashboard(2);
 
 //        if (!(currentUser instanceof AdminUser) && currentUser.getIsFrozen()) {     //frozen non-admin
 //            maxChoice = 6;
@@ -74,9 +74,7 @@ public class UserDashboard {
 //            }
 //        }
 
-        sp.userDashboard("logout");
-        sp.userDashboard("action");
-
+        sp.userDashboard(3);
         selectChoice();
 
     }

@@ -1,4 +1,6 @@
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * All the print stuff.
@@ -43,7 +45,6 @@ public class SystemPresenter {
     }
 
     public void inventoryEditor(ArrayList<Item> itemInventory, ArrayList<Item> pendingItems) {
-
         presentInventory(itemInventory, pendingItems);
         // show user their inventory right after selecting from dashboard?
         // (then edit option substitutes for a separate view inventory option)
@@ -130,6 +131,38 @@ public class SystemPresenter {
         }
     }
 
+    public void itemPresenter(ArrayList<Item> approvedItems){
+        System.out.println("\nThese are all the items available for trade:");
+        presenterAllItems(approvedItems);
+        System.out.print("\nIs there an item you would like to trade for? (0 to quit): ");
+    }
+
+    public void itemPresenter(Item item, int input){
+        switch (input){
+            case 1:
+                System.out.println("You have chosen: " + item);
+                break;
+            case 2:
+                System.out.println("Are you sure you want to trade for this item with user, " + item.getOwnerUsername() + " ?(Y/N)");
+                break;
+            case 3:
+                System.out.println("Contacting user, " + item.getOwnerUsername());
+                break;
+            case 4:
+                System.out.println("\nSorry, this item is currently not available for trade. We suggest adding it to your wishlist!");
+                break;
+
+        }
+    }
+
+    private void presenterAllItems(ArrayList<Item> approvedItems){
+        int index = 1;
+        for (Item i : approvedItems) {
+            System.out.println(index + ". " + i);
+            index++;
+        }
+    }
+
     public void cancelled() {
         System.out.println("\nCancelled!");
     }
@@ -142,65 +175,72 @@ public class SystemPresenter {
         System.out.print("\nInvalid input. Please try again: ");
     }
 
-    // doesn't need user to work, (need another SystemPresenter contructor for other classes that need this too)
-    public void itemPresenter(String input) {
-        switch (input) {
-            case "available Items":
-                System.out.println("\nThese are all the items available for trade:");
+    public void tradeRequestPresenter(int input){
+        switch (input){
+            case 1:
+                System.out.println("You did not receive any trade requests.");
                 break;
-            case "choose trade":
-                System.out.print("\nIs there an item you would like to trade for? (0 to quit): ");
+            case 2:
+                System.out.println("You did not initiate any trade requests.");
                 break;
-            case "try again":
-                System.out.println("\nInvalid input try again.");
-                break;
-            case "cancelled":
-                System.out.println("\nCancelled.");
-                break;
-            case "not available":
-                System.out.println("\nSorry, this item is currently not available for trade. We suggest adding it to your wishlist!");
-                break;
-            case "error":
-                System.out.println("Trade has resulted in error due to invalid input.");
-                break;
-        }
-    }
-
-    public void tradeRequestPresenter(String input) {
-        switch (input) {
-            case "sent requests":
-                System.out.println("Here is all the trade request(s) you sent:");
-                break;
-            case "no requests found":
-                System.out.println("None!");
-                break;
-            case "received requests":
-                System.out.println("Here is all the trade request(s) you received:");
-                break;
-            case "to accept":
-                System.out.println("Would you like to accept any of these requests?(0 to quit)");
-                break;
-            case "invalid":
-                System.out.println("Invalid input! Please try again.");
-                break;
-            case "suggest time":
-                System.out.println("Please suggest a time(YYYY/MM/DD-HH/MM): ");
-                break;
-            case "suggest place":
+            case 3:
                 System.out.println("Please suggest a place: ");
                 break;
-            case "error":
-                System.out.println("Trade has resulted in error due to invalid input.");
+        }
+    }
+
+    public void tradeRequestPresenter(int input, String owner, String itemName){
+        switch (input){
+            case 1:
+                System.out.println("Are you sure you want to trade " + itemName + " with " + owner + "?(Y/N)");
+                break;
+            case 2:
+                System.out.println("Initiating Trade with " + owner);
+                System.out.println("Please suggest a time(YYYY/MM/DD-HH/MM): ");
+                break;
+        }
+
+    }
+
+    public void tradeRequestPresenter(int input,ArrayList<Item> items, ArrayList<String> owners ){
+        switch (input){
+            case 1:
+                System.out.println("Here is all the trade request(s) you sent:");
+                presentInitiatedTradeRequests(items, owners);
+                break;
+            case 2:
+                System.out.println("Here is all the trade request(s) you received:");
+                presentReceivedTradeRequests(items, owners);
+                System.out.println("Would you like to accept any of these requests?(0 to quit)");
                 break;
         }
     }
 
-    public void userDashboard(String input) {
-        switch (input) {
-            case "frozen":
+    private void presentInitiatedTradeRequests(ArrayList<Item> items, ArrayList<String> users){
+        if (items.isEmpty()) {
+            System.out.println("You did not initiate any trades.");
+        } else {
+            int index = 0;
+            for(Item i : items) {
+                System.out.println("Trade for " + i.getName() + " from user " + users.get(index));
+                index ++;
+            }
+        }
+    }
+
+    private void presentReceivedTradeRequests(ArrayList<Item> items, ArrayList<String> users){
+        int index = 1;
+        for (Item i : items)
+            System.out.println(index + ". Trade for " + i.getName() + " from user " + users.get(index-1));
+    }
+
+
+    public void userDashboard(int input){
+        switch (input){
+            case 1:
                 System.out.println("-- Your account is currently frozen due to you reaching the limit on incomplete trades --");
                 break;
-            case "menu":
+            case 2:
                 System.out.println("\nWhat would you like to do:" +
                         "\n 1 - see all items available for trade" +
                         "\n 2 - edit inventory " +
@@ -208,6 +248,17 @@ public class SystemPresenter {
                         "\n 4 - view trade requests " +
                         "\n 5 - view latest trades ");
                 break;
+            case 3:
+                System.out.println(" 0 - logout ");
+                System.out.print("Please enter your choice here: ");
+                break;
+        }
+    }
+
+
+
+    public void userDashboard(String input) {
+        switch (input) {
             case "unfreeze option":
                 System.out.println(" 6 - request to unfreeze account");
                 break;
@@ -227,16 +278,6 @@ public class SystemPresenter {
             case "new admin":
                 System.out.println(" 10 - add a new admin to the system");
                 break;
-            case "logout":
-                System.out.println(" 0 - logout ");
-                break;
-            case "action":
-                System.out.print("Please enter your choice here: ");
-                break;
-            case "invalid":
-                System.out.print("Invalid input. Try again: ");
-                break;
-
         }
     }
 }

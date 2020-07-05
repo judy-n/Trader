@@ -40,11 +40,12 @@ public class Item implements Serializable {
     //helper method that creates and assigns a unique ID to this Item
     private void assignID() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < ownerUsername.length(); i++) {
+        for (int i = 0; i < 3; i++) {
             sb.append((int) ownerUsername.charAt(i));
         }
-        id = Long.parseLong(sb.toString() + (new Date().getTime()) / 1000);
-        System.out.println(id);
+        long DIVIDE = 86400000L;
+        String stringId = sb.toString() + (new Date().getTime())/DIVIDE;
+        id = Long.parseLong(stringId);
     }
 
     /**

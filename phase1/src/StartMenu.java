@@ -33,8 +33,9 @@ public class StartMenu {
                 userInput = Integer.parseInt(br.readLine());
             }
 
-        } catch (IOException e) {
+        } catch (IOException |NumberFormatException ex) {
             System.out.println("Error reading user input.");
+
         }
 
         if (userInput == 3) {

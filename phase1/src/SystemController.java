@@ -14,8 +14,8 @@ public class SystemController {
     public ItemManager im;
 
     public SystemController() {
-        String serializedUserManagerInfo = "src/usermanager.ser";
-        String serializedItemManagerInfo = "src/itemmanager.ser";
+        String serializedUserManagerInfo = "usermanager.ser";
+        String serializedItemManagerInfo = "itemmanager.ser";
         UserManager um = new UserManager();
         ItemManager im = new ItemManager();
         UserGateway ug = new UserGateway(um);

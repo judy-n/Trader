@@ -48,50 +48,58 @@ public class TradeRequestPresenter {
                 receiveTrades.put(key, user.getTradeRequest().get(key));
             }
         }
-        sp.tradeRequestPresenter("sent requests");
+        ArrayList<Item> initiatedItems = new ArrayList<>();
+        ArrayList<String> initiatedOwners = new ArrayList<>();
+
         if (initiatedTrades.isEmpty()) {
-            sp.tradeRequestPresenter("none");
+            sp.tradeRequestPresenter(2);
         } else {
+
             for (String[] key : initiatedTrades.keySet()) {
                 Item i = im.getApprovedItem(initiatedTrades.get(key)[1]);
-                System.out.println("Trade for " + i.getName() + " from user " + key[1]);
+                initiatedItems.add(i);
+                initiatedOwners.add(key[1]);
             }
+            sp.tradeRequestPresenter(1, initiatedItems, initiatedOwners);
         }
 
-        sp.tradeRequestPresenter("received requests");
+        ArrayList<Item> receivedItems = new ArrayList<>();
+        ArrayList<String> receivedOwners = new ArrayList<>();
         int index = 1;
         if (receiveTrades.isEmpty()) {
-            sp.tradeRequestPresenter("none");
+            sp.tradeRequestPresenter(1);
         } else {
             for (String[] key : receiveTrades.keySet()) {
                 Item i = im.getApprovedItem(receiveTrades.get(key)[1]);
-                System.out.println(index + ". Trade for " + i.getName() + " from user " + key[0]);
+                receivedItems.add(i);
+                receivedOwners.add(key[0]);
                 index++;
             }
-            sp.tradeRequestPresenter("to accept");
+            sp.tradeRequestPresenter(2, receivedItems, receivedOwners);
             try {
                 int input = Integer.parseInt(br.readLine());
                 while (input != 0 && input > index) {
-                    sp.tradeRequestPresenter("invalid");
+                    sp.invalidInput();
                     input = Integer.parseInt(br.readLine());
                 }
                 if (input == 0) {
                     new UserDashboard(currentUser, im, um);
                 }
                 String[] a = getTradeHelper(input);
-                System.out.println("Are you sure you want to trade " + a[1] + " with " + a[0] + "?(Y/N)");
+
+                sp.tradeRequestPresenter(1, a[0], a[1]);
                 String inputConfirm = br.readLine();
                 while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-                    sp.tradeRequestPresenter("invalid");
+                    sp.invalidInput();
                     inputConfirm = br.readLine();
                 }
                 if (inputConfirm.equalsIgnoreCase("y")) {
-                    System.out.println("Initiating Trade with " + a[0]);
-                    sp.tradeRequestPresenter("suggest time");
+
+                    sp.tradeRequestPresenter(2, a[0], a[1]);
                     String t = br.readLine();
                     String[] temp = t.split("-");
                     if (!isThisDateValid(temp[0], "dd/MM/yyyy") || !isThisTimeValid(temp[1])) {
-                        sp.tradeRequestPresenter("invalid");
+                        sp.invalidInput();
                         t = br.readLine();
                         temp = t.split("-");
                         isThisDateValid(temp[0], "dd/MM/yyyy");
@@ -102,13 +110,13 @@ public class TradeRequestPresenter {
 
                     LocalDateTime time = LocalDateTime.of(Integer.parseInt(temp2[2]), Integer.parseInt(temp2[1]),
                             Integer.parseInt(temp2[0]), Integer.parseInt(temp3[0]), Integer.parseInt(temp3[1]));
-                    sp.tradeRequestPresenter("suggest place");
+                    sp.tradeRequestPresenter(3);
                     String place = br.readLine();
 
                 }
 
             } catch (IOException e) {
-                sp.tradeRequestPresenter("error");
+                sp.exceptionMessage();
             }
             new UserDashboard(currentUser, im, um);
         }
