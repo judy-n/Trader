@@ -92,6 +92,7 @@ public class NormalDashboard {
 
                 // btw what to do about cancelled trades? (when both users have reached their max edits and the last suggestion is rejected)
                 // >> have to let both users know it got cancelled
+                new OnGoingTradesViewer(currentUser, im, um);
                 break;
 
             case 6:
