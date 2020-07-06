@@ -3,7 +3,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 /**
- * Shows all trade requests received/sent by a user and lets them take actions through user input.
+ * Shows all the ongoing trades for the user.
  *
  * @author Kushagra Mehta
  * @version 1.0
