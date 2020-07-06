@@ -36,9 +36,6 @@ public class CompletedTradesViewer {
         }
 
         close();
-        // loop through all trades and collect the ones that are completed.
-
-        // getter for completed trades
     }
     public void close(){
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
