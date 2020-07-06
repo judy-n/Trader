@@ -18,7 +18,6 @@ public class LoginSystem {
     private String validPw;
     private User user;
     private UserManager um;
-    private boolean isLoggedIn;
     private boolean isAdmin;
     private String optionInput;
 
@@ -27,7 +26,6 @@ public class LoginSystem {
      * Creates a log in system that takes in user input
      */
     public LoginSystem(UserManager um) {
-        isLoggedIn = false;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         SystemPresenter sp = new SystemPresenter();
         this.um = um;
@@ -103,18 +101,9 @@ public class LoginSystem {
             sp.exceptionMessage();
         }
         sp.loginSystem(8);
-        isLoggedIn = true;
-    }
-
-    public boolean getIsLoggedIn() {
-        return isLoggedIn;
     }
 
     public User getUser() {
         return user;
-    }
-
-    public boolean getIsAdmin() {
-        return isAdmin;
     }
 }

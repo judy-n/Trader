@@ -51,35 +51,33 @@ public class CatalogViewer {
                 sp.invalidInput();
                 input = Integer.parseInt(br.readLine());
             }
-            if (input == 0) {
-                new NormalDashboard(currentUser, im, um);
-            }
-
-            Item i = im.getApprovedItem(input);
-            assert i != null;
-            sp.catalogViewer(i, 1);
-            if (i.getAvailability()) {
-                sp.catalogViewer(i, 2);
-                inputConfirm = br.readLine();
-                while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-                    sp.invalidInput();
+            if (input != 0) {
+                Item i = im.getApprovedItem(input);
+                assert i != null;
+                sp.catalogViewer(i, 1);
+                if (i.getAvailability()) {
+                    sp.catalogViewer(i, 2);
                     inputConfirm = br.readLine();
-                }
+                    while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
+                        sp.invalidInput();
+                        inputConfirm = br.readLine();
+                    }
 
-                if (inputConfirm.equalsIgnoreCase("Y")) {
-                    sp.catalogViewer(i, 3);
-                    NormalUser trader = um.getNormalByUsername(i.getOwnerUsername());
-                    assert trader != null;
-                    String[] traders = {currentUser.getUsername(), trader.getUsername()};
-                    long[] items = {0, i.getID()};
-                    trader.addTradeRequest(traders, items);
-                    currentUser.addTradeRequest(traders, items);
-                    currentUser.addWishlist(i.getID());
+                    if (inputConfirm.equalsIgnoreCase("Y")) {
+                        sp.catalogViewer(i, 3);
+                        NormalUser trader = um.getNormalByUsername(i.getOwnerUsername());
+                        assert trader != null;
+                        String[] traders = {currentUser.getUsername(), trader.getUsername()};
+                        long[] items = {0, i.getID()};
+                        trader.addTradeRequest(traders, items);
+                        currentUser.addTradeRequest(traders, items);
+                        currentUser.addWishlist(i.getID());
+                    } else {
+                        sp.cancelled();
+                    }
                 } else {
-                    sp.cancelled();
+                    sp.catalogViewer(i, 4);
                 }
-            } else {
-                sp.catalogViewer(i, 4);
             }
             new NormalDashboard(currentUser, im, um);
         } catch (IOException e) {

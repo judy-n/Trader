@@ -19,7 +19,6 @@ public class NormalDashboard {
     private int input;
     private ItemManager im;
     private UserManager um;
-    private boolean isLoggedOut;
 
     /**
      * Creates a NormalDashboard that stores the given logged-in user.
@@ -32,7 +31,6 @@ public class NormalDashboard {
         currentUser = user;
         this.im = im;
         this.um = um;
-        isLoggedOut = false;
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int maxChoice = 7;
@@ -61,7 +59,6 @@ public class NormalDashboard {
                 } catch (IOException e) {
                    sp.exceptionMessage();
                 }
-                isLoggedOut = true;
                 sp.normalDashboard(3);
                 break;
             case 1:
@@ -123,9 +120,5 @@ public class NormalDashboard {
                 new AccountUnfreezer(currentUser, im, um).requestUnfreeze();
                 break;
         }
-    }
-
-    public boolean getIsLoggedOut(){
-        return isLoggedOut;
     }
 }
