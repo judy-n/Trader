@@ -87,8 +87,6 @@ public class SystemPresenter {
         }
     }
 
-
-
     //helper method that prints inventory + pending
     private void presentInventory(ArrayList<Item> itemInventory, ArrayList<Item> pendingItems) {
         System.out.println("\n-- Your inventory --");
@@ -258,7 +256,6 @@ public class SystemPresenter {
 
     }
 
-
     private void presenterAllItems(ArrayList<Item> items){
         int index = 1;
         for (Item i : items) {
@@ -267,16 +264,18 @@ public class SystemPresenter {
         }
     }
 
-    public void cancelled() {
-        System.out.println("\nCancelled!");
+    public void accountFreezer(ArrayList<String> usernames){
+        System.out.println("Here are the users that need to be frozen:");
+        int index = 1;
+        for(String username : usernames){
+            System.out.println(index + ". "+ username);
+            index ++;
+        }
+        System.out.println("Would you like to freeze all of the accounts?(Y/N)");
     }
 
-    public void exceptionMessage() {
-        System.out.println("\nError reading user input!");
-    }
-
-    public void invalidInput() {
-        System.out.print("\nInvalid input. Please try again: ");
+    public void accountFreezer(){
+        System.out.println("All frozen!");
     }
 
     public void tradeRequestViewer(int input){
@@ -393,5 +392,17 @@ public class SystemPresenter {
                 System.out.println(menuNotInitAdmin + menuInitAdmin + logoutOption);
                 break;
         }
+    }
+
+    public void cancelled() {
+        System.out.println("\nCancelled!");
+    }
+
+    public void exceptionMessage() {
+        System.out.println("\nError reading user input!");
+    }
+
+    public void invalidInput() {
+        System.out.print("\nInvalid input. Please try again: ");
     }
 }

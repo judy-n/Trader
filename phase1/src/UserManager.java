@@ -214,6 +214,24 @@ public class UserManager implements Serializable {
         return false;
     }
 
+    /**
+     * Return all the usernames that needs to be frozen
+     * @return usernames to freeze
+     */
+    public ArrayList<String> getUsernamesToFreeze(){
+        return usernamesToFreeze;
+    }
+
+
+    /**
+     * Clears the usernamesToFreeze arraylist
+     */
+    public void clearUsernamesToFreeze(){
+        usernamesToFreeze.clear();
+    }
+
+
+
     //This method is just for testing!! Delete later
     public void printAllUser() {
         for (User u : getAllUsers()) {

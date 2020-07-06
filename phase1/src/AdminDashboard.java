@@ -63,10 +63,11 @@ public class AdminDashboard {
                 sp.normalDashboard(3);
                 break;
             case 1:
-                new CatalogEditor(user, im, um);
+                new CatalogEditor(currentAdmin, im, um);
                 break;
             case 2:
-                
+                new AccountFreezer(currentAdmin, im, um);
+                break;
                 // view accounts to freeze
                 // usernamesToFreeze in UserManager
                 // if admin chooses to freeze an account: remove from usernamesToFreeze and call freezeUser() in AdminUser
