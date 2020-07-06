@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  */
 
 public class TemporaryTrade extends Trade {
-    private LocalDateTime endDateTime;
+    private Object[] endDateTime;
 
     /**
      * Class constructor.
@@ -27,11 +27,22 @@ public class TemporaryTrade extends Trade {
         super(usernames, itemIDs, firstDateTime, firstLocation, im, um);
     }
 
-    @Override
-    public void confirmAgreedMeeting() {
-        super.confirmAgreedMeeting();
-        endDateTime = getMeetingDateTime().plusMonths(1); //wow that's satisfying
+    // might use getEndDateTime in CloseTempTradeTransaction
+    public Object[] getEndDateTime() {
+        return endDateTime;
     }
+
+    public void setEndDateTime(Object dueDateItem1, Object dueDateItem2){
+        endDateTime = new Object[]{dueDateItem1, dueDateItem2};
+    }
+
+    //Going to have to change the confirmAgreedMeeting() below - Yiwei
+
+    //@Override
+    //public void confirmAgreedMeeting() {
+    //    super.confirmAgreedMeeting();
+    //    endDateTime = getMeetingDateTime().plusDays(31); //wow that's satisfying
+    //}
 
     //This was put in a use case class since Temporary Trade is an entity
     //public void closeTransaction() {

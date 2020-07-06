@@ -40,7 +40,7 @@ public class Item implements Serializable {
         assignID();
         isApproved = false;
         isAvailable = true;
-        borrowTime = 2678400; //seconds will be used since timer uses seconds; Item has a final borrowTime of 31 days
+        borrowTime = 31; // Item has a final borrowTime of 31 days
     }
 
     //helper method that creates and assigns a unique ID to this Item
