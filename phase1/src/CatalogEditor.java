@@ -1,7 +1,14 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
+/**
+ * Lets AdminUser apporve/deny pending items
+ *
+ * @author Ning Zhang
+ * @version 1.0
+ * @since 2020-07-05
+ * last modified 2020-07-05
+ */
 public class CatalogEditor {
     private ItemManager im;
     private UserManager um;
