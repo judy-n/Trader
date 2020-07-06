@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Lets a frozen NormalUser request an unfreeze, and an AdminUser can accept/deny the requests.
+ * Lets a frozen NormalUser request to be unfrozen, and lets an AdminUser accept/deny the requests.
  *
  * @author Judy Naamani
  * @version 1.0
@@ -14,49 +14,40 @@ import java.util.Arrays;
  * last modified 2020-07-06
  */
 public class AccountUnfreezer {
+    private SystemPresenter sp = new SystemPresenter();
     private UserManager um;
     private ItemManager im;
     private NormalUser currentUser;
-    private static ArrayList<NormalUser> unfreezeRequests;
 
+    //for non-admin requesting to be unfrozen
     public AccountUnfreezer(UserManager um, ItemManager im, NormalUser u){
         this.um = um;
         this.im = im;
         currentUser = u;
-        unfreezeRequests = new ArrayList<>();
     }
-    public AccountUnfreezer(UserManager um, ItemManager im){
+    //for admin reviewing unfreeze requests
+    public AccountUnfreezer(UserManager um, ItemManager im) {
         this.um = um;
-        this.im = im;
-        unfreezeRequests = new ArrayList<>();
     }
 
     /**
-     * Return the frozen Users that requested to be unfrozen.
-     * @return Users to unfreeze.
-     */
-    public ArrayList<NormalUser> getUnfreezeRequests() {
-        return unfreezeRequests;
-    }
-
-    /**
-     * Request to be unfrozen.
+     * Sends a request to be unfrozen.
+     *
      */
     public void requestUnfreeze(){
-            unfreezeRequests.add(currentUser);
-            SystemPresenter sp = new SystemPresenter();
-            sp.requestUnfreeze();
-        }
+        um.addUnfreezeRequest(currentUser.getUsername());
+        sp.requestUnfreeze();
+    }
 
     /**
      * Displays the list of Users that requested to be unfrozen, and the admin can choose which ones to unfreeze
      * (or none).
+     *
      */
     public void reviewUnfreezeRequests() {
         String input;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        SystemPresenter sp = new SystemPresenter();
-        ArrayList<NormalUser> users = getUnfreezeRequests();
+        ArrayList<NormalUser> users = um.getUnfreezeRequests();
         sp.adminGetUnfreezeRequests(users);
         try {
             input = br.readLine();
@@ -79,14 +70,12 @@ public class AccountUnfreezer {
                     usernamesToUnfreeze.add(input);
                 }
                 for (String username : usernamesToUnfreeze){
-                    NormalUser u = um.getNormalByUsername(username);
-                    u.unfreeze();
-                    unfreezeRequests.remove(u);
+                    um.unfreeze(username);
                 }
                 sp.adminUnfreezeSuccessful();
             }
             if(input.equalsIgnoreCase("n")) {
-                unfreezeRequests.clear();
+                um.rejectAllRequests();
             }
         } catch (IOException e) {
             sp.exceptionMessage();

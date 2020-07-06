@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
 
-    public void signUpSystem(int input){
+    public void signUpSystem(int input) {
         switch (input) {
             case 1:
                 System.out.println("\n--- Signup ---");
@@ -56,8 +56,8 @@ public class SystemPresenter {
     }
 
 
-    public void loginSystem(int input){
-        switch (input){
+    public void loginSystem(int input) {
+        switch (input) {
             case 1:
                 System.out.println("\n--- Login ---");
                 System.out.print("Are you an admin? (Y/N): ");
@@ -200,13 +200,14 @@ public class SystemPresenter {
         }
     }
 
-    public void catalogViewer(ArrayList<Item> approvedItems){
+    public void catalogViewer(ArrayList<Item> approvedItems) {
         System.out.println("\nThese are all the items available for trade:");
         presenterAllItems(approvedItems);
 
     }
-    public void catalogViewer(int input){
-        switch (input){
+
+    public void catalogViewer(int input) {
+        switch (input) {
             case 1:
                 System.out.print("\nIs there an item you would like to trade for? (0 to quit): ");
                 break;
@@ -216,8 +217,8 @@ public class SystemPresenter {
         }
     }
 
-    public void catalogViewer(Item item, int input){
-        switch (input){
+    public void catalogViewer(Item item, int input) {
+        switch (input) {
             case 1:
                 System.out.println("You have chosen: " + item);
                 break;
@@ -234,13 +235,14 @@ public class SystemPresenter {
         }
     }
 
-    public void catalogEditor(ArrayList<Item> pendingItems){
+    public void catalogEditor(ArrayList<Item> pendingItems) {
         System.out.println("\nThese are all the items waiting for approval:");
         presenterAllItems(pendingItems);
 
     }
-    public void catalogEditor(int input){
-        switch (input){
+
+    public void catalogEditor(int input) {
+        switch (input) {
             case 1:
                 System.out.println("\nThere are no items waiting for approval!");
                 break;
@@ -252,13 +254,13 @@ public class SystemPresenter {
 
     }
 
-    public void catalogEditor(Item item){
+    public void catalogEditor(Item item) {
         System.out.println("You have chosen: " + item);
         System.out.println("Would you like to 1) approve or 2) reject this item?");
 
     }
 
-    private void presenterAllItems(ArrayList<Item> items){
+    private void presenterAllItems(ArrayList<Item> items) {
         int index = 1;
         for (Item i : items) {
             System.out.println(index + ". " + i);
@@ -266,17 +268,17 @@ public class SystemPresenter {
         }
     }
 
-    public void accountFreezer(ArrayList<String> usernames){
+    public void accountFreezer(ArrayList<String> usernames) {
         System.out.println("Here are the users that need to be frozen:");
         int index = 1;
-        for(String username : usernames){
-            System.out.println(index + ". "+ username);
-            index ++;
+        for (String username : usernames) {
+            System.out.println(index + ". " + username);
+            index++;
         }
         System.out.println("Would you like to freeze all of the accounts?(Y/N)");
     }
 
-    public void accountFreezer(){
+    public void accountFreezer() {
         System.out.println("All frozen!");
     }
 
@@ -287,9 +289,9 @@ public class SystemPresenter {
     public void adminGetUnfreezeRequests(ArrayList<NormalUser> unfreezeRequests) {
         System.out.println("Here are the users that requested to be unfrozen:");
         int index = 1;
-        for(User u : unfreezeRequests){
-            System.out.println(index + ". "+ u.getUsername());
-            index ++;
+        for (User u : unfreezeRequests) {
+            System.out.println(index + ". " + u.getUsername());
+            index++;
         }
         System.out.println("Would you like to unfreeze any of the accounts? (Y/N)");
     }
@@ -302,8 +304,8 @@ public class SystemPresenter {
         System.out.println("The users have been unfrozen!");
     }
 
-    public void tradeRequestViewer(int input){
-        switch (input){
+    public void tradeRequestViewer(int input) {
+        switch (input) {
             case 1:
                 System.out.println("You did not receive any trade requests.");
                 break;
@@ -311,35 +313,35 @@ public class SystemPresenter {
                 System.out.println("You did not initiate any trade requests.");
                 break;
             case 3:
-                System.out.println("Please suggest a place: ");
+                System.out.print("\nPlease suggest a place: ");
                 break;
             case 4:
-                System.out.println("Would you like to accept any of these requests?(0 to quit)");
+                System.out.print("\nWould you like to accept any of these requests? (0 to quit): ");
                 break;
             case 5:
-                System.out.println("Your account is frozen!");
+                System.out.println("Sorry, you can't initiate any trades because your account is frozen!");
                 break;
         }
     }
 
-    public void tradeRequestViewer(int input, String owner, String itemName){
-        switch (input){
+    public void tradeRequestViewer(int input, String owner, String itemName) {
+        switch (input) {
             case 1:
                 System.out.println("Are you sure you want to trade " + itemName + " with " + owner + "?(Y/N)");
                 break;
             case 2:
                 System.out.println("Initiating Trade with " + owner);
-                System.out.println("Please suggest a time(YYYY/MM/DD-HH/MM): ");
+                System.out.print("\nPlease suggest a time(YYYY/MM/DD-HH/MM): ");
                 break;
             case 3:
-                System.out.println("Sorry but "+owner+ " is currently frozen.");
+                System.out.println("Sorry but " + owner + " is currently frozen.");
                 break;
         }
 
     }
 
-    public void tradeRequestViewer(int input,ArrayList<Item> items, ArrayList<String> owners ){
-        switch (input){
+    public void tradeRequestViewer(int input, ArrayList<Item> items, ArrayList<String> owners) {
+        switch (input) {
             case 1:
                 System.out.println("Here is all the trade request(s) you sent:");
                 presentInitiatedTradeRequests(items, owners);
@@ -352,26 +354,26 @@ public class SystemPresenter {
         }
     }
 
-    private void presentInitiatedTradeRequests(ArrayList<Item> items, ArrayList<String> users){
+    private void presentInitiatedTradeRequests(ArrayList<Item> items, ArrayList<String> users) {
         if (items.isEmpty()) {
             System.out.println("You did not initiate any trades.");
         } else {
             int index = 0;
-            for(Item i : items) {
+            for (Item i : items) {
                 System.out.println("Trade for " + i.getName() + " from user " + users.get(index));
-                index ++;
+                index++;
             }
         }
     }
 
-    private void presentReceivedTradeRequests(ArrayList<Item> items, ArrayList<String> users){
+    private void presentReceivedTradeRequests(ArrayList<Item> items, ArrayList<String> users) {
         int index = 1;
         for (Item i : items)
-            System.out.println(index + ". Trade for " + i.getName() + " from user " + users.get(index-1));
+            System.out.println(index + ". Trade for " + i.getName() + " from user " + users.get(index - 1));
     }
 
 
-    public void normalDashboard(int input){
+    public void normalDashboard(int input) {
         String frozenWarning = "\n-- Your account is currently frozen due to you reaching the limit on incomplete trades --";
         String menuUnfrozen = "\nWhat would you like to do:" +
                 "\n 1 - see all items available for trade" +
@@ -384,7 +386,7 @@ public class SystemPresenter {
         String menuFrozen = "\n 8 - request to unfreeze account";
         String logoutOption = "\n 0 - logout ";
 
-        switch (input){
+        switch (input) {
             case 1:
                 System.out.println(menuUnfrozen + logoutOption);
                 System.out.print(choicePrompt);
@@ -407,37 +409,37 @@ public class SystemPresenter {
                 break;
             case 2:
                 System.out.println("Which threshold would you like to change? (0 to quit) " +
-                    "\n 1 - Weekly trade maximum " +
-                    "\n 2 - Meeting edit maximum " +
-                    "\n 3 - Lend minimum" +
-                    "\n 4 - Incomplete trade maximum");
+                        "\n 1 - Weekly trade maximum " +
+                        "\n 2 - Meeting edit maximum " +
+                        "\n 3 - Lend minimum" +
+                        "\n 4 - Incomplete trade maximum");
                 break;
         }
     }
 
-    public void thresholdEditor(int input, int oldThreshold){
-        switch (input){
+    public void thresholdEditor(int input, int oldThreshold) {
+        switch (input) {
             case 1:
-                System.out.println("The current weekly trade max is "+ oldThreshold +
+                System.out.println("The current weekly trade max is " + oldThreshold +
                         "\n Change it to :");
                 break;
             case 2:
-                System.out.println("The current meeting edit max is "+ oldThreshold +
+                System.out.println("The current meeting edit max is " + oldThreshold +
                         "\n Change it to :");
                 break;
             case 3:
-                System.out.println("The current lend min is "+ oldThreshold +
+                System.out.println("The current lend min is " + oldThreshold +
                         "\n Change it to :");
                 break;
             case 4:
-                System.out.println("The current incomplete trade max is "+ oldThreshold +
+                System.out.println("The current incomplete trade max is " + oldThreshold +
                         "\n Change it to :");
 
         }
     }
 
-    public void adminCreator(int input){
-        switch (input){
+    public void adminCreator(int input) {
+        switch (input) {
             case 1:
                 System.out.println("To make a new admin, please enter an username:");
                 break;
