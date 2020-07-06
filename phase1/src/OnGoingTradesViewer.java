@@ -1,11 +1,13 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * Shows all the ongoing trades for the user.
  *
  * @author Kushagra Mehta
+ * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-06
  * last modified 2020-07-06
@@ -21,15 +23,11 @@ public class OnGoingTradesViewer {
         currentUser = user;
         this.im = im;
         this.um = um;
-        String[] a;
-        NormalUser trader;
-        allTrades = new HashMap<>();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         SystemPresenter sp = new SystemPresenter();
-
-        //loop through all trades and collect the ones that aren't completed.
-
-        // getter for ongoing trades
+        sp.ongoingTrades(currentUser);
+        // should add stuff to view the meeting time (if confirmed) of each trade and
+        // option to suggest a meeting time
     }
 }
