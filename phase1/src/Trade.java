@@ -87,16 +87,17 @@ public class Trade implements Serializable {
     }
     /**
      * Takes in the username of a user and returns the ID of the item they lent in this Trade.
+     * If the username is not involved in this Trade, return -1
      *
      * @param username the username of the user
      * @return the ID of the item the given user lent in this Trade
      */
-    public long getLentItemID (String username) {
+    public long getLentItemID(String username) {
         if (involvedUsernames[0].equals(username)) {
             return involvedItemIDs[0];
-        } else {
+        } else if (involvedUsernames[1].equals(username)) {
             return involvedItemIDs[1];
-        }
+        } else {return -1;}
     }
 
     /**
