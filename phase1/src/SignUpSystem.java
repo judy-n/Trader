@@ -16,19 +16,21 @@ public class SignUpSystem {
     private String email;
     private String password;
     private UserManager um;
-    private NormalUser newUser;
+    private SystemPresenter sp;
 
     /**
      * Class constructor.
      * Creates a SignUpSystem with the given user manager.
-     * Lets the user sign up through user input.
      *
      * @param um the system's user manager
      */
     public SignUpSystem(UserManager um) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        SystemPresenter sp = new SystemPresenter();
         this.um = um;
+        sp = new SystemPresenter();
+    }
+
+    private void inputProcess() {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         sp.signUpSystem(1);
         try {
             String emailInput = br.readLine();
@@ -88,12 +90,21 @@ public class SignUpSystem {
         } catch (IOException e) {
             sp.exceptionMessage();
         }
-        newUser = new NormalUser(username, email, password);
-        um.addUser(newUser);
-        sp.signUpSystem(11);
     }
 
-    public NormalUser getNewUser() {
+    public NormalUser createNewNormal() {
+        sp.signUpSystem(0);
+        inputProcess();
+        NormalUser newUser = new NormalUser(username, email, password);
+        um.addUser(newUser);
+        sp.signUpSystem(11);
         return newUser;
+    }
+
+    public void createNewAdmin() {
+        sp.signUpSystem(12);
+        inputProcess();
+        AdminUser newUser = new AdminUser(username, email, password, um.getAdminId());
+        um.addUser(newUser);
     }
 }

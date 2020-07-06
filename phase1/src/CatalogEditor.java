@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 /**
  * Lets AdminUser approve/deny pending items
  *
@@ -15,7 +16,7 @@ public class CatalogEditor {
     private AdminUser currentUser;
     private int max;
 
-    public CatalogEditor(AdminUser user, ItemManager im, UserManager um){
+    public CatalogEditor(AdminUser user, ItemManager im, UserManager um) {
         this.im = im;
         this.um = um;
         int input;
@@ -25,43 +26,43 @@ public class CatalogEditor {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         currentUser = user;
 
-        if(im.getPendingItems().isEmpty()){
-            sp.catalogEditor(1);
-            new AdminDashboard(currentUser, im, um);
-        }else {
-            sp.catalogEditor(im.getPendingItems());
-        }
-        try{
-            do{
+        try {
+            do {
+                if (im.getPendingItems().isEmpty()) {
+                    sp.catalogEditor(1);
+                    break;
+                } else {
+                    sp.catalogEditor(im.getPendingItems());
+                }
                 sp.catalogEditor(2);
                 input = Integer.parseInt(br.readLine());
-                while(input<0 || input>max){
+                while (input < 0 || input > max) {
                     sp.invalidInput();
                     input = Integer.parseInt(br.readLine());
                 }
-                if(input == 0){
-                    new AdminDashboard(currentUser, im, um);
-                }
-                Item i = im.getPendingItem(input);
-                NormalUser itemOwner = um.getNormalByUsername(i.getOwnerUsername());
-                sp.catalogEditor(i);
-                actionInput = Integer.parseInt(br.readLine());
-                while (actionInput != 1 && actionInput != 2) {
-                    sp.invalidInput();
+                if (input != 0) {
+                    Item i = im.getPendingItem(input);
+                    NormalUser itemOwner = um.getNormalByUsername(i.getOwnerUsername());
+                    sp.catalogEditor(i);
                     actionInput = Integer.parseInt(br.readLine());
+                    while (actionInput != 1 && actionInput != 2) {
+                        sp.invalidInput();
+                        actionInput = Integer.parseInt(br.readLine());
+                    }
+                    if (actionInput == 1) {
+                        i.setApproved();
+                        im.approveItem(i);
+                        itemOwner.addInventory(i.getID());
+                    } else {
+                        im.rejectItem(i);
+                        itemOwner.removePendingInventory(i.getID());
+                    }
                 }
-                if(actionInput == 1){
-                    i.setApproved();
-                    im.approveItem(i);
-                    itemOwner.addInventory(i.getID());
-                }else{
-                    im.rejectItem(i);
-                    itemOwner.removePendingInventory(i.getID());
-                }
-            }while(input != 0);
+            } while (input != 0);
+
             new AdminDashboard(currentUser, im, um);
 
-        }catch (IOException e){
+        } catch (IOException e) {
             sp.exceptionMessage();
         }
     }

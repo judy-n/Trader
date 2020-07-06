@@ -195,7 +195,8 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Return all the usernames that needs to be frozen
+     * Return all the usernames that needs to be frozen.
+     *
      * @return usernames to freeze
      */
     public ArrayList<String> getUsernamesToFreeze(){
@@ -204,18 +205,20 @@ public class UserManager implements Serializable {
 
 
     /**
-     * Clears the usernamesToFreeze arraylist
+     * Clears the usernamesToFreeze arraylist.
+     *
      */
     public void clearUsernamesToFreeze(){
         usernamesToFreeze.clear();
     }
 
     /**
-     * Returns the last admin ID
-     * @return the last admin ID
+     * Returns the next admin ID.
+     *
+     * @return the next admin ID
      */
     public int getAdminId(){
-        return allAdmins.size();
+        return allAdmins.size() + 1;
     }
 
     /**

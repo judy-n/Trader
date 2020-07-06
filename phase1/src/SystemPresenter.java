@@ -28,40 +28,44 @@ public class SystemPresenter {
 
     public void signUpSystem(int input) {
         switch (input) {
+            case 0:
+                System.out.println("\n--- Sign-up ---");
+                break;
             case 1:
-                System.out.println("\n--- Signup ---");
-                System.out.print("Please enter an email: ");
+                System.out.print("\nPlease enter an email: ");
                 break;
             case 2:
-                System.out.print("Email is already associated with an account! Please enter a different email: ");
+                System.out.print("\nEmail is already associated with an account! Please enter a different email: ");
                 break;
             case 3:
-                System.out.print("That's not an email address! Please enter a valid email: ");
+                System.out.print("\nThat's not an email address! Please enter a valid email: ");
                 break;
             case 4:
-                System.out.print("Please enter an username (at least 3 characters): ");
+                System.out.print("\nPlease enter an username (at least 3 characters): ");
                 break;
             case 5:
-                System.out.print("Username already exists! Please enter a different username: ");
+                System.out.print("\nUsername already exists! Please enter a different username: ");
                 break;
             case 6:
-                System.out.print("Invalid username. Please try again: ");
+                System.out.print("\nInvalid username. Please try again: ");
                 break;
             case 7:
-                System.out.print("Please enter a password: ");
+                System.out.print("\nPlease enter a password: ");
                 break;
             case 8:
-                System.out.print("Invalid password. Please try again: ");
+                System.out.print("\nInvalid password. Please try again: ");
                 break;
             case 9:
-                System.out.print("Please verify your password: ");
+                System.out.print("\nPlease verify your password: ");
                 break;
             case 10:
-                System.out.print("Passwords do not match. Please try again: ");
+                System.out.print("\nPasswords do not match. Please try again: ");
                 break;
             case 11:
                 System.out.println("\n Thank you for signing up! \n You are now logged in.");
                 break;
+            case 12:
+                System.out.println("\n--- New Admin ---");
         }
     }
 
@@ -70,31 +74,31 @@ public class SystemPresenter {
         switch (input) {
             case 1:
                 System.out.println("\n--- Login ---");
-                System.out.print("Are you an admin? (Y/N): ");
+                System.out.print("\nAre you an admin? (Y/N): ");
                 break;
             case 2:
-                System.out.print("Please enter your username: ");
+                System.out.print("\nPlease enter your username: ");
                 break;
             case 3:
-                System.out.print("Username does not exist in our database! Please try again: ");
+                System.out.print("\nUsername does not exist in our database! Please try again: ");
                 break;
             case 4:
-                System.out.print("Please enter your email: ");
+                System.out.print("\nPlease enter your email: ");
                 break;
             case 5:
-                System.out.print("Email does not exist in our database! Please try again: ");
+                System.out.print("\nEmail does not exist in our database! Please try again: ");
                 break;
             case 6:
-                System.out.print("Please enter your password: ");
+                System.out.print("\nPlease enter your password: ");
                 break;
             case 7:
-                System.out.print("Password does not match email/username! Please try again: ");
+                System.out.print("\nPassword does not match email/username! Please try again: ");
                 break;
             case 8:
                 System.out.println("\n Logged in!");
                 break;
             case 9:
-                System.out.print("Would you like to login with 1) username or 2) email?: ");
+                System.out.print("\nWould you like to login with 1) username or 2) email?: ");
                 break;
         }
     }
@@ -448,25 +452,16 @@ public class SystemPresenter {
         }
     }
 
-    public void adminCreator(int input) {
-        switch (input) {
-            case 1:
-                System.out.println("To make a new admin, please enter an username:");
-                break;
-            case 2:
-                System.out.println("Please enter an email:");
-                break;
-            case 3:
-                System.out.println("Please enter a password:");
-                break;
-            case 4:
-                System.out.println("New admin created!");
-                break;
-        }
+    public void adminCreator() {
+        System.out.println("\n New admin created!");
+    }
+
+    public void showAdminID(AdminUser user) {
+        System.out.println("\nYour admin ID: " + user.getAdminID());
     }
 
     public void adminDashboard(int input) {
-        String menuNotInitAdmin = "\nWhat would you like to do:" +
+        String menuNotInitAdmin = "What would you like to do:" +
                 "\n 1 - view items awaiting approval" +
                 "\n 2 - view accounts to freeze" +
                 "\n 3 - view requests to unfreeze account" +
@@ -476,10 +471,10 @@ public class SystemPresenter {
 
         switch (input) {
             case 1:
-                System.out.println(menuNotInitAdmin + logoutOption);
+                System.out.print(menuNotInitAdmin + logoutOption + choicePrompt);
                 break;
             case 2:
-                System.out.println(menuNotInitAdmin + menuInitAdmin + logoutOption);
+                System.out.print(menuNotInitAdmin + menuInitAdmin + logoutOption + choicePrompt);
                 break;
         }
     }
