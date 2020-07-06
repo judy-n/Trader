@@ -7,6 +7,7 @@ import java.util.ArrayList;
  *
  * @author Kushagra Mehta
  * @author Ning Zhang
+ * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-06
  * last modified 2020-07-06
