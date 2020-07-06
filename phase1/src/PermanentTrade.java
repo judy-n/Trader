@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-04
+ * last modified 2020-07-06
  */
 public class PermanentTrade extends Trade {
     /**
@@ -20,8 +20,8 @@ public class PermanentTrade extends Trade {
      * @param firstLocation the first location suggested for this TemporaryTrade's meeting
      */
     public PermanentTrade(String[] usernames, long[] itemIDs,
-                          LocalDateTime firstDateTime, String firstLocation, ItemManager im, UserManager um) {
-        super(usernames, itemIDs, firstDateTime, firstLocation, im, um);
+                          LocalDateTime firstDateTime, String firstLocation) {
+        super(usernames, itemIDs, firstDateTime, firstLocation);
 
     }
 
