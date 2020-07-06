@@ -375,6 +375,60 @@ public class SystemPresenter {
         }
     }
 
+    public void thresholdEditor(int input) {
+        switch (input) {
+            case 1:
+                System.out.println("Please enter the username of the user " +
+                        "whose threshold you would like to change:");
+                break;
+            case 2:
+                System.out.println("Which threshold would you like to change? (0 to quit) " +
+                    "\n 1 - Weekly trade maximum " +
+                    "\n 2 - Meeting edit maximum " +
+                    "\n 3 - Lend minimum" +
+                    "\n 4 - Incomplete trade maximum");
+                break;
+        }
+    }
+
+    public void thresholdEditor(int input, int oldThreshold){
+        switch (input){
+            case 1:
+                System.out.println("The current weekly trade max is "+ oldThreshold +
+                        "\n Change it to :");
+                break;
+            case 2:
+                System.out.println("The current meeting edit max is "+ oldThreshold +
+                        "\n Change it to :");
+                break;
+            case 3:
+                System.out.println("The current lend min is "+ oldThreshold +
+                        "\n Change it to :");
+                break;
+            case 4:
+                System.out.println("The current incomplete trade max is "+ oldThreshold +
+                        "\n Change it to :");
+
+        }
+    }
+
+    public void adminCreator(int input){
+        switch (input){
+            case 1:
+                System.out.println("To make a new admin, please enter an username:");
+                break;
+            case 2:
+                System.out.println("Please enter an email:");
+                break;
+            case 3:
+                System.out.println("Please enter a password:");
+                break;
+            case 4:
+                System.out.println("New admin created!");
+                break;
+        }
+    }
+
     public void adminDashboard(int input) {
         String menuNotInitAdmin = "\nWhat would you like to do:" +
                 "\n 1 - view items awaiting approval" +

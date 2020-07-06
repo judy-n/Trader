@@ -219,7 +219,13 @@ public class UserManager implements Serializable {
         usernamesToFreeze.clear();
     }
 
-
+    /**
+     * Returns the last admin ID
+     * @return the last admin ID
+     */
+    public int getAdminId(){
+        return allAdmins.size();
+    }
 
     //This method is just for testing!! Delete later
     public void printAllUser() {

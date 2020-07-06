@@ -79,9 +79,13 @@ public class AdminDashboard {
                 // view requests to unfreeze account
                 // new class or stuff it in UserManager too?
             case 4:
+                new ThresholdEditor(currentAdmin, im, um);
+                break;
                 // edit a user's threshold values
                 // all the methods needed to set these values are in AdminUser
             case 5:
+                new AdminCreator(currentAdmin, im, um);
+                break;
                 // add new admin to system
                 // enter username, email, password and create an AdminUser right away
                 // addUser() in UserManager (handles the separation of admins from non-admins for you)
