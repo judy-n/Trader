@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * last modified 2020-07-05
  */
 
-public class Trade implements Serializable {
+public abstract class Trade implements Serializable {
     private boolean hasAgreedMeeting;
     private boolean isComplete;
     private final String[] involvedUsernames = new String[2];
