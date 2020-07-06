@@ -7,9 +7,10 @@ import java.util.Date;
  * @author Ning Zhang
  * @author Yingjia Liu
  * @author Liam Huff
+ * @author Yiwei Chen
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-03
+ * last modified 2020-07-06
  */
 
 public class Item implements Serializable {
@@ -19,6 +20,7 @@ public class Item implements Serializable {
     private final String ownerUsername;
     private boolean isApproved;
     private boolean isAvailable;
+    private final int borrowTime;
 
     /**
      * Class constructor.
@@ -37,6 +39,7 @@ public class Item implements Serializable {
         assignID();
         isApproved = false;
         isAvailable = true;
+        borrowTime = 2678400; //seconds will be used since timer uses seconds; Item has a final borrowTime of 31 days
     }
 
     //helper method that creates and assigns a unique ID to this Item
@@ -48,6 +51,18 @@ public class Item implements Serializable {
         long DIVIDE = 86400000L;
         String stringId = sb.toString() + (new Date().getTime())/DIVIDE;
         id = Long.parseLong(stringId);
+    }
+
+    /**
+     * Getter for Item's borrowTime.
+     *
+     * @return this item's borrowTime
+     */
+
+    //will be used in Timer
+
+    public int getBorrowTime() {
+        return borrowTime;
     }
 
     /**
