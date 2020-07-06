@@ -18,7 +18,7 @@ public class SystemPresenter {
     public void startMenu(int input) {
         switch(input) {
             case 1:
-                System.out.print("----- WELCOME -----\n 1) Sign up \n 2) Log in \n 3) Exit the program" + choicePrompt + ": ");
+                System.out.print("----- WELCOME -----\n 1) Sign up \n 2) Log in \n 3) Exit the program" + choicePrompt );
                 break;
             case 2:
                 System.out.println("Exiting the program. Hope to see you again soon!");
