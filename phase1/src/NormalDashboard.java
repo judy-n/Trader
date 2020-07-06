@@ -10,27 +10,31 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-05
+ * last modified 2020-07-06
  */
 
 
 public class NormalDashboard {
     private NormalUser currentUser;
     private int input;
-    private ItemManager im;
-    private UserManager um;
+    private ItemManager itemManager;
+    private UserManager userManager;
+    private TradeManager tradeManager;
 
     /**
      * Creates a NormalDashboard that stores the given logged-in user.
      *
-     * @param user the non-admin user who's currently logged in
-     * @param im   the system's item manager
-     * @param um   the system's user manager
+     * @param user current normal user that is logged in
+     * @param im the system's item manager
+     * @param um the system's user manager
+     * @param tm the system's trade manager
      */
-    public NormalDashboard(NormalUser user, ItemManager im, UserManager um) {
+    public NormalDashboard(NormalUser user, ItemManager im ,
+                           UserManager um, TradeManager tm) {
         currentUser = user;
-        this.im = im;
-        this.um = um;
+        itemManager = im;
+        userManager = um;
+        tradeManager = tm;
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int maxChoice = 7;
@@ -62,22 +66,24 @@ public class NormalDashboard {
                 sp.normalDashboard(3);
                 break;
             case 1:
-                new CatalogViewer(currentUser, im, um);
+                new CatalogViewer(currentUser, itemManager, userManager, tradeManager);
                 break;
 
             case 2:
-                new InventoryEditor(currentUser, im, um);
+                new InventoryEditor(currentUser, itemManager, userManager, tradeManager);
                 break;
 
             case 3:
-                new WishlistEditor(currentUser, im, um);
+                new WishlistEditor(currentUser, itemManager, userManager, tradeManager);
                 break;
 
             case 4:
-                new TradeRequestViewer(currentUser, im, um);
+                new TradeRequestViewer(currentUser, itemManager, userManager, tradeManager);
                 break;
 
             case 5:
+                //new OnGoingTradesViewer(currentUser, im, um, tm);
+
                 // view ongoing trades
                 // heavily relies on temp trade and perm trade implementation
                 // so don't implement until Eric + Yiwei are done with that
@@ -92,7 +98,7 @@ public class NormalDashboard {
 
                 // btw what to do about cancelled trades? (when both users have reached their max edits and the last suggestion is rejected)
                 // >> have to let both users know it got cancelled
-                new OnGoingTradesViewer(currentUser, im, um);
+                new OnGoingTradesViewer(currentUser, itemManager, userManager, tradeManager);
                 break;
 
             case 6:
@@ -104,6 +110,7 @@ public class NormalDashboard {
                 // if trade was two-way, display smth like "Lent [item] and borrowed [item] from [username]"
                 // if trade was one-way, "Lent [item] to [username]" or "Borrowed [item] from [username]"
                 // you can get what a certain user lent in a Trade by using tradeInstance.getLentItemID(username)
+                new CompletedTradesViewer(currentUser, itemManager, userManager, tradeManager);
                 break;
 
             case 7:

@@ -11,13 +11,14 @@ import java.io.InputStreamReader;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-05
+ * last modified 2020-07-06
  */
 public class CatalogViewer {
     private NormalUser currentUser;
     private int max;
-    private ItemManager im;
-    private UserManager um;
+    private ItemManager itemManager;
+    private UserManager userManager;
+    private TradeManager tradeManager;
 
     /**
      * Class constructor.
@@ -28,10 +29,11 @@ public class CatalogViewer {
      * @param im   the system's item manager
      * @param um   the system's user manager
      */
-    public CatalogViewer(NormalUser user, ItemManager im, UserManager um) {
+    public CatalogViewer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         currentUser = user;
-        this.im = im;
-        this.um = um;
+        itemManager = im;
+        userManager = um;
+        tradeManager = tm;
         int input;
         String inputConfirm;
         max = im.getNumApprovedItems();
@@ -41,7 +43,7 @@ public class CatalogViewer {
         sp.catalogViewer(im.getApprovedItems());
         if(currentUser.getIsFrozen()){
             sp.catalogViewer(2);
-            new NormalDashboard(currentUser, im, um);
+            close();
         }
 
         sp.catalogViewer(1);
@@ -79,12 +81,17 @@ public class CatalogViewer {
                     sp.catalogViewer(i, 4);
                 }
             }
-            new NormalDashboard(currentUser, im, um);
+            close();
         } catch (IOException e) {
             sp.exceptionMessage();
             System.exit(-1);
         }
     }
+
+    private void close(){
+        new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
+    }
+
 
     // based on code by Bill the Lizard from www.stackoverflow.com
     private boolean isInteger(String input) {

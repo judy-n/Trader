@@ -15,8 +15,9 @@ import java.util.ArrayList;
 
 public class WishlistEditor {
     private NormalUser currentUser;
-    private ItemManager im;
-    private UserManager um;
+    private ItemManager itemManager;
+    private UserManager userManager;
+    private TradeManager tradeManager;
 
     /**
      * Class constructor.
@@ -26,33 +27,30 @@ public class WishlistEditor {
      * @param user the non-admin user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
+     * @param tm   the system's trade manager
      */
-    public WishlistEditor(NormalUser user, ItemManager im, UserManager um) {
+    public WishlistEditor(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         // This lets the User remove Items from the wish list. Assuming that they only add Items to
         // the wishlist when browsing items available for trade.
         SystemPresenter sp = new SystemPresenter();
         currentUser = user;
-        this.im = im;
-        this.um = um;
+        itemManager = im;
+        userManager = um;
+        tradeManager = tm;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int input;
         ArrayList<Item> itemWishlist = im.getApprovedItemsByIDs(currentUser.getWishlist());
         sp.wishlistEditor(itemWishlist);
         try {
-            String tempInput = br.readLine();
-            while (!isInteger(tempInput)) {
-                tempInput = br.readLine();
-            }
-            input = Integer.parseInt(tempInput);
+            input = Integer.parseInt(br.readLine());
             while (input < 1 || input > 2) {
                 sp.invalidInput();
                 input = Integer.parseInt(br.readLine());
             }
-
             if (input == 1) {   //remove item
                 if (currentUser.getWishlist().isEmpty()) {
                     sp.wishlistRemoveItem(1);
-                    new NormalDashboard(currentUser, im, um);
+                    close();
                 } else {
                     sp.wishlistRemoveItem(2);
                     int indexInput;
@@ -71,18 +69,22 @@ public class WishlistEditor {
                         } else {
                             sp.cancelled();
                         }
-                        new NormalDashboard(currentUser, im, um);
+                        close();
                     } catch (IOException e) {
                         sp.invalidInput();
                     }
                 }
             } else {    //cancel
-                new NormalDashboard(currentUser, im, um);
+                close();
             }
         } catch (IOException e) {
             sp.exceptionMessage();
             System.exit(-1);
         }
+    }
+
+    private void close(){
+        new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
     }
 
     // based on code by Bill the Lizard from www.stackoverflow.com

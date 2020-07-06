@@ -11,13 +11,14 @@ import java.util.ArrayList;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-04
+ * last modified 2020-07-06
  */
 
 public class InventoryEditor {
     private NormalUser currentUser;
-    private ItemManager im;
-    private UserManager um;
+    private ItemManager itemManager;
+    private UserManager userManager;
+    private TradeManager tradeManager;
 
     /**
      * Class constructor.
@@ -27,12 +28,14 @@ public class InventoryEditor {
      * @param user the non-admin user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
+     * @param tm   the system's trade manager
      */
-    public InventoryEditor(NormalUser user, ItemManager im, UserManager um) {
+    public InventoryEditor(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         // This allows the User to request adding Items to their inventory, or to remove an existing Item.
         currentUser = user;
-        this.im = im;
-        this.um = um;
+        itemManager = im;
+        userManager = um;
+        tradeManager = tm;
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int input;
@@ -78,7 +81,7 @@ public class InventoryEditor {
                     } else {
                         sp.cancelled();
                     }
-                    new NormalDashboard(currentUser, im, um);
+                    close();
 
                 } catch (IOException e) {
                     sp.exceptionMessage();
@@ -88,7 +91,7 @@ public class InventoryEditor {
             } else if (input == 2) {    //remove item
                 if (itemInventory.isEmpty()) {
                     sp.inventoryRemoveItem(1);
-                    new NormalDashboard(currentUser, im, um);
+                    close();
                 }
 
                 sp.inventoryRemoveItem(2);
@@ -112,19 +115,22 @@ public class InventoryEditor {
                     } else {
                         sp.cancelled();
                     }
-                    new NormalDashboard(currentUser, im, um);
+                    close();
 
                 } catch (IOException e) {
                     sp.exceptionMessage();
                     System.exit(-1);
                 }
             } else {    //cancel
-                new NormalDashboard(currentUser, im, um);
+                close();
             }
 
         } catch (IOException e) {
             sp.exceptionMessage();
             System.exit(-1);
         }
+    }
+    private void close(){
+        new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
     }
 }

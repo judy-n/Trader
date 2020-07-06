@@ -1,15 +1,14 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Stores and manages all Trades in the system.
  *
  * @author Judy Naamani
  * @author Yingjia Liu
+ * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-03
+ * last modified 2020-07-06
  */
 public class TradeManager {
     private ArrayList<Trade> allTrades;
@@ -112,12 +111,14 @@ public class TradeManager {
     }
 
     //takes in a user and finds those top three most frequent trade partners
-    public List<String> get3FrequentTradePartners (NormalUser user) {
-        List<String> tradePartners = new ArrayList<String>();
+    public String [] getFrequentTradePartners (NormalUser user) {
+        ArrayList<String> tradePartners = new ArrayList<>();
+        Set<String> uniquePartner = new HashSet<>();
+        String [] frequentPartners = new String[3];
         ArrayList<Trade> completedTrades= getCompletedTrades(user);
 
         for (Trade t : completedTrades) {
-            if (t.getInvolvedUsernames()[0] != user.getUsername()){
+            if (!t.getInvolvedUsernames()[0].equals(user.getUsername())){
                 tradePartners.add(t.getInvolvedUsernames()[0]);
             }
             else{
@@ -125,7 +126,7 @@ public class TradeManager {
             }
         }
 
-        Collections.sort(tradePartners);
-        return tradePartners.subList(0,3);
+
+        return frequentPartners;
     }
 }

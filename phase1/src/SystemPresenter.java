@@ -18,7 +18,7 @@ public class SystemPresenter {
     public void startMenu(int input) {
         switch(input) {
             case 1:
-                System.out.print("----- WELCOME -----\n 1) Sign up \n 2) Log in \n 3) Exit the program" + choicePrompt );
+                System.out.print("----- WELCOME -----\n 1) Sign up \n 2) Log in \n 3) Exit the program" + choicePrompt);
                 break;
             case 2:
                 System.out.println("Exiting the program. Hope to see you again soon!");
@@ -386,12 +386,10 @@ public class SystemPresenter {
             System.out.println(index + ". Trade for " + i.getName() + " from user " + users.get(index - 1));
     }
 
-    public void ongoingTrades(NormalUser user) {
-        TradeManager tm = new TradeManager();
-        ArrayList<Trade> ongoingTrades = tm.getOngoingTrades(user);
+    public void onGoingTrades(ArrayList<Trade> onGoingTrades) {
         System.out.println("Here are your ongoing trades:");
         int index = 1;
-        for (Trade trade : ongoingTrades) {
+        for (Trade trade : onGoingTrades) {
             System.out.println(index + ". " + trade.toString());
             index++;
         }

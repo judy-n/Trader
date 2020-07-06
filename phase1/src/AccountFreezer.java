@@ -42,10 +42,14 @@ public class AccountFreezer {
                 um.clearUsernamesToFreeze();
             }
             sp.accountFreezer();
-            new AdminDashboard(currentUser, im, um);
+            close();
         }catch (IOException e){
             sp.exceptionMessage();
         }
+    }
+
+    public void close(){
+        new AdminDashboard(currentUser, im, um);
     }
 
 }

@@ -19,8 +19,9 @@ import java.util.*;
 public class TradeRequestViewer {
     private HashMap<String[], long[]> initiatedTrades;
     private HashMap<String[], long[]> receivedTrades;
-    private ItemManager im;
-    private UserManager um;
+    private ItemManager itemManager;
+    private UserManager userManager;
+    private TradeManager tradeManager;
     private NormalUser currentUser;
 
     /**
@@ -31,18 +32,19 @@ public class TradeRequestViewer {
      * @param user the non-admin user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
+     * @param tm   the system's trade manager
      */
-    public TradeRequestViewer(NormalUser user, ItemManager im, UserManager um) {
+    public TradeRequestViewer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         currentUser = user;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         SystemPresenter sp = new SystemPresenter();
         initiatedTrades = new HashMap<>();
         receivedTrades = new HashMap<>();
-        this.im = im;
-        this.um = um;
+        itemManager = im;
+        userManager = um;
+        tradeManager = tm;
         String[] a;
         NormalUser trader;
-
         for (String[] key : user.getTradeRequest().keySet()) {
             if (user.getUsername().equals(key[0])) {
                 initiatedTrades.put(key, user.getTradeRequest().get(key));
@@ -66,7 +68,7 @@ public class TradeRequestViewer {
 
         if(currentUser.getIsFrozen()){
             sp.tradeRequestViewer(5);
-            new NormalDashboard(currentUser, im, um);
+            close();
         }
         sp.tradeRequestViewer(4);
         ArrayList<Item> receivedItems = new ArrayList<>();
@@ -90,7 +92,7 @@ public class TradeRequestViewer {
                         input = Integer.parseInt(br.readLine());
                     }
                     if (input == 0) {
-                        new NormalDashboard(currentUser, im, um);
+                        close();
                     }
                     a = getTradeHelper(input);
                     trader = um.getNormalByUsername(a[0]);
@@ -131,9 +133,14 @@ public class TradeRequestViewer {
                 sp.exceptionMessage();
                 System.exit(-1);
             }
-            new NormalDashboard(currentUser, im, um);
+            close();
         }
     }
+
+    private void close(){
+        new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
+    }
+
 
     /**
      * This method return an array of strings with item name and username from the
@@ -147,8 +154,8 @@ public class TradeRequestViewer {
         ArrayList<String[]> listOfKeys = (ArrayList<String[]>) keySet;
         Collection<long[]> keyValues = receivedTrades.values();
         ArrayList<long[]> listOfKeyValues = (ArrayList<long[]>) keyValues;
-        assert im.getApprovedItem(listOfKeyValues.get(index - 1)[1]) != null;
-        String itemName = im.getApprovedItem(listOfKeyValues.get(index - 1)[1]).getName();
+        assert itemManager.getApprovedItem(listOfKeyValues.get(index - 1)[1]) != null;
+        String itemName = itemManager.getApprovedItem(listOfKeyValues.get(index - 1)[1]).getName();
         String traderName = listOfKeys.get(index - 1)[0];
         return new String[]{traderName, itemName};
     }
@@ -170,8 +177,8 @@ public class TradeRequestViewer {
     }
 
     public void printInventory(String username) {
-        NormalUser u = um.getNormalByUsername(username);
-        ArrayList<Item> items = im.getApprovedItemsByIDs(u.getInventory());
+        NormalUser u = userManager.getNormalByUsername(username);
+        ArrayList<Item> items = itemManager.getApprovedItemsByIDs(u.getInventory());
         for (Item i : items) {
             System.out.println(i);
         }
