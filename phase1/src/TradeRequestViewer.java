@@ -56,7 +56,6 @@ public class TradeRequestViewer {
         if (initiatedTrades.isEmpty()) {
             sp.tradeRequestViewer(2);
         } else {
-
             for (String[] key : initiatedTrades.keySet()) {
                 Item i = im.getApprovedItem(initiatedTrades.get(key)[1]);
                 initiatedItems.add(i);

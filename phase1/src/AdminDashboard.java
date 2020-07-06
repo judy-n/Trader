@@ -74,6 +74,9 @@ public class AdminDashboard {
             case 3:
                 // view requests to unfreeze account
                 // new class or stuff it in UserManager too?
+                new AccountUnfreezer(currentAdmin, im, um).reviewUnfreezeRequests();
+                break;
+
             case 4:
                 new ThresholdEditor(currentAdmin, im, um);
                 break;

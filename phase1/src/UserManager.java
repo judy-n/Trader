@@ -15,11 +15,18 @@ public class UserManager implements Serializable {
     private ArrayList<NormalUser> allNormals;
     private ArrayList<AdminUser> allAdmins;
     private ArrayList<String> usernamesToFreeze;
+    private ArrayList<String> unfreezeRequests;
 
+    /**
+     * Class constructor.
+     * Creates a UserManager, setting all lists to empty by default.
+     *
+     */
     public UserManager() {
         allNormals = new ArrayList<>();
         allAdmins = new ArrayList<>();
         usernamesToFreeze = new ArrayList<>();
+        unfreezeRequests = new ArrayList<>();
     }
 
 
@@ -209,6 +216,46 @@ public class UserManager implements Serializable {
      */
     public int getAdminId(){
         return allAdmins.size();
+    }
+
+    /**
+     * Getter for the list of unfreeze requests.
+     *
+     * @return the list of frozen non-admin users who have requested their account be unfrozen
+     */
+    public ArrayList<NormalUser> getUnfreezeRequests() {
+        ArrayList<NormalUser> userRequests = new ArrayList<>();
+        for (String username : unfreezeRequests) {
+            userRequests.add(getNormalByUsername(username));
+        }
+        return userRequests;
+    }
+
+    /**
+     * Adds the given username to the list of unfreeze requests.
+     *
+     * @param username the username of a non-admin user requesting to be unfrozen
+     */
+    public void addUnfreezeRequest(String username) {
+        unfreezeRequests.add(username);
+    }
+
+    /**
+     * Unfreezes the NormalUser associated with the given username.
+     *
+     * @param username the username of the non-admin being unfrozen
+     */
+    public void unfreeze(String username) {
+        getNormalByUsername(username).unfreeze();
+        unfreezeRequests.remove(username);
+    }
+
+    /**
+     * Removes all usernames from the list of unfreeze requests.
+     *
+     */
+    public void rejectAllRequests() {
+        unfreezeRequests.clear();
     }
 
     //This method is just for testing!! Delete later

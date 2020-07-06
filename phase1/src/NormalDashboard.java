@@ -85,6 +85,8 @@ public class NormalDashboard {
                 // heavily relies on temp trade and perm trade implementation
                 // so don't implement until Eric + Yiwei are done with that
 
+                    // use class ongoingtradesviewer.java
+
                 // use getOngoingTrades in TradeManager
                 // in the new class created for this option, handle the whole meeting suggestion thing?
                 // make sure you check if the meeting is a suggestion or if it's already agreed upon
@@ -99,6 +101,8 @@ public class NormalDashboard {
                 // view most recent three *completed* trades
                 // know that you might have to make changes to code later cuz trade classes are being remodeled
 
+                    // use class completedtradesviewer class
+
                 // if trade was two-way, display smth like "Lent [item] and borrowed [item] from [username]"
                 // if trade was one-way, "Lent [item] to [username]" or "Borrowed [item] from [username]"
                 // you can get what a certain user lent in a Trade by using tradeInstance.getLentItemID(username)
@@ -107,7 +111,7 @@ public class NormalDashboard {
             case 7:
                 // view top three most frequent trading partners (only counts if trades are completed)
                 // know that you might have to make changes to code later cuz trade classes are being remodeled
-
+                    // use get3FrequentTradePartners method from TradeManager
                 // add a method in TradeManager that takes in a user and finds those top three most frequent trade partners
                 // TradeManager's getCompletedTrades method can help
                 // p.s. might wanna use an array of size three so no extra space in memory is used up
@@ -116,8 +120,7 @@ public class NormalDashboard {
             case 8:
                 // unfreeze request option for frozen account
                 // new class or stuff it in UserManager too?
-                AccountUnfreezer au = new AccountUnfreezer(um, im, currentUser);
-                au.requestUnfreeze();
+                new AccountUnfreezer(currentUser, im, um).requestUnfreeze();
                 break;
         }
     }
