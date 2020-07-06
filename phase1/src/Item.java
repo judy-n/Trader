@@ -26,6 +26,7 @@ public class Item implements Serializable {
      * Class constructor.
      * Creates an Item with the given name, description, and owner username.
      * Also assigns a unique ID to the item and makes the item available for trade by default.
+     * A borrowTime for item is assigned.
      *
      * @param name          the name being assigned to this Item
      * @param description   the description being assigned to this Item
