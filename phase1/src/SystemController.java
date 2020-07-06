@@ -22,6 +22,8 @@ public class SystemController {
         ItemManager im = new ItemManager();
         UserGateway ug = new UserGateway(um);
         ItemGateway ig = new ItemGateway(im);
+
+        boolean isLoggedOut;
         try {
             ug.readFromFile(serializedUserManagerInfo);
             ig.readFromFile(serializedItemManagerInfo);
@@ -44,6 +46,7 @@ public class SystemController {
                 isSignedUp = sus.getSignedUp();
             }
             ud = new NormalDashboard(sus.getNewUser(), im, um);
+            isLoggedOut = ud.getIsLoggedOut();
 
         } else {
             LoginSystem ls = new LoginSystem(um);
@@ -53,12 +56,14 @@ public class SystemController {
             }
           if(ls.getIsAdmin()){
               ad = new AdminDashboard((AdminUser) ls.getUser(), im, um);
+              isLoggedOut = ad.getIsLoggedOut();
           }else {
               ud = new NormalDashboard((NormalUser) ls.getUser(), im, um);
+              isLoggedOut = ud.getIsLoggedOut();
           }
 
         }
-        boolean isLoggedOut = (ad.getIsLoggedOut()||ud.getIsLoggedOut());
+
         while(!isLoggedOut){
             isLoggedOut = (ad.getIsLoggedOut()||ud.getIsLoggedOut());
         }

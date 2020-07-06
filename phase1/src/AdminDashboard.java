@@ -70,7 +70,7 @@ public class AdminDashboard {
                 // option to approve or reject item by index:
                 // use approveItem()/rejectItem() in ItemManager + approveUserItem()/rejectUserItem() in AdminUser
             case 2:
-
+                
                 // view accounts to freeze
                 // usernamesToFreeze in UserManager
                 // if admin chooses to freeze an account: remove from usernamesToFreeze and call freezeUser() in AdminUser

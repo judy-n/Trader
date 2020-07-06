@@ -279,7 +279,7 @@ public class SystemPresenter {
         System.out.print("\nInvalid input. Please try again: ");
     }
 
-    public void tradeRequestPresenter(int input){
+    public void tradeRequestViewer(int input){
         switch (input){
             case 1:
                 System.out.println("You did not receive any trade requests.");
@@ -290,10 +290,16 @@ public class SystemPresenter {
             case 3:
                 System.out.println("Please suggest a place: ");
                 break;
+            case 4:
+                System.out.println("Would you like to accept any of these requests?(0 to quit)");
+                break;
+            case 5:
+                System.out.println("Your account is frozen!");
+                break;
         }
     }
 
-    public void tradeRequestPresenter(int input, String owner, String itemName){
+    public void tradeRequestViewer(int input, String owner, String itemName){
         switch (input){
             case 1:
                 System.out.println("Are you sure you want to trade " + itemName + " with " + owner + "?(Y/N)");
@@ -302,11 +308,14 @@ public class SystemPresenter {
                 System.out.println("Initiating Trade with " + owner);
                 System.out.println("Please suggest a time(YYYY/MM/DD-HH/MM): ");
                 break;
+            case 3:
+                System.out.println("Sorry but "+owner+ " is currently frozen.");
+                break;
         }
 
     }
 
-    public void tradeRequestPresenter(int input,ArrayList<Item> items, ArrayList<String> owners ){
+    public void tradeRequestViewer(int input,ArrayList<Item> items, ArrayList<String> owners ){
         switch (input){
             case 1:
                 System.out.println("Here is all the trade request(s) you sent:");
@@ -315,7 +324,7 @@ public class SystemPresenter {
             case 2:
                 System.out.println("Here is all the trade request(s) you received:");
                 presentReceivedTradeRequests(items, owners);
-                System.out.println("Would you like to accept any of these requests?(0 to quit)");
+
                 break;
         }
     }
