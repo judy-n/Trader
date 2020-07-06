@@ -85,6 +85,8 @@ public class NormalDashboard {
                 // heavily relies on temp trade and perm trade implementation
                 // so don't implement until Eric + Yiwei are done with that
 
+                    // use class ongoingtradesviewer.java
+
                 // use getOngoingTrades in TradeManager
                 // in the new class created for this option, handle the whole meeting suggestion thing?
                 // make sure you check if the meeting is a suggestion or if it's already agreed upon
@@ -98,6 +100,8 @@ public class NormalDashboard {
             case 6:
                 // view most recent three *completed* trades
                 // know that you might have to make changes to code later cuz trade classes are being remodeled
+
+                    // use class completedtradesviewer class
 
                 // if trade was two-way, display smth like "Lent [item] and borrowed [item] from [username]"
                 // if trade was one-way, "Lent [item] to [username]" or "Borrowed [item] from [username]"
