@@ -25,31 +25,31 @@ public class PermanentTrade extends Trade {
 
     }
 
-    @Override
-    public void confirmTransaction(String username) {
-        super.confirmTransaction(username);
-        String[] usernames = getInvolvedUsernames();
+    //@Override
+    //public void confirmTransaction(String username) {
+    //    super.confirmTransaction(username);
+    //    String[] usernames = getInvolvedUsernames();
 
-        if (getUserTransactionConfirmation(usernames[0]) && getUserTransactionConfirmation(usernames[1])) {
-            NormalUser tempUser1 = um.getNormalByUsername(usernames[0]);
-            NormalUser tempUser2 = um.getNormalByUsername(usernames[1]);
-            assert tempUser1 != null && tempUser2 != null;
-            long[] itemIDs = getInvolvedItemIDs();
-            if (itemIDs[0] != 0) {
-                Item tempItem1 = im.getApprovedItem(itemIDs[0]);
-                assert tempItem1 != null;
-                tempUser1.removeInventory(tempItem1.getID());
-                // [remove from ItemManager arraylist]
-                tempUser2.removeWishlist(tempItem1.getID());
-            }
-            if (itemIDs[1] != 0) {
-                Item tempItem2 = im.getApprovedItem(itemIDs[1]);
-                assert tempItem2 != null;
-                tempUser2.removeInventory(tempItem2.getID());
-                // [remove from ItemManager arraylist]
-                tempUser1.removeWishlist(tempItem2.getID());
-            }
-        }
-    }
+    //if (getUserTransactionConfirmation(usernames[0]) && getUserTransactionConfirmation(usernames[1])) {
+    //        NormalUser tempUser1 = um.getNormalByUsername(usernames[0]);
+    //        NormalUser tempUser2 = um.getNormalByUsername(usernames[1]);
+    //        assert tempUser1 != null && tempUser2 != null;
+    //        long[] itemIDs = getInvolvedItemIDs();
+    //        if (itemIDs[0] != 0) {
+    //            Item tempItem1 = im.getApprovedItem(itemIDs[0]);
+    //            assert tempItem1 != null;
+    //            tempUser1.removeInventory(tempItem1.getID());
+    //            // [remove from ItemManager arraylist]
+    //            tempUser2.removeWishlist(tempItem1.getID());
+    //        }
+    //        if (itemIDs[1] != 0) {
+    //            Item tempItem2 = im.getApprovedItem(itemIDs[1]);
+    //            assert tempItem2 != null;
+    //            tempUser2.removeInventory(tempItem2.getID());
+    //           // [remove from ItemManager arraylist]
+    //           tempUser1.removeWishlist(tempItem2.getID());
+    //        }
+    //    }
+    //}
 }
 
