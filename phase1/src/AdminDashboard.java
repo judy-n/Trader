@@ -63,14 +63,11 @@ public class AdminDashboard {
                 sp.normalDashboard(3);
                 break;
             case 1:
-                new CatalogEditor(user, im, um);
+                new CatalogEditor(currentAdmin, im, um);
                 break;
-                // view items awaiting approval
-                // ItemManager's pendingItems list; print with index of item in the arraylist in SystemPresenter
-                // option to approve or reject item by index:
-                // use approveItem()/rejectItem() in ItemManager + approveUserItem()/rejectUserItem() in AdminUser
             case 2:
-
+                new AccountFreezer(currentAdmin, im, um);
+                break;
                 // view accounts to freeze
                 // usernamesToFreeze in UserManager
                 // if admin chooses to freeze an account: remove from usernamesToFreeze and call freezeUser() in AdminUser

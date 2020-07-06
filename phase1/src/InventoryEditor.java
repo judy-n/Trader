@@ -71,7 +71,7 @@ public class InventoryEditor {
                     if (confirmInput.equalsIgnoreCase("Y")) {
                         Item requestedItem = new Item(itemNameInput, itemDescriptionInput, currentUser.getUsername());
 
-                        currentUser.addPendingInventory(requestedItem.getId());
+                        currentUser.addPendingInventory(requestedItem.getID());
                         im.addPendingItem(requestedItem);
 
                         sp.inventoryAddItem(4);
@@ -105,7 +105,7 @@ public class InventoryEditor {
                     }
                     if (confirmInput.equalsIgnoreCase("Y")) {
 
-                        currentUser.removeInventory(selectedItem.getId());
+                        currentUser.removeInventory(selectedItem.getID());
                         im.removeApprovedItem(selectedItem);
 
                         sp.inventoryRemoveItem(selectedItem.getName(), 0, 2);

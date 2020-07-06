@@ -1,9 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.sql.Array;
-import java.sql.SQLOutput;
 
 /**
  * Displays a dashboard once a non-administrative user logs in.
@@ -55,7 +52,6 @@ public class NormalDashboard {
             }
         } catch (IOException e) {
             sp.exceptionMessage();
-            System.exit(-1);
         }
 
         switch (input) {

@@ -87,8 +87,6 @@ public class SystemPresenter {
         }
     }
 
-
-
     //helper method that prints inventory + pending
     private void presentInventory(ArrayList<Item> itemInventory, ArrayList<Item> pendingItems) {
         System.out.println("\n-- Your inventory --");
@@ -254,10 +252,9 @@ public class SystemPresenter {
 
     public void catalogEditor(Item item){
         System.out.println("You have chosen: " + item);
-        System.out.println("Would you like to 1) approve or 2) deny this item?");
+        System.out.println("Would you like to 1) approve or 2) reject this item?");
 
     }
-
 
     private void presenterAllItems(ArrayList<Item> items){
         int index = 1;
@@ -267,19 +264,21 @@ public class SystemPresenter {
         }
     }
 
-    public void cancelled() {
-        System.out.println("\nCancelled!");
+    public void accountFreezer(ArrayList<String> usernames){
+        System.out.println("Here are the users that need to be frozen:");
+        int index = 1;
+        for(String username : usernames){
+            System.out.println(index + ". "+ username);
+            index ++;
+        }
+        System.out.println("Would you like to freeze all of the accounts?(Y/N)");
     }
 
-    public void exceptionMessage() {
-        System.out.println("\nError reading user input!");
+    public void accountFreezer(){
+        System.out.println("All frozen!");
     }
 
-    public void invalidInput() {
-        System.out.print("\nInvalid input. Please try again: ");
-    }
-
-    public void tradeRequestPresenter(int input){
+    public void tradeRequestViewer(int input){
         switch (input){
             case 1:
                 System.out.println("You did not receive any trade requests.");
@@ -290,10 +289,16 @@ public class SystemPresenter {
             case 3:
                 System.out.println("Please suggest a place: ");
                 break;
+            case 4:
+                System.out.println("Would you like to accept any of these requests?(0 to quit)");
+                break;
+            case 5:
+                System.out.println("Your account is frozen!");
+                break;
         }
     }
 
-    public void tradeRequestPresenter(int input, String owner, String itemName){
+    public void tradeRequestViewer(int input, String owner, String itemName){
         switch (input){
             case 1:
                 System.out.println("Are you sure you want to trade " + itemName + " with " + owner + "?(Y/N)");
@@ -302,11 +307,14 @@ public class SystemPresenter {
                 System.out.println("Initiating Trade with " + owner);
                 System.out.println("Please suggest a time(YYYY/MM/DD-HH/MM): ");
                 break;
+            case 3:
+                System.out.println("Sorry but "+owner+ " is currently frozen.");
+                break;
         }
 
     }
 
-    public void tradeRequestPresenter(int input,ArrayList<Item> items, ArrayList<String> owners ){
+    public void tradeRequestViewer(int input,ArrayList<Item> items, ArrayList<String> owners ){
         switch (input){
             case 1:
                 System.out.println("Here is all the trade request(s) you sent:");
@@ -315,7 +323,7 @@ public class SystemPresenter {
             case 2:
                 System.out.println("Here is all the trade request(s) you received:");
                 presentReceivedTradeRequests(items, owners);
-                System.out.println("Would you like to accept any of these requests?(0 to quit)");
+
                 break;
         }
     }
@@ -384,5 +392,17 @@ public class SystemPresenter {
                 System.out.println(menuNotInitAdmin + menuInitAdmin + logoutOption);
                 break;
         }
+    }
+
+    public void cancelled() {
+        System.out.println("\nCancelled!");
+    }
+
+    public void exceptionMessage() {
+        System.out.println("\nError reading user input!");
+    }
+
+    public void invalidInput() {
+        System.out.print("\nInvalid input. Please try again: ");
     }
 }

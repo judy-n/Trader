@@ -17,6 +17,7 @@ public class Item implements Serializable {
     private final String name;
     private final String description;
     private final String ownerUsername;
+    private boolean isApproved;
     private boolean isAvailable;
 
     /**
@@ -34,6 +35,7 @@ public class Item implements Serializable {
         this.description = description;
         this.ownerUsername = ownerUsername;
         assignID();
+        isApproved = false;
         isAvailable = true;
     }
 
@@ -49,16 +51,16 @@ public class Item implements Serializable {
     }
 
     /**
-     * Getter for Item's id
+     * Getter for Item's id.
      *
-     * @return id
+     * @return this item's id
      */
-    public long getId() {
+    public long getID() {
         return id;
     }
 
     /**
-     * Getter for this item's name
+     * Getter for this Item's name.
      *
      * @return this item's name
      */
@@ -67,7 +69,7 @@ public class Item implements Serializable {
     }
 
     /**
-     * Getter for this item's description
+     * Getter for this Item's description.
      *
      * @return this item's description
      */
@@ -76,12 +78,29 @@ public class Item implements Serializable {
     }
 
     /**
-     * Getter for the owner of this item's username
+     * Getter for the owner of this item's username.
      *
      * @return ownerUsername
      */
     public String getOwnerUsername() {
         return ownerUsername;
+    }
+
+    /**
+     * Getter for whether or not this Item has been approved by an admin.
+     *
+     * @return whether or not this Item has been approved by an admin
+     */
+    public boolean getIsApproved() {
+        return isApproved;
+    }
+
+    /**
+     * Sets this Item's status to approved by admin.
+     *
+     */
+    public void setApproved() {
+        isApproved = true;
     }
 
     /**

@@ -38,16 +38,16 @@ public class PermanentTrade extends Trade {
             if (itemIDs[0] != 0) {
                 Item tempItem1 = im.getApprovedItem(itemIDs[0]);
                 assert tempItem1 != null;
-                tempUser1.removeInventory(tempItem1.getId());
+                tempUser1.removeInventory(tempItem1.getID());
                 // [remove from ItemManager arraylist]
-                tempUser2.removeWishlist(tempItem1.getId());
+                tempUser2.removeWishlist(tempItem1.getID());
             }
             if (itemIDs[1] != 0) {
                 Item tempItem2 = im.getApprovedItem(itemIDs[1]);
                 assert tempItem2 != null;
-                tempUser2.removeInventory(tempItem2.getId());
+                tempUser2.removeInventory(tempItem2.getID());
                 // [remove from ItemManager arraylist]
-                tempUser1.removeWishlist(tempItem2.getId());
+                tempUser1.removeWishlist(tempItem2.getID());
             }
         }
     }

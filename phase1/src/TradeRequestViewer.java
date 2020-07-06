@@ -40,6 +40,8 @@ public class TradeRequestViewer {
         receivedTrades = new HashMap<>();
         this.im = im;
         this.um = um;
+        String[] a;
+        NormalUser trader;
 
         for (String[] key : user.getTradeRequest().keySet()) {
             if (user.getUsername().equals(key[0])) {
@@ -52,7 +54,7 @@ public class TradeRequestViewer {
         ArrayList<String> initiatedOwners = new ArrayList<>();
 
         if (initiatedTrades.isEmpty()) {
-            sp.tradeRequestPresenter(2);
+            sp.tradeRequestViewer(2);
         } else {
 
             for (String[] key : initiatedTrades.keySet()) {
@@ -60,14 +62,19 @@ public class TradeRequestViewer {
                 initiatedItems.add(i);
                 initiatedOwners.add(key[1]);
             }
-            sp.tradeRequestPresenter(1, initiatedItems, initiatedOwners);
+            sp.tradeRequestViewer(1, initiatedItems, initiatedOwners);
         }
 
+        if(currentUser.getIsFrozen()){
+            sp.tradeRequestViewer(5);
+            new NormalDashboard(currentUser, im, um);
+        }
+        sp.tradeRequestViewer(4);
         ArrayList<Item> receivedItems = new ArrayList<>();
         ArrayList<String> receivedOwners = new ArrayList<>();
         int index = 1;
         if (receivedTrades.isEmpty()) {
-            sp.tradeRequestPresenter(1);
+            sp.tradeRequestViewer(1);
         } else {
             for (String[] key : receivedTrades.keySet()) {
                 Item i = im.getApprovedItem(receivedTrades.get(key)[1]);
@@ -75,19 +82,25 @@ public class TradeRequestViewer {
                 receivedOwners.add(key[0]);
                 index++;
             }
-            sp.tradeRequestPresenter(2, receivedItems, receivedOwners);
+            sp.tradeRequestViewer(2, receivedItems, receivedOwners);
             try {
-                int input = Integer.parseInt(br.readLine());
-                while (input != 0 && input > index) {
-                    sp.invalidInput();
-                    input = Integer.parseInt(br.readLine());
-                }
-                if (input == 0) {
-                    new NormalDashboard(currentUser, im, um);
-                }
-                String[] a = getTradeHelper(input);
+                do {
+                    int input = Integer.parseInt(br.readLine());
+                    while (input != 0 && input > index) {
+                        sp.invalidInput();
+                        input = Integer.parseInt(br.readLine());
+                    }
+                    if (input == 0) {
+                        new NormalDashboard(currentUser, im, um);
+                    }
+                    a = getTradeHelper(input);
+                    trader = um.getNormalByUsername(a[0]);
+                    if (trader.getIsFrozen()) {
+                        sp.tradeRequestViewer(3, a[0], a[1]);
+                    }
+                }while(trader.getIsFrozen());
 
-                sp.tradeRequestPresenter(1, a[0], a[1]);
+                sp.tradeRequestViewer(1, a[0], a[1]);
                 String inputConfirm = br.readLine();
                 while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
                     sp.invalidInput();
@@ -95,7 +108,7 @@ public class TradeRequestViewer {
                 }
                 if (inputConfirm.equalsIgnoreCase("y")) {
 
-                    sp.tradeRequestPresenter(2, a[0], a[1]);
+                    sp.tradeRequestViewer(2, a[0], a[1]);
                     String t = br.readLine();
                     String[] temp = t.split("-");
                     if (!isThisDateValid(temp[0], "dd/MM/yyyy") || !isThisTimeValid(temp[1])) {
@@ -110,7 +123,7 @@ public class TradeRequestViewer {
 
                     LocalDateTime time = LocalDateTime.of(Integer.parseInt(temp2[2]), Integer.parseInt(temp2[1]),
                             Integer.parseInt(temp2[0]), Integer.parseInt(temp3[0]), Integer.parseInt(temp3[1]));
-                    sp.tradeRequestPresenter(3);
+                    sp.tradeRequestViewer(3);
                     String place = br.readLine();
 
                 }

@@ -40,6 +40,17 @@ public class ItemManager implements Serializable {
     }
 
     /**
+     * Getter for all items, pending and approved.
+     *
+     * @return a list of all items in the system
+     */
+    public ArrayList<Item> getAllItems() {
+        ArrayList<Item> allItems = new ArrayList<>();
+        allItems.addAll(approvedItems);
+        allItems.addAll(pendingItems);
+        return allItems;
+    }
+    /**
      * Returns the total number of approved items in the system.
      *
      * @return the total number of approved items in the system
@@ -99,7 +110,7 @@ public class ItemManager implements Serializable {
     //prof said private methods don't need javadoc
     private Item idGetItem(ArrayList<Item> items, long itemid) {
         for (Item i : items) {
-            if (i.getId() == itemid) {
+            if (i.getID() == itemid) {
                 return i;
             }
         }
@@ -171,4 +182,11 @@ public class ItemManager implements Serializable {
         pendingItems.remove(itemToReject);
     }
 
+    public void setApprovedItems(ArrayList<Item> allApproved) {
+        approvedItems = allApproved;
+    }
+
+    public void setPendingItems(ArrayList<Item> allPending) {
+        pendingItems = allPending;
+    }
 }

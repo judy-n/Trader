@@ -143,10 +143,21 @@ public class UserManager implements Serializable {
     }
 
 
-    public ArrayList<NormalUser> getAllNormalUsers() {
+    public ArrayList<NormalUser> getAllNormals() {
         return allNormals;
     }
 
+    public ArrayList<AdminUser> getAllAdmins() {
+        return allAdmins;
+    }
+
+    public void setAllNormals(ArrayList<NormalUser> normalList) {
+        allNormals = normalList;
+    }
+
+    public void setAllAdmins(ArrayList<AdminUser> adminList) {
+        allAdmins = adminList;
+    }
     /**
      * Takes the given username and returns the associated account password.
      *
@@ -202,6 +213,24 @@ public class UserManager implements Serializable {
         }
         return false;
     }
+
+    /**
+     * Return all the usernames that needs to be frozen
+     * @return usernames to freeze
+     */
+    public ArrayList<String> getUsernamesToFreeze(){
+        return usernamesToFreeze;
+    }
+
+
+    /**
+     * Clears the usernamesToFreeze arraylist
+     */
+    public void clearUsernamesToFreeze(){
+        usernamesToFreeze.clear();
+    }
+
+
 
     //This method is just for testing!! Delete later
     public void printAllUser() {
