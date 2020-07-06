@@ -9,7 +9,7 @@ import java.util.HashMap;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-03
+ * last modified 2020-07-06
  */
 
 public class NormalUser extends User implements Serializable {
@@ -18,7 +18,7 @@ public class NormalUser extends User implements Serializable {
     private ArrayList<Long> wishlist;
     private HashMap<String[], long[]> tradeRequests;
 
-    private Boolean isFrozen;
+    private boolean isFrozen;
 
     private int weeklyTradeMax = 3;
     private int meetingEditMax = 3;

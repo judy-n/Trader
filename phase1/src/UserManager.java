@@ -111,26 +111,6 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given email and returns the associated user.
-     *
-     * @param email the email of the user being retrieved
-     * @return the user associated with the given email
-     */
-    public User getUserByEmail(String email) {
-        for (NormalUser u : allNormals) {
-            if (u.getEmail().equals(email)) {
-                return u;
-            }
-        }
-        for (AdminUser u : allAdmins) {
-            if (u.getEmail().equals(email)) {
-                return u;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Getter for all Users in the user database.
      *
      * @return an ArrayList of all Users in the database
@@ -151,13 +131,6 @@ public class UserManager implements Serializable {
         return allAdmins;
     }
 
-    public void setAllNormals(ArrayList<NormalUser> normalList) {
-        allNormals = normalList;
-    }
-
-    public void setAllAdmins(ArrayList<AdminUser> adminList) {
-        allAdmins = adminList;
-    }
     /**
      * Takes the given username and returns the associated account password.
      *

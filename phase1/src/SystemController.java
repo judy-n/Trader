@@ -1,12 +1,10 @@
-import java.io.IOException;
-
 /**
  * The master controller.
  *
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-05
+ * last modified 2020-07-06
  */
 
 public class SystemController {
@@ -14,24 +12,16 @@ public class SystemController {
     private NormalDashboard ud;
 
     public SystemController() {
-        String userManagerPath1 = "src/normalusers.ser";
-        String userManagerPath2 = "src/adminusers.ser";
+        String userManagerPath = "src/usermanager.ser";
         String itemManagerPath = "src/itemmanager.ser";
 
-        UserManager um = new UserManager();
-        ItemManager im = new ItemManager();
-
-        UserGateway ug = new UserGateway(um);
-        ItemGateway ig = new ItemGateway(im);
+        UserGateway ug = new UserGateway();
+        ItemGateway ig = new ItemGateway();
 
         boolean isLoggedOut;
-        try {
-            ug.readNormalFromFile(userManagerPath1);
-            ug.readAdminFromFile(userManagerPath2);
-            ig.readFromFile(itemManagerPath);
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
+
+        UserManager um = ug.readFromFile(userManagerPath);
+        ItemManager im = ig.readFromFile(itemManagerPath);
 
         if (um.getAllUsers().isEmpty()) {
             AdminUser mod01 = new AdminUser("Hello_World", "admin01@email.com", "pa55word", 1);
@@ -73,14 +63,8 @@ public class SystemController {
             isLoggedOut = (ad.getIsLoggedOut() || ud.getIsLoggedOut());
         }
 
-        try {
-            ug.saveNormalToFile(userManagerPath1);
-            ug.saveAdminToFile(userManagerPath2);
-            ig.saveToFile(itemManagerPath);
-            System.out.println("reached save code");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        ug.saveToFile(userManagerPath, um);
+        ig.saveToFile(itemManagerPath, im);
         System.exit(0);
 
     }

@@ -3,14 +3,9 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * UserGateway is a class that allows UserManagers to be serialized and de-serialized.
@@ -21,123 +16,63 @@ import java.util.ArrayList;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-03
+ * last modified 2020-07-06
  */
-
-
 public class UserGateway {
-    private UserManager uManager;
-
 
     /**
-     * Constructor for UserGateway, sets the UserManager
+     * Constructor for UserGateway.
      *
-     * @param uManager UserManager
      */
-    public UserGateway(UserManager uManager) {
-        this.uManager = uManager;
+    public UserGateway() {
+
     }
 
     /**
-     * De-serializes a .ser file and makes that file's usermanager this Gateway's usermanager.
+     * Deserializes the .ser file that contains UserManager's serialization.
      *
-     * @param path the path of the file
-     * @throws ClassNotFoundException - if the de-serialized class can't be made
+     * @param filePath the path of the file being read
+     * @return the deserialized UserManager
      */
-//    public void readFromFile(String path) throws ClassNotFoundException {
-//        try {
-//            boolean fileCreated = new File(path).createNewFile();
-//            //returns true and creates new file if file doesn't exist yet, false otherwise
-//
-//            if (!fileCreated) {
-//                InputStream file = new FileInputStream(path);
-//                InputStream buffer = new BufferedInputStream(file);
-//                ObjectInput input = new ObjectInputStream(buffer);
-//
-//                // deserialize the Map
-//                uManager = (UserManager) input.readObject();
-//                System.out.println("hi");
-//                input.close();
-//            }
-//        } catch (IOException ex) {
-//            System.out.println("IO Error Occurred USER");
-//        }
-//    }
-
-    public void readNormalFromFile(String path) throws ClassNotFoundException {
+    public UserManager readFromFile(String filePath) {
         try {
-            boolean fileCreated = new File(path).createNewFile();
+            boolean fileCreated = new File(filePath).createNewFile();
             //returns true and creates new file if file doesn't exist yet, false otherwise
 
             if (!fileCreated) {
-                InputStream file = new FileInputStream(path);
-                InputStream buffer = new BufferedInputStream(file);
-                ObjectInput input = new ObjectInputStream(buffer);
+                FileInputStream fis = new FileInputStream(filePath);
+                BufferedInputStream buffer = new BufferedInputStream(fis);
+                ObjectInputStream ois = new ObjectInputStream(buffer);
 
-                // deserialize the Map
-                uManager.setAllNormals((ArrayList<NormalUser>) input.readObject());
-                input.close();
+                UserManager um = (UserManager) ois.readObject();
+                ois.close();
+                return um;
             }
-        } catch (IOException ex) {
-            System.out.println("IO Error Occurred USER");
+        } catch (IOException e) {
+            System.out.println("Reading error USER");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Missing class in files.");
         }
+        return new UserManager();
     }
 
-    public void readAdminFromFile(String path) throws ClassNotFoundException {
+    /**
+     * Serializes this system's UserManager.
+     *
+     * @param filePath the path of the file being written to
+     * @param um the UserManager being serialized
+     */
+    public void saveToFile(String filePath, UserManager um) {
+
         try {
-            boolean fileCreated = new File(path).createNewFile();
-            //returns true and creates new file if file doesn't exist yet, false otherwise
+            FileOutputStream fos = new FileOutputStream(filePath);
+            BufferedOutputStream buffer = new BufferedOutputStream(fos);
+            ObjectOutputStream oos = new ObjectOutputStream(buffer);
 
-            if (!fileCreated) {
-                InputStream file = new FileInputStream(path);
-                InputStream buffer = new BufferedInputStream(file);
-                ObjectInput input = new ObjectInputStream(buffer);
-
-                // deserialize the Map
-                uManager.setAllAdmins((ArrayList<AdminUser>) input.readObject());
-                input.close();
-            }
-        } catch (IOException ex) {
-            System.out.println("IO Error Occurred USER");
+            oos.writeObject(um);
+            oos.close();
+        } catch (IOException e) {
+            System.out.println("Writing error USER");
         }
-    }
-
-//    /**
-//     * Saves serialized UserManager to .ser file
-//     *
-//     * @param filePath the path of the file
-//     * @throws IOException throws IOException when there is an error with input
-//     */
-//    public void saveToFile(String filePath) throws IOException {
-//
-//        OutputStream file = new FileOutputStream(filePath);
-//        OutputStream buffer = new BufferedOutputStream(file);
-//        ObjectOutput output = new ObjectOutputStream(buffer);
-//
-//        // serialize the Map
-//        output.writeObject(uManager);
-//        output.close();
-//    }
-
-    public void saveNormalToFile(String filePath) throws IOException {
-
-        OutputStream file = new FileOutputStream(filePath);
-        OutputStream buffer = new BufferedOutputStream(file);
-        ObjectOutput output = new ObjectOutputStream(buffer);
-
-        // serialize the Map
-        output.writeObject(uManager.getAllNormals());
-        output.close();
-    }
-
-    public void saveAdminToFile(String filePath) throws IOException {
-
-        OutputStream file = new FileOutputStream(filePath);
-        OutputStream buffer = new BufferedOutputStream(file);
-        ObjectOutput output = new ObjectOutputStream(buffer);
-
-        // serialize the Map
-        output.writeObject(uManager.getAllAdmins());
-        output.close();
     }
 }

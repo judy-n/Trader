@@ -50,6 +50,7 @@ public class ItemManager implements Serializable {
         allItems.addAll(pendingItems);
         return allItems;
     }
+
     /**
      * Returns the total number of approved items in the system.
      *
@@ -65,7 +66,9 @@ public class ItemManager implements Serializable {
      *
      * @return the total number of pending items in the system
      */
-    public int getNumPendingItems(){return pendingItems.size();}
+    public int getNumPendingItems() {
+        return pendingItems.size();
+    }
 
     /**
      * Takes in an approved item ID and returns the associated Item object.
@@ -180,13 +183,5 @@ public class ItemManager implements Serializable {
      */
     public void rejectItem(Item itemToReject) {
         pendingItems.remove(itemToReject);
-    }
-
-    public void setApprovedItems(ArrayList<Item> allApproved) {
-        approvedItems = allApproved;
-    }
-
-    public void setPendingItems(ArrayList<Item> allPending) {
-        pendingItems = allPending;
     }
 }
