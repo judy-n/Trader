@@ -1,3 +1,4 @@
+import javax.xml.bind.SchemaOutputResolver;
 import java.util.ArrayList;
 
 /**
@@ -281,6 +282,24 @@ public class SystemPresenter {
 
     public void requestUnfreeze() {
         System.out.println("Your request has been sent in! Please allow some time for an admin to review it.");
+    }
+
+    public void adminGetUnfreezeRequests(ArrayList<NormalUser> unfreezeRequests) {
+        System.out.println("Here are the users that requested to be unfrozen:");
+        int index = 1;
+        for(User u : unfreezeRequests){
+            System.out.println(index + ". "+ u.getUsername());
+            index ++;
+        }
+        System.out.println("Would you like to unfreeze any of the accounts? (Y/N)");
+    }
+
+    public void adminGetUnfreezeRequests() {
+        System.out.println("Enter the username(s) (no spaces, separated by commas) of the user(s) you would like to unfreeze:");
+    }
+
+    public void adminUnfreezeSuccessful() {
+        System.out.println("The users have been unfrozen!");
     }
 
     public void tradeRequestViewer(int input){
