@@ -9,6 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * ItemGateway is a class that allows ItemManagers to be serialized and de-serialized.
@@ -37,20 +39,37 @@ public class ItemGateway {
     }
 
     /**
-     * De-serializes a .ser file and makes that file's ItemManager this Gateway's ItemManager.
+     * De-serializes a .ser file and separates approved items from pending items in the stored ItemManager.
      *
      * @param path the path of the file
      * @throws ClassNotFoundException - if the de-serialized class can't be made
      */
     public void readFromFile(String path) throws ClassNotFoundException {
         try {
-            InputStream file = new FileInputStream(path);
-            InputStream buffer = new BufferedInputStream(file);
-            ObjectInput input = new ObjectInputStream(buffer);
+            boolean fileCreated = new File(path).createNewFile();
+            //returns true and creates new file if file doesn't exist yet, false otherwise
 
-            // deserialize the Map
-            iManager = (ItemManager) input.readObject();
-            input.close();
+            if (!fileCreated) {
+                InputStream file = new FileInputStream(path);
+                InputStream buffer = new BufferedInputStream(file);
+                ObjectInput input = new ObjectInputStream(buffer);
+
+                // deserialize the Map
+                ArrayList<Item> allItems = (ArrayList<Item>) input.readObject();
+                input.close();
+
+                ArrayList<Item> allApproved = new ArrayList<>();
+                ArrayList<Item> allPending = new ArrayList<>();
+                for (Item i : allItems) {
+                    if (i.getIsApproved()) {
+                        allApproved.add(i);
+                    } else {
+                        allPending.add(i);
+                    }
+                }
+                iManager.setApprovedItems(allApproved);
+                iManager.setPendingItems(allPending);
+            }
         } catch (IOException ex) {
             System.out.println("IO Error Occurred ITEM");
         }
@@ -58,7 +77,7 @@ public class ItemGateway {
 
 
     /**
-     * Saves serialized ItemManager to .ser file
+     * ahhhh
      *
      * @param filePath the path of the file
      * @throws IOException throws IOException when there is an error with input
@@ -70,7 +89,7 @@ public class ItemGateway {
         ObjectOutput output = new ObjectOutputStream(buffer);
 
         // serialize the Map
-        output.writeObject(iManager);
+        output.writeObject(iManager.getAllItems());
         output.close();
     }
 }

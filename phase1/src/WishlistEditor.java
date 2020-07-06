@@ -66,7 +66,7 @@ public class WishlistEditor {
                             confirmInput = br.readLine();
                         }
                         if (confirmInput.equalsIgnoreCase("y")) {
-                            currentUser.removeWishlist(selected.getId());
+                            currentUser.removeWishlist(selected.getID());
                             sp.wishlistRemoveItem(selected.getName(), 2);
                         } else {
                             sp.cancelled();
