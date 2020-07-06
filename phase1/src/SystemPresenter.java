@@ -6,9 +6,10 @@ import java.util.ArrayList;
  * @author Ning Zhang
  * @author Kushagra
  * @author Yingjia Liu
+ * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-05
+ * last modified 2020-07-06
  */
 
 public class SystemPresenter {
@@ -276,6 +277,10 @@ public class SystemPresenter {
 
     public void accountFreezer(){
         System.out.println("All frozen!");
+    }
+
+    public void requestUnfreeze() {
+        System.out.println("Your request has been sent in! Please allow some time for an admin to review it.");
     }
 
     public void tradeRequestViewer(int input){
