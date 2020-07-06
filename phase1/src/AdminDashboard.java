@@ -16,7 +16,6 @@ public class AdminDashboard {
     private int input;
     private ItemManager im;
     private UserManager um;
-    private boolean isLoggedOut;
 
     /**
      * Creates an AdminDashboard that stores the given logged-in admin.
@@ -29,7 +28,6 @@ public class AdminDashboard {
         currentAdmin = user;
         this.im = im;
         this.um = um;
-        isLoggedOut = false;
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int maxChoice = 4;
@@ -59,7 +57,6 @@ public class AdminDashboard {
                 } catch (IOException e) {
                     sp.exceptionMessage();
                 }
-                isLoggedOut = true;
                 sp.normalDashboard(3);
                 break;
             case 1:
@@ -91,9 +88,4 @@ public class AdminDashboard {
                 // addUser() in UserManager (handles the separation of admins from non-admins for you)
         }
     }
-
-    public boolean getIsLoggedOut(){
-        return isLoggedOut;
-    }
-
 }

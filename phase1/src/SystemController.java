@@ -18,8 +18,6 @@ public class SystemController {
         UserGateway ug = new UserGateway();
         ItemGateway ig = new ItemGateway();
 
-        boolean isLoggedOut;
-
         UserManager um = ug.readFromFile(userManagerPath);
         ItemManager im = ig.readFromFile(itemManagerPath);
 
@@ -28,45 +26,24 @@ public class SystemController {
             um.addUser(mod01);
         }
 
-        StartMenu sm = new StartMenu();
-        int choice = sm.getChoice();
-        while (choice == 0) {
-            choice = sm.getChoice();
-        }
+        int choice = new StartMenu().getUserInput();
 
         if (choice == 1) {
-            SignUpSystem sus = new SignUpSystem(um);
-            boolean isSignedUp = sus.getSignedUp();
-            while (!isSignedUp) {
-                isSignedUp = sus.getSignedUp();
-            }
-            ud = new NormalDashboard(sus.getNewUser(), im, um);
-            isLoggedOut = ud.getIsLoggedOut();
+            NormalUser newUser = new SignUpSystem(um).getNewUser();
+            new NormalDashboard(newUser, im, um);
 
-        } else {
-            LoginSystem ls = new LoginSystem(um);
-            boolean isLoggedIn = ls.getIsLoggedIn();
-            while (!isLoggedIn) {
-                isLoggedIn = ls.getIsLoggedIn();
-            }
-            if (ls.getIsAdmin()) {
-                ad = new AdminDashboard((AdminUser) ls.getUser(), im, um);
-                isLoggedOut = ad.getIsLoggedOut();
+        } else if (choice == 2) {
+            User currentUser = new LoginSystem(um).getUser();
+            if (currentUser instanceof AdminUser) {
+                new AdminDashboard((AdminUser) currentUser, im, um);
             } else {
-                ud = new NormalDashboard((NormalUser) ls.getUser(), im, um);
-                isLoggedOut = ud.getIsLoggedOut();
+                new NormalDashboard((NormalUser) currentUser, im, um);
             }
-
-        }
-
-        while (!isLoggedOut) {
-            isLoggedOut = (ad.getIsLoggedOut() || ud.getIsLoggedOut());
         }
 
         ug.saveToFile(userManagerPath, um);
         ig.saveToFile(itemManagerPath, im);
         System.exit(0);
-
     }
 
 }

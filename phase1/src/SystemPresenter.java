@@ -1,4 +1,3 @@
-import javax.xml.bind.SchemaOutputResolver;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +15,17 @@ import java.util.ArrayList;
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
 
+    public void startMenu(int input) {
+        switch(input) {
+            case 1:
+                System.out.print("----- WELCOME -----\n 1) Sign up \n 2) Log in \n 3) Exit the program" + choicePrompt + ": ");
+                break;
+            case 2:
+                System.out.println("Exiting the program. Hope to see you again soon!");
+                break;
+        }
+    }
+
     public void signUpSystem(int input) {
         switch (input) {
             case 1:
@@ -29,7 +39,7 @@ public class SystemPresenter {
                 System.out.print("That's not an email address! Please enter a valid email: ");
                 break;
             case 4:
-                System.out.print("Please enter an username: ");
+                System.out.print("Please enter an username (at least 3 characters): ");
                 break;
             case 5:
                 System.out.print("Username already exists! Please enter a different username: ");

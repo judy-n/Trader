@@ -17,7 +17,6 @@ public class SignUpSystem {
     private String password;
     private UserManager um;
     private NormalUser newUser;
-    private boolean isSignedUp;
 
     /**
      * Class constructor.
@@ -30,7 +29,6 @@ public class SignUpSystem {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         SystemPresenter sp = new SystemPresenter();
         this.um = um;
-        isSignedUp = false;
         sp.signUpSystem(1);
         try {
             String emailInput = br.readLine();
@@ -62,7 +60,7 @@ public class SignUpSystem {
                     invalidInput = true;
                     sp.signUpSystem(5);
                     usernameInput = br.readLine();
-                } else if (usernameInput.trim().isEmpty()) {
+                } else if (usernameInput.trim().isEmpty() || usernameInput.length() < 3) {
                     invalidInput = true;
                     sp.signUpSystem(6);
                     usernameInput = br.readLine();
@@ -93,15 +91,9 @@ public class SignUpSystem {
         newUser = new NormalUser(username, email, password);
         um.addUser(newUser);
         sp.signUpSystem(11);
-        isSignedUp = true;
     }
 
     public NormalUser getNewUser() {
         return newUser;
     }
-
-    public boolean getSignedUp() {
-        return isSignedUp;
-    }
-
 }

@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-04
+ * last modified 2020-07-06
  */
 public class StartMenu {
     private int userInput;
@@ -20,36 +20,25 @@ public class StartMenu {
      * Creates a start menu that takes in user input.
      */
     public StartMenu() {
-        //This does not need system presenter because this is a presenter
         userInput = 0;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println(" 1) Sign up \n 2) Log in \n 3) Exit the program");
-        System.out.print("Please select an option by entering the number 1, 2, or 3: ");
+        SystemPresenter sp = new SystemPresenter();
+
+        sp.startMenu(1);
         try {
             userInput = Integer.parseInt(br.readLine());
 
             while (!(userInput == 1) && !(userInput == 2) && !(userInput == 3)) {
-                System.out.print("Invalid input. Please enter 1, 2, or 3: ");
+                sp.invalidInput();
                 userInput = Integer.parseInt(br.readLine());
             }
 
-        } catch (IOException |NumberFormatException ex) {
-            System.out.println("Error reading user input.");
-
-        }
-
-        if (userInput == 3) {
-            try {
-                br.close();
-            } catch (IOException e) {
-                System.out.println("Error closing input stream.");
-            }
-            System.out.println("Exiting the program. Hope to see you again soon!");
-            System.exit(0);
+        } catch (IOException e) {
+            sp.exceptionMessage();
         }
     }
 
-    public int getChoice() {
+    public int getUserInput() {
         return userInput;
     }
 }
