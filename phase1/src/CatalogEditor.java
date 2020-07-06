@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 /**
- * Lets AdminUser apporve/deny pending items
+ * Lets AdminUser approve/deny pending items
  *
  * @author Ning Zhang
  * @version 1.0
