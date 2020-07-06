@@ -32,6 +32,7 @@ public class AdminDashboard {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int maxChoice = 4;
 
+        sp.showAdminID(currentAdmin);
         if (currentAdmin.getAdminID() != 1) {
             sp.adminDashboard(1);
         } else {

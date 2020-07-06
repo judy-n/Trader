@@ -8,9 +8,6 @@
  */
 
 public class SystemController {
-    private AdminDashboard ad;
-    private NormalDashboard ud;
-
     public SystemController() {
         String userManagerPath = "src/usermanager.ser";
         String itemManagerPath = "src/itemmanager.ser";
@@ -29,7 +26,7 @@ public class SystemController {
         int choice = new StartMenu().getUserInput();
 
         if (choice == 1) {
-            NormalUser newUser = new SignUpSystem(um).getNewUser();
+            NormalUser newUser = new SignUpSystem(um).createNewNormal();
             new NormalDashboard(newUser, im, um);
 
         } else if (choice == 2) {
@@ -45,5 +42,4 @@ public class SystemController {
         ig.saveToFile(itemManagerPath, im);
         System.exit(0);
     }
-
 }
