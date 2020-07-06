@@ -65,10 +65,6 @@ public class AdminDashboard {
             case 1:
                 new CatalogEditor(currentAdmin, im, um);
                 break;
-                // view items awaiting approval
-                // ItemManager's pendingItems list; print with index of item in the arraylist in SystemPresenter
-                // option to approve or reject item by index:
-                // use approveItem()/rejectItem() in ItemManager + approveUserItem()/rejectUserItem() in AdminUser
             case 2:
                 new AccountFreezer(currentAdmin, im, um);
                 break;

@@ -252,7 +252,7 @@ public class SystemPresenter {
 
     public void catalogEditor(Item item){
         System.out.println("You have chosen: " + item);
-        System.out.println("Would you like to 1) approve or 2) deny this item?");
+        System.out.println("Would you like to 1) approve or 2) reject this item?");
 
     }
 

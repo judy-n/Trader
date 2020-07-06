@@ -143,10 +143,21 @@ public class UserManager implements Serializable {
     }
 
 
-    public ArrayList<NormalUser> getAllNormalUsers() {
+    public ArrayList<NormalUser> getAllNormals() {
         return allNormals;
     }
 
+    public ArrayList<AdminUser> getAllAdmins() {
+        return allAdmins;
+    }
+
+    public void setAllNormals(ArrayList<NormalUser> normalList) {
+        allNormals = normalList;
+    }
+
+    public void setAllAdmins(ArrayList<AdminUser> adminList) {
+        allAdmins = adminList;
+    }
     /**
      * Takes the given username and returns the associated account password.
      *

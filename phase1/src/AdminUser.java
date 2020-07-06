@@ -37,5 +37,4 @@ public class AdminUser extends User implements Serializable {
     public int getAdminID() {
         return adminID;
     }
-
 }

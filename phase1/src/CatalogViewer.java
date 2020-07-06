@@ -71,10 +71,10 @@ public class CatalogViewer {
                     NormalUser trader = um.getNormalByUsername(i.getOwnerUsername());
                     assert trader != null;
                     String[] traders = {currentUser.getUsername(), trader.getUsername()};
-                    long[] items = {0, i.getId()};
+                    long[] items = {0, i.getID()};
                     trader.addTradeRequest(traders, items);
                     currentUser.addTradeRequest(traders, items);
-                    currentUser.addWishlist(i.getId());
+                    currentUser.addWishlist(i.getID());
                 } else {
                     sp.cancelled();
                 }
