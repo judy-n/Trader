@@ -24,6 +24,7 @@ public class NormalUser extends User implements Serializable {
     private int meetingEditMax = 3;
     private int lendMinimum = 1; //to borrow in a one-way trade, user must have lent at least lendMinimum item(s) more than they have borrowed
     private int incompleteMax = 5; //the limit on how many incomplete trades the user can have before their account is at risk of being frozen
+    private int numWeeklyTradesDone = 0; // The amount of trades a user has done in a week
 
     // private Item[] lastestThreeItems = new Item[3];
 
@@ -251,6 +252,14 @@ public class NormalUser extends User implements Serializable {
      */
     public void setIncompleteMax(int newMax) {
         incompleteMax = newMax;
+    }
+
+
+    // Methods for number of weekly trades done
+    public int getNumWeeklyTradesDone(){return numWeeklyTradesDone; }
+
+    public void setNumWeeklyTradesDone(int newTradesdone){
+        numWeeklyTradesDone = newTradesdone;
     }
 }
 
