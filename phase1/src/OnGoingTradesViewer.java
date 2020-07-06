@@ -12,7 +12,7 @@ import java.util.HashMap;
  */
 
 public class OnGoingTradesViewer {
-    private HashMap<String[], long[]> allTrades
+    private HashMap<String[], long[]> allTrades;
     private ItemManager im;
     private UserManager um;
     private NormalUser currentUser;
