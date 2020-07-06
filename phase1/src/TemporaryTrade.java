@@ -33,15 +33,16 @@ public class TemporaryTrade extends Trade {
         endDateTime = getMeetingDateTime().plusMonths(1); //wow that's satisfying
     }
 
-    public void closeTransaction() {
-        if (getIsComplete()) {
-            long[] itemIDs = getInvolvedItemIDs();
-            Item tempItem1 = im.getApprovedItem(itemIDs[0]);
-            Item tempItem2 = im.getApprovedItem(itemIDs[1]);
-            assert tempItem1 != null;
-            assert tempItem2 != null;
-            tempItem1.setAvailability(true);
-            tempItem2.setAvailability(true);
-        }
-    }
+    //This was put in a use case class since Temporary Trade is an entity
+    //public void closeTransaction() {
+    //    if (getIsComplete()) {
+    //        long[] itemIDs = getInvolvedItemIDs();
+    //        Item tempItem1 = im.getApprovedItem(itemIDs[0]);
+    //        Item tempItem2 = im.getApprovedItem(itemIDs[1]);
+    //        assert tempItem1 != null;
+    //        assert tempItem2 != null;
+    //        tempItem1.setAvailability(true);
+    //        tempItem2.setAvailability(true);
+    //    }
+    //}
 }
