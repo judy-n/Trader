@@ -18,16 +18,19 @@ public class AccountUnfreezer {
     private UserManager um;
     private ItemManager im;
     private NormalUser currentUser;
+    private AdminUser adminUser;
 
     //for non-admin requesting to be unfrozen
-    public AccountUnfreezer(UserManager um, ItemManager im, NormalUser u){
+    public AccountUnfreezer(NormalUser u, ItemManager im, UserManager um){
         this.um = um;
         this.im = im;
         currentUser = u;
     }
     //for admin reviewing unfreeze requests
-    public AccountUnfreezer(UserManager um, ItemManager im) {
+    public AccountUnfreezer(AdminUser u, ItemManager im, UserManager um) {
+        this.im = im;
         this.um = um;
+        adminUser = u;
     }
 
     /**
@@ -37,6 +40,7 @@ public class AccountUnfreezer {
     public void requestUnfreeze(){
         um.addUnfreezeRequest(currentUser.getUsername());
         sp.requestUnfreeze();
+        new NormalDashboard(currentUser, im, um);
     }
 
     /**
@@ -77,6 +81,8 @@ public class AccountUnfreezer {
             if(input.equalsIgnoreCase("n")) {
                 um.rejectAllRequests();
             }
+
+            new AdminDashboard(adminUser, im, um);
         } catch (IOException e) {
             sp.exceptionMessage();
         }
