@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * User is an abstract class that contains the basic information every user of this program should have:
  * a username, an email, a password, and getters for all three.
@@ -5,10 +7,10 @@
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-03
+ * last modified 2020-07-06
  */
 
-public abstract class User {
+public abstract class User implements Serializable {
     private String username;
     private String email;
     private String password;
