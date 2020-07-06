@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * @author Yiwei Chen
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-05
+ * last modified 2020-07-06
  */
 
 public abstract class Trade implements Serializable {
@@ -24,8 +24,6 @@ public abstract class Trade implements Serializable {
     private String meetingLocation;
     private boolean[] transactionConfirmed = new boolean[2];
     private int[] numEdits = {0, 0};
-    public ItemManager im;
-    public UserManager um;
 
     /**
      * Class constructor.
@@ -38,7 +36,7 @@ public abstract class Trade implements Serializable {
      * @param firstLocation the first location suggested for this Trade's meeting
      */
     public Trade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime,
-                 String firstLocation, ItemManager im, UserManager um) {
+                 String firstLocation) {
         involvedUsernames[0] = usernames[0];
         involvedUsernames[1] = usernames[1];
         involvedItemIDs[0] = itemIDs[0];
@@ -46,17 +44,17 @@ public abstract class Trade implements Serializable {
         meetingDateTime = firstDateTime;
         meetingLocation = firstLocation;
         hasAgreedMeeting = false;
-        this.im = im;
-        this.um = um;
 
-        Item tempItem1 = im.getApprovedItem(involvedItemIDs[0]);
-        Item tempItem2 = im.getApprovedItem(involvedItemIDs[1]);
-        if (tempItem1 != null) {
-            tempItem1.setAvailability(false);
-        }
-        if (tempItem2 != null) {
-            tempItem2.setAvailability(false);
-        }
+        //move check to TradeRequestViewer
+        //also check if item is unavailable, in case it got lent out to someone else after the trade request was sent
+//        Item tempItem1 = im.getApprovedItem(involvedItemIDs[0]);
+//        Item tempItem2 = im.getApprovedItem(involvedItemIDs[1]);
+//        if (tempItem1 != null) {
+//            tempItem1.setAvailability(false);
+//        }
+//        if (tempItem2 != null) {
+//            tempItem2.setAvailability(false);
+//        }
     }
 
     /**
