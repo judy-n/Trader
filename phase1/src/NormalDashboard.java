@@ -22,6 +22,7 @@ public class NormalDashboard {
     private int input;
     private ItemManager im;
     private UserManager um;
+    private boolean isLoggedOut;
 
     /**
      * Creates a NormalDashboard that stores the given logged-in user.
@@ -34,6 +35,7 @@ public class NormalDashboard {
         currentUser = user;
         this.im = im;
         this.um = um;
+        isLoggedOut = false;
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int maxChoice = 7;
@@ -60,15 +62,12 @@ public class NormalDashboard {
             case 0:
                 try {
                     br.close();
-
-                    // TODO: write everything to file :(
-
                 } catch (IOException e) {
                    sp.exceptionMessage();
                 }
+                isLoggedOut = true;
                 sp.normalDashboard(3);
-                System.exit(0);
-
+                break;
             case 1:
                 new CatalogViewer(currentUser, im, um);
                 break;
@@ -123,5 +122,9 @@ public class NormalDashboard {
                 // new class or stuff it in UserManager too?
                 break;
         }
+    }
+
+    public boolean getIsLoggedOut(){
+        return isLoggedOut;
     }
 }
