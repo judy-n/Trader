@@ -111,7 +111,7 @@ public class NormalDashboard {
             case 7:
                 // view top three most frequent trading partners (only counts if trades are completed)
                 // know that you might have to make changes to code later cuz trade classes are being remodeled
-
+                    // use get3FrequentTradePartners method from TradeManager
                 // add a method in TradeManager that takes in a user and finds those top three most frequent trade partners
                 // TradeManager's getCompletedTrades method can help
                 // p.s. might wanna use an array of size three so no extra space in memory is used up
