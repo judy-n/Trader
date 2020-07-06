@@ -9,9 +9,10 @@ import java.time.LocalDateTime;
  *
  * @author Ning Zhang
  * @author Yingjia Liu
+ * @author Yiwei Chen
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-06-30
+ * last modified 2020-07-05
  */
 
 public class Trade implements Serializable {
@@ -159,10 +160,16 @@ public class Trade implements Serializable {
         }
     }
 
+    // Edited the last three methods of Trade because getUserEditCount applied to a specific trade
+    // might not take in a user that is involved in that trade. Also, addUserEditCount should
+    // not automatically change the second User's edit numbers if addUserEditCount didn't take in
+    // the first User. Lastly, the else statement preceding an if statement in confirmTransaction
+    // would have resulted in the if statement not being reached so that was fixed as well - Yiwei
+
     public void confirmTransaction(String username) {
         if (username.equals(involvedUsernames[0])) {
             transactionConfirmed[0] = true;
-        } else {
+        } if (username.equals(involvedUsernames[1])){
             transactionConfirmed[1] = true;
         }
 
@@ -173,17 +180,17 @@ public class Trade implements Serializable {
 
     public void addUserEditCount(String username) {
         if (username.equals(involvedUsernames[0])) {
-            numEdits[0]++;
-        } else {
-            numEdits[1]++;
+            this.numEdits[0]++;
+        } else if (username.equals(involvedUsernames[1])){
+            this.numEdits[1]++;
         }
     }
 
     public int getUserEditCount(String username) {
         if (username.equals(involvedUsernames[0])) {
-            return numEdits[0];
-        } else {
-            return numEdits[1];
-        }
+            return this.numEdits[0];
+        } else if (username.equals(involvedUsernames[1])){
+            return this.numEdits[1];
+        } else {return -1;}
     }
 }
