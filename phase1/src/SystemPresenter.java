@@ -386,6 +386,17 @@ public class SystemPresenter {
             System.out.println(index + ". Trade for " + i.getName() + " from user " + users.get(index - 1));
     }
 
+    public void ongoingTrades(NormalUser user) {
+        TradeManager tm = new TradeManager();
+        ArrayList<Trade> ongoingTrades = tm.getOngoingTrades(user);
+        System.out.println("Here are your ongoing trades:");
+        int index = 1;
+        for (Trade trade : ongoingTrades) {
+            System.out.println(index + ". " + trade.toString());
+            index++;
+        }
+    }
+
 
     public void normalDashboard(int input) {
         String frozenWarning = "\n-- Your account is currently frozen due to you reaching the limit on incomplete trades --";
