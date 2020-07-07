@@ -245,14 +245,12 @@ public class SystemPresenter {
             case 4:
                 System.out.println("\nSorry, this item is currently not available for trade. We suggest adding it to your wishlist!");
                 break;
-
         }
     }
 
     public void catalogEditor(ArrayList<Item> pendingItems) {
         System.out.println("\nThese are all the items waiting for approval:");
         presenterAllItems(pendingItems);
-
     }
 
     public void catalogEditor(int input) {
@@ -263,15 +261,12 @@ public class SystemPresenter {
             case 2:
                 System.out.println("\nIs there an item you would like to approve/deny? (0 to quit)");
                 break;
-
         }
-
     }
 
     public void catalogEditor(Item item) {
         System.out.println("You have chosen: " + item);
         System.out.println("Would you like to 1) approve or 2) reject this item?");
-
     }
 
     private void presenterAllItems(ArrayList<Item> items) {
@@ -347,6 +342,22 @@ public class SystemPresenter {
             case 5:
                 System.out.println("Sorry, you can't initiate any trades because your account is frozen!");
                 break;
+            case 6:
+                System.out.print("\nPlease suggest a time(YYYY/MM/DD-HH/MM): ");
+                break;
+            case 7:
+                System.out.println("Would you like any item in their inventory?(0 to quit)");
+                break;
+            case 8:
+                System.out.println("Would you like to make a 1) permanent or 2) temporary trade?");
+                break;
+        }
+    }
+
+    public void tradeRequestViewer(ArrayList<Item> items){
+        int index = 1;
+        for (Item i : items) {
+            System.out.println(index+ "" + i);
         }
     }
 
@@ -356,12 +367,13 @@ public class SystemPresenter {
                 System.out.println("Are you sure you want to trade " + itemName + " with " + owner + "?(Y/N)");
                 break;
             case 2:
-                System.out.println("Initiating Trade with " + owner);
-                System.out.print("\nPlease suggest a time(YYYY/MM/DD-HH/MM): ");
+                System.out.println("Initiating Trade with " + owner + ".");
                 break;
             case 3:
-                System.out.println("Sorry but " + owner + " is currently frozen.");
+                System.out.println("Sorry but " + owner + " is currently frozen. " +
+                        "\nPlease pick another request: ");
                 break;
+
         }
 
     }
@@ -471,7 +483,6 @@ public class SystemPresenter {
             case 4:
                 System.out.println("The current incomplete trade max is " + oldThreshold +
                         "\n Change it to :");
-
         }
     }
 
