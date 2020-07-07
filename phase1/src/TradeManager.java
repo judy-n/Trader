@@ -111,6 +111,7 @@ public class TradeManager {
 
     /**
      * Takes in a username and returns a list of all their three most recent trades.
+     * The trade at index 0 of the list is the most recent trade.
      *
      * @param username the username of the user whose three most recent trades are being retrieved
      * @return a list of the given user's three most recent trades
@@ -120,9 +121,11 @@ public class TradeManager {
         ArrayList<Trade> completedTrades = getCompletedTrades(username);
 
         for (int i = 0; i < 3; i++) {
-            Trade tempRecent = Collections.max(completedTrades);
-            recentThree[i] = tempRecent;
-            completedTrades.remove(tempRecent);
+            if (!completedTrades.isEmpty()) {
+                Trade tempRecent = Collections.max(completedTrades);
+                recentThree[i] = tempRecent;
+                completedTrades.remove(tempRecent);
+            }
         }
         return recentThree;
     }

@@ -32,9 +32,10 @@ public class CompletedTradesViewer {
         Trade[] recentThree = tradeManager.getRecentThreeTrades(currentUser.getUsername());
 
         System.out.println("Here are your three most recent completed trades:");
-        for(Trade t : recentThree){
-            //a toString method for trade will be added later
-            System.out.println(t);
+        if (recentThree[0] == null) {
+            System.out.println("Nothing here yet!");
+        } else {
+            //ahhh will do soon
         }
         close();
     }
