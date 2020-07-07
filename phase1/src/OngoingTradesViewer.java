@@ -14,28 +14,29 @@ import java.util.ArrayList;
  */
 
 public class OngoingTradesViewer {
-    private ItemManager im;
-    private UserManager um;
-    private TradeManager tm;
+    private ItemManager itemManager;
+    private UserManager userManager;
+    private TradeManager tradeManager;
     private NormalUser currentUser;
 
     public OngoingTradesViewer (NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         currentUser = user;
-        this.im = im;
-        this.um = um;
-        this.tm = tm;
+        itemManager = im;
+        userManager = um;
+        tradeManager = tm;
+        String currUsername = currentUser.getUsername();
 
-        ArrayList<Trade> ongoingTrades = tm.getOngoingTrades(currentUser);
+        ArrayList<Trade> ongoingTrades = tradeManager.getOngoingTrades(currUsername);
         ArrayList<Item[]> tradeItems = new ArrayList<>();
         for (Trade t : ongoingTrades) {
-            String otherUsername = t.getOtherUsername(currentUser.getUsername());
-            long[] tempItemIDs = {t.getLentItemID(currentUser.getUsername()), t.getLentItemID(otherUsername)};
-            Item[] tempItems = {im.getApprovedItem(tempItemIDs[0]), im.getApprovedItem(tempItemIDs[1])};
+            String otherUsername = t.getOtherUsername(currUsername);
+            long[] tempItemIDs = {t.getLentItemID(currUsername), t.getLentItemID(otherUsername)};
+            Item[] tempItems = {itemManager.getApprovedItem(tempItemIDs[0]), itemManager.getApprovedItem(tempItemIDs[1])};
             tradeItems.add(tempItems);
         }
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         SystemPresenter sp = new SystemPresenter();
-        sp.ongoingTrades(ongoingTrades, tradeItems, currentUser.getUsername());
+        sp.ongoingTrades(ongoingTrades, tradeItems, currUsername);
 
     }
 }

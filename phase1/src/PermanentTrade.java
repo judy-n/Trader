@@ -7,61 +7,53 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-06
+ * last modified 2020-07-07
  */
 public class PermanentTrade extends Trade {
     /**
      * PermanentTrade
-     * Creates a PermanentTrade
+     * Creates a PermanentTrade with given username array, item ID array, and first suggestions for meeting time/date/location.
      *
      * @param usernames     an array containing the usernames of the two Users involved in this TemporaryTrade
      * @param itemIDs       an array containing the IDs of the Items being traded (parallel to usernames)
      * @param firstDateTime the first date and time suggested for this TemporaryTrade's meeting
      * @param firstLocation the first location suggested for this TemporaryTrade's meeting
      */
-    public PermanentTrade(String[] usernames, long[] itemIDs,
-                          LocalDateTime firstDateTime, String firstLocation) {
+    public PermanentTrade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
         super(usernames, itemIDs, firstDateTime, firstLocation);
-
     }
 
-    //@Override
-    //public void confirmTransaction(String username) {
-    //    super.confirmTransaction(username);
-    //    String[] usernames = getInvolvedUsernames();
+    @Override
+    public void confirmTransaction1(String username) {
 
-    //if (getUserTransactionConfirmation(usernames[0]) && getUserTransactionConfirmation(usernames[1])) {
-    //        NormalUser tempUser1 = um.getNormalByUsername(usernames[0]);
-    //        NormalUser tempUser2 = um.getNormalByUsername(usernames[1]);
-    //        assert tempUser1 != null && tempUser2 != null;
-    //        long[] itemIDs = getInvolvedItemIDs();
-    //        if (itemIDs[0] != 0) {
-    //            Item tempItem1 = im.getApprovedItem(itemIDs[0]);
-    //            assert tempItem1 != null;
-    //            tempUser1.removeInventory(tempItem1.getID());
-    //            // [remove from ItemManager arraylist]
-    //            tempUser2.removeWishlist(tempItem1.getID());
-    //        }
-    //        if (itemIDs[1] != 0) {
-    //            Item tempItem2 = im.getApprovedItem(itemIDs[1]);
-    //            assert tempItem2 != null;
-    //            tempUser2.removeInventory(tempItem2.getID());
-    //           // [remove from ItemManager arraylist]
-    //           tempUser1.removeWishlist(tempItem2.getID());
-    //        }
-    //    }
-    //}
+        super.confirmTransaction1(username);
+
+        if (getUserTransactionConfirmation1(username) &&
+                getUserTransactionConfirmation1(getOtherUsername(username))) {
+            closeTransaction();
+        }
+    }
+
+    //should only be called on completed permanent trades
+    @Override
+    public LocalDateTime getFinalMeetingDateTime() {
+        if (getIsComplete()) {
+            return getMeetingDateTime1();
+        }
+        return null;
+    }
 
     @Override
     public String toString(String currentUsername) {
         return "Permanent trade with " + getOtherUsername(currentUsername) + " - ";
     }
 
+    @Override
     public int compareTo(Trade t) {
         if (t instanceof TemporaryTrade) {
-            return getMeetingDateTime().compareTo(((TemporaryTrade) t).getEndDateTime());
+            return getMeetingDateTime1().compareTo(((TemporaryTrade) t).getMeetingDateTime2());
         } else {
-            return getMeetingDateTime().compareTo(t.getMeetingDateTime());
+            return getMeetingDateTime1().compareTo(t.getMeetingDateTime1());
         }
     }
 }

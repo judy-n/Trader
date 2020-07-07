@@ -6,29 +6,32 @@ import java.time.LocalDateTime;
  * Trade stores the usernames of both Users in an array which is parallel to an array
  * containing the IDs of the Items each User is lending in this trade.
  * Note that an ID of 0.0 means the associated User is not lending an Item (aka a one-way trade).
+ * Also note that in the username array,
+ * the username at index 0 is the initiator while the username at index 1 was the recipient of the trade request.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
  * @author Yiwei Chen
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-06
+ * last modified 2020-07-07
  */
 
 public abstract class Trade implements Serializable, Comparable<Trade> {
-    private boolean hasAgreedMeeting;
-    private boolean isComplete;
     private final String[] involvedUsernames = new String[2];
     private final long[] involvedItemIDs = new long[2];
-    private LocalDateTime meetingDateTime;
-    private String meetingLocation;
-    private boolean[] transactionConfirmed = new boolean[2];
-    private int[] numEdits = {0, 0};
+    private boolean isComplete;
+
+    private boolean hasAgreedMeeting1;
+    private int[] numEdits1 = {0, 0};
+    private String lastEditor;
+    private LocalDateTime meetingDateTime1;
+    private String meetingLocation1;
+    private boolean[] transactionConfirmed1 = new boolean[2];
 
     /**
      * Class constructor.
      * Creates a Trade with given username array, item ID array, and first suggestions for meeting time/date/location.
-     * Automatically sets status of all Items being traded to unavailable.
      *
      * @param usernames     an array containing the usernames of the two Users involved in this Trade
      * @param itemIDs       an array containing the IDs of the Items being traded (parallel to usernames)
@@ -41,20 +44,12 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
         involvedUsernames[1] = usernames[1];
         involvedItemIDs[0] = itemIDs[0];
         involvedItemIDs[1] = itemIDs[1];
-        meetingDateTime = firstDateTime;
-        meetingLocation = firstLocation;
-        hasAgreedMeeting = false;
 
-        //move check to TradeRequestViewer
-        //also check if item is unavailable, in case it got lent out to someone else after the trade request was sent
-//        Item tempItem1 = im.getApprovedItem(involvedItemIDs[0]);
-//        Item tempItem2 = im.getApprovedItem(involvedItemIDs[1]);
-//        if (tempItem1 != null) {
-//            tempItem1.setAvailability(false);
-//        }
-//        if (tempItem2 != null) {
-//            tempItem2.setAvailability(false);
-//        }
+        meetingDateTime1 = firstDateTime;
+        meetingLocation1 = firstLocation;
+        hasAgreedMeeting1 = false;
+        lastEditor = involvedUsernames[1];
+        //since the recipient of the trade request always makes the first suggestion
     }
 
     /**
@@ -84,19 +79,33 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     public boolean isInvolved(String username) {
         return involvedUsernames[0].equals(username) || involvedUsernames[1].equals(username);
     }
+
     /**
-     * Takes in the username of a user and returns the ID of the item they lent in this Trade.
-     * If the username is not involved in this Trade, return -1
+     * Takes in the username of a user who's a part of this Trade and returns the ID of the item they lent in this Trade.
      *
-     * @param username the username of the user
+     * @param username the username of the user whose lent item ID is being retrieved
      * @return the ID of the item the given user lent in this Trade
      */
     public long getLentItemID(String username) {
         if (involvedUsernames[0].equals(username)) {
             return involvedItemIDs[0];
-        } else if (involvedUsernames[1].equals(username)) {
+        } else {
             return involvedItemIDs[1];
-        } else {return -1;}
+        }
+    }
+
+    /**
+     * Takes in the username of a user who's part of this Trade and return the username of their trade partner.
+     *
+     * @param username the username of the user who's trade partner is being retrieved
+     * @return the username of the given user's trade partner
+     */
+    public String getOtherUsername(String username) {
+        if (involvedUsernames[0].equals(username)) {
+            return involvedUsernames[1];
+        } else {
+            return involvedUsernames[0];
+        }
     }
 
     /**
@@ -109,98 +118,105 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     }
 
     /**
-     * Get whether or not this Trade has a meeting that both Users have agreed upon.
+     * Get whether or not this Trade has a first meeting that both traders have agreed upon.
      *
-     * @return a boolean representing wwhether or not this Trade has a meeting that both Users have agreed upon
+     * @return a boolean representing whether or not this Trade has a first meeting that both traders have agreed upon
      */
-    public boolean getHasAgreedMeeting() {
-        return hasAgreedMeeting;
+    public boolean getHasAgreedMeeting1() {
+        return hasAgreedMeeting1;
     }
 
     /**
-     * Confirms that both Users have agreed on a meeting time and place.
+     * Confirms that both traders have agreed on a first meeting time and place.
+     *
      */
-    public void confirmAgreedMeeting() {
-        hasAgreedMeeting = true;
+    public void confirmAgreedMeeting1() {
+        hasAgreedMeeting1 = true;
     }
 
     /**
-     * Getter for this Trade's current meeting date and time.
+     * Getter for this Trade's current first meeting date and time.
      *
-     * @return a LocalDateTime object representing this Trade's current meeting date and time
+     * @return a LocalDateTime object representing this Trade's current first meeting date and time
      */
-    public LocalDateTime getMeetingDateTime() {
-        return meetingDateTime;
+    public LocalDateTime getMeetingDateTime1() {
+        return meetingDateTime1;
     }
 
     /**
-     * Setter for this Trade's meeting date and time.
+     * Setter for this Trade's first meeting date and time.
      *
-     * @param dateTime the new date and time for the meeting
+     * @param dateTime the new date and time for the first meeting
      */
-    public void setMeetingDateTime(LocalDateTime dateTime) {
-        meetingDateTime = dateTime;
+    public void setMeetingDateTime1(LocalDateTime dateTime) {
+        meetingDateTime1 = dateTime;
     }
 
-    public String getMeetingLocation() {
-        return meetingLocation;
+    /**
+     * Getter for this Trade's current first meeting location.
+     *
+     * @return a String representing this Trade's current first meeting location
+     */
+    public String getMeetingLocation1() {
+        return meetingLocation1;
     }
 
-    public void setMeetingLocation(String location) {
-        meetingLocation = location;
+    /**
+     * Setter for this Trade's first meeting date and time.
+     *
+     * @param location the new location for the first meeting
+     */
+    public void setMeetingLocation1(String location) {
+        meetingLocation1 = location;
     }
 
-    public boolean getUserTransactionConfirmation(String username) {
+    /**
+     * Getter for the username of the user who last edited this Trade's meeting details.
+     *
+     * @return the username of the user who last edited this Trade's meeting details
+     */
+    public String getLastEditor() {
+        return lastEditor;
+    }
+
+    public boolean getUserTransactionConfirmation1(String username) {
         if (username.equals(involvedUsernames[0])) {
-            return transactionConfirmed[0];
+            return transactionConfirmed1[0];
         } else {
-            return transactionConfirmed[1];
+            return transactionConfirmed1[1];
         }
     }
 
-    // Edited the last three methods of Trade because getUserEditCount applied to a specific trade
-    // might not take in a user that is involved in that trade. Also, addUserEditCount should
-    // not automatically change the second User's edit numbers if addUserEditCount didn't take in
-    // the first User. Lastly, the else statement preceding an if statement in confirmTransaction
-    // would have resulted in the if statement not being reached so that was fixed as well - Yiwei
-
-    public void confirmTransaction(String username) {
+    public void confirmTransaction1(String username) {
         if (username.equals(involvedUsernames[0])) {
-            transactionConfirmed[0] = true;
-        } if (username.equals(involvedUsernames[1])){
-            transactionConfirmed[1] = true;
-        }
-
-        if (transactionConfirmed[0] && transactionConfirmed[1]) {
-            isComplete = true;
-        }
-    }
-
-    public void addUserEditCount(String username) {
-        if (username.equals(involvedUsernames[0])) {
-            this.numEdits[0]++;
-        } else if (username.equals(involvedUsernames[1])){
-            this.numEdits[1]++;
-        }
-    }
-
-    public int getUserEditCount(String username) {
-        if (username.equals(involvedUsernames[0])) {
-            return this.numEdits[0];
+            transactionConfirmed1[0] = true;
         } else {
-            return this.numEdits[1];
+            transactionConfirmed1[1] = true;
         }
-        //don't worry about the username not belonging to this Trade cuz it'll never be called in that circumstance
     }
 
-    public String getOtherUsername(String username) {
-        if (involvedUsernames[0].equals(username)) {
-            return involvedUsernames[1];
-        } else {
-            return involvedUsernames[0];
-        }
-        //don't worry about the username not belonging to this Trade cuz it'll never be called in that circumstance
+    public void closeTransaction() {
+        isComplete = true;
     }
+
+    public void addUserEditCount1(String username) {
+        if (username.equals(involvedUsernames[0])) {
+            numEdits1[0]++;
+        } else {
+            numEdits1[1]++;
+        }
+        lastEditor = username;
+    }
+
+    public int getUserEditCount1(String username) {
+        if (username.equals(involvedUsernames[0])) {
+            return numEdits1[0];
+        } else {
+            return numEdits1[1];
+        }
+    }
+
+    public abstract LocalDateTime getFinalMeetingDateTime();
 
     public abstract String toString(String currentUsername);
 
