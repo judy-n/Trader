@@ -51,5 +51,10 @@ public class PermanentTrade extends Trade {
     //        }
     //    }
     //}
+
+    @Override
+    public String toString(String currentUsername) {
+        return "Permanent trade with " + getOtherUsername(currentUsername) + " - ";
+    }
 }
 

@@ -386,11 +386,13 @@ public class SystemPresenter {
             System.out.println(index + ". Trade for " + i.getName() + " from user " + users.get(index - 1));
     }
 
-    public void onGoingTrades(ArrayList<Trade> onGoingTrades) {
-        System.out.println("Here are your ongoing trades:");
+    public void ongoingTrades(ArrayList<Trade> ongoingTrades, ArrayList<Item[]> tradeItems, String username) {
+        System.out.println("\nHere are all your ongoing trades:");
         int index = 1;
-        for (Trade trade : onGoingTrades) {
-            System.out.println(index + ". " + trade.toString());
+        for (Trade trade : ongoingTrades) {
+            Item[] tempItems = tradeItems.get(index--);
+            System.out.println(index + ". " + trade.toString(username) + "you're lending " +
+                    tempItems[0].getName() + " for " + tempItems[1].getName());
             index++;
         }
     }

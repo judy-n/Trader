@@ -187,8 +187,19 @@ public abstract class Trade implements Serializable {
     public int getUserEditCount(String username) {
         if (username.equals(involvedUsernames[0])) {
             return this.numEdits[0];
-        } else if (username.equals(involvedUsernames[1])){
+        } else {
             return this.numEdits[1];
-        } else {return -1;}
+        }
+        //don't worry about the username not belonging to this Trade cuz it'll never be called in that circumstance
     }
+
+    public String getOtherUsername(String username) {
+        if (involvedUsernames[0].equals(username)) {
+            return involvedUsernames[1];
+        } else {
+            return involvedUsernames[0];
+        }
+        //don't worry about the username not belonging to this Trade cuz it'll never be called in that circumstance
+    }
+    public abstract String toString(String currentUsername);
 }

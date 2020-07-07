@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 /**
  * Represents a temporary trade.
@@ -56,4 +57,9 @@ public class TemporaryTrade extends Trade {
     //        tempItem2.setAvailability(true);
     //    }
     //}
+
+    @Override
+    public String toString(String currentUsername) {
+        return "Temporary trade with " + getOtherUsername(currentUsername) + " - ";
+    }
 }

@@ -82,8 +82,6 @@ public class NormalDashboard {
                 break;
 
             case 5:
-                //new OnGoingTradesViewer(currentUser, im, um, tm);
-
                 // view ongoing trades
                 // heavily relies on temp trade and perm trade implementation
                 // so don't implement until Eric + Yiwei are done with that
@@ -98,7 +96,7 @@ public class NormalDashboard {
 
                 // btw what to do about cancelled trades? (when both users have reached their max edits and the last suggestion is rejected)
                 // >> have to let both users know it got cancelled
-                new OnGoingTradesViewer(currentUser, itemManager, userManager, tradeManager);
+                new OngoingTradesViewer(currentUser, itemManager, userManager, tradeManager);
                 break;
 
             case 6:
