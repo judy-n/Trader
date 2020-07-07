@@ -17,7 +17,7 @@ public class LoginSystem {
     private String email;
     private String validPw;
     private User user;
-    private UserManager um;
+    private UserManager userManager;
     private boolean isAdmin;
     private String optionInput;
 
@@ -28,7 +28,7 @@ public class LoginSystem {
     public LoginSystem(UserManager um) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         SystemPresenter sp = new SystemPresenter();
-        this.um = um;
+        userManager = um;
 
         sp.loginSystem(1);
         try {

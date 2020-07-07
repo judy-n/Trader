@@ -15,7 +15,7 @@ public class SignUpSystem {
     private String username;
     private String email;
     private String password;
-    private UserManager um;
+    private UserManager userManager;
     private SystemPresenter sp;
 
     /**
@@ -25,7 +25,7 @@ public class SignUpSystem {
      * @param um the system's user manager
      */
     public SignUpSystem(UserManager um) {
-        this.um = um;
+        userManager = um;
         sp = new SystemPresenter();
     }
 
@@ -37,7 +37,7 @@ public class SignUpSystem {
             boolean invalidInput;
             do {
                 invalidInput = false;
-                if (um.emailExists(emailInput)) {
+                if (userManager.emailExists(emailInput)) {
                     invalidInput = true;
                     sp.signUpSystem(2);
                     emailInput = br.readLine();
@@ -58,7 +58,7 @@ public class SignUpSystem {
             boolean invalidInput;
             do {
                 invalidInput = false;
-                if (um.usernameExists(usernameInput)) {
+                if (userManager.usernameExists(usernameInput)) {
                     invalidInput = true;
                     sp.signUpSystem(5);
                     usernameInput = br.readLine();
@@ -96,7 +96,7 @@ public class SignUpSystem {
         sp.signUpSystem(0);
         inputProcess();
         NormalUser newUser = new NormalUser(username, email, password);
-        um.addUser(newUser);
+        userManager.addUser(newUser);
         sp.signUpSystem(11);
         return newUser;
     }
@@ -104,7 +104,7 @@ public class SignUpSystem {
     public void createNewAdmin() {
         sp.signUpSystem(12);
         inputProcess();
-        AdminUser newUser = new AdminUser(username, email, password, um.getAdminId());
-        um.addUser(newUser);
+        AdminUser newUser = new AdminUser(username, email, password, userManager.getAdminId());
+        userManager.addUser(newUser);
     }
 }
