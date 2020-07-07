@@ -76,7 +76,6 @@ public class InventoryEditor {
 
                         currentUser.addPendingInventory(requestedItem.getID());
                         im.addPendingItem(requestedItem);
-
                         sp.inventoryAddItem(4);
                     } else {
                         sp.cancelled();
@@ -93,7 +92,6 @@ public class InventoryEditor {
                     sp.inventoryRemoveItem(1);
                     close();
                 }
-
                 sp.inventoryRemoveItem(2);
                 int indexInput;
                 try {

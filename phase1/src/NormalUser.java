@@ -163,14 +163,6 @@ public class NormalUser extends User implements Serializable {
         tradeRequests.put(usernames, itemIDs);
     }
 
-    /**
-     * Removes a trade request by the given item id.
-     *
-     * @param itemId the ID of an Item involved in the trade request being removed
-     */
-    public void removeTradeRequest(int itemId) {
-
-    }
 
     /**
      * Getter for this NormalUser's trade requests.

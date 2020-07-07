@@ -102,13 +102,11 @@ public class NormalDashboard {
             case 6:
                 // view most recent three *completed* trades
                 // know that you might have to make changes to code later cuz trade classes are being remodeled
-
                     // use class completedtradesviewer class
-
                 // if trade was two-way, display smth like "Lent [item] and borrowed [item] from [username]"
                 // if trade was one-way, "Lent [item] to [username]" or "Borrowed [item] from [username]"
                 // you can get what a certain user lent in a Trade by using tradeInstance.getLentItemID(username)
-                new CompletedTradesViewer(currentUser, itemManager, userManager, tradeManager);
+                new CompletedTradesViewer(currentUser, itemManager, userManager, tradeManager).viewCompletedTrades();
                 break;
 
             case 7:
@@ -118,6 +116,7 @@ public class NormalDashboard {
                 // add a method in TradeManager that takes in a user and finds those top three most frequent trade partners
                 // TradeManager's getCompletedTrades method can help
                 // p.s. might wanna use an array of size three so no extra space in memory is used up
+                new CompletedTradesViewer(currentUser, itemManager, userManager, tradeManager).viewFrequentTrader();
                 break;
 
             case 8:

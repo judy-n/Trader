@@ -1,4 +1,9 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.Collections;
+import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  * Stores and manages all Trades in the system.

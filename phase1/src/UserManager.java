@@ -1,4 +1,4 @@
-import java.io.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -28,21 +28,6 @@ public class UserManager implements Serializable {
         usernamesToFreeze = new ArrayList<>();
         unfreezeRequests = new ArrayList<>();
     }
-
-
-    /*public void update (){
-
-        //This is just for testing rn will delete later
-        NormalUser u1 = new NormalUser("u", "e", "p");
-        Item i1 = new Item("Item", "This is an item.",u1.getUsername());
-        Item i2 = new Item("Item", "This is another item.", u1.getUsername());
-        u1.addPendingInventory(i1.getId());
-        u1.addPendingInventory(i2.getId());
-        u1.addInventory(i1.getId());
-        u1.addInventory(i2.getId());
-        u1.addWishlist(i1.getId());
-        allNormals.add(u1);
-    }*/
 
     /**
      * Adds the given User to the user database.
@@ -234,6 +219,33 @@ public class UserManager implements Serializable {
         return userRequests;
     }
 
+
+    /**
+     * Returns the username of someone's unfreeze request by
+     * their index in the arraylist
+     * @param index index in the arraylist
+     * @return the username
+     */
+    public String getUnfreezeRequest(int index){
+        return unfreezeRequests.get(index - 1);
+    }
+
+    /**
+     * Returns the number of unfreeze requests
+     * @return number of unfreeze requests
+     */
+    public int getNumUnfreezeRequest(){
+        return unfreezeRequests.size();
+    }
+
+    /**
+     * Removes a certain username from the arraylist of unfreeze requests
+     * @param username username
+     */
+    public void removeUnfreezeRequest(String username){
+        unfreezeRequests.remove(username);
+    }
+
     /**
      * Adds the given username to the list of unfreeze requests.
      *
@@ -244,22 +256,14 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Unfreezes the NormalUser associated with the given username.
-     *
-     * @param username the username of the non-admin being unfrozen
+     * Checks if user already sent an unfreeze request
+     * @param username username
+     * @return true if they already did, false otherwise
      */
-    public void unfreeze(String username) {
-        getNormalByUsername(username).unfreeze();
-        unfreezeRequests.remove(username);
+    public boolean containsUnfreezeRequest(String username){
+        return unfreezeRequests.contains(username);
     }
 
-    /**
-     * Removes all usernames from the list of unfreeze requests.
-     *
-     */
-    public void rejectAllRequests() {
-        unfreezeRequests.clear();
-    }
 
     //This method is just for testing!! Delete later
     public void printAllUser() {

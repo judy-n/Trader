@@ -14,8 +14,8 @@ import java.io.InputStreamReader;
 public class AdminDashboard {
     private AdminUser currentAdmin;
     private int input;
-    private ItemManager im;
-    private UserManager um;
+    private ItemManager itemManager;
+    private UserManager userManager;
 
     /**
      * Creates an AdminDashboard that stores the given logged-in admin.
@@ -26,8 +26,8 @@ public class AdminDashboard {
      */
     public AdminDashboard(AdminUser user, ItemManager im, UserManager um) {
         currentAdmin = user;
-        this.im = im;
-        this.um = um;
+        itemManager = im;
+        userManager = um;
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int maxChoice = 4;
@@ -61,10 +61,10 @@ public class AdminDashboard {
                 sp.normalDashboard(3);
                 break;
             case 1:
-                new CatalogEditor(currentAdmin, im, um);
+                new CatalogEditor(currentAdmin, itemManager, userManager);
                 break;
             case 2:
-                new AccountFreezer(currentAdmin, im, um);
+                new AccountFreezer(currentAdmin, itemManager, userManager);
                 break;
                 // view accounts to freeze
                 // usernamesToFreeze in UserManager
@@ -72,16 +72,16 @@ public class AdminDashboard {
             case 3:
                 // view requests to unfreeze account
                 // new class or stuff it in UserManager too?
-                new AccountUnfreezer(currentAdmin, im, um).reviewUnfreezeRequests();
+                new AccountUnfreezer(currentAdmin, itemManager, userManager).reviewUnfreezeRequests();
                 break;
 
             case 4:
-                new ThresholdEditor(currentAdmin, im, um);
+                new ThresholdEditor(currentAdmin, itemManager, userManager);
                 break;
                 // edit a user's threshold values
                 // all the methods needed to set these values are in AdminUser
             case 5:
-                new AdminCreator(currentAdmin, im, um);
+                new AdminCreator(currentAdmin, itemManager, userManager);
                 break;
                 // add new admin to system
                 // enter username, email, password and create an AdminUser right away

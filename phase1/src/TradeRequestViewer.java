@@ -4,7 +4,11 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.Collection;
 
 /**
  * Shows all trade requests received/sent by a user and lets them take actions through user input.
@@ -14,7 +18,6 @@ import java.util.*;
  * @since 2020-06-29
  * last modified 2020-07-04
  */
-
 
 public class TradeRequestViewer {
     private HashMap<String[], long[]> initiatedTrades;
@@ -133,8 +136,8 @@ public class TradeRequestViewer {
                 sp.exceptionMessage();
                 System.exit(-1);
             }
-            close();
         }
+        close();
     }
 
     private void close(){
