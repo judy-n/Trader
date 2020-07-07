@@ -116,17 +116,39 @@ public class TradeManager {
         Set<String> uniquePartner = new HashSet<>();
         String [] frequentPartners = new String[3];
         ArrayList<Trade> completedTrades= getCompletedTrades(user);
-
+        if(completedTrades.isEmpty()){
+            return new String[]{"", "", ""};
+        }
+        HashMap<Integer, String> freqToUsername = new HashMap<>();
         for (Trade t : completedTrades) {
             if (!t.getInvolvedUsernames()[0].equals(user.getUsername())){
                 tradePartners.add(t.getInvolvedUsernames()[0]);
+                uniquePartner.add(t.getInvolvedUsernames()[0]);
             }
             else{
                 tradePartners.add(t.getInvolvedUsernames()[1]);
+                uniquePartner.add(t.getInvolvedUsernames()[1]);
             }
         }
+        for(String username : uniquePartner){
+            freqToUsername.put(Collections.frequency(tradePartners, username), username);
+        }
+        Integer [] freq = (Integer[]) freqToUsername.keySet().toArray();
+        Arrays.sort(freq, Collections.reverseOrder());
 
-
+        if(freq.length == 1){
+            return new String[]{freqToUsername.get(freq[0]), "", ""};
+        }else if(freq.length == 2){
+            return new String[]{freqToUsername.get(freq[0]), freqToUsername.get(freq[1]), ""};
+        }else {
+            int index = 0;
+            while (index < 3) {
+                for (Integer i : freq) {
+                    frequentPartners[index] = freqToUsername.get(i);
+                    index++;
+                }
+            }
+        }
         return frequentPartners;
     }
 }
