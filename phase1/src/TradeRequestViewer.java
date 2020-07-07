@@ -133,8 +133,8 @@ public class TradeRequestViewer {
                 sp.exceptionMessage();
                 System.exit(-1);
             }
-            close();
         }
+        close();
     }
 
     private void close(){
