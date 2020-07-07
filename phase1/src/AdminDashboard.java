@@ -66,26 +66,16 @@ public class AdminDashboard {
             case 2:
                 new AccountFreezer(currentAdmin, itemManager, userManager);
                 break;
-                // view accounts to freeze
-                // usernamesToFreeze in UserManager
-                // if admin chooses to freeze an account: remove from usernamesToFreeze and call freezeUser() in AdminUser
             case 3:
-                // view requests to unfreeze account
-                // new class or stuff it in UserManager too?
                 new AccountUnfreezer(currentAdmin, itemManager, userManager).reviewUnfreezeRequests();
                 break;
 
             case 4:
                 new ThresholdEditor(currentAdmin, itemManager, userManager);
                 break;
-                // edit a user's threshold values
-                // all the methods needed to set these values are in AdminUser
             case 5:
                 new AdminCreator(currentAdmin, itemManager, userManager);
                 break;
-                // add new admin to system
-                // enter username, email, password and create an AdminUser right away
-                // addUser() in UserManager (handles the separation of admins from non-admins for you)
         }
     }
 }

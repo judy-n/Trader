@@ -28,11 +28,11 @@ public class CompletedTradesViewer {
         tradeManager = tm;
     }
 
-    public void viewCompletedTrades(){
-        ArrayList<Trade> completedTrades = tradeManager.getCompletedTrades(currentUser);
+    public void viewRecentThreeTrades(){
+        Trade[] recentThree = tradeManager.getRecentThreeTrades(currentUser.getUsername());
 
-        System.out.println("Here are all your completed trades: ");
-        for(Trade t : completedTrades){
+        System.out.println("Here are your three most recent completed trades:");
+        for(Trade t : recentThree){
             //a toString method for trade will be added later
             System.out.println(t);
         }
@@ -40,7 +40,7 @@ public class CompletedTradesViewer {
     }
 
     public void viewFrequentTrader(){
-        String [] frequentTrader = tradeManager.getFrequentTradePartners(currentUser);
+        String [] frequentTrader = tradeManager.getFrequentTradePartners(currentUser.getUsername());
         System.out.println("Here are your top most frequent trade partners:");
         for(int i = 0; i< frequentTrader.length; i++){
             System.out.println((i+1)+". "+ frequentTrader[i]);

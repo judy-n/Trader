@@ -1,6 +1,4 @@
 import java.time.LocalDateTime;
-import java.time.LocalDate;
-import java.util.Arrays;
 
 /**
  * Represents a temporary trade.
@@ -9,11 +7,11 @@ import java.util.Arrays;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-06
+ * last modified 2020-07-07
  */
 
 public class TemporaryTrade extends Trade {
-    private LocalDate[] endDateTime;
+    private LocalDateTime endDateTime;
 //    private String status;
 
     /**
@@ -32,12 +30,12 @@ public class TemporaryTrade extends Trade {
     }
 
     // might use getEndDateTime in CloseTempTradeTransaction
-    public LocalDate[] getEndDateTime() {
+    public LocalDateTime getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(LocalDate dueDateItem1, LocalDate dueDateItem2){
-        endDateTime = new LocalDate[]{dueDateItem1, dueDateItem2};
+    public void setEndDateTime(LocalDateTime dueDateItem1, LocalDateTime dueDateItem2){
+        LocalDateTime[] idk = {dueDateItem1, dueDateItem2};
     }
 
 //    public String getStatus() {
@@ -79,5 +77,13 @@ public class TemporaryTrade extends Trade {
     @Override
     public String toString(String currentUsername) {
         return "Temporary trade with " + getOtherUsername(currentUsername) + " - ";
+    }
+
+    public int compareTo(Trade t) {
+        if (t instanceof TemporaryTrade) {
+            return endDateTime.compareTo(((TemporaryTrade) t).getEndDateTime());
+        } else {
+            return endDateTime.compareTo(t.getMeetingDateTime());
+        }
     }
 }

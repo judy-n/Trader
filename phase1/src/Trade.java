@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * last modified 2020-07-06
  */
 
-public abstract class Trade implements Serializable {
+public abstract class Trade implements Serializable, Comparable<Trade> {
     private boolean hasAgreedMeeting;
     private boolean isComplete;
     private final String[] involvedUsernames = new String[2];
@@ -201,5 +201,9 @@ public abstract class Trade implements Serializable {
         }
         //don't worry about the username not belonging to this Trade cuz it'll never be called in that circumstance
     }
+
     public abstract String toString(String currentUsername);
+
+    public abstract int compareTo(Trade t);
+    //returns -ve if this trade comes before t, 0 if exactly the same, and +ve if it comes after t
 }

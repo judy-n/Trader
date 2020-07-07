@@ -56,5 +56,13 @@ public class PermanentTrade extends Trade {
     public String toString(String currentUsername) {
         return "Permanent trade with " + getOtherUsername(currentUsername) + " - ";
     }
+
+    public int compareTo(Trade t) {
+        if (t instanceof TemporaryTrade) {
+            return getMeetingDateTime().compareTo(((TemporaryTrade) t).getEndDateTime());
+        } else {
+            return getMeetingDateTime().compareTo(t.getMeetingDateTime());
+        }
+    }
 }
 
