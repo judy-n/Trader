@@ -39,8 +39,12 @@ public class AccountUnfreezer {
      *
      */
     public void requestUnfreeze(){
-        userManager.addUnfreezeRequest(currentUser.getUsername());
-        sp.requestUnfreeze();
+        if(userManager.containsUnfreezeRequest(currentUser.getUsername())){
+            sp.requestUnfreeze(1);
+        }else {
+            userManager.addUnfreezeRequest(currentUser.getUsername());
+            sp.requestUnfreeze(2);
+        }
         closeNormal();
 
     }
@@ -76,6 +80,7 @@ public class AccountUnfreezer {
                     }
                     NormalUser userToUnfreeze = userManager.getNormalByUsername(userManager.getUnfreezeRequest(indexInput));
                     userToUnfreeze.unfreeze();
+                    userManager.removeUnfreezeRequest(userToUnfreeze.getUsername());
                     sp.adminGetUnfreezeRequests(2);
                 }while(indexInput != 0);
             }

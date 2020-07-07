@@ -296,8 +296,15 @@ public class SystemPresenter {
         System.out.println("All frozen!");
     }
 
-    public void requestUnfreeze() {
-        System.out.println("Your request has been sent in! Please allow some time for an admin to review it.");
+    public void requestUnfreeze(int input) {
+        switch (input){
+            case 1:
+                System.out.println("You already sent an unfreeze request, please wait for an admin to review it.");
+                break;
+            case 2:
+                System.out.println("Your request has been sent in! Please allow some time for an admin to review it.");
+                break;
+        }
     }
 
     public void adminGetUnfreezeRequests(ArrayList<NormalUser> unfreezeRequests) {

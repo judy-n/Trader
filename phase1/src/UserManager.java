@@ -238,6 +238,13 @@ public class UserManager implements Serializable {
         return unfreezeRequests.size();
     }
 
+    /**
+     * Removes a certain username from the arraylist of unfreeze requests
+     * @param username username
+     */
+    public void removeUnfreezeRequest(String username){
+        unfreezeRequests.remove(username);
+    }
 
     /**
      * Adds the given username to the list of unfreeze requests.
@@ -248,14 +255,15 @@ public class UserManager implements Serializable {
         unfreezeRequests.add(username);
     }
 
-
     /**
-     * Removes all usernames from the list of unfreeze requests.
-     *
+     * Checks if user already sent an unfreeze request
+     * @param username username
+     * @return true if they already did, false otherwise
      */
-    public void rejectAllRequests() {
-        unfreezeRequests.clear();
+    public boolean containsUnfreezeRequest(String username){
+        return unfreezeRequests.contains(username);
     }
+
 
     //This method is just for testing!! Delete later
     public void printAllUser() {
