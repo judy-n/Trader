@@ -1,6 +1,4 @@
 import java.time.LocalDateTime;
-import java.util.Arrays;
-
 /**
  * Represents a temporary trade.
  *
