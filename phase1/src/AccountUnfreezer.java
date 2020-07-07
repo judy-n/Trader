@@ -1,37 +1,37 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Lets a frozen NormalUser request to be unfrozen, and lets an AdminUser accept/deny the requests.
  *
  * @author Judy Naamani
+ * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-06
  * last modified 2020-07-06
  */
 public class AccountUnfreezer {
     private SystemPresenter sp = new SystemPresenter();
-    private UserManager um;
-    private ItemManager im;
-    private TradeManager tm;
+    private UserManager userManager;
+    private ItemManager itemManager;
+    private TradeManager tradeManager;
     private NormalUser currentUser;
     private AdminUser adminUser;
 
     //for non-admin requesting to be unfrozen
-    public AccountUnfreezer(NormalUser u, ItemManager im, UserManager um, TradeManager tm){
-        this.um = um;
-        this.im = im;
-        currentUser = u;
+    public AccountUnfreezer(NormalUser user, ItemManager im, UserManager um, TradeManager tm){
+        userManager = um;
+        itemManager = im;
+        tradeManager = tm;
+        currentUser = user;
     }
     //for admin reviewing unfreeze requests
-    public AccountUnfreezer(AdminUser u, ItemManager im, UserManager um) {
-        this.im = im;
-        this.um = um;
-        adminUser = u;
+    public AccountUnfreezer(AdminUser user, ItemManager im, UserManager um) {
+        itemManager = im;
+        userManager = um;
+        adminUser = user;
     }
 
     /**
@@ -39,9 +39,13 @@ public class AccountUnfreezer {
      *
      */
     public void requestUnfreeze(){
-        um.addUnfreezeRequest(currentUser.getUsername());
+        userManager.addUnfreezeRequest(currentUser.getUsername());
         sp.requestUnfreeze();
-        new NormalDashboard(currentUser, im, um, tm);
+        closeNormal();
+
+    }
+    private void closeNormal(){
+        new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
     }
 
     /**
@@ -51,8 +55,9 @@ public class AccountUnfreezer {
      */
     public void reviewUnfreezeRequests() {
         String input;
+        int indexInput;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        ArrayList<NormalUser> users = um.getUnfreezeRequests();
+        ArrayList<NormalUser> users = userManager.getUnfreezeRequests();
         sp.adminGetUnfreezeRequests(users);
         try {
             input = br.readLine();
@@ -61,31 +66,27 @@ public class AccountUnfreezer {
                 input = br.readLine();
             }
             if(input.equalsIgnoreCase("y")) {
-                sp.adminGetUnfreezeRequests();
-                input = br.readLine();
-                if (input.isEmpty()) {
-                    sp.invalidInput();
-                }
-                ArrayList<String> usernamesToUnfreeze = new ArrayList<>();
-                if (input.contains(",")){
-                    String[] usernames = input.split(",");
-                    usernamesToUnfreeze.addAll(Arrays.asList(usernames));
-                }
-                else{
-                    usernamesToUnfreeze.add(input);
-                }
-                for (String username : usernamesToUnfreeze){
-                    um.unfreeze(username);
-                }
-                sp.adminUnfreezeSuccessful();
+                do {
+                    sp.adminGetUnfreezeRequests(1);
+                    int max = userManager.getNumUnfreezeRequest();
+                    indexInput = Integer.parseInt(br.readLine());
+                    while (indexInput < 0 || indexInput > max) {
+                        sp.invalidInput();
+                        indexInput = Integer.parseInt(br.readLine());
+                    }
+                    NormalUser userToUnfreeze = userManager.getNormalByUsername(userManager.getUnfreezeRequest(indexInput));
+                    userToUnfreeze.unfreeze();
+                    sp.adminGetUnfreezeRequests(2);
+                }while(indexInput != 0);
             }
-            if(input.equalsIgnoreCase("n")) {
-                um.rejectAllRequests();
-            }
-
-            new AdminDashboard(adminUser, im, um);
+            sp.adminGetUnfreezeRequests(3);
+            closeAdmin();
         } catch (IOException e) {
             sp.exceptionMessage();
         }
     }
+    private void closeAdmin(){
+        new AdminDashboard(adminUser, itemManager, userManager);
+    }
+
 }

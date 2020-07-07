@@ -310,12 +310,17 @@ public class SystemPresenter {
         System.out.println("Would you like to unfreeze any of the accounts? (Y/N)");
     }
 
-    public void adminGetUnfreezeRequests() {
-        System.out.println("Enter the username(s) (no spaces, separated by commas) of the user(s) you would like to unfreeze:");
-    }
-
-    public void adminUnfreezeSuccessful() {
-        System.out.println("The users have been unfrozen!");
+    public void adminGetUnfreezeRequests(int input) {
+        switch (input) {
+            case 1:
+                System.out.println("Enter the index of the user you would like to unfreeze(0 to quit):");
+                break;
+            case 2:
+                System.out.println("The user have been unfrozen!");
+                break;
+            case 3:
+                System.out.println("Finished!");
+        }
     }
 
     public void tradeRequestViewer(int input) {
