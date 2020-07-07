@@ -130,10 +130,12 @@ public class TradeManager {
         for(String username : uniquePartner){
             freqToUsername.put(Collections.frequency(tradePartners, username), username);
         }
-        Arrays.sort(freqToUsername.keySet().toArray(), Collections.reverseOrder());
+        Integer [] freq = (Integer[]) freqToUsername.keySet().toArray();
+        Arrays.sort(freq, Collections.reverseOrder());
+
         int index = 0;
         while(index < 3){
-            for(Integer i : freqToUsername.keySet()){
+            for(Integer i : freq){
                 frequentPartners[index] = freqToUsername.get(i);
                 index ++;
             }
