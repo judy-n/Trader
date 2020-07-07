@@ -10,12 +10,16 @@
  */
 
 public class CloseTempTradeTransaction {
+    private ItemManager itemManager;
 
-    public void closeTransaction(Trade a) {
+    public void closeTransaction(Trade a, ItemManager im) {
+
+        itemManager = im;
+        
         if (a.getIsComplete()) {
             long[] itemIDs = a.getInvolvedItemIDs();
-            Item tempItem1 = a.im.getApprovedItem(itemIDs[0]);
-            Item tempItem2 = a.im.getApprovedItem(itemIDs[1]);
+            Item tempItem1 = itemManager.getApprovedItem(itemIDs[0]);
+            Item tempItem2 = itemManager.getApprovedItem(itemIDs[1]);
             assert tempItem1 != null;
             assert tempItem2 != null;
             tempItem1.setAvailability(true);

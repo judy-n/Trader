@@ -123,7 +123,7 @@ public class NormalDashboard {
             case 8:
                 // unfreeze request option for frozen account
                 // new class or stuff it in UserManager too?
-                new AccountUnfreezer(currentUser, im, um).requestUnfreeze();
+                new AccountUnfreezer(currentUser, im, um, tm).requestUnfreeze();
                 break;
         }
     }

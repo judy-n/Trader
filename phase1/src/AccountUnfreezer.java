@@ -17,11 +17,12 @@ public class AccountUnfreezer {
     private SystemPresenter sp = new SystemPresenter();
     private UserManager um;
     private ItemManager im;
+    private TradeManager tm;
     private NormalUser currentUser;
     private AdminUser adminUser;
 
     //for non-admin requesting to be unfrozen
-    public AccountUnfreezer(NormalUser u, ItemManager im, UserManager um){
+    public AccountUnfreezer(NormalUser u, ItemManager im, UserManager um, TradeManager tm){
         this.um = um;
         this.im = im;
         currentUser = u;
@@ -40,7 +41,7 @@ public class AccountUnfreezer {
     public void requestUnfreeze(){
         um.addUnfreezeRequest(currentUser.getUsername());
         sp.requestUnfreeze();
-        new NormalDashboard(currentUser, im, um);
+        new NormalDashboard(currentUser, im, um, tm);
     }
 
     /**
