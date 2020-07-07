@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Arrays;
 
 /**
@@ -12,7 +13,8 @@ import java.util.Arrays;
  */
 
 public class TemporaryTrade extends Trade {
-    private Object[] endDateTime;
+    private LocalDate[] endDateTime;
+//    private String status;
 
     /**
      * Class constructor.
@@ -26,24 +28,40 @@ public class TemporaryTrade extends Trade {
     public TemporaryTrade(String[] usernames, long[] itemIDs,
                           LocalDateTime firstDateTime, String firstLocation) {
         super(usernames, itemIDs, firstDateTime, firstLocation);
+//        this.status = "Ok";
     }
 
     // might use getEndDateTime in CloseTempTradeTransaction
-    public Object[] getEndDateTime() {
+    public LocalDate[] getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(Object dueDateItem1, Object dueDateItem2){
-        endDateTime = new Object[]{dueDateItem1, dueDateItem2};
+    public void setEndDateTime(LocalDate dueDateItem1, LocalDate dueDateItem2){
+        endDateTime = new LocalDate[]{dueDateItem1, dueDateItem2};
     }
+
+//    public String getStatus() {
+//        return status;
+//    }
+//
+//    public void updateStatus(){
+//        LocalDate Today = LocalDate.now();
+//        if (endDateTime[0] != null && Today.compareTo(endDateTime[0]) > 0){
+//            this.status = "Overdue";
+//        }
+//        if (endDateTime[1] != null && Today.compareTo(endDateTime[1]) > 0){
+//            this.status = "Overdue";
+//        }
+//    }
 
     //Going to have to change the confirmAgreedMeeting() below - Yiwei
 
-    //@Override
-    //public void confirmAgreedMeeting() {
-    //    super.confirmAgreedMeeting();
-    //    endDateTime = getMeetingDateTime().plusDays(31); //wow that's satisfying
-    //}
+//    @Override
+//    public void confirmAgreedMeeting() {
+//        super.confirmAgreedMeeting();
+//        endDateTime[0] = getMeetingDateTime().toLocalDate().plusDays(31); //wow that's satisfying
+//        endDateTime[1] = getMeetingDateTime().toLocalDate().plusDays(31);
+//    }
 
     //This was put in a use case class since Temporary Trade is an entity
     //public void closeTransaction() {

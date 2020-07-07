@@ -22,8 +22,10 @@ public class CloseTempTradeTransaction {
             Item tempItem2 = itemManager.getApprovedItem(itemIDs[1]);
             assert tempItem1 != null;
             assert tempItem2 != null;
-            tempItem1.setAvailability(true);
-            tempItem2.setAvailability(true);
+            if (itemIDs[0] != 0){
+            tempItem1.setAvailability(true);}
+            if (itemIDs[1] != 0){
+            tempItem2.setAvailability(true);}
         }
     }
 }
