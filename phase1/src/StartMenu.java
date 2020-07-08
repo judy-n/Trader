@@ -3,14 +3,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * StartMenu.java
  * Lets the user choose to sign up, log in, or exit the program.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-07
+ * last modified 2020-07-08
  */
 public class StartMenu {
     private int userInput;
@@ -26,19 +25,12 @@ public class StartMenu {
 
         sp.startMenu(1);
         try {
-            String temp;
-            temp = br.readLine();
-            while (!temp.matches("[0-9]+")){
+            String temp = br.readLine();
+            while (!temp.matches("[1-3]+") || Integer.parseInt(temp) > 3){
                 sp.invalidInput();
                 temp = br.readLine();
             }
             userInput = Integer.parseInt(temp);
-
-            while (!(userInput == 1) && !(userInput == 2) && !(userInput == 3)) {
-                sp.invalidInput();
-                userInput = Integer.parseInt(br.readLine());
-            }
-
         } catch (IOException e) {
             sp.exceptionMessage();
         }

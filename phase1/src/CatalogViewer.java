@@ -11,76 +11,67 @@ import java.io.InputStreamReader;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-06
+ * last modified 2020-07-08
  */
 public class CatalogViewer {
     private NormalUser currentUser;
-    private int max;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
+    private SystemPresenter sp;
+    private BufferedReader br;
 
     /**
      * Class constructor.
-     * Creates an ItemPresenter with the given logged-in user, item manager, and user manager.
-     * Prints to the screen all items available for trade.
+     * Creates an ItemPresenter with the given logged-in user and item/user/trade managers.
+     * Prints to the screen all items available for trade (excluding the current user's items).
      *
      * @param user the non-admin user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
+     * @param tm   the system's trade manager
      */
     public CatalogViewer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         currentUser = user;
         itemManager = im;
         userManager = um;
         tradeManager = tm;
-        int input;
-        String inputConfirm;
-        max = im.getNumApprovedItems();
 
-        SystemPresenter sp = new SystemPresenter(); // to call strings to print
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        sp.catalogViewer(im.getApprovedItems(currentUser));
-        if(currentUser.getIsFrozen()){
-            sp.catalogViewer(2);
-            close();
-        }
+        sp = new SystemPresenter();
+        br = new BufferedReader(new InputStreamReader(System.in));
+
+        int input;
+        int maxIndex = itemManager.getNumApprovedItems(currentUser.getUsername());
+
+        sp.catalogViewer(itemManager.getApprovedItems(currentUser.getUsername()));
         sp.catalogViewer(1);
         try {
-            String temp;
-            temp = br.readLine();
-            //check
-            while (!temp.matches("[0-9]+") || Integer.parseInt(temp)>max) {
+            String temp = br.readLine();
+            while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > maxIndex) {
                 sp.invalidInput();
                 temp = br.readLine();
             }
             input = Integer.parseInt(temp);
             if (input != 0) {
-                Item i = im.getApprovedItem(input);
-                assert i != null;
-                sp.catalogViewer(i, 1);
-                if (i.getAvailability()) {
-                    sp.catalogViewer(i, 2);
-                    inputConfirm = br.readLine();
-                    while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-                        sp.invalidInput();
-                        inputConfirm = br.readLine();
-                    }
+                Item selectedItem = itemManager.getApprovedItem(input);
+                assert selectedItem != null;
+                sp.catalogViewer(selectedItem, 1);
 
-                    if (inputConfirm.equalsIgnoreCase("Y")) {
-                        sp.catalogViewer(i, 3);
-                        NormalUser trader = um.getNormalByUsername(i.getOwnerUsername());
-                        assert trader != null;
-                        String[] traders = {currentUser.getUsername(), trader.getUsername()};
-                        long[] items = {0, i.getID()};
-                        trader.addTradeRequest(traders, items);
-                        currentUser.addTradeRequest(traders, items);
-                        currentUser.addWishlist(i.getID());
+                String temp2 = br.readLine();
+                while (!temp2.matches("[0-2]+") || Integer.parseInt(temp2) > 2) {
+                    sp.invalidInput();
+                    temp2 = br.readLine();
+                }
+                int tradeOrWishlist = Integer.parseInt(temp2);
+
+                if (tradeOrWishlist == 1) {
+                    if (currentUser.getIsFrozen()) {
+                        sp.catalogViewer(2);
                     } else {
-                        sp.cancelled();
+                        startTradeAttempt(selectedItem);
                     }
-                } else {
-                    sp.catalogViewer(i, 4);
+                } else if (tradeOrWishlist == 2) {
+                    currentUser.addWishlist(selectedItem.getID());
                 }
             }
             close();
@@ -89,6 +80,34 @@ public class CatalogViewer {
         }
     }
 
+    private void startTradeAttempt(Item selectedItem) throws IOException {
+        if (selectedItem.getAvailability()) {
+
+            sp.catalogViewer(selectedItem, 2);
+
+            String inputConfirm = br.readLine();
+            while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
+                sp.invalidInput();
+                inputConfirm = br.readLine();
+            }
+            if (inputConfirm.equalsIgnoreCase("Y")) {
+
+                sp.catalogViewer(selectedItem, 3);
+
+                NormalUser trader = userManager.getNormalByUsername(selectedItem.getOwnerUsername());
+                assert trader != null;
+                String[] traders = {currentUser.getUsername(), trader.getUsername()};
+                long[] items = {0, selectedItem.getID()};
+                trader.addTradeRequest(traders, items);
+                currentUser.addTradeRequest(traders, items);
+                currentUser.addWishlist(selectedItem.getID());
+            } else {
+                sp.cancelled();
+            }
+        } else {
+            sp.catalogViewer(selectedItem, 4);
+        }
+    }
     private void close(){
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
     }

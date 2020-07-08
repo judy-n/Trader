@@ -1,4 +1,11 @@
-import java.util.*;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Map;
 
 /**
  * Stores and manages all Trades in the system.
@@ -104,6 +111,16 @@ public class TradeManager {
         return completedTrades;
     }
 
+    private ArrayList<Trade> getAllTrades(String username) {
+        ArrayList<Trade> allTradesThisUser = new ArrayList<>();
+        for (Trade t : allTrades) {
+            if (t.isInvolved(username)) {
+                allTradesThisUser.add(t);
+            }
+        }
+        return allTradesThisUser;
+    }
+
     /**
      * Takes in a username and returns a list of all their three most recent trades.
      * The trade at index 0 of the list is the most recent trade.
@@ -123,6 +140,39 @@ public class TradeManager {
             }
         }
         return recentThree;
+    }
+
+    /**
+     * Returns the total number of meetings planned to occur in the current week by the given user.
+     * Only counting agreed-upon meetings that are taking place / took place during the current week.
+     * One week = Monday to Sunday.
+     *
+     * @param username the username of the user whose meeting count for the current week is being retrieved
+     * @return the total number of meetings planned to occur in the current week by the given user
+     */
+    public int getNumMeetingsThisWeek(String username) {
+        ArrayList<Trade> allTradesThisUser = getAllTrades(username);
+        LocalDateTime now = LocalDateTime.now();
+        int dow = now.getDayOfWeek().getValue();
+        LocalDateTime dayBeforeWeek = now.minusDays(dow);
+        LocalDateTime dayAfterWeek = now.plusDays(7 - dow + 1);
+
+        int count = 0;
+        for (Trade t : allTradesThisUser) {
+            if (t.getHasAgreedMeeting1()) {
+                LocalDateTime meeting1 = t.getMeetingDateTime1();
+                if (meeting1.isAfter(dayBeforeWeek) && meeting1.isBefore(dayAfterWeek)) {
+                    count++;
+                }
+            }
+            if (t instanceof TemporaryTrade && ((TemporaryTrade) t).hasSecondMeeting()){
+                LocalDateTime meeting2 = ((TemporaryTrade) t).getMeetingDateTime2();
+                if (meeting2.isAfter(dayBeforeWeek) && meeting2.isBefore(dayAfterWeek)) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     //takes in a user and finds those top three most frequent trade partners

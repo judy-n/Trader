@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-04
+ * last modified 2020-07-08
  */
 public class ItemManager implements Serializable {
     private ArrayList<Item> approvedItems;
@@ -31,26 +31,21 @@ public class ItemManager implements Serializable {
     }
 
     /**
-     * Getter for all approved items except the given user
+     * Getter for all approved items except for those belonging to the given user.
      *
-     * @param user normal user
-     * @return a list of all approved items not owned by given user
+     * @param username the username of the user whose approved items are being excluded
+     * @return a list of all approved items not owned by the given user
      */
 
-    public ArrayList<Item> getApprovedItems(NormalUser user){
+    public ArrayList<Item> getApprovedItems(String username){
         ArrayList<Item> approved = new ArrayList<>();
         for(Item i: approvedItems){
-            if(!user.getInventory().contains(i.getID())){
+            if(!i.getOwnerUsername().equals(username)){
                 approved.add(i);
             }
         }
         return approved;
     }
-
-
-
-
-
 
     /**
      * Getter for all items waiting for approval in the system.
@@ -80,6 +75,16 @@ public class ItemManager implements Serializable {
      */
     public int getNumApprovedItems() {
         return approvedItems.size();
+    }
+
+    /**
+     * Returns the number of approved items in the system that don't belong to the given user.
+     *
+     * @param username the username of the user whose approved items aren't being counted
+     * @return the number of approved items that don't belong to the given user
+     */
+    public int getNumApprovedItems(String username) {
+        return getApprovedItems(username).size();
     }
 
 
@@ -132,7 +137,6 @@ public class ItemManager implements Serializable {
         return pendingItems.get(index - 1);
     }
 
-    //prof said private methods don't need javadoc
     private Item idGetItem(ArrayList<Item> items, long itemid) {
         for (Item i : items) {
             if (i.getID() == itemid) {
