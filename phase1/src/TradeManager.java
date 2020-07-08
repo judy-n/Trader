@@ -84,49 +84,64 @@ public class TradeManager {
     }
 
     /**
-     * Takes in a user and returns a list of all their ongoing Trades.
+     * Takes in a username and returns a list of all their ongoing Trades.
      *
-     * @param user the user whose list of ongoing trades is being retrieved
+     * @param username the username of the user whose list of ongoing trades is being retrieved
      * @return a list of the given user's ongoing Trades
      */
-    public ArrayList<Trade> getOngoingTrades(NormalUser user) {
+    public ArrayList<Trade> getOngoingTrades(String username) {
         ArrayList<Trade> ongoingTrades = new ArrayList<>();
         for (Trade t : allTrades) {
-            if (t.isInvolved(user.getUsername()) && !t.getIsComplete()) {
+            if (t.isInvolved(username) && !t.getIsComplete()) {
                 ongoingTrades.add(t);
             }
         }
         return ongoingTrades;
     }
 
-    /**
-     * Takes in a user and returns a list of all their completed Trades.
-     *
-     * @param user the user whose list of completed trades is being retrieved
-     * @return a list of the given user's completed Trades
-     */
-    public ArrayList<Trade> getCompletedTrades(NormalUser user) {
+    private ArrayList<Trade> getCompletedTrades(String username) {
         ArrayList<Trade> completedTrades = new ArrayList<>();
         for (Trade t : allTrades) {
-            if (t.isInvolved(user.getUsername()) && t.getIsComplete()) {
+            if (t.isInvolved(username) && t.getIsComplete()) {
                 completedTrades.add(t);
             }
         }
         return completedTrades;
     }
 
+    /**
+     * Takes in a username and returns a list of all their three most recent trades.
+     * The trade at index 0 of the list is the most recent trade.
+     *
+     * @param username the username of the user whose three most recent trades are being retrieved
+     * @return a list of the given user's three most recent trades
+     */
+    public Trade[] getRecentThreeTrades(String username) {
+        Trade[] recentThree = new Trade[3];
+        ArrayList<Trade> completedTrades = getCompletedTrades(username);
+
+        for (int i = 0; i < 3; i++) {
+            if (!completedTrades.isEmpty()) {
+                Trade tempRecent = Collections.max(completedTrades);
+                recentThree[i] = tempRecent;
+                completedTrades.remove(tempRecent);
+            }
+        }
+        return recentThree;
+    }
+
     //takes in a user and finds those top three most frequent trade partners
-    public String [] getFrequentTradePartners (NormalUser user) {
+    public String [] getFrequentTradePartners (String username) {
         ArrayList<String> tradePartners = new ArrayList<>();
         Set<String> uniquePartner = new HashSet<>();
         String [] frequentPartners = new String[3];
-        ArrayList<Trade> completedTrades= getCompletedTrades(user);
+        ArrayList<Trade> completedTrades= getCompletedTrades(username);
         if(completedTrades.isEmpty()){
             return new String[]{"", "", ""};
         }
         HashMap<Integer, String> freqToUsername = new HashMap<>();
         for (Trade t : completedTrades) {
-            if (!t.getInvolvedUsernames()[0].equals(user.getUsername())){
+            if (!t.getInvolvedUsernames()[0].equals(username)){
                 tradePartners.add(t.getInvolvedUsernames()[0]);
                 uniquePartner.add(t.getInvolvedUsernames()[0]);
             }
@@ -135,8 +150,8 @@ public class TradeManager {
                 uniquePartner.add(t.getInvolvedUsernames()[1]);
             }
         }
-        for(String username : uniquePartner){
-            freqToUsername.put(Collections.frequency(tradePartners, username), username);
+        for(String u : uniquePartner){
+            freqToUsername.put(Collections.frequency(tradePartners, u), u);
         }
         Integer [] freq = (Integer[]) freqToUsername.keySet().toArray();
         Arrays.sort(freq, Collections.reverseOrder());

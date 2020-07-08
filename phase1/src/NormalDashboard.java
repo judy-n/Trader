@@ -106,7 +106,7 @@ public class NormalDashboard {
                 // if trade was two-way, display smth like "Lent [item] and borrowed [item] from [username]"
                 // if trade was one-way, "Lent [item] to [username]" or "Borrowed [item] from [username]"
                 // you can get what a certain user lent in a Trade by using tradeInstance.getLentItemID(username)
-                new CompletedTradesViewer(currentUser, itemManager, userManager, tradeManager).viewCompletedTrades();
+                new CompletedTradesViewer(currentUser, itemManager, userManager, tradeManager).viewRecentThreeTrades();
                 break;
 
             case 7:
