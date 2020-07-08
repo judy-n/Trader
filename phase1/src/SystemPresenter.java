@@ -351,7 +351,7 @@ public class SystemPresenter {
                 System.out.print("\nWould you like to accept any of these requests? (0 to quit): ");
                 break;
             case 5:
-                System.out.println("\nSorry, you can't initiate any trades because your account is frozen!");
+                System.out.println("\nSorry, you can't view any trade requests because your account is frozen!");
                 break;
             case 6:
                 System.out.print("\nPlease suggest a time (DD/MM/YYYY-HH/MM): ");

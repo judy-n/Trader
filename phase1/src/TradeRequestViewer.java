@@ -50,6 +50,20 @@ public class TradeRequestViewer {
         sp = new SystemPresenter();
         br = new BufferedReader(new InputStreamReader(System.in));
 
+        if(currentUser.getIsFrozen()){
+            caseUserIsFrozen();
+        }else{
+            caseUserNotFrozen();
+        }
+
+
+    }// end
+    private void caseUserIsFrozen(){
+        sp.tradeRequestViewer(5);
+        close();
+    }
+
+    private void caseUserNotFrozen(){
         initiatedTrades = new LinkedHashMap<>();
         receivedTrades = new LinkedHashMap<>();
 
@@ -58,15 +72,19 @@ public class TradeRequestViewer {
         long firstItem;
         long secondItem = 0;
 
-        for (String[] key : user.getTradeRequest().keySet()) {
-            if (user.getUsername().equals(key[0])) {
-                initiatedTrades.put(key, user.getTradeRequest().get(key));
+        //separate into initiated trades and received trades
+        for (String[] key : currentUser.getTradeRequest().keySet()) {
+            if (currentUser.getUsername().equals(key[0])) {
+                initiatedTrades.put(key, currentUser.getTradeRequest().get(key));
             } else {
-                receivedTrades.put(key, user.getTradeRequest().get(key));
+                if(!userManager.getNormalByUsername(key[1]).getIsFrozen()){
+                    receivedTrades.put(key, currentUser.getTradeRequest().get(key));
+                }
             }
         }
         ArrayList<Item> initiatedItems = new ArrayList<>();
         ArrayList<String> initiatedOwners = new ArrayList<>();
+
 
         //this just displays the initiated trades no action required
         if (initiatedTrades.isEmpty()) {
@@ -80,123 +98,116 @@ public class TradeRequestViewer {
             sp.tradeRequestViewer(1, initiatedItems, initiatedOwners);
         } //end
 
+
         //if user is frozen, can not accept trade requests
-        if (currentUser.getIsFrozen()) {
-            sp.tradeRequestViewer(5);
-        } else {
-            ArrayList<Item> receivedItems = new ArrayList<>();
-            ArrayList<String> receivedOwners = new ArrayList<>();
 
-            if (receivedTrades.isEmpty()) {
-                sp.tradeRequestViewer(1);
-            } else {
-                int index = 1;
-                for (String[] key : receivedTrades.keySet()) {
-                    Item i = itemManager.getApprovedItem(receivedTrades.get(key)[1]);
-                    receivedItems.add(i);
-                    receivedOwners.add(key[0]);
-                    index++;
-                }
-                sp.tradeRequestViewer(2, receivedItems, receivedOwners);
-                sp.tradeRequestViewer(4);
-                try {
+        ArrayList<Item> receivedItems = new ArrayList<>();
+        ArrayList<String> receivedOwners = new ArrayList<>();
+        int index = 1;
+        for (String[] key : receivedTrades.keySet()) {
+            Item i = itemManager.getApprovedItem(receivedTrades.get(key)[1]);
+            receivedItems.add(i);
+            receivedOwners.add(key[0]);
+            index++;
+        }
+        sp.tradeRequestViewer(2, receivedItems, receivedOwners);
+        sp.tradeRequestViewer(4);
+        try {
                     //pick a request to accept
-                    //handles if the other person is frozen
-                    do {
-                        String temp = br.readLine();
-                        //check
-                        while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > index) {
-                            sp.invalidInput();
-                            temp = br.readLine();
-                        }
-                        int input = Integer.parseInt(temp);
-                        if (input == 0) {
-                            break; //?? *screams*
-                        } else {
-                            a = getTradeHelper(input);
-                            trader = userManager.getNormalByUsername(a[0]);
-                            firstItem = receivedItems.get(input - 1).getID();
-                            if (trader.getIsFrozen()) {
-                                sp.tradeRequestViewer(3, a[0], a[1]);
-                            } else {
-                                //trade with xx person?
-                                sp.tradeRequestViewer(1, a[0], a[1]);
-
-                                String inputConfirm = br.readLine();
-                                while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-                                    sp.invalidInput();
-                                    inputConfirm = br.readLine();
-                                }
-
-                                if (inputConfirm.equalsIgnoreCase("y")) {
-                                    sp.tradeRequestViewer(2, a[0], a[1]);
-                                    int twoWayItem;
-                                    if (!trader.getInventory().isEmpty()) {
-                                        sp.tradeRequestViewer(7);
-                                        ArrayList<Item> items = itemManager.getApprovedItemsByIDs(trader.getInventory());
-                                        sp.tradeRequestViewer(items);
-
-                                        String temp2 = br.readLine();
-                                        //check
-                                        while (!temp2.matches("[1-9]+") || Integer.parseInt(temp2) > items.size()) {
-                                            sp.invalidInput();
-                                            temp2 = br.readLine();
-                                        }
-                                        twoWayItem = Integer.parseInt(temp);
-                                        if (twoWayItem != 0) {
-                                            secondItem = itemManager.getApprovedItem(trader.getInventory().get(twoWayItem - 1)).getID();
-                                        }
-                                    }
-                                    sp.tradeRequestViewer(8);
-
-                                    String permOrTemp = br.readLine();
-                                    while (!permOrTemp.equals("1") && !(permOrTemp.equals("2"))) {
-                                        sp.invalidInput();
-                                        permOrTemp = br.readLine();
-                                    }
-                                    sp.tradeRequestViewer(6);
-                                    String t = br.readLine();
-                                    String[] tempArray = t.split("-");
-                                    while (!isThisDateValid(tempArray[0]) || !isThisTimeValid(tempArray[1])) {
-                                        sp.invalidInput();
-                                        t = br.readLine();
-                                        tempArray = t.split("-");
-                                        isThisDateValid(tempArray[0]);
-                                        isThisTimeValid(tempArray[1]);
-                                    }
-                                    String[] temp2 = tempArray[0].split("/");
-                                    String[] temp3 = tempArray[1].split("/");
-                                    LocalDateTime time = LocalDateTime.of(Integer.parseInt(temp2[2]), Integer.parseInt(temp2[1]),
-                                            Integer.parseInt(temp2[0]), Integer.parseInt(temp3[0]), Integer.parseInt(temp3[1]));
-                                    sp.tradeRequestViewer(3);
-                                    String place = br.readLine();
-
-
-                                    itemManager.getApprovedItem(firstItem).setAvailability(false);
-                                    if (secondItem != 0) {
-                                        itemManager.getApprovedItem(secondItem).setAvailability(false);
-                                    }
-
-                                    if (permOrTemp.equals("1")) {
-                                        PermanentTrade pt = new PermanentTrade(new String[]{currentUser.getUsername(), a[0]},
-                                                new long[]{firstItem, secondItem}, time, place);
-                                        tradeManager.addTrade(pt);
-                                    } else {
-                                        TemporaryTrade tt = new TemporaryTrade(new String[]{currentUser.getUsername(), a[0]},
-                                                new long[]{firstItem, secondItem}, time, place);
-                                        tradeManager.addTrade(tt);
-                                    }
-                                }
+            String temp = br.readLine();
+            while(!temp.matches("[0-9]+") || Integer.parseInt(temp) > index) {
+                sp.invalidInput();
+                temp = br.readLine();
+            }
+            int input = Integer.parseInt(temp);
+            if (input == 0) {
+                close();
+            } else {
+                a = getTradeHelper(input);
+                trader = userManager.getNormalByUsername(a[0]);
+                firstItem = receivedItems.get(input - 1).getID();
+                if (trader.getIsFrozen()) {
+                    sp.tradeRequestViewer(3, a[0], a[1]);
+                } else {
+                    //trade with xx person?
+                    sp.tradeRequestViewer(1, a[0], a[1]);
+                    String inputConfirm = br.readLine();
+                    while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
+                        sp.invalidInput();
+                        inputConfirm = br.readLine();
+                    }
+                    if (inputConfirm.equalsIgnoreCase("y")) {
+                        sp.tradeRequestViewer(2, a[0], a[1]);
+                        int twoWayItem;
+                        if (!trader.getInventory().isEmpty()) {
+                            sp.tradeRequestViewer(7);
+                            ArrayList<Item> items = itemManager.getApprovedItemsByIDs(trader.getInventory());
+                            sp.tradeRequestViewer(items);
+                            String temp2 = br.readLine();
+                            //check
+                            while (!temp2.matches("[1-9]+") || Integer.parseInt(temp2) > items.size()) {
+                                sp.invalidInput();
+                                temp2 = br.readLine();
+                            }
+                            twoWayItem = Integer.parseInt(temp);
+                            if (twoWayItem != 0) {
+                                secondItem = itemManager.getApprovedItem(trader.getInventory().get(twoWayItem - 1)).getID();
                             }
                         }
-                    } while (trader.getIsFrozen());
-                } catch (IOException e) {
-                    sp.exceptionMessage();
+                        sp.tradeRequestViewer(8);
+                        String permOrTemp = br.readLine();
+                        while (!permOrTemp.equals("1") && !(permOrTemp.equals("2"))) {
+                            sp.invalidInput();
+                            permOrTemp = br.readLine();
+                        }
+                        sp.tradeRequestViewer(6);
+                        String t = br.readLine();
+                        String[] tempArray = t.split("-");
+                        while (!isThisDateValid(tempArray[0]) || !isThisTimeValid(tempArray[1])) {
+                            sp.invalidInput();
+                            t = br.readLine();
+                            tempArray = t.split("-");
+                            isThisDateValid(tempArray[0]);
+                            isThisTimeValid(tempArray[1]);
+                        }
+                        String[] temp2 = tempArray[0].split("/");
+                        String[] temp3 = tempArray[1].split("/");
+                        LocalDateTime time = LocalDateTime.of(Integer.parseInt(temp2[2]), Integer.parseInt(temp2[1]),
+                                Integer.parseInt(temp2[0]), Integer.parseInt(temp3[0]), Integer.parseInt(temp3[1]));
+                        sp.tradeRequestViewer(3);
+                        String place = br.readLine();
+                        itemManager.getApprovedItem(firstItem).setAvailability(false);
+                        if (secondItem != 0) {
+                            itemManager.getApprovedItem(secondItem).setAvailability(false);
+                        }
+                        if (permOrTemp.equals("1")) {
+                            PermanentTrade pt = new PermanentTrade(new String[]{currentUser.getUsername(), a[0]},
+                                    new long[]{firstItem, secondItem}, time, place);
+                            tradeManager.addTrade(pt);
+                        } else {
+                            TemporaryTrade tt = new TemporaryTrade(new String[]{currentUser.getUsername(), a[0]},
+                                    new long[]{firstItem, secondItem}, time, place);
+                            tradeManager.addTrade(tt);
+                        }
+                    }
                 }
             }
+        } catch (IOException e) {
+            sp.exceptionMessage();
         }
         close();
-    }// end
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     private void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);

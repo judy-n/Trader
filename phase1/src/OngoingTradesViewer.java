@@ -41,4 +41,8 @@ public class OngoingTradesViewer {
         sp.ongoingTrades(ongoingTrades, tradeItems, currUsername);
 
     }
+
+    public void close(){
+        new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
+    }
 }
