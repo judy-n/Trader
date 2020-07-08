@@ -11,15 +11,18 @@ public class SystemController {
     public SystemController() {
         String userManagerPath = "src/usermanager.ser";
         String itemManagerPath = "src/itemmanager.ser";
+        String tradeManagerPath = "src/trademanager.ser";
 
         UserGateway ug = new UserGateway();
         ItemGateway ig = new ItemGateway();
+        TradeGateway tg = new TradeGateway();
         //add tradeGateway
 
         UserManager userManager = ug.readFromFile(userManagerPath);
         ItemManager itemManager = ig.readFromFile(itemManagerPath);
+        TradeManager tradeManager = tg.readFromFile(tradeManagerPath);
         // for now
-        TradeManager tradeManager = new TradeManager();
+        //TradeManager tradeManager = new TradeManager();
 
         if (userManager.getAllUsers().isEmpty()) {
             AdminUser mod01 = new AdminUser("Hello_World", "admin01@email.com", "pa55word", 1);
@@ -43,6 +46,7 @@ public class SystemController {
 
         ug.saveToFile(userManagerPath, userManager);
         ig.saveToFile(itemManagerPath, itemManager);
+        tg.saveToFile(tradeManagerPath, tradeManager);
         //add trademanager here too
         System.exit(0);
     }
