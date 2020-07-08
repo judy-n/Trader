@@ -80,7 +80,7 @@ public class TradeRequestViewer {
             close();
         }//end
 
-        sp.tradeRequestViewer(4);
+
         ArrayList<Item> receivedItems = new ArrayList<>();
         ArrayList<String> receivedOwners = new ArrayList<>();
 
@@ -95,6 +95,7 @@ public class TradeRequestViewer {
                 index++;
             }
             sp.tradeRequestViewer(2, receivedItems, receivedOwners);
+            sp.tradeRequestViewer(4);
             try {
                 //pick a request to accept
                 //handles if the other person is frozen
@@ -178,7 +179,6 @@ public class TradeRequestViewer {
                                 new long[]{firstItem, secondItem}, time, place);
                         tradeManager.addTrade(tt);
                     }
-
                 }
 
             } catch (IOException e) {
