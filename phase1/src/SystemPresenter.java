@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * The presenter used for the entire program. Prints to text UI.
@@ -10,7 +9,7 @@ import java.util.Iterator;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-06
+ * last modified 2020-07-07
  */
 
 public class SystemPresenter {

@@ -106,16 +106,9 @@ public class CompletedTradesViewer {
     public void viewTopThreeTrader() {
         String[] topTraders = tradeManager.getFrequentTradePartners(currentUser.getUsername());
         System.out.println("\nHere are your top 3 most frequent trade partners:");
-        if (topTraders[0].equals("")) {
-            System.out.println("Nothing here yet!");
-        } else {
-            for (int i = 0; i < topTraders.length; i++) {
-                String traderPrint = "empty";
-                if (topTraders[i].equals("")) {
-                    traderPrint = topTraders[i];
-                }
-                System.out.println((i + 1) + ". " + traderPrint);
-            }
+        int index = 1;
+        for(String s : topTraders){
+            System.out.println(index+ ". "+ s);
         }
         close();
     }

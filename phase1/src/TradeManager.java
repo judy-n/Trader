@@ -137,7 +137,7 @@ public class TradeManager {
         String [] frequentPartners = new String[3];
         ArrayList<Trade> completedTrades= getCompletedTrades(username);
         if(completedTrades.isEmpty()){
-            return new String[]{"", "", ""};
+            return new String[]{"no one yet", "no one yet", "no one yet"};
         }
         HashMap<Integer, String> freqToUsername = new HashMap<>();
         for (Trade t : completedTrades) {
@@ -157,17 +157,11 @@ public class TradeManager {
         Arrays.sort(freq, Collections.reverseOrder());
 
         if(freq.length == 1){
-            return new String[]{freqToUsername.get(freq[0]), "", ""};
+            return new String[]{freqToUsername.get(freq[0]), "no one yet", "no one yet"};
         }else if(freq.length == 2){
-            return new String[]{freqToUsername.get(freq[0]), freqToUsername.get(freq[1]), ""};
-        }else {
-            int index = 0;
-            while (index < 3) {
-                for (Integer i : freq) {
-                    frequentPartners[index] = freqToUsername.get(i);
-                    index++;
-                }
-            }
+            return new String[]{freqToUsername.get(freq[0]), freqToUsername.get(freq[1]), "no one yet"};
+        }else if(freq.length >= 3){
+            return new String[]{freqToUsername.get(freq[0]), freqToUsername.get(freq[1]), freqToUsername.get(freq[2])};
         }
         return frequentPartners;
     }

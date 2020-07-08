@@ -115,7 +115,6 @@ public class TradeRequestViewer {
                     }
                 }while(trader.getIsFrozen());
 
-
                 //trade with xx person?
                 sp.tradeRequestViewer(1, a[0], a[1]);
 
