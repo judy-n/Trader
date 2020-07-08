@@ -2,7 +2,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Shows all the completed trades for the user, sorted by date.
+ * Shows the user their three most recently completed trades and their top three most frequent trading partners.
  * A presenter separate from SystemPresenter because reading user input is not required in this class.
  *
  * @author Kushagra Mehta
@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-07
+ * last modified 2020-07-08
  */
 public class CompletedTradesViewer {
     private ItemManager itemManager;
@@ -98,7 +98,6 @@ public class CompletedTradesViewer {
                 }
                 System.out.println((i + 1) + ". " + tradePrint);
             }
-            //jesus
         }
         close();
     }
@@ -107,15 +106,18 @@ public class CompletedTradesViewer {
         String[] topTraders = tradeManager.getFrequentTradePartners(currentUser.getUsername());
         System.out.println("\nHere are your top 3 most frequent trade partners:");
         int index = 1;
-        for(String s : topTraders){
-            System.out.println(index+ ". "+ s);
-            index ++;
+        if (topTraders[0].equals("empty")) {
+            System.out.println("No one yet!");
+        } else {
+            for (String s : topTraders) {
+                System.out.println(index + ". " + s);
+                index++;
+            }
         }
         close();
     }
 
-
-    public void close() {
+    private void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
     }
 }

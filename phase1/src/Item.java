@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.security.SecureRandom;
+
 /**
  * Represents an item with a name, description, unique ID, and owner.
  *
@@ -9,7 +10,7 @@ import java.security.SecureRandom;
  * @author Yiwei Chen
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-06
+ * last modified 2020-07-08
  */
 
 public class Item implements Serializable {
@@ -17,7 +18,6 @@ public class Item implements Serializable {
     private final String name;
     private final String description;
     private final String ownerUsername;
-    private boolean isApproved;
     private boolean isAvailable;
 
     /**
@@ -36,7 +36,6 @@ public class Item implements Serializable {
         this.description = description;
         this.ownerUsername = ownerUsername;
         assignID();
-        isApproved = false;
         isAvailable = true;
     }
 
@@ -80,23 +79,6 @@ public class Item implements Serializable {
      */
     public String getOwnerUsername() {
         return ownerUsername;
-    }
-
-    /**
-     * Getter for whether or not this Item has been approved by an admin.
-     *
-     * @return whether or not this Item has been approved by an admin
-     */
-    public boolean getIsApproved() {
-        return isApproved;
-    }
-
-    /**
-     * Sets this Item's status to approved by admin.
-     *
-     */
-    public void setApproved() {
-        isApproved = true;
     }
 
     /**

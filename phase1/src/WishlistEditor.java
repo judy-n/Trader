@@ -44,20 +44,22 @@ public class WishlistEditor {
         ArrayList<Item> itemWishlist = itemManager.getApprovedItemsByIDs(currentUser.getWishlist());
         sp.wishlistEditor(itemWishlist);
         try {
-            String input = br.readLine();
-            while (!(input.equals("1")) && !(input.equals("2"))) {
+            String temp = br.readLine();
+            while ((!temp.matches("[1-2]+") || Integer.parseInt(temp) > 2)) {
                 sp.invalidInput();
-                input = br.readLine();
+                temp = br.readLine();
             }
-            if (input.equals("1")) {   //remove item
+            int input = Integer.parseInt(temp);
+            if (input == 1) {   //remove item
                 if (currentUser.getWishlist().isEmpty()) {
                     sp.wishlistRemoveItem(1);
                 } else {
                     sp.wishlistRemoveItem(2);
-                    String temp = br.readLine();
-                    while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > itemWishlist.size()) {
+                    String temp2 = br.readLine();
+                    while (!temp2.matches("[0-9]+") ||
+                            Integer.parseInt(temp2) > itemWishlist.size() || Integer.parseInt(temp2) < 1) {
                         sp.invalidInput();
-                        temp = br.readLine();
+                        temp2 = br.readLine();
                     }
                     int indexInput = Integer.parseInt(br.readLine());
                     Item selected = itemWishlist.get(indexInput - 1);

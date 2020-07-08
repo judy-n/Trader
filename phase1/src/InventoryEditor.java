@@ -46,7 +46,7 @@ public class InventoryEditor {
         sp.inventoryEditor(itemInventory, pendingItems);
         try {
             String temp = br.readLine();
-            while (!temp.matches("[1-3]+") || Integer.parseInt(temp) > 3) {
+            while (!temp.matches("[1-3]")) {
                 sp.invalidInput();
                 temp = br.readLine();
             }
@@ -56,15 +56,19 @@ public class InventoryEditor {
                 String itemNameInput;
                 String itemDescriptionInput;
 
-                do {
-                    sp.inventoryAddItem(1);
-                    itemNameInput = br.readLine();
-                } while (itemNameInput.length() < 3);   //name at least 3 char long
+                sp.inventoryAddItem(1);
+                itemNameInput = br.readLine().trim();
+                while (itemNameInput.length() < 3) {
+                    sp.invalidInput();
+                    itemNameInput = br.readLine().trim();
+                }   //name at least 3 char long
 
-                do {
-                    sp.inventoryAddItem(2);
-                    itemDescriptionInput = br.readLine();
-                } while (!itemDescriptionInput.contains(" "));  //description at least two words
+                sp.inventoryAddItem(2);
+                itemDescriptionInput = br.readLine().trim();
+                while (!itemDescriptionInput.contains(" ")) {
+                    sp.invalidInput();
+                    itemDescriptionInput = br.readLine().trim();
+                }   //description at least two words
 
                 sp.inventoryAddItem(3);
                 sp.inventoryAddItem(itemNameInput, itemDescriptionInput);
@@ -88,7 +92,9 @@ public class InventoryEditor {
                 } else {
                     sp.inventoryRemoveItem(2);
                     String temp2 = br.readLine();
-                    while (!temp2.matches("[0-9]+") || Integer.parseInt(temp2) > itemInventory.size()) {
+                    //no (0 to quit) option
+                    while (!temp2.matches("[0-9]+") ||
+                            Integer.parseInt(temp2) > itemInventory.size() || Integer.parseInt(temp2) < 1) {
                         sp.invalidInput();
                         temp2 = br.readLine();
                     }
@@ -117,7 +123,6 @@ public class InventoryEditor {
 
         } catch (IOException e) {
             sp.exceptionMessage();
-            System.exit(-1);
         }
     }
 

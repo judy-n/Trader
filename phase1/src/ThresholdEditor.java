@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 /**
  * ThresholdEditor.java
  * lets admin change a certain trade threshold for a certain user
@@ -8,44 +9,44 @@ import java.io.InputStreamReader;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-05
+ * last modified 2020-07-08
  */
-
 public class ThresholdEditor {
-    private ItemManager im;
-    private UserManager um;
+    private ItemManager itemManager;
+    private UserManager userManager;
     private AdminUser currentUser;
 
     public ThresholdEditor(AdminUser user, ItemManager im, UserManager um){
-        this.im = im;
-        this.um = um;
         currentUser = user;
-        NormalUser subjectUser;
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String usernameInput;
-        int choiceInput;
-        int newThreshold;
+        itemManager = im;
+        userManager = um;
+
         SystemPresenter sp = new SystemPresenter();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        NormalUser subjectUser;
+        String usernameInput;
+        int newThreshold;
+
         sp.thresholdEditor(1);
         try{
             usernameInput = br.readLine();
-            while(!um.usernameExists(usernameInput)){
+            while(!userManager.usernameExists(usernameInput)){
                 sp.invalidInput();
                 usernameInput = br.readLine();
             }
-            subjectUser = um.getNormalByUsername(usernameInput);
+            subjectUser = userManager.getNormalByUsername(usernameInput);
+
             sp.thresholdEditor(2);
-            String temp;
-            temp = br.readLine();
-            //check
-            while (!temp.matches("[0-4]+")) {
+            String temp = br.readLine();
+            while (!temp.matches("[0-4]")) {
                 sp.invalidInput();
                 temp = br.readLine();
             }
-            choiceInput = Integer.parseInt(temp);
+            int choiceInput = Integer.parseInt(temp);
+
             switch(choiceInput){
                 case 0:
-                    new AdminDashboard(currentUser, im, um);
                     break;
                 case 1:
                     sp.thresholdEditor(1, subjectUser.getWeeklyTradeMax());
@@ -68,15 +69,14 @@ public class ThresholdEditor {
                     subjectUser.setIncompleteMax(newThreshold);
                     break;
             }
-            new AdminDashboard(currentUser, im, um);
+            close();
 
         }catch (IOException e){
             sp.exceptionMessage();
         }
+    }
 
-
-
-
-
+    private void close() {
+        new AdminDashboard(currentUser, itemManager, userManager);
     }
 }

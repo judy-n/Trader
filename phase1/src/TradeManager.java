@@ -1,4 +1,4 @@
-import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +15,7 @@ import java.util.Map;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-06
+ * last modified 2020-07-08
  */
 public class TradeManager {
     private ArrayList<Trade> allTrades;
@@ -143,30 +143,30 @@ public class TradeManager {
     }
 
     /**
-     * Returns the total number of meetings planned to occur in the current week by the given user.
-     * Only counting agreed-upon meetings that are taking place / took place during the current week.
+     * Returns the total number of meetings planned to occur in the same week as the given date for the given user.
+     * Only counting agreed-upon meetings that are taking place / took place during that week.
      * One week = Monday to Sunday.
      *
-     * @param username the username of the user whose meeting count for the current week is being retrieved
-     * @return the total number of meetings planned to occur in the current week by the given user
+     * @param username the username of the user whose meeting count for the given week is being retrieved
+     * @param date the date for which meetings in the same week are being search for
+     * @return the total number of meetings planned to occur in the same week as the given date for the given user
      */
-    public int getNumMeetingsThisWeek(String username) {
+    public int getNumMeetingsThisWeek(String username, LocalDate date) {
         ArrayList<Trade> allTradesThisUser = getAllTrades(username);
-        LocalDateTime now = LocalDateTime.now();
-        int dow = now.getDayOfWeek().getValue();
-        LocalDateTime dayBeforeWeek = now.minusDays(dow);
-        LocalDateTime dayAfterWeek = now.plusDays(7 - dow + 1);
+        int dow = date.getDayOfWeek().getValue();
+        LocalDate dayBeforeWeek = date.minusDays(dow);
+        LocalDate dayAfterWeek = date.plusDays(7 - dow + 1);
 
         int count = 0;
         for (Trade t : allTradesThisUser) {
             if (t.getHasAgreedMeeting1()) {
-                LocalDateTime meeting1 = t.getMeetingDateTime1();
+                LocalDate meeting1 = t.getMeetingDateTime1().toLocalDate();
                 if (meeting1.isAfter(dayBeforeWeek) && meeting1.isBefore(dayAfterWeek)) {
                     count++;
                 }
             }
             if (t instanceof TemporaryTrade && ((TemporaryTrade) t).hasSecondMeeting()){
-                LocalDateTime meeting2 = ((TemporaryTrade) t).getMeetingDateTime2();
+                LocalDate meeting2 = ((TemporaryTrade) t).getMeetingDateTime2().toLocalDate();
                 if (meeting2.isAfter(dayBeforeWeek) && meeting2.isBefore(dayAfterWeek)) {
                     count++;
                 }
@@ -179,7 +179,7 @@ public class TradeManager {
     public String [] getFrequentTradePartners (String username) {
         ArrayList<String> tradePartners = new ArrayList<>();
         Set<String> uniquePartner = new HashSet<>();
-        String [] frequentPartners = new String[]{"no one yet", "no one yet", "no one yet"};
+        String [] frequentPartners = new String[]{"empty", "empty", "empty"};
 
         ArrayList<Integer> frequency  = new ArrayList<>();
         HashMap<String, Integer> freqToUsername = new HashMap<>();

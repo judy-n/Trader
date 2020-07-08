@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
 /**
  * Represents a temporary trade.
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
  * last modified 2020-07-07
  */
 
-public class TemporaryTrade extends Trade {
+public class TemporaryTrade extends Trade implements Serializable {
     private LocalDateTime meetingDateTime2;
     private String meetingLocation2;
     private boolean[] transactionConfirmed2 = new boolean[2];

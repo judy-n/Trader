@@ -55,60 +55,79 @@ public class CatalogViewer {
             if (input != 0) {
                 Item selectedItem = itemManager.getApprovedItem(input);
                 assert selectedItem != null;
+
                 sp.catalogViewer(selectedItem, 1);
 
                 String temp2 = br.readLine();
-                while (!temp2.matches("[0-2]+") || Integer.parseInt(temp2) > 2) {
+                while (!temp2.matches("[0-2]")) {
                     sp.invalidInput();
                     temp2 = br.readLine();
                 }
                 int tradeOrWishlist = Integer.parseInt(temp2);
 
-                if (tradeOrWishlist == 1) {
+                if (tradeOrWishlist == 1 && !selectedItem.getAvailability()) {
+                    sp.catalogViewer(3);
+
+                    //option to add unavailable item to wishlist
+                    String confirmInput = br.readLine();
+                    while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
+                        sp.invalidInput();
+                        confirmInput = br.readLine();
+                    }
+
+                    if (confirmInput.equalsIgnoreCase("Y")) {
+                        tradeOrWishlist = 2;
+                    }
+
+                } else if (tradeOrWishlist == 1) {
                     if (currentUser.getIsFrozen()) {
                         sp.catalogViewer(2);
                     } else {
                         startTradeAttempt(selectedItem);
                     }
-                } else if (tradeOrWishlist == 2) {
+                }
+
+                if (tradeOrWishlist == 2) {
                     currentUser.addWishlist(selectedItem.getID());
+                    sp.catalogViewer(4);
                 }
             }
             close();
+
         } catch (IOException e) {
             sp.exceptionMessage();
         }
     }
 
     private void startTradeAttempt(Item selectedItem) throws IOException {
-        if (selectedItem.getAvailability()) {
 
-            sp.catalogViewer(selectedItem, 2);
+        sp.catalogViewer(selectedItem, 2);
 
-            String inputConfirm = br.readLine();
-            while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-                sp.invalidInput();
-                inputConfirm = br.readLine();
-            }
-            if (inputConfirm.equalsIgnoreCase("Y")) {
+        String inputConfirm = br.readLine();
+        while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
+            sp.invalidInput();
+            inputConfirm = br.readLine();
+        }
+        if (inputConfirm.equalsIgnoreCase("Y")) {
 
-                sp.catalogViewer(selectedItem, 3);
-
-                NormalUser trader = userManager.getNormalByUsername(selectedItem.getOwnerUsername());
-                assert trader != null;
-                String[] traders = {currentUser.getUsername(), trader.getUsername()};
-                long[] items = {0, selectedItem.getID()};
-                trader.addTradeRequest(traders, items);
-                currentUser.addTradeRequest(traders, items);
+            NormalUser trader = userManager.getNormalByUsername(selectedItem.getOwnerUsername());
+            assert trader != null;
+            String[] traders = {currentUser.getUsername(), trader.getUsername()};
+            long[] items = {0, selectedItem.getID()};
+            trader.addTradeRequest(traders, items);
+            currentUser.addTradeRequest(traders, items);
+            if (!currentUser.getWishlist().contains(selectedItem.getID())) {
                 currentUser.addWishlist(selectedItem.getID());
-            } else {
-                sp.cancelled();
             }
+
+            sp.catalogViewer(selectedItem, 3);
+
         } else {
-            sp.catalogViewer(selectedItem, 4);
+            sp.cancelled();
         }
     }
-    private void close(){
+
+    private void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
     }
 }

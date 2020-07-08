@@ -20,13 +20,13 @@ public class StartMenu {
      */
     public StartMenu() {
         userInput = 0;
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         SystemPresenter sp = new SystemPresenter();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         sp.startMenu(1);
         try {
             String temp = br.readLine();
-            while (!temp.matches("[1-3]+") || Integer.parseInt(temp) > 3){
+            while (!temp.matches("[1-3]")){
                 sp.invalidInput();
                 temp = br.readLine();
             }

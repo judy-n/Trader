@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -7,9 +8,9 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-07
+ * last modified 2020-07-08
  */
-public class PermanentTrade extends Trade {
+public class PermanentTrade extends Trade implements Serializable {
     /**
      * PermanentTrade
      * Creates a PermanentTrade with given username array, item ID array, and first suggestions for meeting time/date/location.

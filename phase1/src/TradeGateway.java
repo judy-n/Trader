@@ -14,13 +14,13 @@ import java.io.File;
  *
  * @author Ning Zhang
  * @version 1.0
- * @since 2020-07-03
- * last modified 2020-07-06
+ * @since 2020-07-08
+ * last modified 2020-07-08
  */
 public class TradeGateway {
 
     /**
-     * Constructor for ItemGateway.
+     * Constructor for TradeGateway.
      */
     public TradeGateway() {
     }
@@ -45,7 +45,7 @@ public class TradeGateway {
                 return tm;
             }
         } catch (IOException e) {
-            System.out.println("Reading error ITEM");
+            System.out.println("Reading error TRADE");
         } catch (ClassNotFoundException e) {
             System.out.println("Missing class in files.");
         }
@@ -57,7 +57,7 @@ public class TradeGateway {
      * Serializes the system's TradeManager.
      *
      * @param filePath the path of the file being written to
-     * @param tm the ItemManager being serialized
+     * @param tm the TradeManager being serialized
      */
     public void saveToFile(String filePath, TradeManager tm) {
 

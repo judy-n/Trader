@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-05
+ * last modified 2020-07-08
  */
 
 public class LoginSystem {
@@ -22,13 +22,14 @@ public class LoginSystem {
     private String optionInput;
 
     /**
-     * LoginSystem
-     * Creates a log in system that takes in user input
+     * Class constructor.
+     * Creates a login system that takes in user input.
      */
     public LoginSystem(UserManager um) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        SystemPresenter sp = new SystemPresenter();
         userManager = um;
+
+        SystemPresenter sp = new SystemPresenter();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         sp.loginSystem(1);
         try {
@@ -58,15 +59,15 @@ public class LoginSystem {
             sp.loginSystem(2);
             try {
                 username = br.readLine();
-                while (!um.usernameExists(username)) {
+                while (!userManager.usernameExists(username)) {
                     sp.loginSystem(3);
                     username = br.readLine();
                 }
-                validPw = um.usernamePassword(username);
-                if (isAdmin){
-                    user = um.getAdminByUsername(username);
+                validPw = userManager.usernamePassword(username);
+                if (isAdmin) {
+                    user = userManager.getAdminByUsername(username);
                 } else {
-                    user = um.getNormalByUsername(username);
+                    user = userManager.getNormalByUsername(username);
                 }
             } catch (IOException e) {
                 sp.exceptionMessage();
@@ -75,18 +76,18 @@ public class LoginSystem {
             sp.loginSystem(4);
             try {
                 email = br.readLine();
-                while (!um.emailExists(email)) {
+                while (!userManager.emailExists(email)) {
                     sp.loginSystem(5);
                     email = br.readLine();
                 }
             } catch (IOException e) {
                 sp.exceptionMessage();
             }
-            validPw = um.emailPassword(email);
+            validPw = userManager.emailPassword(email);
             if (isAdmin) {
-                user = um.getAdminByEmail(email);
+                user = userManager.getAdminByEmail(email);
             } else {
-                user = um.getNormalByEmail(email);
+                user = userManager.getNormalByEmail(email);
             }
         }
 

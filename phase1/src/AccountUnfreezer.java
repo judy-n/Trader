@@ -10,90 +10,97 @@ import java.util.ArrayList;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-06
+ * last modified 2020-07-08
  */
 public class AccountUnfreezer {
-    private SystemPresenter sp = new SystemPresenter();
-    private UserManager userManager;
+    private User currentUser;
     private ItemManager itemManager;
+    private UserManager userManager;
     private TradeManager tradeManager;
-    private NormalUser currentUser;
-    private AdminUser adminUser;
+    private SystemPresenter sp;
 
     //for non-admin requesting to be unfrozen
     public AccountUnfreezer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         currentUser = user;
-        userManager = um;
         itemManager = im;
+        userManager = um;
         tradeManager = tm;
+        sp = new SystemPresenter();
+
+        requestUnfreeze((NormalUser) currentUser);
+        closeNormal();
     }
 
     //for admin reviewing unfreeze requests
     public AccountUnfreezer(AdminUser user, ItemManager im, UserManager um) {
-        adminUser = user;
+        currentUser = user;
         itemManager = im;
         userManager = um;
+        sp = new SystemPresenter();
+
+        reviewUnfreezeRequests();
+        closeAdmin();
     }
 
-    /**
-     * Sends a request to be unfrozen.
-     */
-    public void requestUnfreeze() {
+    // Sends a request to be unfrozen.
+    private void requestUnfreeze(NormalUser currentUser) {
         if (userManager.containsUnfreezeRequest(currentUser.getUsername())) {
             sp.requestUnfreeze(1);
         } else {
             userManager.addUnfreezeRequest(currentUser.getUsername());
             sp.requestUnfreeze(2);
         }
-        closeNormal();
     }
 
-    /**
-     * Displays the list of Users that requested to be unfrozen, and the admin can choose which ones to unfreeze
-     * (or none).
-     */
-    public void reviewUnfreezeRequests() {
-        String input;
-        int indexInput;
+    // Displays the list of Users that requested to be unfrozen, and the admin can choose which ones to unfreeze (or none).
+    private void reviewUnfreezeRequests() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int indexInput;
         ArrayList<NormalUser> users = userManager.getUnfreezeRequests();
+
         sp.adminGetUnfreezeRequests(users);
+        sp.adminGetUnfreezeRequests(4);
         try {
-            input = br.readLine();
+            String input = br.readLine();
             while (!input.equalsIgnoreCase("y") && !input.equalsIgnoreCase("n")) {
                 sp.invalidInput();
                 input = br.readLine();
             }
             if (input.equalsIgnoreCase("y")) {
                 do {
+
                     sp.adminGetUnfreezeRequests(1);
+
                     int max = userManager.getNumUnfreezeRequest();
                     String temp = br.readLine();
-                    while (!temp.matches("[1-9]+") || Integer.parseInt(temp) > max) {
+                    while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > max) {
                         sp.invalidInput();
                         temp = br.readLine();
                     }
                     indexInput = Integer.parseInt(temp);
-                    NormalUser userToUnfreeze = userManager.getNormalByUsername(userManager.getUnfreezeRequest(indexInput));
-                    userToUnfreeze.unfreeze();
-                    userManager.removeUnfreezeRequest(userToUnfreeze.getUsername());
-                    sp.adminGetUnfreezeRequests(2);
-                    sp.adminGetUnfreezeRequests(users); //reprint the list to update indexes
+
+                    if (indexInput != 0) {
+                        NormalUser userToUnfreeze = userManager.getNormalByUsername(userManager.getUnfreezeRequest(indexInput));
+                        userToUnfreeze.unfreeze();
+                        userManager.removeUnfreezeRequest(userToUnfreeze.getUsername());
+
+                        sp.adminGetUnfreezeRequests(2);
+                        sp.adminGetUnfreezeRequests(users); //reprint the list to update indexes
+                    }
                 } while (indexInput != 0);
             }
             sp.adminGetUnfreezeRequests(3);
-            closeAdmin();
         } catch (IOException e) {
             sp.exceptionMessage();
         }
     }
 
     private void closeNormal() {
-        new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
+        new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
     }
 
     private void closeAdmin() {
-        new AdminDashboard(adminUser, itemManager, userManager);
+        new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
     }
 
 }

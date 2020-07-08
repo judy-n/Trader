@@ -171,7 +171,7 @@ public class SystemPresenter {
                 System.out.println("\nNo items to remove.");
                 break;
             case 2:
-                System.out.print("Enter the # of the item you would like to remove: ");
+                System.out.print("Enter the index of the item you would like to remove: ");
                 break;
         }
     }
@@ -198,7 +198,7 @@ public class SystemPresenter {
                 System.out.println("\nYour wish list is empty.");
                 break;
             case 2:
-                System.out.println("\nEnter the # of the item you would like to remove:");
+                System.out.println("\nEnter the index of the item you would like to remove:");
                 break;
         }
     }
@@ -223,29 +223,33 @@ public class SystemPresenter {
     public void catalogViewer(int input) {
         switch (input) {
             case 1:
-                System.out.print("\nIs there an item you would like to trade for or add to your wishlist? \n" +
-                        choicePrompt + "(0 to quit): ");
+                System.out.print("\nIs there an item you would like to trade for or add to your wishlist?" +
+                        "\nPlease enter your choice here (0 to quit): ");
                 break;
             case 2:
-                System.out.println("\nYou cannot initiate any trades at the moment due to your account being frozen.");
+                System.out.println("\nYou cannot initiate any trades at the moment due to your account being frozen." +
+                        "\nHowever, you may still add items to your wishlist.");
                 break;
+            case 3:
+                System.out.print("\nSorry, this item is currently not available for trade." +
+                        "\nWould you like to add it to your wishlist? (Y/N): ");
+                break;
+            case 4:
+                System.out.println("\n Item has been added to your wishlist!");
         }
     }
 
     public void catalogViewer(Item item, int input) {
         switch (input) {
             case 1:
-                System.out.print("\nYou have chosen: " + item + "\n Would you like to 1) trade or 2) wishlist this item? (0 to cancel): ");
+                System.out.print("\nYou have chosen: [" + item + "]\n Would you like to 1) trade or 2) wishlist this item? (0 to cancel): ");
                 break;
             case 2:
                 System.out.print("\nAre you sure you want to trade for this item with user, " + item.getOwnerUsername() + " ? (Y/N): ");
                 break;
             case 3:
-                System.out.println("\nContacting user, " + item.getOwnerUsername());
-                break;
-            case 4:
-                System.out.println("\nSorry, this item is currently not available for trade. We suggest adding it to your wishlist!");
-                break;
+                System.out.println("\nYour request to borrow [" + item + "] has been sent to " + item.getOwnerUsername() +
+                        "\nIf this item was not already in your wishlist, it has automatically been added.");
         }
     }
 
@@ -260,7 +264,7 @@ public class SystemPresenter {
                 System.out.println("\nThere are no items waiting for approval!");
                 break;
             case 2:
-                System.out.println("\nIs there an item you would like to approve/deny? (0 to quit)");
+                System.out.print("\nIs there an item you would like to approve/deny? (0 to quit): ");
                 break;
         }
     }
@@ -299,34 +303,36 @@ public class SystemPresenter {
     public void requestUnfreeze(int input) {
         switch (input){
             case 1:
-                System.out.println("You already sent an unfreeze request, please wait for an admin to review it.");
+                System.out.println("\nYou already sent an unfreeze request, please wait for an admin to review it.");
                 break;
             case 2:
-                System.out.println("Your request has been sent in! Please allow some time for an admin to review it.");
+                System.out.println("\nYour request has been sent in! Please allow some time for an admin to review it.");
                 break;
         }
     }
 
     public void adminGetUnfreezeRequests(ArrayList<NormalUser> unfreezeRequests) {
-        System.out.println("Here are the users that requested to be unfrozen:");
+        System.out.println("\nHere are the users that requested to be unfrozen:");
         int index = 1;
         for (User u : unfreezeRequests) {
             System.out.println(index + ". " + u.getUsername());
             index++;
         }
-        System.out.println("Would you like to unfreeze any of the accounts? (Y/N)");
     }
 
     public void adminGetUnfreezeRequests(int input) {
         switch (input) {
             case 1:
-                System.out.println("\nEnter the index of the user you would like to unfreeze(0 to quit):");
+                System.out.print("\nEnter the index of the user you would like to unfreeze (0 to quit): ");
                 break;
             case 2:
-                System.out.println("\nThe user have been unfrozen!");
+                System.out.println("\nThe user has been unfrozen!");
                 break;
             case 3:
                 System.out.println("\nFinished!");
+                break;
+            case 4:
+                System.out.print("Would you like to unfreeze any of the accounts? (Y/N): ");
         }
     }
 
@@ -469,15 +475,15 @@ public class SystemPresenter {
     public void thresholdEditor(int input) {
         switch (input) {
             case 1:
-                System.out.println("Please enter the username of the user " +
-                        "whose threshold you would like to change:");
+                System.out.println("\nPlease enter the username of the user whose threshold you would like to change:");
                 break;
             case 2:
-                System.out.println("Which threshold would you like to change? (0 to quit) " +
+                System.out.println("\nWhich threshold would you like to change? (0 to quit) " +
                         "\n 1 - Weekly trade maximum " +
                         "\n 2 - Meeting edit maximum " +
                         "\n 3 - Lend minimum" +
                         "\n 4 - Incomplete trade maximum");
+                System.out.print(choicePrompt);
                 break;
         }
     }
@@ -535,6 +541,7 @@ public class SystemPresenter {
 
     public void exceptionMessage() {
         System.out.println("\nError reading user input!");
+        System.exit(-1);
     }
 
     public void invalidInput() {

@@ -13,12 +13,12 @@ import java.io.InputStreamReader;
 
 public class AdminDashboard {
     private AdminUser currentAdmin;
-    private int input;
     private ItemManager itemManager;
     private UserManager userManager;
+    private int input;
 
     /**
-     * Creates an AdminDashboard that stores the given logged-in admin.
+     * Creates an AdminDashboard that stores the given logged-in admin and item/user managers.
      *
      * @param user the admin who's currently logged in
      * @param im   the system's item manager
@@ -28,17 +28,19 @@ public class AdminDashboard {
         currentAdmin = user;
         itemManager = im;
         userManager = um;
+
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String regex = "[0-4]+";
+
+        String regex = "[0-4]";
+
         sp.showAdminID(currentAdmin);
         if (currentAdmin.getAdminID() != 1) {
             sp.adminDashboard(1);
         } else {
-            regex = "[0-5]+";
+            regex = "[0-5]";
             sp.adminDashboard(2);
         }
-
         try {
             String temp;
             temp = br.readLine();
@@ -67,7 +69,7 @@ public class AdminDashboard {
                 new AccountFreezer(currentAdmin, itemManager, userManager);
                 break;
             case 3:
-                new AccountUnfreezer(currentAdmin, itemManager, userManager).reviewUnfreezeRequests();
+                new AccountUnfreezer(currentAdmin, itemManager, userManager);
                 break;
 
             case 4:

@@ -3,73 +3,71 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Lets AdminUser approve/deny pending items
+ * Lets AdminUser approve/deny pending items.
  *
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-05
+ * last modified 2020-07-08
  */
 public class CatalogEditor {
-    private ItemManager im;
-    private UserManager um;
-    private AdminUser currentUser;
-    private int max;
+    private AdminUser currentAdmin;
+    private ItemManager itemManager;
+    private UserManager userManager;
 
     public CatalogEditor(AdminUser user, ItemManager im, UserManager um) {
-        this.im = im;
-        this.um = um;
-        int input;
-        String actionInput;
-        max = im.getNumPendingItems();
+        currentAdmin = user;
+        itemManager = im;
+        userManager = um;
+
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        currentUser = user;
 
+        int input;
+        int max = itemManager.getNumPendingItems();
         try {
             do {
-                if (im.getPendingItems().isEmpty()) {
+                if (itemManager.getPendingItems().isEmpty()) {
                     sp.catalogEditor(1);
                     break;
                 } else {
-                    sp.catalogEditor(im.getPendingItems());
+                    sp.catalogEditor(itemManager.getPendingItems());
                 }
                 sp.catalogEditor(2);
-                String temp;
-                temp = br.readLine();
-                //check
-                while (!temp.matches("[0-9]+") || Integer.parseInt(temp)>max) {
+                String temp = br.readLine();
+                while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > max) {
                     sp.invalidInput();
                     temp = br.readLine();
                 }
                 input = Integer.parseInt(temp);
 
                 if (input != 0) {
-                    Item i = im.getPendingItem(input);
-                    NormalUser itemOwner = um.getNormalByUsername(i.getOwnerUsername());
+                    Item i = itemManager.getPendingItem(input);
+                    NormalUser itemOwner = userManager.getNormalByUsername(i.getOwnerUsername());
                     sp.catalogEditor(i);
-                    actionInput = br.readLine();
-                    while (!(actionInput.equals("1")) && !(actionInput.equals("2"))) {
+                    String temp2 = br.readLine();
+                    while (!temp2.matches("[1-2]")) {
                         sp.invalidInput();
-                        actionInput = br.readLine();
+                        temp2 = br.readLine();
                     }
-                    if (actionInput.equals("1")) {
-                        i.setApproved();
-                        im.approveItem(i);
+                    int actionInput = Integer.parseInt(temp2);
+                    if (actionInput == 1) {
+                        itemManager.approveItem(i);
                         itemOwner.addInventory(i.getID());
                     } else {
-                        im.rejectItem(i);
+                        itemManager.rejectItem(i);
                         itemOwner.removePendingInventory(i.getID());
                     }
                 }
             } while (input != 0);
-
-            new AdminDashboard(currentUser, im, um);
+            close();
 
         } catch (IOException e) {
             sp.exceptionMessage();
         }
     }
 
-
+    private void close() {
+        new AdminDashboard(currentAdmin, itemManager, userManager);
+    }
 }

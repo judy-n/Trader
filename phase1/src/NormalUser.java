@@ -7,9 +7,10 @@ import java.util.HashMap;
  *
  * @author Ning Zhang
  * @author Liam Huff
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-06
+ * last modified 2020-07-08
  */
 
 public class NormalUser extends User implements Serializable {
@@ -24,8 +25,6 @@ public class NormalUser extends User implements Serializable {
     private int meetingEditMax = 3;
     private int lendMinimum = 1; //to borrow in a one-way trade, user must have lent at least lendMinimum item(s) more than they have borrowed
     private int incompleteMax = 5; //the limit on how many incomplete trades the user can have before their account is at risk of being frozen
-
-    // private Item[] lastestThreeItems = new Item[3];
 
     /**
      * Class constructor.

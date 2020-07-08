@@ -13,10 +13,10 @@ import java.util.ArrayList;
  * last modified 2020-07-08
  */
 public class OngoingTradesViewer {
+    private NormalUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
-    private NormalUser currentUser;
 
     public OngoingTradesViewer (NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         currentUser = user;

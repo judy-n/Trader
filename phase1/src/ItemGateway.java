@@ -58,7 +58,7 @@ public class ItemGateway {
      * Serializes the system's ItemManager.
      *
      * @param filePath the path of the file being written to
-     * @param im the ItemManager being serialized
+     * @param im       the ItemManager being serialized
      */
     public void saveToFile(String filePath, ItemManager im) {
 

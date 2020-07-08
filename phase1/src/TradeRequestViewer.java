@@ -20,10 +20,12 @@ import java.util.Date;
 public class TradeRequestViewer {
     private LinkedHashMap<String[], long[]> initiatedTrades;
     private LinkedHashMap<String[], long[]> receivedTrades;
+
+    private NormalUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
-    private NormalUser currentUser;
+
     private SystemPresenter sp;
     private BufferedReader br;
 
