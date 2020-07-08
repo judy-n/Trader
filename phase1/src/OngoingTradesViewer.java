@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ public class OngoingTradesViewer {
         itemManager = im;
         userManager = um;
         tradeManager = tm;
-
+        int indexInput;
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -39,7 +40,20 @@ public class OngoingTradesViewer {
         }
 
         sp.ongoingTrades(ongoingTrades, tradeItems, currUsername);
+        int max = ongoingTrades.size();
 
+        try{
+            String temp = br.readLine();
+            while (!temp.matches("[0-9]+")||Integer.parseInt(temp) > max){
+                temp = br.readLine();
+            }
+            indexInput = Integer.parseInt(temp);
+            Trade selected = ongoingTrades.get(indexInput - 1);
+
+
+        }catch (IOException e){
+            sp.exceptionMessage();
+        }
     }
 
     public void close(){

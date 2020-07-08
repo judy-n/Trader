@@ -19,6 +19,7 @@ import java.util.Map;
  */
 public class TradeManager {
     private ArrayList<Trade> allTrades;
+    private ArrayList<String> cancelledUsers;
 
     /**
      * Class constructor.
@@ -26,6 +27,7 @@ public class TradeManager {
      */
     public TradeManager() {
         allTrades = new ArrayList<>();
+        cancelledUsers = new ArrayList<>();
     }
 
     /**
@@ -52,6 +54,37 @@ public class TradeManager {
         return allTempTrades;
     }
 
+    public void cancelAllUnconfirmedTrades(){
+        LocalDateTime now = LocalDateTime.now();
+        for(Trade t : allTrades){
+            if(t instanceof TemporaryTrade){
+                if(now.compareTo(t.getMeetingDateTime1().plusDays(1))>0 &&
+                        !((TemporaryTrade) t).hasSecondMeeting() && t.getHasAgreedMeeting1()) {
+                    t.setIsCancelled();
+                    addCancelledUsers(t.getInvolvedUsernames());
+                }else if(now.compareTo(((TemporaryTrade) t).getMeetingDateTime2().plusDays(1))>0
+                        && !t.getIsComplete()){
+                    t.setIsCancelled();
+                    addCancelledUsers(t.getInvolvedUsernames());
+                }
+            } else{
+                if(now.compareTo(t.getMeetingDateTime1().plusDays(1))>0 && !t.getIsComplete()){
+                    t.setIsCancelled();
+                    addCancelledUsers(t.getInvolvedUsernames());
+                }
+            }
+        }
+    }
+
+    public void addCancelledUsers(String[] users)
+    {
+        cancelledUsers.add(users[0]);
+        cancelledUsers.add(users[1]);
+    }
+
+    public ArrayList<String> getCancelledUsers(){
+        return cancelledUsers;
+    }
     /**
      * Getter for all permanent trades in the system.
      *
@@ -66,6 +99,8 @@ public class TradeManager {
         }
         return allPermTrades;
     }
+
+
 
     /**
      * Adds the given Trade to the ArrayList of all Trades.

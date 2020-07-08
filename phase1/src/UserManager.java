@@ -189,6 +189,12 @@ public class UserManager implements Serializable {
     }
 
 
+
+    public void addUsernamesToFreeze(String username){
+        usernamesToFreeze.add(username);
+    }
+
+
     /**
      * Clears the usernamesToFreeze arraylist.
      *

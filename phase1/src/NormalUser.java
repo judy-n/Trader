@@ -20,6 +20,7 @@ public class NormalUser extends User implements Serializable {
     private HashMap<String[], long[]> tradeRequests;
 
     private boolean isFrozen;
+    private int numIncomplete;
 
     private int weeklyTradeMax = 3;
     private int meetingEditMax = 3;
@@ -42,6 +43,14 @@ public class NormalUser extends User implements Serializable {
         wishlist = new ArrayList<>();
         tradeRequests = new HashMap<>();
         isFrozen = false;
+    }
+
+
+    public void increaseNumIncomplete(){
+        numIncomplete ++;
+    }
+    public int getNumIncomplete(){
+        return numIncomplete;
     }
 
     /**
@@ -150,6 +159,7 @@ public class NormalUser extends User implements Serializable {
      */
     public void unfreeze() {
         isFrozen = false;
+        numIncomplete = 0;
     }
 
     /**

@@ -21,6 +21,7 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     private final String[] involvedUsernames = new String[2];
     private final long[] involvedItemIDs = new long[2];
     private boolean isComplete;
+    private boolean isCancelled;
 
     private boolean hasAgreedMeeting1;
     private int[] numEdits1 = {0, 0};
@@ -47,6 +48,9 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
         meetingDateTime1 = firstDateTime;
         meetingLocation1 = firstLocation;
         lastEditor = involvedUsernames[1];
+
+        isCancelled = true;
+        isComplete = false;
         //since the recipient of the trade request always makes the first suggestion
 
         //test v
@@ -61,6 +65,12 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     public String[] getInvolvedUsernames() {
         return involvedUsernames;
     }
+
+
+    public void setIsCancelled(){
+        isCancelled = true;
+    }
+
 
     /**
      * Getter for the IDs of the Items involved in this Trade.
@@ -117,6 +127,14 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     public boolean getIsComplete() {
         return isComplete;
     }
+
+
+    /**
+     * Get whether or not this Trade is cancelled.
+     *
+     * @return a boolean representing whether or not this Trade is cancelled
+     */
+    public boolean getIsCancelled(){return isCancelled;}
 
     /**
      * Get whether or not this Trade has a first meeting that both traders have agreed upon.

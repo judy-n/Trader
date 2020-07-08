@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * The master controller.
  *
@@ -20,6 +22,21 @@ public class SystemController {
         UserManager userManager = ug.readFromFile(userManagerPath);
         ItemManager itemManager = ig.readFromFile(itemManagerPath);
         TradeManager tradeManager = tg.readFromFile(tradeManagerPath);
+
+        tradeManager.cancelAllUnconfirmedTrades();
+        ArrayList<String> cancelledUsers = tradeManager.getCancelledUsers();
+
+        for(String username: cancelledUsers){
+            userManager.getNormalByUsername(username).increaseNumIncomplete();
+        }
+        for(String username: cancelledUsers){
+            NormalUser user = userManager.getNormalByUsername(username);
+            if(user.getNumIncomplete() > user.getIncompleteMax()){
+                userManager.addUsernamesToFreeze(user.getUsername());
+            }
+        }
+
+
 
         if (userManager.getAllUsers().isEmpty()) {
             AdminUser mod01 = new AdminUser("Hello_World", "admin01@email.com", "pa55word", 1);
