@@ -116,7 +116,7 @@ public class NormalDashboard {
                 // add a method in TradeManager that takes in a user and finds those top three most frequent trade partners
                 // TradeManager's getCompletedTrades method can help
                 // p.s. might wanna use an array of size three so no extra space in memory is used up
-                new CompletedTradesViewer(currentUser, itemManager, userManager, tradeManager).viewFrequentTrader();
+                new CompletedTradesViewer(currentUser, itemManager, userManager, tradeManager).viewTopThreeTrader();
                 break;
 
             case 8:

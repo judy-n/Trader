@@ -26,6 +26,9 @@ public class TemporaryTrade extends Trade {
      */
     public TemporaryTrade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
         super(usernames, itemIDs, firstDateTime, firstLocation);
+
+        //test v
+        meetingDateTime2 = firstDateTime;
     }
 
     public LocalDateTime getMeetingDateTime2() {

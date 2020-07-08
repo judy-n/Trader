@@ -38,8 +38,7 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
      * @param firstDateTime the first date and time suggested for this Trade's meeting
      * @param firstLocation the first location suggested for this Trade's meeting
      */
-    public Trade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime,
-                 String firstLocation) {
+    public Trade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
         involvedUsernames[0] = usernames[0];
         involvedUsernames[1] = usernames[1];
         involvedItemIDs[0] = itemIDs[0];
@@ -47,9 +46,11 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
 
         meetingDateTime1 = firstDateTime;
         meetingLocation1 = firstLocation;
-        hasAgreedMeeting1 = false;
         lastEditor = involvedUsernames[1];
         //since the recipient of the trade request always makes the first suggestion
+
+        //test v
+        isComplete = true;
     }
 
     /**
