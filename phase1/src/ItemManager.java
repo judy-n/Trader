@@ -31,6 +31,28 @@ public class ItemManager implements Serializable {
     }
 
     /**
+     * Getter for all approved items except the given user
+     *
+     * @param user normal user
+     * @return a list of all approved items not owned by given user
+     */
+
+    public ArrayList<Item> getApprovedItems(NormalUser user){
+        ArrayList<Item> approved = new ArrayList<>();
+        for(Item i: approvedItems){
+            if(!user.getInventory().contains(i.getID())){
+                approved.add(i);
+            }
+        }
+        return approved;
+    }
+
+
+
+
+
+
+    /**
      * Getter for all items waiting for approval in the system.
      *
      * @return a list of all items waiting for approval in the system

@@ -40,7 +40,7 @@ public class CatalogViewer {
 
         SystemPresenter sp = new SystemPresenter(); // to call strings to print
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        sp.catalogViewer(im.getApprovedItems());
+        sp.catalogViewer(im.getApprovedItems(currentUser));
         if(currentUser.getIsFrozen()){
             sp.catalogViewer(2);
             close();

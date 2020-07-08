@@ -137,7 +137,9 @@ public class TradeRequestViewer {
                             sp.invalidInput();
                             twoWayItem = Integer.parseInt(br.readLine());
                         }
-                        secondItem = itemManager.getApprovedItem(trader.getInventory().get(twoWayItem - 1)).getID();
+                        if(twoWayItem != 0) {
+                            secondItem = itemManager.getApprovedItem(trader.getInventory().get(twoWayItem - 1)).getID();
+                        }
                     }
                     sp.tradeRequestViewer(8);
                     int permOrTemp = Integer.parseInt(br.readLine());
@@ -235,7 +237,7 @@ public class TradeRequestViewer {
             //System.out.println(date);
 
         } catch (ParseException e) {
-            sp.exceptionMessage();
+            //sp.exceptionMessage();
             //e.printStackTrace();
             return false;
         }
