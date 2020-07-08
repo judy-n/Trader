@@ -26,9 +26,11 @@ public class TemporaryTrade extends Trade {
      */
     public TemporaryTrade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
         super(usernames, itemIDs, firstDateTime, firstLocation);
+        meetingLocation2 = "";
 
         //test v
-        meetingDateTime2 = firstDateTime;
+        //meetingDateTime2 = firstDateTime;
+
     }
 
     public LocalDateTime getMeetingDateTime2() {
@@ -73,6 +75,10 @@ public class TemporaryTrade extends Trade {
         if (transactionConfirmed2[0] && transactionConfirmed2[1]) {
             closeTransaction();
         }
+    }
+
+    public boolean hasSecondMeeting() {
+        return meetingDateTime2 != null;
     }
 
     @Override

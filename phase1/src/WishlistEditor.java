@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-04
+ * last modified 2020-07-08
  */
 
 public class WishlistEditor {
@@ -21,7 +21,7 @@ public class WishlistEditor {
 
     /**
      * Class constructor.
-     * Creates a WishlistEditor with the given logged-in user, item manager, and user manager.
+     * Creates a WishlistEditor with the given logged-in user and item/user/trade managers.
      * Prints to the screen the given user's wishlist and options to remove/cancel.
      *
      * @param user the non-admin user who's currently logged in
@@ -32,17 +32,19 @@ public class WishlistEditor {
     public WishlistEditor(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         // This lets the User remove Items from the wish list. Assuming that they only add Items to
         // the wishlist when browsing items available for trade.
-        SystemPresenter sp = new SystemPresenter();
+
         currentUser = user;
-        itemManager = im;
         userManager = um;
+        itemManager = im;
         tradeManager = tm;
+
+        SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String input;
-        ArrayList<Item> itemWishlist = im.getApprovedItemsByIDs(currentUser.getWishlist());
+
+        ArrayList<Item> itemWishlist = itemManager.getApprovedItemsByIDs(currentUser.getWishlist());
         sp.wishlistEditor(itemWishlist);
         try {
-            input = br.readLine();
+            String input = br.readLine();
             while (!(input.equals("1")) && !(input.equals("2"))) {
                 sp.invalidInput();
                 input = br.readLine();
@@ -50,50 +52,38 @@ public class WishlistEditor {
             if (input.equals("1")) {   //remove item
                 if (currentUser.getWishlist().isEmpty()) {
                     sp.wishlistRemoveItem(1);
-                    close();
                 } else {
                     sp.wishlistRemoveItem(2);
-                    int indexInput;
-                    try {
-                        indexInput = Integer.parseInt(br.readLine());
-                        Item selected = itemWishlist.get(indexInput - 1);
-                        sp.wishlistRemoveItem(selected.getName(), 1);
-                        String confirmInput = br.readLine();
-                        while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
-                            sp.invalidInput();
-                            confirmInput = br.readLine();
-                        }
-                        if (confirmInput.equalsIgnoreCase("y")) {
-                            currentUser.removeWishlist(selected.getID());
-                            sp.wishlistRemoveItem(selected.getName(), 2);
-                        } else {
-                            sp.cancelled();
-                        }
-                        close();
-                    } catch (IOException e) {
+                    String temp = br.readLine();
+                    while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > itemWishlist.size()) {
                         sp.invalidInput();
+                        temp = br.readLine();
+                    }
+                    int indexInput = Integer.parseInt(br.readLine());
+                    Item selected = itemWishlist.get(indexInput - 1);
+                    sp.wishlistRemoveItem(selected.getName(), 1);
+
+                    String confirmInput = br.readLine();
+                    while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
+                        sp.invalidInput();
+                        confirmInput = br.readLine();
+                    }
+                    if (confirmInput.equalsIgnoreCase("y")) {
+                        currentUser.removeWishlist(selected.getID());
+                        sp.wishlistRemoveItem(selected.getName(), 2);
+                    } else {
+                        sp.cancelled();
                     }
                 }
-            } else {    //cancel
-                close();
             }
+            close();
         } catch (IOException e) {
             sp.exceptionMessage();
             System.exit(-1);
         }
     }
 
-    private void close(){
+    private void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
-    }
-
-    // based on code by Bill the Lizard from www.stackoverflow.com
-    private boolean isInteger(String input) {
-        try {
-            Integer.parseInt(input);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 }

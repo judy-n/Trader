@@ -10,9 +10,8 @@ import java.util.ArrayList;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-06
+ * last modified 2020-07-08
  */
-
 public class OngoingTradesViewer {
     private ItemManager itemManager;
     private UserManager userManager;
@@ -24,18 +23,21 @@ public class OngoingTradesViewer {
         itemManager = im;
         userManager = um;
         tradeManager = tm;
-        String currUsername = currentUser.getUsername();
 
+        SystemPresenter sp = new SystemPresenter();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        String currUsername = currentUser.getUsername();
         ArrayList<Trade> ongoingTrades = tradeManager.getOngoingTrades(currUsername);
         ArrayList<Item[]> tradeItems = new ArrayList<>();
+
         for (Trade t : ongoingTrades) {
             String otherUsername = t.getOtherUsername(currUsername);
             long[] tempItemIDs = {t.getLentItemID(currUsername), t.getLentItemID(otherUsername)};
             Item[] tempItems = {itemManager.getApprovedItem(tempItemIDs[0]), itemManager.getApprovedItem(tempItemIDs[1])};
             tradeItems.add(tempItems);
         }
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        SystemPresenter sp = new SystemPresenter();
+
         sp.ongoingTrades(ongoingTrades, tradeItems, currUsername);
 
     }

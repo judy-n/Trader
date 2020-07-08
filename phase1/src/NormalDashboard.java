@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-06
+ * last modified 2020-07-08
  */
 
 
@@ -22,38 +22,42 @@ public class NormalDashboard {
     private TradeManager tradeManager;
 
     /**
-     * Creates a NormalDashboard that stores the given logged-in user.
+     * Creates a NormalDashboard with the given logged-in user and item/user/trade managers.
      *
      * @param user current normal user that is logged in
      * @param im the system's item manager
      * @param um the system's user manager
      * @param tm the system's trade manager
      */
-    public NormalDashboard(NormalUser user, ItemManager im ,
-                           UserManager um, TradeManager tm) {
+    public NormalDashboard(NormalUser user, ItemManager im , UserManager um, TradeManager tm) {
         currentUser = user;
         itemManager = im;
         userManager = um;
         tradeManager = tm;
+
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         String regex = "[0-7]+";
+        int maxChoice = 7;
+
         if (currentUser.getIsFrozen()) {
             regex = "[0-8]+";
+            maxChoice = 8;
             sp.normalDashboard(2);
         } else {
             sp.normalDashboard(1);
         }
         try {
-            String temp;
-            temp = br.readLine();
-            while (!temp.matches(regex)) {
+            String temp = br.readLine();
+            while (!temp.matches(regex) || Integer.parseInt(temp) > maxChoice) {
                 sp.invalidInput();
                 temp = br.readLine();
             }
             input = Integer.parseInt(temp);
         } catch (IOException e) {
             sp.exceptionMessage();
+            System.exit(-1);
         }
 
         switch (input) {
@@ -122,7 +126,7 @@ public class NormalDashboard {
             case 8:
                 // unfreeze request option for frozen account
                 // new class or stuff it in UserManager too?
-                new AccountUnfreezer(currentUser, im, um, tm).requestUnfreeze();
+                new AccountUnfreezer(currentUser, itemManager, userManager, tradeManager).requestUnfreeze();
                 break;
         }
     }
