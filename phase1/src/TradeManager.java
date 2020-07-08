@@ -1,9 +1,4 @@
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashMap;
-import java.util.Collections;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * Stores and manages all Trades in the system.
@@ -134,14 +129,15 @@ public class TradeManager {
     public String [] getFrequentTradePartners (String username) {
         ArrayList<String> tradePartners = new ArrayList<>();
         Set<String> uniquePartner = new HashSet<>();
-        String [] frequentPartners = new String[3];
+        String [] frequentPartners = new String[]{"no one yet", "no one yet", "no one yet"};
 
         ArrayList<Integer> frequency  = new ArrayList<>();
-        HashMap<Integer, String> freqToUsername = new HashMap<>();
+        HashMap<String, Integer> freqToUsername = new HashMap<>();
+        ArrayList<String> sortedUsers = new ArrayList<>();
 
         ArrayList<Trade> completedTrades= getCompletedTrades(username);
         if(completedTrades.isEmpty()){
-            return new String[]{"no one yet", "no one yet", "no one yet"};
+            return frequentPartners;
         }
         for (Trade t : completedTrades) {
             if (!t.getInvolvedUsernames()[0].equals(username)){
@@ -154,20 +150,29 @@ public class TradeManager {
             }
         }
         for(String u : uniquePartner){
-            freqToUsername.put(Collections.frequency(tradePartners, u), u);
+            freqToUsername.put(u, Collections.frequency(tradePartners, u));
             frequency.add(Collections.frequency(tradePartners,u));
         }
-
         frequency.sort(Collections.reverseOrder());
 
-        if(frequency.size() == 1){
-            return new String[]{freqToUsername.get(frequency.get(0)), "no one yet", "no one yet"};
-        }else if(frequency.size() == 2){
-            return new String[]{freqToUsername.get(frequency.get(0)),
-                    freqToUsername.get(frequency.get(1)), "no one yet"};
-        }else if(frequency.size() >= 3){
-            return new String[]{freqToUsername.get(frequency.get(0)),
-                    freqToUsername.get(frequency.get(1)), freqToUsername.get(frequency.get(2))};
+        for(Map.Entry<String, Integer> e : freqToUsername.entrySet()){
+            for (Integer integer : frequency) {
+                if (e.getValue().equals(integer)) {
+                    if (!sortedUsers.contains(e.getKey())) {
+                        sortedUsers.add(e.getKey());
+                    }
+                }
+            }
+        }
+        if(sortedUsers.size() == 1){
+            frequentPartners[0] = sortedUsers.get(0);
+        }else if(sortedUsers.size() == 2){
+            frequentPartners[0] = sortedUsers.get(0);
+            frequentPartners[1] = sortedUsers.get(1);
+        }else{
+            frequentPartners[0] = sortedUsers.get(0);
+            frequentPartners[1] = sortedUsers.get(1);
+            frequentPartners[2] = sortedUsers.get(2);
         }
         return frequentPartners;
     }

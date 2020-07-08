@@ -109,6 +109,7 @@ public class CompletedTradesViewer {
         int index = 1;
         for(String s : topTraders){
             System.out.println(index+ ". "+ s);
+            index ++;
         }
         close();
     }
