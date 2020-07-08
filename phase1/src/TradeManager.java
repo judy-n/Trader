@@ -135,11 +135,14 @@ public class TradeManager {
         ArrayList<String> tradePartners = new ArrayList<>();
         Set<String> uniquePartner = new HashSet<>();
         String [] frequentPartners = new String[3];
+
+        ArrayList<Integer> frequency  = new ArrayList<>();
+        HashMap<Integer, String> freqToUsername = new HashMap<>();
+
         ArrayList<Trade> completedTrades= getCompletedTrades(username);
         if(completedTrades.isEmpty()){
             return new String[]{"no one yet", "no one yet", "no one yet"};
         }
-        HashMap<Integer, String> freqToUsername = new HashMap<>();
         for (Trade t : completedTrades) {
             if (!t.getInvolvedUsernames()[0].equals(username)){
                 tradePartners.add(t.getInvolvedUsernames()[0]);
@@ -152,16 +155,19 @@ public class TradeManager {
         }
         for(String u : uniquePartner){
             freqToUsername.put(Collections.frequency(tradePartners, u), u);
+            frequency.add(Collections.frequency(tradePartners,u));
         }
-        Integer [] freq = (Integer[]) freqToUsername.keySet().toArray();
-        Arrays.sort(freq, Collections.reverseOrder());
 
-        if(freq.length == 1){
-            return new String[]{freqToUsername.get(freq[0]), "no one yet", "no one yet"};
-        }else if(freq.length == 2){
-            return new String[]{freqToUsername.get(freq[0]), freqToUsername.get(freq[1]), "no one yet"};
-        }else if(freq.length >= 3){
-            return new String[]{freqToUsername.get(freq[0]), freqToUsername.get(freq[1]), freqToUsername.get(freq[2])};
+        frequency.sort(Collections.reverseOrder());
+
+        if(frequency.size() == 1){
+            return new String[]{freqToUsername.get(frequency.get(0)), "no one yet", "no one yet"};
+        }else if(frequency.size() == 2){
+            return new String[]{freqToUsername.get(frequency.get(0)),
+                    freqToUsername.get(frequency.get(1)), "no one yet"};
+        }else if(frequency.size() >= 3){
+            return new String[]{freqToUsername.get(frequency.get(0)),
+                    freqToUsername.get(frequency.get(1)), freqToUsername.get(frequency.get(2))};
         }
         return frequentPartners;
     }
