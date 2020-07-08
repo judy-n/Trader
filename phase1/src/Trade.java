@@ -50,7 +50,7 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
         //since the recipient of the trade request always makes the first suggestion
 
         //test v
-        //isComplete = true;
+        isComplete = true;
     }
 
     /**

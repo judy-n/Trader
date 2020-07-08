@@ -72,6 +72,7 @@ public class AccountUnfreezer {
             if(input.equalsIgnoreCase("y")) {
                 do {
                     sp.adminGetUnfreezeRequests(1);
+                    String regex = "[0-7]+";
                     int max = userManager.getNumUnfreezeRequest();
                     indexInput = Integer.parseInt(br.readLine());
                     while (indexInput < 0 || indexInput > max) {

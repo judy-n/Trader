@@ -28,7 +28,7 @@ public class TemporaryTrade extends Trade {
         super(usernames, itemIDs, firstDateTime, firstLocation);
 
         //test v
-        //meetingDateTime2 = firstDateTime;
+        meetingDateTime2 = firstDateTime;
     }
 
     public LocalDateTime getMeetingDateTime2() {
