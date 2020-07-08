@@ -40,6 +40,7 @@ public class InventoryEditor {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int input;
         ArrayList<Item> itemInventory = im.getApprovedItemsByIDs(currentUser.getInventory());
+
         ArrayList<Item> pendingItems = im.getPendingItemsByIDs(currentUser.getPendingInventory());
         sp.inventoryEditor(itemInventory, pendingItems);
         try {
@@ -73,7 +74,6 @@ public class InventoryEditor {
                     }
                     if (confirmInput.equalsIgnoreCase("Y")) {
                         Item requestedItem = new Item(itemNameInput, itemDescriptionInput, currentUser.getUsername());
-
                         currentUser.addPendingInventory(requestedItem.getID());
                         im.addPendingItem(requestedItem);
                         sp.inventoryAddItem(4);

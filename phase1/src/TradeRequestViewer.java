@@ -4,11 +4,10 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.Collection;
+import java.util.Date;
 
 /**
  * Shows all trade requests received/sent by a user and lets them take actions through user input.
@@ -20,8 +19,8 @@ import java.util.Collection;
  */
 
 public class TradeRequestViewer {
-    private HashMap<String[], long[]> initiatedTrades;
-    private HashMap<String[], long[]> receivedTrades;
+    private LinkedHashMap<String[], long[]> initiatedTrades;
+    private LinkedHashMap<String[], long[]> receivedTrades;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
@@ -42,8 +41,8 @@ public class TradeRequestViewer {
         currentUser = user;
         br = new BufferedReader(new InputStreamReader(System.in));
         sp = new SystemPresenter();
-        initiatedTrades = new HashMap<>();
-        receivedTrades = new HashMap<>();
+        initiatedTrades = new LinkedHashMap<>();
+        receivedTrades = new LinkedHashMap<>();
         itemManager = im;
         userManager = um;
         tradeManager = tm;
@@ -110,7 +109,7 @@ public class TradeRequestViewer {
                     }
                     a = getTradeHelper(input);
                     trader = userManager.getNormalByUsername(a[0]);
-                    firstItem = receivedItems.get(index - 1).getID();
+                    firstItem = receivedItems.get(input - 1).getID();
                     if (trader.getIsFrozen()) {
                         sp.tradeRequestViewer(3, a[0], a[1]);
                     }
@@ -149,7 +148,7 @@ public class TradeRequestViewer {
                     sp.tradeRequestViewer(6);
                     String t = br.readLine();
                     String[] temp = t.split("-");
-                    if (!isThisDateValid(temp[0], "dd/MM/yyyy") || !isThisTimeValid(temp[1])) {
+                    while (!isThisDateValid(temp[0], "dd/MM/yyyy") || !isThisTimeValid(temp[1])) {
                         sp.invalidInput();
                         t = br.readLine();
                         temp = t.split("-");
@@ -173,7 +172,6 @@ public class TradeRequestViewer {
                         PermanentTrade pt = new PermanentTrade(new String[]{currentUser.getUsername(), a[0]},
                                     new long[]{firstItem, secondItem}, time, place);
                         tradeManager.addTrade(pt);
-
                     }else{
                         TemporaryTrade tt = new TemporaryTrade(new String[]{currentUser.getUsername(), a[0]},
                                 new long[]{firstItem, secondItem}, time, place);
@@ -195,19 +193,19 @@ public class TradeRequestViewer {
     }
 
     private String[] getTradeHelper(int index) {
-        Set<String[]> keySet = receivedTrades.keySet();
-        ArrayList<String[]> listOfKeys = (ArrayList<String[]>) keySet;
-        Collection<long[]> keyValues = receivedTrades.values();
-        ArrayList<long[]> listOfKeyValues = (ArrayList<long[]>) keyValues;
-        assert itemManager.getApprovedItem(listOfKeyValues.get(index - 1)[1]) != null;
-        String itemName = itemManager.getApprovedItem(listOfKeyValues.get(index - 1)[1]).getName();
-        String traderName = listOfKeys.get(index - 1)[0];
-        return new String[]{traderName, itemName};
+        ArrayList<String[]> traders = new ArrayList<>();
+        ArrayList<long[]> itemIds = new ArrayList<>();
+        for(Map.Entry<String[], long[]> e : receivedTrades.entrySet() ){
+            traders.add(e.getKey());
+            itemIds.add(e.getValue());
+        }
+        String trader = traders.get(index - 1)[0];
+        long itemId = itemIds.get(index - 1)[1];
+        Item firstItem = itemManager.getApprovedItem(itemId);
+        String itemName = firstItem.getName();
+        return new String[]{trader, itemName};
     }
 
-   // private Item getItemHelper(long Id){
-
-    //}
 
     private boolean isThisTimeValid(String s) {
         String[] arr = s.split("/");
@@ -234,11 +232,11 @@ public class TradeRequestViewer {
 
             //if not valid, it will throw ParseException
             Date date = sdf.parse(dateToValidate);
-            System.out.println(date);
+            //System.out.println(date);
 
         } catch (ParseException e) {
-
-            e.printStackTrace();
+            sp.exceptionMessage();
+            //e.printStackTrace();
             return false;
         }
         return true;

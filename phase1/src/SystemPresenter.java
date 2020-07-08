@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * The presenter used for the entire program. Prints to text UI.
@@ -112,6 +113,7 @@ public class SystemPresenter {
         for (Item i : itemInventory) {
             System.out.println((itemInventory.indexOf(i) + 1) + ". " + i);
         }
+
         System.out.println("\n-- Items awaiting approval --");
         if (pendingItems.isEmpty()) {
             System.out.println("nothing here yet!");
@@ -343,7 +345,7 @@ public class SystemPresenter {
                 System.out.println("Sorry, you can't initiate any trades because your account is frozen!");
                 break;
             case 6:
-                System.out.print("\nPlease suggest a time(YYYY/MM/DD-HH/MM): ");
+                System.out.print("\nPlease suggest a time(DD/MM/YYYY-HH/MM): ");
                 break;
             case 7:
                 System.out.println("Would you like any item in their inventory?(0 to quit)");
@@ -357,7 +359,8 @@ public class SystemPresenter {
     public void tradeRequestViewer(ArrayList<Item> items){
         int index = 1;
         for (Item i : items) {
-            System.out.println(index+ "" + i);
+            System.out.println(index+ ". " + i);
+            index ++;
         }
     }
 
@@ -406,8 +409,10 @@ public class SystemPresenter {
 
     private void presentReceivedTradeRequests(ArrayList<Item> items, ArrayList<String> users) {
         int index = 1;
-        for (Item i : items)
+        for (Item i : items) {
             System.out.println(index + ". Trade for " + i.getName() + " from user " + users.get(index - 1));
+            index ++;
+        }
     }
 
     public void ongoingTrades(ArrayList<Trade> ongoingTrades, ArrayList<Item[]> tradeItems, String username) {

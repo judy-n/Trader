@@ -1,6 +1,5 @@
 import java.io.Serializable;
-import java.util.Date;
-
+import java.security.SecureRandom;
 /**
  * Represents an item with a name, description, unique ID, and owner.
  *
@@ -20,7 +19,6 @@ public class Item implements Serializable {
     private final String ownerUsername;
     private boolean isApproved;
     private boolean isAvailable;
-    private final int borrowTime;
 
     /**
      * Class constructor.
@@ -40,30 +38,12 @@ public class Item implements Serializable {
         assignID();
         isApproved = false;
         isAvailable = true;
-        borrowTime = 31; // Item has a final borrowTime of 31 days
     }
 
     //helper method that creates and assigns a unique ID to this Item
     private void assignID() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 3; i++) {
-            sb.append((int) ownerUsername.charAt(i));
-        }
-        long DIVIDE = 86400000L;
-        String stringId = sb.toString() + (new Date().getTime())/DIVIDE;
-        id = Long.parseLong(stringId);
-    }
-
-    /**
-     * Getter for Item's borrowTime.
-     *
-     * @return this item's borrowTime
-     */
-
-    //will be used in Timer
-
-    public int getBorrowTime() {
-        return borrowTime;
+        SecureRandom secureRandom = new SecureRandom();
+        id = secureRandom.nextLong();
     }
 
     /**
