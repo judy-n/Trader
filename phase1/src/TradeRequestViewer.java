@@ -99,11 +99,14 @@ public class TradeRequestViewer {
                 //pick a request to accept
                 //handles if the other person is frozen
                 do {
-                    int input = Integer.parseInt(br.readLine());
-                    while (input != 0 && input > index) {
+                    String temp;
+                    temp = br.readLine();
+                    //check
+                    while (!temp.matches("[0-9]+") || Integer.parseInt(temp)>index) {
                         sp.invalidInput();
-                        input = Integer.parseInt(br.readLine());
+                        temp = br.readLine();
                     }
+                    int input = Integer.parseInt(temp);
                     if (input == 0) {
                         close();
                     }
@@ -131,20 +134,25 @@ public class TradeRequestViewer {
                         sp.tradeRequestViewer(7);
                         ArrayList<Item> items = itemManager.getApprovedItemsByIDs(trader.getInventory());
                         sp.tradeRequestViewer(items);
-                        twoWayItem = Integer.parseInt(br.readLine());
-                        while(twoWayItem != 0 &&twoWayItem > items.size()){
+
+                        String temp;
+                        temp = br.readLine();
+                        //check
+                        while (!temp.matches("[1-9]+") || Integer.parseInt(temp) > items.size()) {
                             sp.invalidInput();
-                            twoWayItem = Integer.parseInt(br.readLine());
+                            temp = br.readLine();
                         }
+                        twoWayItem = Integer.parseInt(temp);
                         if(twoWayItem != 0) {
                             secondItem = itemManager.getApprovedItem(trader.getInventory().get(twoWayItem - 1)).getID();
                         }
                     }
                     sp.tradeRequestViewer(8);
-                    int permOrTemp = Integer.parseInt(br.readLine());
-                    while(permOrTemp!=1 && permOrTemp !=2){
+
+                    String permOrTemp = br.readLine();
+                    while(!permOrTemp.equals("1") && !(permOrTemp.equals("2"))){
                         sp.invalidInput();
-                        permOrTemp = Integer.parseInt(br.readLine());
+                        permOrTemp = br.readLine();
                     }
                     sp.tradeRequestViewer(6);
                     String t = br.readLine();
@@ -169,7 +177,7 @@ public class TradeRequestViewer {
                         itemManager.getApprovedItem(secondItem).setAvailability(false);
                     }
 
-                    if(permOrTemp == 1){
+                    if(permOrTemp.equals("1")){
                         PermanentTrade pt = new PermanentTrade(new String[]{currentUser.getUsername(), a[0]},
                                     new long[]{firstItem, secondItem}, time, place);
                         tradeManager.addTrade(pt);
@@ -182,7 +190,6 @@ public class TradeRequestViewer {
 
             } catch (IOException e) {
                 sp.exceptionMessage();
-                System.exit(-1);
             }
         }
 

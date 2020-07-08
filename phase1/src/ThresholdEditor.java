@@ -35,11 +35,14 @@ public class ThresholdEditor {
             }
             subjectUser = um.getNormalByUsername(usernameInput);
             sp.thresholdEditor(2);
-            choiceInput = Integer.parseInt(br.readLine());
-            while(choiceInput<0 || choiceInput > 4){
+            String temp;
+            temp = br.readLine();
+            //check
+            while (!temp.matches("[0-4]+")) {
                 sp.invalidInput();
-                choiceInput = Integer.parseInt(br.readLine());
+                temp = br.readLine();
             }
+            choiceInput = Integer.parseInt(temp);
             switch(choiceInput){
                 case 0:
                     new AdminDashboard(currentUser, im, um);

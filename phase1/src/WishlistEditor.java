@@ -38,16 +38,16 @@ public class WishlistEditor {
         userManager = um;
         tradeManager = tm;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int input;
+        String input;
         ArrayList<Item> itemWishlist = im.getApprovedItemsByIDs(currentUser.getWishlist());
         sp.wishlistEditor(itemWishlist);
         try {
-            input = Integer.parseInt(br.readLine());
-            while (input < 1 || input > 2) {
+            input = br.readLine();
+            while (!(input.equals("1")) && !(input.equals("2"))) {
                 sp.invalidInput();
-                input = Integer.parseInt(br.readLine());
+                input = br.readLine();
             }
-            if (input == 1) {   //remove item
+            if (input.equals("1")) {   //remove item
                 if (currentUser.getWishlist().isEmpty()) {
                     sp.wishlistRemoveItem(1);
                     close();

@@ -37,21 +37,21 @@ public class NormalDashboard {
         tradeManager = tm;
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int maxChoice = 7;
-
+        String regex = "[0-7]+";
         if (currentUser.getIsFrozen()) {
-            maxChoice = 8;
+            regex = "[0-8]+";
             sp.normalDashboard(2);
         } else {
             sp.normalDashboard(1);
         }
-
         try {
-            input = Integer.parseInt(br.readLine());
-            while (input < 0 || input > maxChoice) {
+            String temp;
+            temp = br.readLine();
+            while (!temp.matches(regex)) {
                 sp.invalidInput();
-                input = Integer.parseInt(br.readLine());
+                temp = br.readLine();
             }
+            input = Integer.parseInt(temp);
         } catch (IOException e) {
             sp.exceptionMessage();
         }

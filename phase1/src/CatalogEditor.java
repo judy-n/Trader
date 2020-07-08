@@ -20,7 +20,7 @@ public class CatalogEditor {
         this.im = im;
         this.um = um;
         int input;
-        int actionInput;
+        String actionInput;
         max = im.getNumPendingItems();
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -35,21 +35,25 @@ public class CatalogEditor {
                     sp.catalogEditor(im.getPendingItems());
                 }
                 sp.catalogEditor(2);
-                input = Integer.parseInt(br.readLine());
-                while (input < 0 || input > max) {
+                String temp;
+                temp = br.readLine();
+                //check
+                while (!temp.matches("[0-9]+") || Integer.parseInt(temp)>max) {
                     sp.invalidInput();
-                    input = Integer.parseInt(br.readLine());
+                    temp = br.readLine();
                 }
+                input = Integer.parseInt(temp);
+
                 if (input != 0) {
                     Item i = im.getPendingItem(input);
                     NormalUser itemOwner = um.getNormalByUsername(i.getOwnerUsername());
                     sp.catalogEditor(i);
-                    actionInput = Integer.parseInt(br.readLine());
-                    while (actionInput != 1 && actionInput != 2) {
+                    actionInput = br.readLine();
+                    while (!(actionInput.equals("1")) && !(actionInput.equals("2"))) {
                         sp.invalidInput();
-                        actionInput = Integer.parseInt(br.readLine());
+                        actionInput = br.readLine();
                     }
-                    if (actionInput == 1) {
+                    if (actionInput.equals("1")) {
                         i.setApproved();
                         im.approveItem(i);
                         itemOwner.addInventory(i.getID());

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-06
+ * last modified 2020-07-07
  */
 
 public class InventoryEditor {
@@ -44,11 +44,14 @@ public class InventoryEditor {
         ArrayList<Item> pendingItems = im.getPendingItemsByIDs(currentUser.getPendingInventory());
         sp.inventoryEditor(itemInventory, pendingItems);
         try {
-            input = Integer.parseInt(br.readLine());
-            while (input < 1 || input > 3) {
+            String temp;
+            temp = br.readLine();
+            //check
+            while (!temp.matches("[1-3]+")) {
                 sp.invalidInput();
-                input = Integer.parseInt(br.readLine());
+                temp = br.readLine();
             }
+            input = Integer.parseInt(temp);
 
             if (input == 1) {   //add item
                 String itemNameInput;
@@ -84,7 +87,6 @@ public class InventoryEditor {
 
                 } catch (IOException e) {
                     sp.exceptionMessage();
-                    System.exit(-1);
                 }
 
             } else if (input == 2) {    //remove item
@@ -117,7 +119,6 @@ public class InventoryEditor {
 
                 } catch (IOException e) {
                     sp.exceptionMessage();
-                    System.exit(-1);
                 }
             } else {    //cancel
                 close();
@@ -125,7 +126,6 @@ public class InventoryEditor {
 
         } catch (IOException e) {
             sp.exceptionMessage();
-            System.exit(-1);
         }
     }
     private void close(){

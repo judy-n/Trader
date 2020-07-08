@@ -30,25 +30,25 @@ public class AdminDashboard {
         userManager = um;
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int maxChoice = 4;
-
+        String regex = "[0-4]+";
         sp.showAdminID(currentAdmin);
         if (currentAdmin.getAdminID() != 1) {
             sp.adminDashboard(1);
         } else {
-            maxChoice = 5;
+            regex = "[0-5]+";
             sp.adminDashboard(2);
         }
 
         try {
-            input = Integer.parseInt(br.readLine());
-            while (input < 0 || input > maxChoice) {
+            String temp;
+            temp = br.readLine();
+            while (!temp.matches(regex)) {
                 sp.invalidInput();
-                input = Integer.parseInt(br.readLine());
+                temp = br.readLine();
             }
+            input = Integer.parseInt(temp);
         } catch (IOException e) {
             sp.exceptionMessage();
-            System.exit(-1);
         }
 
         switch (input) {

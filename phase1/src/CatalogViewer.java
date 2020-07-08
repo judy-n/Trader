@@ -45,14 +45,16 @@ public class CatalogViewer {
             sp.catalogViewer(2);
             close();
         }
-
         sp.catalogViewer(1);
         try {
-            input = Integer.parseInt(br.readLine());
-            while (input < 0 || input > max) {
+            String temp;
+            temp = br.readLine();
+            //check
+            while (!temp.matches("[0-9]+") || Integer.parseInt(temp)>max) {
                 sp.invalidInput();
-                input = Integer.parseInt(br.readLine());
+                temp = br.readLine();
             }
+            input = Integer.parseInt(temp);
             if (input != 0) {
                 Item i = im.getApprovedItem(input);
                 assert i != null;
@@ -84,22 +86,10 @@ public class CatalogViewer {
             close();
         } catch (IOException e) {
             sp.exceptionMessage();
-            System.exit(-1);
         }
     }
 
     private void close(){
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
-    }
-
-
-    // based on code by Bill the Lizard from www.stackoverflow.com
-    private boolean isInteger(String input) {
-        try {
-            Integer.parseInt(input);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 }

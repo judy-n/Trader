@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-06
+ * last modified 2020-07-07
  */
 public class StartMenu {
     private int userInput;
@@ -26,7 +26,13 @@ public class StartMenu {
 
         sp.startMenu(1);
         try {
-            userInput = Integer.parseInt(br.readLine());
+            String temp;
+            temp = br.readLine();
+            while (!temp.matches("[0-9]+")){
+                sp.invalidInput();
+                temp = br.readLine();
+            }
+            userInput = Integer.parseInt(temp);
 
             while (!(userInput == 1) && !(userInput == 2) && !(userInput == 3)) {
                 sp.invalidInput();
