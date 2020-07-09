@@ -454,7 +454,8 @@ public class SystemPresenter {
                 System.out.println("These meeting details are set!");
                 break;
             case 6:
-                System.out.println("You were the person who suggested this details!");
+                System.out.println("You were the last person to suggest the meeting details! " +
+                        "\nPlease wait for the other trader to agree or send a suggestion of their own.");
                 break;
             case 7:
                 System.out.println("Please suggest a time (DD/MM/YYYY-HH/MM):");
@@ -463,7 +464,7 @@ public class SystemPresenter {
                 System.out.println("Please suggest a place:");
                 break;
             case 9:
-                System.out.println("You've reached your edit max!");
+                System.out.println("You've reached your maximum number of edits!");
                 break;
             case 10:
                 System.out.println("You can't comfirm this time since you've reach your weekly trade max!");
