@@ -35,6 +35,7 @@ public class SystemController {
                 userManager.addUsernamesToFreeze(user.getUsername());
             }
         }
+        tradeManager.clearCancelledUsers();
 
 
 

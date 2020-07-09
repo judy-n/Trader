@@ -85,6 +85,12 @@ public class TradeManager {
     public ArrayList<String> getCancelledUsers(){
         return cancelledUsers;
     }
+
+    public void clearCancelledUsers(){
+        cancelledUsers.clear();
+    }
+
+
     /**
      * Getter for all permanent trades in the system.
      *
