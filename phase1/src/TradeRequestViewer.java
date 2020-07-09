@@ -26,6 +26,7 @@ public class TradeRequestViewer {
     private SystemPresenter sp;
     private BufferedReader br;
 
+
     /**
      * Class constructor.
      * Creates an TradeRequestViewer with the given logged-in user and item/user/trade managers.
@@ -131,11 +132,9 @@ public class TradeRequestViewer {
                         sp.tradeRequestViewer(2, a[0], a[1]);
                         int twoWayItem;
                         if (!trader.getInventory().isEmpty()) {
-
                             sp.tradeRequestViewer(7);
                             ArrayList<Item> items = itemManager.getApprovedItemsByIDs(trader.getInventory());
                             sp.tradeRequestViewer(items);
-
                             String temp2 = br.readLine();
                             while (!temp2.matches("[0-9]+") || Integer.parseInt(temp2) > items.size()) {
                                 sp.invalidInput();
@@ -194,6 +193,8 @@ public class TradeRequestViewer {
             traders.add(e.getKey());
             itemIds.add(e.getValue());
         }
+        String[] keyToRemove = new String[] {traders.get(index-1)[0], traders.get(index -1)[1]};
+        currentUser.setTradeRequests(keyToRemove);
         String trader = traders.get(index - 1)[0];
         long itemId = itemIds.get(index - 1)[1];
         Item firstItem = itemManager.getApprovedItem(itemId);

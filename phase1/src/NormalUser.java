@@ -55,6 +55,11 @@ public class NormalUser extends User implements Serializable {
         return timesBorrowed;
     }
 
+    public void setTradeRequests(String[] key){
+        tradeRequests.remove(key);
+    }
+
+
     public void increaseNumIncomplete(){
         numIncomplete ++;
     }
