@@ -1,45 +1,106 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
+/**
+ * Allows the user to suggest a date and time for a trade meeting through user input
+ * and runs checks on the validity of the date/time as well as if the meeting suggested doesn't
+ * fall in the same week as a week with maximum number of trades allowed for the user.
+ *
+ * @author Ning Zhang
+ * @author Yingjia Liu
+ * @version 1.0
+ * @since 2020-07-08
+ * last modified 2020-07-09
+ */
 public class DateTimeSuggestion {
+    private NormalUser currentUser;
+    private TradeManager tradeManager;
+    private SystemPresenter sp;
     private final String dateFormat = "dd/MM/yyyy";
-    private String [] dateTime;
-    private String [] date;
-    private String [] time;
+    private String[] dateTime;
+    private String[] date;
+    private String[] time;
 
-    public boolean checkDateTime(String suggestion){
-        if(!suggestion.contains("-")){
+    /**
+     * Class constructor.
+     * Creates a DateTimeSuggestion with the given logged-in user and trade manager.
+     *
+     * @param user the non-admin user who's currently logged in
+     * @param tm   the system's trade manager
+     */
+    public DateTimeSuggestion(NormalUser user, TradeManager tm) {
+        currentUser = user;
+        tradeManager = tm;
+        sp = new SystemPresenter();
+    }
+
+    /**
+     * Allows the user to suggest a date and time for a trade meeting through user input
+     * and runs checks on the validity of the date/time as well as if the meeting suggested doesn't
+     * fall in the same week as a week with maximum number of trades allowed for the user.
+     *
+     * @return a valid date and time suggested by the user
+     * @throws IOException when an IO error occurs while user input is being read
+     */
+    public LocalDateTime suggestDateTime() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        LocalDateTime time;
+        int tradesInWeek;
+        do {
+            String timeSuggestion = br.readLine();
+            boolean isValid = checkDateTime(timeSuggestion);
+            while (!isValid) {
+                sp.invalidInput();
+                timeSuggestion = br.readLine();
+                isValid = checkDateTime(timeSuggestion);
+            }
+            time = LocalDateTime.of(getYear(), getMonth(),
+                    getDay(), getHour(), getMinute());
+            tradesInWeek = tradeManager.getNumMeetingsThisWeek(currentUser.getUsername(), time.toLocalDate());
+            if (tradesInWeek >= currentUser.getWeeklyTradeMax()) {
+                sp.failedSuggestion();
+            }
+        } while (tradesInWeek >= currentUser.getWeeklyTradeMax());
+        return time;
+    }
+
+    private boolean checkDateTime(String suggestion) {
+        if (!suggestion.contains("-")) {
             return false;
         }
         dateTime = suggestion.split("-");
-        return (isThisDateValid(dateTime[0])||isThisTimeValid(dateTime[1]));
+        return (isThisDateValid(dateTime[0]) || isThisTimeValid(dateTime[1]));
     }
 
-    public int getYear(){
+    private int getYear() {
         date = dateTime[0].split("/");
         return Integer.parseInt(date[2]);
     }
-    public int getMonth(){
+
+    private int getMonth() {
         return Integer.parseInt(date[1]);
     }
 
-    public int getDay(){
+    private int getDay() {
         return Integer.parseInt(date[0]);
     }
 
-    public int getHour(){
-        time = dateTime[1].split("/");
+    private int getHour() {
+        time = dateTime[1].split(":");
         return Integer.parseInt(time[0]);
     }
-    public int getMinute(){
+
+    private int getMinute() {
         return Integer.parseInt(time[1]);
     }
 
 
-
     private boolean isThisTimeValid(String s) {
-        String[] arr = s.split("/");
+        String[] arr = s.split(":");
         int hr = Integer.parseInt(arr[0]);
         int min = Integer.parseInt(arr[1]);
         if (hr < 0 || hr > 23) {
@@ -60,14 +121,8 @@ public class DateTimeSuggestion {
         sdf.setLenient(false);
 
         try {
-
-            //if not valid, it will throw ParseException
-            Date date = sdf.parse(dateToValidate);
-            //System.out.println(date);
-
+            sdf.parse(dateToValidate);
         } catch (ParseException e) {
-            //sp.exceptionMessage();
-            //e.printStackTrace();
             return false;
         }
         return true;

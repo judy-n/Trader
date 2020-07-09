@@ -85,6 +85,8 @@ public class AccountUnfreezer {
                         userManager.removeUnfreezeRequest(userToUnfreeze.getUsername());
 
                         sp.adminGetUnfreezeRequests(2);
+
+                        users = userManager.getUnfreezeRequests(); //update list
                         sp.adminGetUnfreezeRequests(users); //reprint the list to update indexes
                     }
                 } while (indexInput != 0);

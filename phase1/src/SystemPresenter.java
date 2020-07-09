@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +17,7 @@ public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
 
     public void startMenu(int input) {
-        switch(input) {
+        switch (input) {
             case 1:
                 System.out.print("----- WELCOME -----\n 1) Sign up \n 2) Log in \n 3) Exit the program" + choicePrompt);
                 break;
@@ -307,7 +309,7 @@ public class SystemPresenter {
     }
 
     public void requestUnfreeze(int input) {
-        switch (input){
+        switch (input) {
             case 1:
                 System.out.println("\nYou already sent an unfreeze request, please wait for an admin to review it.");
                 break;
@@ -358,13 +360,13 @@ public class SystemPresenter {
                 System.out.print("\nWould you like to accept any of these requests? (0 to quit): ");
                 break;
             case 5:
-                System.out.println("\nSorry, you can't view any trade requests because your account is frozen!");
+                System.out.println("\nSorry, you can't view any trade requests because your account is currently frozen.");
                 break;
             case 6:
-                System.out.print("\nPlease suggest a time (DD/MM/YYYY-HH/MM): ");
+                System.out.print("\nPlease suggest a time (DD/MM/YYYY-HH:MM): ");
                 break;
             case 7:
-                System.out.print("\nWould you like any item in their inventory? (0 to quit): ");
+                System.out.print("\nWould you like any item in their inventory? (0 if not): ");
                 break;
             case 8:
                 System.out.print("\nWould you like to make a 1) permanent or 2) temporary trade?: ");
@@ -372,18 +374,14 @@ public class SystemPresenter {
         }
     }
 
-    public void tradeRequestViewer(ArrayList<Item> items){
-        int index = 1;
-        for (Item i : items) {
-            System.out.println(index+ ". " + i);
-            index ++;
-        }
+    public void tradeRequestViewer(ArrayList<Item> items) {
+        presenterAllItems(items);
     }
 
     public void tradeRequestViewer(int input, String owner, String itemName) {
         switch (input) {
             case 1:
-                System.out.println("Are you sure you want to trade " + itemName + " with " + owner + "?(Y/N)");
+                System.out.print("Are you sure you want to borrow [" + itemName + "] from " + owner + " in a one-way ot two-way trade? (Y/N): ");
                 break;
             case 2:
                 System.out.println("Initiating Trade with " + owner + ".");
@@ -400,11 +398,11 @@ public class SystemPresenter {
     public void tradeRequestViewer(int input, ArrayList<Item> items, ArrayList<String> owners) {
         switch (input) {
             case 1:
-                System.out.println("Here is all the trade request(s) you sent:");
+                System.out.println("Here is all the trade requests you sent:");
                 presentInitiatedTradeRequests(items, owners);
                 break;
             case 2:
-                System.out.println("Here is all the trade request(s) you received:");
+                System.out.println("Here is all the trade requests you received:");
                 presentReceivedTradeRequests(items, owners);
 
                 break;
@@ -427,48 +425,100 @@ public class SystemPresenter {
         int index = 1;
         for (Item i : items) {
             System.out.println(index + ". Trade for " + i.getName() + " from user " + users.get(index - 1));
-            index ++;
+            index++;
         }
     }
 
-    public void ongoingTrades(int input){
+    public void ongoingTrades(int input) {
         switch (input) {
-            case 1 :
-                System.out.println("What would you like to?");
-                System.out.println("1. Edit meeting time and/or place " +
-                        "\n 2. Confirm this trade's current meeting time and place " +
-                        "\n 3. Confirm this trade took place " +
-                        "\n 4. Cancel this trade (Penalties will apply) " +
+            case 1:
+                System.out.println("\nWhat would you like to do? " +
+                        "\n 1. Edit meeting time and place" +
+                        "\n 2. Confirm this trade's current meeting time and place" +
+                        "\n 3. Confirm the latest meeting took place" +
+                        "\n 4. Cancel this trade" +
                         "\n 5. Quit");
                 break;
             case 2:
-                System.out.println("The trade has been cancelled!");
+                System.out.println("\nThis trade has been cancelled!");
                 break;
             case 3:
-                System.out.println("The trade has been confirmed!");
+                System.out.println("\nThe latest meeting has been confirmed! " +
+                        "\nIf the other user doesn't also confirm within a day of the latest meeting, " +
+                        "you're both at risk of having your accounts be frozen.");
                 break;
             case 4:
-                System.out.println("The trade's meeting time and place has been confirmed!");
+                System.out.println("\nThe trade's meeting time and place has been confirmed!");
                 break;
             case 5:
-                System.out.println("These meeting details are set!");
+                System.out.println("\nYou and your trade partner have already agreed upon a meeting date/time/location.");
                 break;
             case 6:
-                System.out.println("You were the last person to suggest the meeting details! " +
-                        "\nPlease wait for the other trader to agree or send a suggestion of their own.");
+                System.out.println("\nYou were the last person to suggest the meeting details! " +
+                        "\nPlease wait for the other user to agree or send a suggestion of their own.");
                 break;
             case 7:
-                System.out.println("Please suggest a time (DD/MM/YYYY-HH/MM):");
+                System.out.print("\nPlease suggest a time (DD/MM/YYYY-HH:MM): ");
                 break;
             case 8:
-                System.out.println("Please suggest a place:");
+                System.out.print("\nPlease suggest a place: ");
                 break;
             case 9:
-                System.out.println("You've reached your maximum number of edits!");
+                System.out.println("\nYou've reached your maximum number of edits!");
                 break;
             case 10:
-                System.out.println("You can't comfirm this time since you've reach your weekly trade max!");
+                System.out.println("\nSorry, you can't confirm this date and time because you've " +
+                        "reached the maximum number of meetings allowed in the same week.");
                 break;
+            case 11:
+                System.out.println("\nSuggestion for meeting details successfully set!");
+                break;
+            case 12:
+                System.out.println("\nThis meeting has already been agreed upon, so you cannot edit it.");
+                break;
+            case 13:
+                System.out.println("\nYour trade partner has also confirmed, so this transaction is now closed.");
+                break;
+            case 14:
+                System.out.println("\nYour trade partner has also confirmed, " +
+                        "so your second meeting has been set to exactly 30 days from the first meeting (same time, same place).");
+                break;
+            case 15:
+                System.out.println("\nYou and your trade partner have not yet agreed upon a meeting date/time/location!");
+                break;
+            case 16:
+                System.out.println("\nCannot confirm a meeting before it is scheduled to take place.");
+                break;
+        }
+    }
+
+    public void ongoingTrades(int situation, LocalDateTime meeting, Trade trade) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String meetingStr = meeting.format(formatter);
+        String date = meetingStr.substring(0, meetingStr.indexOf(" "));
+        String time = meetingStr.substring(meetingStr.indexOf(" "));
+
+        switch(situation) {
+            case 1:
+                System.out.println("\nMost recent meeting suggestion: " + date + " at " + time);
+                break;
+            case 2:
+                if (trade instanceof TemporaryTrade) {
+                    System.out.println("\nFirst meeting on " + date + " at " + time);
+                } else {
+                    System.out.println("\nMeeting will occur on " + date + " at " + time);
+                }
+                break;
+            case 3:
+                System.out.println("\nSecond meeting on " + date + " at " + time);
+                break;
+        }
+    }
+
+    public void ongoingTrades(int numEdits, boolean isFinalEdit) {
+        System.out.println("\n# of edits you've made so far: " + numEdits);
+        if (isFinalEdit) {
+            System.out.println("Warning: This is the last time you can suggest a meeting.");
         }
     }
 
@@ -487,9 +537,15 @@ public class SystemPresenter {
                 tradePrint = trade.toString(username) + "you're lending " +
                         tempItems[0].getName() + " for " + tempItems[1].getName();
             }
-            System.out.println(index + ". " + tradePrint);
+            if (trade.getIsCancelled()) {
+                System.out.println(index + ". " + "(Cancelled) " + tradePrint);
+                //delete cancelled trade from program after letting them know it got cancelled?
+            } else {
+                System.out.println(index + ". " + tradePrint);
+            }
             index++;
         }
+        System.out.print("\nEnter the index of the trade you wish to view (0 to quit): ");
     }
 
     public void normalDashboard(int input) {
@@ -593,8 +649,8 @@ public class SystemPresenter {
         System.exit(-1);
     }
 
-    public void exceptionMessage(int input, String process, String type)  {
-        switch(input) {
+    public void exceptionMessage(int input, String process, String type) {
+        switch (input) {
             case 1:
                 System.out.println(process + " error for " + type + "!");
                 break;
@@ -607,5 +663,11 @@ public class SystemPresenter {
 
     public void invalidInput() {
         System.out.print("\nInvalid input. Please try again: ");
+    }
+
+    public void failedSuggestion() {
+        System.out.print("Sorry, you can't suggest this date and time because you've " +
+                "reached the maximum number of meetings allowed in the same week." +
+                "\nPlease enter a different date and time (not within the same week): ");
     }
 }

@@ -1,13 +1,10 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Shows all trade requests received/sent by a user and lets them take actions through user input.
@@ -15,7 +12,7 @@ import java.util.Date;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-29
- * last modified 2020-07-08
+ * last modified 2020-07-09
  */
 public class TradeRequestViewer {
     private LinkedHashMap<String[], long[]> initiatedTrades;
@@ -28,8 +25,6 @@ public class TradeRequestViewer {
 
     private SystemPresenter sp;
     private BufferedReader br;
-
-    String dateFormat = "dd/MM/yyyy";
 
     /**
      * Class constructor.
@@ -49,18 +44,19 @@ public class TradeRequestViewer {
 
         sp = new SystemPresenter();
         br = new BufferedReader(new InputStreamReader(System.in));
-        if(currentUser.getIsFrozen()){
+        if (currentUser.getIsFrozen()) {
             caseUserIsFrozen();
-        }else{
+        } else {
             caseUserNotFrozen();
         }
-    }// end
-    private void caseUserIsFrozen(){
-        sp.tradeRequestViewer(5);
         close();
+    }// end
+
+    private void caseUserIsFrozen() {
+        sp.tradeRequestViewer(5);
     }
 
-    private void caseUserNotFrozen(){
+    private void caseUserNotFrozen() {
         initiatedTrades = new LinkedHashMap<>();
         receivedTrades = new LinkedHashMap<>();
 
@@ -74,7 +70,7 @@ public class TradeRequestViewer {
             if (currentUser.getUsername().equals(key[0])) {
                 initiatedTrades.put(key, currentUser.getTradeRequest().get(key));
             } else {
-                if(!userManager.getNormalByUsername(key[1]).getIsFrozen()){
+                if (!userManager.getNormalByUsername(key[1]).getIsFrozen()) {
                     receivedTrades.put(key, currentUser.getTradeRequest().get(key));
                 }
             }
@@ -110,16 +106,14 @@ public class TradeRequestViewer {
         sp.tradeRequestViewer(2, receivedItems, receivedOwners);
         sp.tradeRequestViewer(4);
         try {
-                    //pick a request to accept
+            //pick a request to accept
             String temp = br.readLine();
-            while(!temp.matches("[0-9]+") || Integer.parseInt(temp) > index) {
+            while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > index) {
                 sp.invalidInput();
                 temp = br.readLine();
             }
             int input = Integer.parseInt(temp);
-            if (input == 0) {
-                close();
-            } else {
+            if (input != 0) {
                 a = getTradeHelper(input);
                 trader = userManager.getNormalByUsername(a[0]);
                 firstItem = receivedItems.get(input - 1).getID();
@@ -137,12 +131,13 @@ public class TradeRequestViewer {
                         sp.tradeRequestViewer(2, a[0], a[1]);
                         int twoWayItem;
                         if (!trader.getInventory().isEmpty()) {
+
                             sp.tradeRequestViewer(7);
                             ArrayList<Item> items = itemManager.getApprovedItemsByIDs(trader.getInventory());
                             sp.tradeRequestViewer(items);
+
                             String temp2 = br.readLine();
-                            //check
-                            while (!temp2.matches("[1-9]+") || Integer.parseInt(temp2) > items.size()) {
+                            while (!temp2.matches("[0-9]+") || Integer.parseInt(temp2) > items.size()) {
                                 sp.invalidInput();
                                 temp2 = br.readLine();
                             }
@@ -158,19 +153,12 @@ public class TradeRequestViewer {
                             permOrTemp = br.readLine();
                         }
                         sp.tradeRequestViewer(6);
-                        String t = br.readLine();
 
-                        DateTimeSuggestion dts = new DateTimeSuggestion();
-                        boolean isValid = dts.checkDateTime(t);
-                        while(!isValid){
-                            t = br.readLine();
-                            isValid = dts.checkDateTime(t);
-                        }
-                        LocalDateTime time = LocalDateTime.of(dts.getYear(), dts.getMonth(),
-                                dts.getDay(), dts.getHour(), dts.getMinute());
+                        LocalDateTime time = new DateTimeSuggestion(currentUser, tradeManager).suggestDateTime();
+
                         sp.tradeRequestViewer(3);
                         String place = br.readLine();
-                        while(place.isEmpty()){
+                        while (place.isEmpty()) {
                             sp.invalidInput();
                             place = br.readLine();
                         }
@@ -193,7 +181,6 @@ public class TradeRequestViewer {
         } catch (IOException e) {
             sp.exceptionMessage();
         }
-        close();
     }
 
     private void close() {
