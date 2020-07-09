@@ -424,6 +424,46 @@ public class SystemPresenter {
         }
     }
 
+    public void ongoingTrades(int input){
+        switch (input) {
+            case 1 :
+                System.out.println("What would you like to?");
+                System.out.println("1. Edit meeting time and/or place " +
+                        "\n 2. Confirm this trade's current meeting time and place " +
+                        "\n 3. Confirm this trade took place " +
+                        "\n 4. Cancel this trade (Penalties will apply) " +
+                        "\n 5. Quit");
+                break;
+            case 2:
+                System.out.println("The trade has been cancelled!");
+                break;
+            case 3:
+                System.out.println("The trade has been confirmed!");
+                break;
+            case 4:
+                System.out.println("The trade's meeting time and place has been confirmed!");
+                break;
+            case 5:
+                System.out.println("These meeting details are set!");
+                break;
+            case 6:
+                System.out.println("You were the person who suggested this details!");
+                break;
+            case 7:
+                System.out.println("Please suggest a time (DD/MM/YYYY-HH/MM):");
+                break;
+            case 8:
+                System.out.println("Please suggest a place:");
+                break;
+            case 9:
+                System.out.println("You've reached your edit max!");
+                break;
+            case 10:
+                System.out.println("You can't comfirm this time since you've reach your weekly trade max!");
+                break;
+        }
+    }
+
     public void ongoingTrades(ArrayList<Trade> ongoingTrades, ArrayList<Item[]> tradeItems, String username) {
         System.out.println("\nHere are all your ongoing trades:");
         int index = 1;

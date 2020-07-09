@@ -49,14 +49,11 @@ public class TradeRequestViewer {
 
         sp = new SystemPresenter();
         br = new BufferedReader(new InputStreamReader(System.in));
-
         if(currentUser.getIsFrozen()){
             caseUserIsFrozen();
         }else{
             caseUserNotFrozen();
         }
-
-
     }// end
     private void caseUserIsFrozen(){
         sp.tradeRequestViewer(5);
@@ -162,20 +159,21 @@ public class TradeRequestViewer {
                         }
                         sp.tradeRequestViewer(6);
                         String t = br.readLine();
-                        String[] tempArray = t.split("-");
-                        while (!isThisDateValid(tempArray[0]) || !isThisTimeValid(tempArray[1])) {
-                            sp.invalidInput();
+
+                        DateTimeSuggestion dts = new DateTimeSuggestion();
+                        boolean isValid = dts.checkDateTime(t);
+                        while(!isValid){
                             t = br.readLine();
-                            tempArray = t.split("-");
-                            isThisDateValid(tempArray[0]);
-                            isThisTimeValid(tempArray[1]);
+                            isValid = dts.checkDateTime(t);
                         }
-                        String[] temp2 = tempArray[0].split("/");
-                        String[] temp3 = tempArray[1].split("/");
-                        LocalDateTime time = LocalDateTime.of(Integer.parseInt(temp2[2]), Integer.parseInt(temp2[1]),
-                                Integer.parseInt(temp2[0]), Integer.parseInt(temp3[0]), Integer.parseInt(temp3[1]));
+                        LocalDateTime time = LocalDateTime.of(dts.getYear(), dts.getMonth(),
+                                dts.getDay(), dts.getHour(), dts.getMinute());
                         sp.tradeRequestViewer(3);
                         String place = br.readLine();
+                        while(place.isEmpty()){
+                            sp.invalidInput();
+                            place = br.readLine();
+                        }
                         itemManager.getApprovedItem(firstItem).setAvailability(false);
                         if (secondItem != 0) {
                             itemManager.getApprovedItem(secondItem).setAvailability(false);
@@ -198,17 +196,6 @@ public class TradeRequestViewer {
         close();
     }
 
-
-
-
-
-
-
-
-
-
-
-
     private void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
     }
@@ -227,40 +214,5 @@ public class TradeRequestViewer {
         return new String[]{trader, itemName};
     }
 
-
-    private boolean isThisTimeValid(String s) {
-        String[] arr = s.split("/");
-        int hr = Integer.parseInt(arr[0]);
-        int min = Integer.parseInt(arr[1]);
-        if (hr < 0 || hr > 23) {
-            return false;
-        }
-        return min >= 0 && min <= 59;
-    }
-
-
-    //Checks if the given date is valid.
-    //based on code by mkyong from https://mkyong.com/java/how-to-check-if-date-is-valid-in-java/.
-    private boolean isThisDateValid(String dateToValidate) {
-        if (dateToValidate == null) {
-            return false;
-        }
-
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-        sdf.setLenient(false);
-
-        try {
-
-            //if not valid, it will throw ParseException
-            Date date = sdf.parse(dateToValidate);
-            //System.out.println(date);
-
-        } catch (ParseException e) {
-            //sp.exceptionMessage();
-            //e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
 }
 
