@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import java.io.IOException;
+
 /**
  * The master controller.
  *
@@ -10,33 +12,42 @@ import java.util.ArrayList;
  */
 
 public class SystemController {
+    UserGateway ug;
+    ItemGateway ig;
+    TradeGateway tg;
+    UserManager userManager;
+    ItemManager itemManager;
+    TradeManager tradeManager;
+
+    String userManagerPath = "src/usermanager.ser";
+    String itemManagerPath = "src/itemmanager.ser";
+    String tradeManagerPath = "src/trademanager.ser";
+
+    SystemPresenter sp;
+
     public SystemController() {
-        String userManagerPath = "src/usermanager.ser";
-        String itemManagerPath = "src/itemmanager.ser";
-        String tradeManagerPath = "src/trademanager.ser";
+
+        sp = new SystemPresenter();
 
         UserGateway ug = new UserGateway();
         ItemGateway ig = new ItemGateway();
         TradeGateway tg = new TradeGateway();
 
-        UserManager userManager = ug.readFromFile(userManagerPath);
-        ItemManager itemManager = ig.readFromFile(itemManagerPath);
-        TradeManager tradeManager = tg.readFromFile(tradeManagerPath);
+        tryRead();
 
         tradeManager.cancelAllUnconfirmedTrades();
         ArrayList<String> cancelledUsers = tradeManager.getCancelledUsers();
 
-        for(String username: cancelledUsers){
+        for (String username : cancelledUsers) {
             userManager.getNormalByUsername(username).increaseNumIncomplete();
         }
-        for(String username: cancelledUsers){
+        for (String username : cancelledUsers) {
             NormalUser user = userManager.getNormalByUsername(username);
-            if(user.getNumIncomplete() > user.getIncompleteMax()){
+            if (user.getNumIncomplete() > user.getIncompleteMax()) {
                 userManager.addUsernamesToFreeze(user.getUsername());
             }
         }
         tradeManager.clearCancelledUsers();
-
 
 
         if (userManager.getAllUsers().isEmpty()) {
@@ -59,9 +70,53 @@ public class SystemController {
             }
         }
 
-        ug.saveToFile(userManagerPath, userManager);
-        ig.saveToFile(itemManagerPath, itemManager);
-        tg.saveToFile(tradeManagerPath, tradeManager);
+        tryWrite();
         System.exit(0);
+    }
+
+    private void tryRead() {
+        try {
+            userManager = ug.readFromFile(userManagerPath);
+        } catch (IOException e) {
+            sp.exceptionMessage(1,"Reading", "UserManager");
+        } catch (ClassNotFoundException e) {
+            sp.exceptionMessage(2, "Reading","UserManager");
+        }
+
+        try {
+            itemManager = ig.readFromFile(itemManagerPath);
+        } catch (IOException e) {
+            sp.exceptionMessage(1, "Reading", "ItemManager");
+        } catch (ClassNotFoundException e) {
+            sp.exceptionMessage(2, "Reading", "ItemManager");
+        }
+
+        try {
+            tradeManager = tg.readFromFile(tradeManagerPath);
+        } catch (IOException e) {
+            sp.exceptionMessage(1, "Reading", "TradeManager");
+        } catch (ClassNotFoundException e) {
+            sp.exceptionMessage(2, "Reading", "TradeManager");
+        }
+    }
+
+    private void tryWrite() {
+        try {
+            ug.saveToFile(userManagerPath, userManager);
+        } catch (IOException e) {
+            sp.exceptionMessage(1, "Writing", "UserManager");
+        }
+
+        try {
+            ig.saveToFile(itemManagerPath, itemManager);
+        } catch (IOException e) {
+            sp.exceptionMessage(1, "Writing", "ItemManager");
+        }
+
+        try {
+            tg.saveToFile(tradeManagerPath, tradeManager);
+        } catch (IOException e) {
+            sp.exceptionMessage(1, "Writing", "TradeManager");
+        }
     }
 }

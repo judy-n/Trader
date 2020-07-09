@@ -14,9 +14,10 @@ import java.io.File;
  *
  * @author Liam Huff
  * @author Ning Zhang
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-06
+ * last modified 2020-07-08
  */
 public class UserGateway {
 
@@ -25,33 +26,29 @@ public class UserGateway {
      *
      */
     public UserGateway() {
-
     }
 
     /**
      * Deserializes the .ser file that contains UserManager's serialization.
      *
      * @param filePath the path of the file being read
-     * @return the deserialized UserManager
+     * @return the de-serialized UserManager if the file exists, a new UserManager otherwise
+     * @throws IOException when an IO error occurs during deserialization
+     * @throws ClassNotFoundException when UserManager or any of the classes it stores can't be found
      */
-    public UserManager readFromFile(String filePath) {
-        try {
-            boolean fileCreated = new File(filePath).createNewFile();
-            //returns true and creates new file if file doesn't exist yet, false otherwise
+    public UserManager readFromFile(String filePath) throws IOException, ClassNotFoundException {
 
-            if (!fileCreated) {
-                FileInputStream fis = new FileInputStream(filePath);
-                BufferedInputStream buffer = new BufferedInputStream(fis);
-                ObjectInputStream ois = new ObjectInputStream(buffer);
+        boolean fileCreated = new File(filePath).createNewFile();
+        //returns true and creates new file if file doesn't exist yet, false otherwise
 
-                UserManager um = (UserManager) ois.readObject();
-                ois.close();
-                return um;
-            }
-        } catch (IOException e) {
-            System.out.println("Reading error USER");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Missing class in files.");
+        if (!fileCreated) {
+            FileInputStream fis = new FileInputStream(filePath);
+            BufferedInputStream buffer = new BufferedInputStream(fis);
+            ObjectInputStream ois = new ObjectInputStream(buffer);
+
+            UserManager um = (UserManager) ois.readObject();
+            ois.close();
+            return um;
         }
         return new UserManager();
     }
@@ -61,18 +58,14 @@ public class UserGateway {
      *
      * @param filePath the path of the file being written to
      * @param um the UserManager being serialized
+     * @throws IOException when an IO error occurs during serialization
      */
-    public void saveToFile(String filePath, UserManager um) {
+    public void saveToFile(String filePath, UserManager um) throws IOException {
+        FileOutputStream fos = new FileOutputStream(filePath);
+        BufferedOutputStream buffer = new BufferedOutputStream(fos);
+        ObjectOutputStream oos = new ObjectOutputStream(buffer);
 
-        try {
-            FileOutputStream fos = new FileOutputStream(filePath);
-            BufferedOutputStream buffer = new BufferedOutputStream(fos);
-            ObjectOutputStream oos = new ObjectOutputStream(buffer);
-
-            oos.writeObject(um);
-            oos.close();
-        } catch (IOException e) {
-            System.out.println("Writing error USER");
-        }
+        oos.writeObject(um);
+        oos.close();
     }
 }

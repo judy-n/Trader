@@ -54,21 +54,32 @@ public class TradeManager {
         return allTempTrades;
     }
 
-    public void cancelAllUnconfirmedTrades(){
+    private ArrayList<Trade> getAllOngoingNotCancelledTrades() {
+        ArrayList<Trade> allOngoingNotCancelledTrades = new ArrayList<>();
+        for (Trade t : allTrades) {
+            if (!t.getIsComplete() && !t.getIsCancelled()) {
+                allOngoingNotCancelledTrades.add(t);
+            }
+        }
+        return allOngoingNotCancelledTrades;
+    }
+
+    public void cancelAllUnconfirmedTrades() {
         LocalDateTime now = LocalDateTime.now();
-        for(Trade t : allTrades){
-            if(t instanceof TemporaryTrade){
-                if(now.compareTo(t.getMeetingDateTime1().plusDays(1))>0 &&
-                        !((TemporaryTrade) t).hasSecondMeeting() && t.getHasAgreedMeeting1()) {
+        for (Trade t : getAllOngoingNotCancelledTrades()) {
+            if (t instanceof TemporaryTrade && t.getHasAgreedMeeting1()) {
+                TemporaryTrade temp = (TemporaryTrade) t;
+                LocalDateTime meeting1 = temp.getMeetingDateTime1();
+                if (now.compareTo(meeting1.plusDays(1)) > 0 && !temp.hasSecondMeeting()) {
                     t.setIsCancelled();
                     addCancelledUsers(t.getInvolvedUsernames());
-                }else if(now.compareTo(((TemporaryTrade) t).getMeetingDateTime2().plusDays(1))>0
-                        && !t.getIsComplete()){
+                } else if (now.compareTo(((TemporaryTrade) t).getMeetingDateTime2().plusDays(1)) > 0
+                        && !t.getIsComplete()) {
                     t.setIsCancelled();
                     addCancelledUsers(t.getInvolvedUsernames());
                 }
-            } else{
-                if(now.compareTo(t.getMeetingDateTime1().plusDays(1))>0 && !t.getIsComplete()){
+            } else if (t instanceof PermanentTrade && t.getHasAgreedMeeting1()) {
+                if (now.compareTo(t.getMeetingDateTime1().plusDays(1)) > 0 && !t.getIsComplete()) {
                     t.setIsCancelled();
                     addCancelledUsers(t.getInvolvedUsernames());
                 }
@@ -76,13 +87,12 @@ public class TradeManager {
         }
     }
 
-    public void addCancelledUsers(String[] users)
-    {
+    public void addCancelledUsers(String[] users) {
         cancelledUsers.add(users[0]);
         cancelledUsers.add(users[1]);
     }
 
-    public ArrayList<String> getCancelledUsers(){
+    public ArrayList<String> getCancelledUsers() {
         return cancelledUsers;
     }
 
@@ -105,7 +115,6 @@ public class TradeManager {
         }
         return allPermTrades;
     }
-
 
 
     /**
@@ -189,7 +198,7 @@ public class TradeManager {
      * One week = Monday to Sunday.
      *
      * @param username the username of the user whose meeting count for the given week is being retrieved
-     * @param date the date for which meetings in the same week are being search for
+     * @param date     the date for which meetings in the same week are being search for
      * @return the total number of meetings planned to occur in the same week as the given date for the given user
      */
     public int getNumMeetingsThisWeek(String username, LocalDate date) {
@@ -206,7 +215,7 @@ public class TradeManager {
                     count++;
                 }
             }
-            if (t instanceof TemporaryTrade && ((TemporaryTrade) t).hasSecondMeeting()){
+            if (t instanceof TemporaryTrade && ((TemporaryTrade) t).hasSecondMeeting()) {
                 LocalDate meeting2 = ((TemporaryTrade) t).getMeetingDateTime2().toLocalDate();
                 if (meeting2.isAfter(dayBeforeWeek) && meeting2.isBefore(dayAfterWeek)) {
                     count++;
@@ -217,36 +226,35 @@ public class TradeManager {
     }
 
     //takes in a user and finds those top three most frequent trade partners
-    public String [] getFrequentTradePartners (String username) {
+    public String[] getFrequentTradePartners(String username) {
         ArrayList<String> tradePartners = new ArrayList<>();
         Set<String> uniquePartner = new HashSet<>();
-        String [] frequentPartners = new String[]{"empty", "empty", "empty"};
+        String[] frequentPartners = new String[]{"empty", "empty", "empty"};
 
-        ArrayList<Integer> frequency  = new ArrayList<>();
+        ArrayList<Integer> frequency = new ArrayList<>();
         HashMap<String, Integer> freqToUsername = new HashMap<>();
         ArrayList<String> sortedUsers = new ArrayList<>();
 
-        ArrayList<Trade> completedTrades= getCompletedTrades(username);
-        if(completedTrades.isEmpty()){
+        ArrayList<Trade> completedTrades = getCompletedTrades(username);
+        if (completedTrades.isEmpty()) {
             return frequentPartners;
         }
         for (Trade t : completedTrades) {
-            if (!t.getInvolvedUsernames()[0].equals(username)){
+            if (!t.getInvolvedUsernames()[0].equals(username)) {
                 tradePartners.add(t.getInvolvedUsernames()[0]);
                 uniquePartner.add(t.getInvolvedUsernames()[0]);
-            }
-            else{
+            } else {
                 tradePartners.add(t.getInvolvedUsernames()[1]);
                 uniquePartner.add(t.getInvolvedUsernames()[1]);
             }
         }
-        for(String u : uniquePartner){
+        for (String u : uniquePartner) {
             freqToUsername.put(u, Collections.frequency(tradePartners, u));
-            frequency.add(Collections.frequency(tradePartners,u));
+            frequency.add(Collections.frequency(tradePartners, u));
         }
         frequency.sort(Collections.reverseOrder());
 
-        for(Map.Entry<String, Integer> e : freqToUsername.entrySet()){
+        for (Map.Entry<String, Integer> e : freqToUsername.entrySet()) {
             for (Integer integer : frequency) {
                 if (e.getValue().equals(integer)) {
                     if (!sortedUsers.contains(e.getKey())) {
@@ -255,12 +263,12 @@ public class TradeManager {
                 }
             }
         }
-        if(sortedUsers.size() == 1){
+        if (sortedUsers.size() == 1) {
             frequentPartners[0] = sortedUsers.get(0);
-        }else if(sortedUsers.size() == 2){
+        } else if (sortedUsers.size() == 2) {
             frequentPartners[0] = sortedUsers.get(0);
             frequentPartners[1] = sortedUsers.get(1);
-        }else{
+        } else {
             frequentPartners[0] = sortedUsers.get(0);
             frequentPartners[1] = sortedUsers.get(1);
             frequentPartners[2] = sortedUsers.get(2);

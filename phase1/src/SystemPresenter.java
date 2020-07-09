@@ -65,6 +65,7 @@ public class SystemPresenter {
                 break;
             case 12:
                 System.out.println("\n--- New Admin ---");
+                break;
         }
     }
 
@@ -236,6 +237,7 @@ public class SystemPresenter {
                 break;
             case 4:
                 System.out.println("\n Item has been added to your wishlist!");
+                break;
         }
     }
 
@@ -250,6 +252,7 @@ public class SystemPresenter {
             case 3:
                 System.out.println("\nYour request to borrow [" + item + "] has been sent to " + item.getOwnerUsername() +
                         "\nIf this item was not already in your wishlist, it has automatically been added.");
+                break;
         }
     }
 
@@ -333,6 +336,7 @@ public class SystemPresenter {
                 break;
             case 4:
                 System.out.print("Would you like to unfreeze any of the accounts? (Y/N): ");
+                break;
         }
     }
 
@@ -545,6 +549,7 @@ public class SystemPresenter {
             case 4:
                 System.out.println("The current incomplete trade max is " + oldThreshold +
                         "\n Change it to :");
+                break;
         }
     }
 
@@ -581,6 +586,18 @@ public class SystemPresenter {
 
     public void exceptionMessage() {
         System.out.println("\nError reading user input!");
+        System.exit(-1);
+    }
+
+    public void exceptionMessage(int input, String process, String type)  {
+        switch(input) {
+            case 1:
+                System.out.println(process + " error for " + type + "!");
+                break;
+            case 2:
+                System.out.println("Missing files for serialization of " + type + "!");
+                break;
+        }
         System.exit(-1);
     }
 

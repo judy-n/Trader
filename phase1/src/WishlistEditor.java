@@ -45,7 +45,7 @@ public class WishlistEditor {
         sp.wishlistEditor(itemWishlist);
         try {
             String temp = br.readLine();
-            while ((!temp.matches("[1-2]+") || Integer.parseInt(temp) > 2)) {
+            while (!temp.matches("[1-2]")) {
                 sp.invalidInput();
                 temp = br.readLine();
             }

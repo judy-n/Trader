@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-06
+ * last modified 2020-07-08
  */
 
 public abstract class User implements Serializable {
@@ -17,7 +17,7 @@ public abstract class User implements Serializable {
 
     /**
      * Class constructor.
-     * A constructor that can be called when creating instances of a subclass of User.
+     * A constructor that's called when creating instances of a subclass of User.
      *
      * @param username the username being assigned to the user
      * @param email    the email address being assigned to the user

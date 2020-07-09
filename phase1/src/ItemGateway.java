@@ -14,9 +14,10 @@ import java.io.File;
  *
  * @author Liam Huff
  * @author Ning Zhang
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-06
+ * last modified 2020-07-08
  */
 public class ItemGateway {
 
@@ -30,25 +31,23 @@ public class ItemGateway {
      * De-serializes the .ser file that stores ItemManager's serialization.
      *
      * @param filePath the path of the file being read
+     * @return the de-serialized ItemManager if the file exists, a new ItemManager otherwise
+     * @throws IOException when an IO error occurs during deserialization
+     * @throws ClassNotFoundException when ItemManager or any of the classes it stores can't be found
      */
-    public ItemManager readFromFile(String filePath) {
-        try {
-            boolean fileCreated = new File(filePath).createNewFile();
-            //returns true and creates new file if file doesn't exist yet, false otherwise
+    public ItemManager readFromFile(String filePath) throws IOException, ClassNotFoundException {
 
-            if (!fileCreated) {
-                FileInputStream fis = new FileInputStream(filePath);
-                BufferedInputStream buffer = new BufferedInputStream(fis);
-                ObjectInputStream ois = new ObjectInputStream(buffer);
+        boolean fileCreated = new File(filePath).createNewFile();
+        //returns true and creates new file if file doesn't exist yet, false otherwise
 
-                ItemManager im = (ItemManager) ois.readObject();
-                ois.close();
-                return im;
-            }
-        } catch (IOException e) {
-            System.out.println("Reading error ITEM");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Missing class in files.");
+        if (!fileCreated) {
+            FileInputStream fis = new FileInputStream(filePath);
+            BufferedInputStream buffer = new BufferedInputStream(fis);
+            ObjectInputStream ois = new ObjectInputStream(buffer);
+
+            ItemManager im = (ItemManager) ois.readObject();
+            ois.close();
+            return im;
         }
         return new ItemManager();
     }
@@ -59,18 +58,14 @@ public class ItemGateway {
      *
      * @param filePath the path of the file being written to
      * @param im       the ItemManager being serialized
+     * @throws IOException when an IO error occurs during serialization
      */
-    public void saveToFile(String filePath, ItemManager im) {
+    public void saveToFile(String filePath, ItemManager im) throws IOException {
+        FileOutputStream fos = new FileOutputStream(filePath);
+        BufferedOutputStream buffer = new BufferedOutputStream(fos);
+        ObjectOutputStream oos = new ObjectOutputStream(buffer);
 
-        try {
-            FileOutputStream fos = new FileOutputStream(filePath);
-            BufferedOutputStream buffer = new BufferedOutputStream(fos);
-            ObjectOutputStream oos = new ObjectOutputStream(buffer);
-
-            oos.writeObject(im);
-            oos.close();
-        } catch (IOException e) {
-            System.out.println("Writing error ITEM");
-        }
+        oos.writeObject(im);
+        oos.close();
     }
 }
