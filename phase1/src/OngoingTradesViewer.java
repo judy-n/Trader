@@ -20,7 +20,7 @@ public class OngoingTradesViewer {
     private UserManager userManager;
     private TradeManager tradeManager;
 
-    public OngoingTradesViewer (NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
+    public OngoingTradesViewer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         currentUser = user;
         itemManager = im;
         userManager = um;
@@ -44,30 +44,30 @@ public class OngoingTradesViewer {
         sp.ongoingTrades(ongoingTrades, tradeItems, currUsername);
         int max = ongoingTrades.size();
 
-        try{
+        try {
             String temp = br.readLine();
-            while (!temp.matches("[0-9]+")||Integer.parseInt(temp) > max){
+            while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > max) {
                 temp = br.readLine();
             }
             indexInput = Integer.parseInt(temp);
             Trade selected = ongoingTrades.get(indexInput - 1);
             sp.ongoingTrades(1);
             String temp2 = br.readLine();
-            while(!temp.matches("[1-5]")){
+            while (!temp.matches("[1-5]")) {
                 temp2 = br.readLine();
             }
             choiceInput = Integer.parseInt(temp2);
 
-            switch (choiceInput){
+            switch (choiceInput) {
                 //Edit meeting time and/or place
                 case 1:
-                    if(selected.getLastEditor().equals(currUsername)){
+                    if (selected.getLastEditor().equals(currUsername)) {
                         sp.ongoingTrades(6);
-                    }else {
+                    } else {
                         if (selected.getUserEditCount1(currUsername) < currentUser.getMeetingEditMax()) {
                             sp.ongoingTrades(7);
                             LocalDateTime time;
-                            int currentTrades;
+                            int tradesInWeek ;
 
                             do {
                                 String timeSuggestion = br.readLine();
@@ -79,8 +79,8 @@ public class OngoingTradesViewer {
                                 }
                                 time = LocalDateTime.of(dts.getYear(), dts.getMonth(),
                                         dts.getDay(), dts.getHour(), dts.getMinute());
-                                currentTrades = tradeManager.getNumMeetingsThisWeek(currUsername, time.toLocalDate());
-                            }while (currentTrades>currentUser.getWeeklyTradeMax());
+                                tradesInWeek = tradeManager.getNumMeetingsThisWeek(currUsername, time.toLocalDate());
+                            } while (tradesInWeek  > currentUser.getWeeklyTradeMax());
 
 
                             sp.ongoingTrades(8);
@@ -92,35 +92,35 @@ public class OngoingTradesViewer {
                             selected.setMeetingDateTime1(time);
                             selected.setMeetingLocation1(placeSuggestion);
                             selected.addUserEditCount1(currUsername);
-                        }else{
+                        } else {
                             sp.ongoingTrades(9);
                         }
                     }
                     break;
-                    //Confirm this trade's current meeting time and place
+                //Confirm this trade's current meeting time and place
                 case 2:
-                    if(selected instanceof TemporaryTrade && ((TemporaryTrade)selected).hasSecondMeeting()){
+                    if (selected instanceof TemporaryTrade && ((TemporaryTrade) selected).hasSecondMeeting()) {
                         sp.ongoingTrades(5);
-                    }else {
+                    } else {
                         int weeklyTrade = tradeManager.getNumMeetingsThisWeek(currUsername, selected.getMeetingDateTime1().toLocalDate());
-                        if(weeklyTrade>currentUser.getWeeklyTradeMax()){
+                        if (weeklyTrade > currentUser.getWeeklyTradeMax()) {
                             sp.ongoingTrades(10);
-                        }else{
+                        } else {
                             selected.confirmAgreedMeeting1();
                             sp.ongoingTrades(4);
                         }
                     }
                     break;
-                    //Confirm this trade took place
+                //Confirm this trade took place
                 case 3:
-                    if(selected instanceof TemporaryTrade && ((TemporaryTrade)selected).hasSecondMeeting()) {
-                        ((TemporaryTrade)selected).confirmTransaction2(currUsername);
-                    }else{
+                    if (selected instanceof TemporaryTrade && ((TemporaryTrade) selected).hasSecondMeeting()) {
+                        ((TemporaryTrade) selected).confirmTransaction2(currUsername);
+                    } else {
                         selected.confirmTransaction1(currUsername);
                     }
                     sp.ongoingTrades(3);
                     break;
-                    //Cancel this trade (Penalties will apply)
+                //Cancel this trade (Penalties will apply)
                 case 4:
                     selected.setIsCancelled();
                     sp.ongoingTrades(2);
@@ -130,13 +130,13 @@ public class OngoingTradesViewer {
                     break;
             }
 
-        }catch (IOException e){
+        } catch (IOException e) {
             sp.exceptionMessage();
         }
         close();
     }
 
-    public void close(){
+    public void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
     }
 }
