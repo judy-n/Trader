@@ -3,12 +3,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Lets AdminUser approve/deny pending items.
+ * Lets an admin approve or reject pending items.
  *
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-08
+ * last modified 2020-07-09
  */
 public class CatalogEditor {
     private AdminUser currentAdmin;
@@ -46,7 +46,7 @@ public class CatalogEditor {
                     NormalUser itemOwner = userManager.getNormalByUsername(i.getOwnerUsername());
                     sp.catalogEditor(i);
                     String temp2 = br.readLine();
-                    while (!temp2.matches("[1-2]")) {
+                    while (!temp2.matches("[0-2]")) {
                         sp.invalidInput();
                         temp2 = br.readLine();
                     }
@@ -54,9 +54,11 @@ public class CatalogEditor {
                     if (actionInput == 1) {
                         itemManager.approveItem(i);
                         itemOwner.addInventory(i.getID());
-                    } else {
+                    } else if (actionInput == 2){
                         itemManager.rejectItem(i);
                         itemOwner.removePendingInventory(i.getID());
+                    } else {
+                        input = 0;
                     }
                 }
             } while (input != 0);

@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-04
+ * last modified 2020-07-09
  */
 public class SignUpSystem {
     private String username;
@@ -62,7 +62,7 @@ public class SignUpSystem {
                     invalidInput = true;
                     sp.signUpSystem(5);
                     usernameInput = br.readLine();
-                } else if (usernameInput.trim().isEmpty() || usernameInput.length() < 3) {
+                } else if (usernameInput.isEmpty() || usernameInput.contains(" ") || usernameInput.length() < 3) {
                     invalidInput = true;
                     sp.signUpSystem(6);
                     usernameInput = br.readLine();
@@ -76,7 +76,7 @@ public class SignUpSystem {
         sp.signUpSystem(7);
         try {
             String pwInput1 = br.readLine();
-            while (pwInput1.trim().isEmpty()) {
+            while (pwInput1.isEmpty() || pwInput1.contains(" ")) {
                 sp.signUpSystem(8);
                 pwInput1 = br.readLine();
             }

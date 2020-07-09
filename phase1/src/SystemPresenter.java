@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-08
+ * last modified 2020-07-09
  */
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
@@ -238,10 +238,10 @@ public class SystemPresenter {
                         "\nWould you like to add it to your wishlist? (Y/N): ");
                 break;
             case 4:
-                System.out.println("\n Item has been added to your wishlist!");
+                System.out.println("\nItem has been added to your wishlist!");
                 break;
             case 5:
-                System.out.println("\n You've borrowed more than your lend minimum");
+                System.out.println("\nYou've borrowed more than your lend minimum");
                 break;
         }
     }
@@ -272,14 +272,14 @@ public class SystemPresenter {
                 System.out.println("\nThere are no items waiting for approval!");
                 break;
             case 2:
-                System.out.print("\nIs there an item you would like to approve/deny? (0 to quit): ");
+                System.out.print("\nIs there an item you would like to approve/reject? (0 to quit): ");
                 break;
         }
     }
 
     public void catalogEditor(Item item) {
-        System.out.println("You have chosen: " + item);
-        System.out.println("Would you like to 1) approve or 2) reject this item?");
+        System.out.println("\nYou have chosen: [" + item + "]");
+        System.out.print("Would you like to 1) approve or 2) reject this item? (0 to quit): ");
     }
 
     private void presenterAllItems(ArrayList<Item> items) {
@@ -295,17 +295,17 @@ public class SystemPresenter {
     }
 
     public void accountFreezer(ArrayList<String> usernames) {
-        System.out.println("Here are the users that need to be frozen:");
+        System.out.println("\nHere are the users that need to be frozen:");
         int index = 1;
         for (String username : usernames) {
             System.out.println(index + ". " + username);
             index++;
         }
-        System.out.println("Would you like to freeze all of the accounts?(Y/N)");
+        System.out.println("\nWould you like to freeze all of the accounts?(Y/N)");
     }
 
     public void accountFreezer() {
-        System.out.println("All frozen!");
+        System.out.println("\nAll frozen!");
     }
 
     public void requestUnfreeze(int input) {
@@ -340,7 +340,7 @@ public class SystemPresenter {
                 System.out.println("\nFinished!");
                 break;
             case 4:
-                System.out.print("Would you like to unfreeze any of the accounts? (Y/N): ");
+                System.out.print("\nWould you like to unfreeze any of the accounts? (Y/N): ");
                 break;
         }
     }
@@ -363,7 +363,7 @@ public class SystemPresenter {
                 System.out.println("\nSorry, you can't view any trade requests because your account is currently frozen.");
                 break;
             case 6:
-                System.out.print("\nPlease suggest a time (DD/MM/YYYY-HH:MM): ");
+                System.out.print("\nPlease suggest a date and time using the given format (YYYY/MM/DD-hh:mm): ");
                 break;
             case 7:
                 System.out.print("\nWould you like any item in their inventory? (0 if not): ");
@@ -381,10 +381,10 @@ public class SystemPresenter {
     public void tradeRequestViewer(int input, String owner, String itemName) {
         switch (input) {
             case 1:
-                System.out.print("Are you sure you want to borrow [" + itemName + "] from " + owner + " in a one-way ot two-way trade? (Y/N): ");
+                System.out.print("\nAre you sure you want to borrow [" + itemName + "] from " + owner + " in a one-way ot two-way trade? (Y/N): ");
                 break;
             case 2:
-                System.out.println("Initiating Trade with " + owner + ".");
+                System.out.println("\nInitiating trade with " + owner + ".");
                 break;
             case 3:
                 System.out.println("Sorry but " + owner + " is currently frozen. " +
@@ -398,11 +398,11 @@ public class SystemPresenter {
     public void tradeRequestViewer(int input, ArrayList<Item> items, ArrayList<String> owners) {
         switch (input) {
             case 1:
-                System.out.println("Here is all the trade requests you sent:");
+                System.out.println("\nHere is all the trade requests you sent:");
                 presentInitiatedTradeRequests(items, owners);
                 break;
             case 2:
-                System.out.println("Here is all the trade requests you received:");
+                System.out.println("\nHere is all the trade requests you received:");
                 presentReceivedTradeRequests(items, owners);
 
                 break;
@@ -458,7 +458,7 @@ public class SystemPresenter {
                         "\nPlease wait for the other user to agree or send a suggestion of their own.");
                 break;
             case 7:
-                System.out.print("\nPlease suggest a time (DD/MM/YYYY-HH:MM): ");
+                System.out.print("\nPlease suggest a date and time using the given format (YYYY/MM/DD-hh:mm): ");
                 break;
             case 8:
                 System.out.print("\nPlease suggest a place: ");
@@ -496,7 +496,7 @@ public class SystemPresenter {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String meetingStr = meeting.format(formatter);
         String date = meetingStr.substring(0, meetingStr.indexOf(" "));
-        String time = meetingStr.substring(meetingStr.indexOf(" "));
+        String time = meetingStr.substring(meetingStr.indexOf(" ") + 1);
 
         switch(situation) {
             case 1:
@@ -652,10 +652,10 @@ public class SystemPresenter {
     public void exceptionMessage(int input, String process, String type) {
         switch (input) {
             case 1:
-                System.out.println(process + " error for " + type + "!");
+                System.out.println("\n" + process + " error for " + type + "!");
                 break;
             case 2:
-                System.out.println("Missing files for serialization of " + type + "!");
+                System.out.println("\nMissing files for deserialization of " + type + "!");
                 break;
         }
         System.exit(-1);
@@ -666,7 +666,7 @@ public class SystemPresenter {
     }
 
     public void failedSuggestion() {
-        System.out.print("Sorry, you can't suggest this date and time because you've " +
+        System.out.print("\nSorry, you can't suggest this date and time because you've " +
                 "reached the maximum number of meetings allowed in the same week." +
                 "\nPlease enter a different date and time (not within the same week): ");
     }

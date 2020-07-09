@@ -20,7 +20,7 @@ public class DateTimeSuggestion {
     private NormalUser currentUser;
     private TradeManager tradeManager;
     private SystemPresenter sp;
-    private final String dateFormat = "dd/MM/yyyy";
+    private final String dateFormat = "yyyy/MM/dd";
     private String[] dateTime;
     private String[] date;
     private String[] time;
@@ -51,11 +51,11 @@ public class DateTimeSuggestion {
         LocalDateTime time;
         int tradesInWeek;
         do {
-            String timeSuggestion = br.readLine();
+            String timeSuggestion = br.readLine().trim();
             boolean isValid = checkDateTime(timeSuggestion);
             while (!isValid) {
                 sp.invalidInput();
-                timeSuggestion = br.readLine();
+                timeSuggestion = br.readLine().trim();
                 isValid = checkDateTime(timeSuggestion);
             }
             time = LocalDateTime.of(getYear(), getMonth(),
@@ -73,12 +73,17 @@ public class DateTimeSuggestion {
             return false;
         }
         dateTime = suggestion.split("-");
-        return (isThisDateValid(dateTime[0]) || isThisTimeValid(dateTime[1]));
+
+        if (dateTime.length == 2 && isThisDateValid(dateTime[0]) && isThisTimeValid(dateTime[1])) {
+            return LocalDateTime.of(getYear(), getMonth(), getDay(), getHour(), getMinute()).isAfter(LocalDateTime.now());
+        } else {
+            return false;
+        }
     }
 
     private int getYear() {
         date = dateTime[0].split("/");
-        return Integer.parseInt(date[2]);
+        return Integer.parseInt(date[0]);
     }
 
     private int getMonth() {
@@ -86,7 +91,7 @@ public class DateTimeSuggestion {
     }
 
     private int getDay() {
-        return Integer.parseInt(date[0]);
+        return Integer.parseInt(date[2]);
     }
 
     private int getHour() {
@@ -101,6 +106,9 @@ public class DateTimeSuggestion {
 
     private boolean isThisTimeValid(String s) {
         String[] arr = s.split(":");
+        if (arr.length != 2 || !arr[0].matches("[0-9]+") || !arr[1].matches("[0-9]+")) {
+            return false;
+        }
         int hr = Integer.parseInt(arr[0]);
         int min = Integer.parseInt(arr[1]);
         if (hr < 0 || hr > 23) {
@@ -113,7 +121,7 @@ public class DateTimeSuggestion {
     //Checks if the given date is valid.
     //based on code by mkyong from https://mkyong.com/java/how-to-check-if-date-is-valid-in-java/.
     private boolean isThisDateValid(String dateToValidate) {
-        if (dateToValidate == null) {
+        if (dateToValidate.isEmpty() || dateToValidate.contains(" ")) {
             return false;
         }
 
