@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.Map;
  * @since 2020-06-26
  * last modified 2020-07-08
  */
-public class TradeManager {
+public class TradeManager implements Serializable {
     private ArrayList<Trade> allTrades;
     private ArrayList<String> cancelledUsers;
 
