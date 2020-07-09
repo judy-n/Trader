@@ -64,6 +64,18 @@ public class TradeManager {
         return allOngoingNotCancelledTrades;
     }
 
+    public int getTimesLent(String username){
+        int timesLent = 0;
+        ArrayList<Trade> trades = getCompletedTrades(username);
+        for(Trade t : trades){
+            if(t.getInvolvedUsernames()[1].equals(username)){
+                timesLent ++;
+            }
+        }
+        return timesLent;
+    }
+
+
     public void cancelAllUnconfirmedTrades() {
         LocalDateTime now = LocalDateTime.now();
         for (Trade t : getAllOngoingNotCancelledTrades()) {

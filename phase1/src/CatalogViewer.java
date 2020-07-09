@@ -44,58 +44,69 @@ public class CatalogViewer {
         int maxIndex = itemManager.getNumApprovedItems(currentUser.getUsername());
 
         sp.catalogViewer(itemManager.getApprovedItems(currentUser.getUsername()));
-        sp.catalogViewer(1);
-        try {
-            String temp = br.readLine();
-            while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > maxIndex) {
-                sp.invalidInput();
-                temp = br.readLine();
-            }
-            input = Integer.parseInt(temp);
-            if (input != 0) {
-                Item selectedItem = itemManager.getApprovedItem(input);
-                assert selectedItem != null;
 
-                sp.catalogViewer(selectedItem, 1);
 
-                String temp2 = br.readLine();
-                while (!temp2.matches("[0-2]")) {
-                    sp.invalidInput();
-                    temp2 = br.readLine();
-                }
-                int tradeOrWishlist = Integer.parseInt(temp2);
+        int timesBorrowed = currentUser.getTimesBorrowed();
+        int timesLent = tradeManager.getTimesLent(currentUser.getUsername());
 
-                if (tradeOrWishlist == 1 && !selectedItem.getAvailability()) {
-                    sp.catalogViewer(3);
-
-                    //option to add unavailable item to wishlist
-                    String confirmInput = br.readLine();
-                    while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
-                        sp.invalidInput();
-                        confirmInput = br.readLine();
-                    }
-
-                    if (confirmInput.equalsIgnoreCase("Y")) {
-                        tradeOrWishlist = 2;
-                    }
-
-                } else if (tradeOrWishlist == 1) {
-                    if (currentUser.getIsFrozen()) {
-                        sp.catalogViewer(2);
-                    } else {
-                        startTradeAttempt(selectedItem);
-                    }
-                }
-
-                if (tradeOrWishlist == 2) {
-                    currentUser.addWishlist(selectedItem.getID());
-                    sp.catalogViewer(4);
-                }
-            }
+        if(((timesLent - timesBorrowed) < currentUser.getLendMinimum())
+                &&!currentUser.getTradeRequest().isEmpty()){
+            sp.catalogViewer(5);
             close();
+        }else {
+            sp.catalogViewer(1);
+            try {
+                String temp = br.readLine();
+                while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > maxIndex) {
+                    sp.invalidInput();
+                    temp = br.readLine();
+                }
+                input = Integer.parseInt(temp);
+                if (input != 0) {
+                    Item selectedItem = itemManager.getApprovedItem(input);
+                    assert selectedItem != null;
 
-        } catch (IOException e) {
-            sp.exceptionMessage();
+                    sp.catalogViewer(selectedItem, 1);
+
+                    String temp2 = br.readLine();
+                    while (!temp2.matches("[0-2]")) {
+                        sp.invalidInput();
+                        temp2 = br.readLine();
+                    }
+                    int tradeOrWishlist = Integer.parseInt(temp2);
+
+                    if (tradeOrWishlist == 1 && !selectedItem.getAvailability()) {
+                        sp.catalogViewer(3);
+
+                        //option to add unavailable item to wishlist
+                        String confirmInput = br.readLine();
+                        while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
+                            sp.invalidInput();
+                            confirmInput = br.readLine();
+                        }
+
+                        if (confirmInput.equalsIgnoreCase("Y")) {
+                            tradeOrWishlist = 2;
+                        }
+
+                    } else if (tradeOrWishlist == 1) {
+                        if (currentUser.getIsFrozen()) {
+                            sp.catalogViewer(2);
+                        } else {
+                            startTradeAttempt(selectedItem);
+                        }
+                    }
+
+                    if (tradeOrWishlist == 2) {
+                        currentUser.addWishlist(selectedItem.getID());
+                        sp.catalogViewer(4);
+                    }
+                }
+                close();
+
+            } catch (IOException e) {
+                sp.exceptionMessage();
+            }
         }
     }
 

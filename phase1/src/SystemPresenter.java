@@ -238,6 +238,9 @@ public class SystemPresenter {
             case 4:
                 System.out.println("\n Item has been added to your wishlist!");
                 break;
+            case 5:
+                System.out.println("\n You've borrowed more than your lend minimum");
+                break;
         }
     }
 

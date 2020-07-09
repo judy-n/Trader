@@ -45,6 +45,15 @@ public class NormalUser extends User implements Serializable {
         isFrozen = false;
     }
 
+    public int getTimesBorrowed(){
+        int timesBorrowed = 0;
+        for(String[] key : tradeRequests.keySet()){
+            if(key[0].equals(getUsername())){
+                timesBorrowed ++;
+            }
+        }
+        return timesBorrowed;
+    }
 
     public void increaseNumIncomplete(){
         numIncomplete ++;

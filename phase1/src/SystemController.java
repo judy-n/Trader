@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 import java.io.IOException;
 
 /**
@@ -29,9 +28,9 @@ public class SystemController {
 
         sp = new SystemPresenter();
 
-        UserGateway ug = new UserGateway();
-        ItemGateway ig = new ItemGateway();
-        TradeGateway tg = new TradeGateway();
+        ug = new UserGateway();
+        ig = new ItemGateway();
+        tg = new TradeGateway();
 
         tryRead();
 
