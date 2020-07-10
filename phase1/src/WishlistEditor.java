@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Shows the user their wishlist and lets them edit it through user input.
@@ -41,7 +41,7 @@ public class WishlistEditor {
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        ArrayList<Item> itemWishlist = itemManager.getApprovedItemsByIDs(currentUser.getWishlist());
+        List<Item> itemWishlist = itemManager.getApprovedItemsByIDs(currentUser.getWishlist());
         sp.wishlistEditor(itemWishlist);
         try {
             String temp = br.readLine();

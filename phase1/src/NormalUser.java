@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * NormalUser is a class that represents a non-administrative user of our trade program.
@@ -14,9 +15,9 @@ import java.util.HashMap;
  */
 
 public class NormalUser extends User implements Serializable {
-    private ArrayList<Long> inventory;
-    private ArrayList<Long> pendingInventory;
-    private ArrayList<Long> wishlist;
+    private List<Long> inventory;
+    private List<Long> pendingInventory;
+    private List<Long> wishlist;
     private HashMap<String[], long[]> tradeRequests;
 
     private boolean isFrozen;
@@ -89,7 +90,7 @@ public class NormalUser extends User implements Serializable {
      *
      * @return this user's inventory
      */
-    public ArrayList<Long> getInventory() {
+    public List<Long> getInventory() {
         return inventory;
     }
 
@@ -117,7 +118,7 @@ public class NormalUser extends User implements Serializable {
      *
      * @return this user's pending inventory
      */
-    public ArrayList<Long> getPendingInventory() {
+    public List<Long> getPendingInventory() {
         return pendingInventory;
     }
 
@@ -145,7 +146,7 @@ public class NormalUser extends User implements Serializable {
      *
      * @return this user's wishlist
      */
-    public ArrayList<Long> getWishlist() {
+    public List<Long> getWishlist() {
         return wishlist;
     }
 

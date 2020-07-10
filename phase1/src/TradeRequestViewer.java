@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.ArrayList;
@@ -76,8 +77,8 @@ public class TradeRequestViewer {
                 }
             }
         }
-        ArrayList<Item> initiatedItems = new ArrayList<>();
-        ArrayList<String> initiatedOwners = new ArrayList<>();
+        List<Item> initiatedItems = new ArrayList<>();
+        List<String> initiatedOwners = new ArrayList<>();
 
 
         //this just displays the initiated trades no action required
@@ -95,8 +96,8 @@ public class TradeRequestViewer {
 
         //if user is frozen, can not accept trade requests
 
-        ArrayList<Item> receivedItems = new ArrayList<>();
-        ArrayList<String> receivedOwners = new ArrayList<>();
+        List<Item> receivedItems = new ArrayList<>();
+        List<String> receivedOwners = new ArrayList<>();
         int index = 1;
         for (String[] key : receivedTrades.keySet()) {
             Item i = itemManager.getApprovedItem(receivedTrades.get(key)[1]);
@@ -133,7 +134,7 @@ public class TradeRequestViewer {
                         int twoWayItem;
                         if (!trader.getInventory().isEmpty()) {
                             sp.tradeRequestViewer(7);
-                            ArrayList<Item> items = itemManager.getApprovedItemsByIDs(trader.getInventory());
+                            List<Item> items = itemManager.getApprovedItemsByIDs(trader.getInventory());
                             sp.tradeRequestViewer(items);
                             String temp2 = br.readLine();
                             while (!temp2.matches("[0-9]+") || Integer.parseInt(temp2) > items.size()) {
@@ -187,8 +188,8 @@ public class TradeRequestViewer {
     }
 
     private String[] getTradeHelper(int index) {
-        ArrayList<String[]> traders = new ArrayList<>();
-        ArrayList<long[]> itemIds = new ArrayList<>();
+        List<String[]> traders = new ArrayList<>();
+        List<long[]> itemIds = new ArrayList<>();
         for (Map.Entry<String[], long[]> e : receivedTrades.entrySet()) {
             traders.add(e.getKey());
             itemIds.add(e.getValue());

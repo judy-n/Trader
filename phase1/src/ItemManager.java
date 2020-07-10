@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Stores all Items in the system (approved and non-approved).
@@ -13,8 +14,8 @@ import java.util.ArrayList;
  * last modified 2020-07-08
  */
 public class ItemManager implements Serializable {
-    private ArrayList<Item> approvedItems;
-    private ArrayList<Item> pendingItems;
+    private List<Item> approvedItems;
+    private List<Item> pendingItems;
 
     public ItemManager() {
         approvedItems = new ArrayList<>();
@@ -26,7 +27,7 @@ public class ItemManager implements Serializable {
      *
      * @return a list of all approved items in the system
      */
-    public ArrayList<Item> getApprovedItems() {
+    public List<Item> getApprovedItems() {
         return approvedItems;
     }
 
@@ -37,8 +38,8 @@ public class ItemManager implements Serializable {
      * @return a list of all approved items not owned by the given user
      */
 
-    public ArrayList<Item> getApprovedItems(String username){
-        ArrayList<Item> approved = new ArrayList<>();
+    public List<Item> getApprovedItems(String username){
+        List<Item> approved = new ArrayList<>();
         for(Item i: approvedItems){
             if(!i.getOwnerUsername().equals(username)){
                 approved.add(i);
@@ -52,7 +53,7 @@ public class ItemManager implements Serializable {
      *
      * @return a list of all items waiting for approval in the system
      */
-    public ArrayList<Item> getPendingItems() {
+    public List<Item> getPendingItems() {
         return pendingItems;
     }
 
@@ -61,8 +62,8 @@ public class ItemManager implements Serializable {
      *
      * @return a list of all items in the system
      */
-    public ArrayList<Item> getAllItems() {
-        ArrayList<Item> allItems = new ArrayList<>();
+    public List<Item> getAllItems() {
+        List<Item> allItems = new ArrayList<>();
         allItems.addAll(approvedItems);
         allItems.addAll(pendingItems);
         return allItems;
@@ -137,7 +138,7 @@ public class ItemManager implements Serializable {
         return pendingItems.get(index - 1);
     }
 
-    private Item idGetItem(ArrayList<Item> items, long itemid) {
+    private Item idGetItem(List<Item> items, long itemid) {
         for (Item i : items) {
             if (i.getID() == itemid) {
                 return i;
@@ -152,8 +153,8 @@ public class ItemManager implements Serializable {
      * @param itemIDs a list of IDs belonging to approved items
      * @return the corresponding list of associated Item objects
      */
-    public ArrayList<Item> getApprovedItemsByIDs(ArrayList<Long> itemIDs) {
-        ArrayList<Item> items = new ArrayList<>();
+    public List<Item> getApprovedItemsByIDs(List<Long> itemIDs) {
+        List<Item> items = new ArrayList<>();
         for (long l : itemIDs) {
             items.add(getApprovedItem(l));
         }
@@ -166,8 +167,8 @@ public class ItemManager implements Serializable {
      * @param itemIDs a list of IDs belonging to items waiting for approval
      * @return the corresponding list of associated Item objects
      */
-    public ArrayList<Item> getPendingItemsByIDs(ArrayList<Long> itemIDs) {
-        ArrayList<Item> items = new ArrayList<>();
+    public List<Item> getPendingItemsByIDs(List<Long> itemIDs) {
+        List<Item> items = new ArrayList<>();
         for (long l : itemIDs) {
             items.add(getPendingItem(l));
         }

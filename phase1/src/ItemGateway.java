@@ -9,8 +9,6 @@ import java.io.File;
 
 /**
  * ItemGateway is a class that allows ItemManagers to be serialized and de-serialized.
- * It will hold a ItemManager, and have getters and setters for that ItemManager.
- * It will also be able to read and write that ItemManager to a .ser file.
  *
  * @author Liam Huff
  * @author Ning Zhang
@@ -37,14 +35,10 @@ public class ItemGateway {
      */
     public ItemManager readFromFile(String filePath) throws IOException, ClassNotFoundException {
 
+        //returns true and creates new file if file doesn't exist yet, false otherwise
         boolean fileCreated = new File(filePath).createNewFile();
-        //returns true and creates new file if file doesn't exist yet, false otherwise
-        boolean fileEmpty = false;
 
-        if (!fileCreated) {fileEmpty = (new File(filePath).length() == 0);}
-        //returns true and creates new file if file doesn't exist yet, false otherwise
-
-        if (!fileCreated && !fileEmpty) {
+        if (!fileCreated && new File(filePath).length() != 0) {
             FileInputStream fis = new FileInputStream(filePath);
             BufferedInputStream buffer = new BufferedInputStream(fis);
             ObjectInputStream ois = new ObjectInputStream(buffer);

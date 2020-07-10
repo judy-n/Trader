@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Displays a list of usernames that need to be frozen
@@ -32,8 +33,8 @@ public class AccountFreezer {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         String input;
-        ArrayList<String> usernames = um.getUsernamesToFreeze();
-        ArrayList<NormalUser> users = new ArrayList<>();
+        List<String> usernames = um.getUsernamesToFreeze();
+        List<NormalUser> users = new ArrayList<>();
 
         sp.accountFreezer(usernames);
         for (String username : usernames) {

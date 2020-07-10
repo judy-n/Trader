@@ -1,5 +1,5 @@
-import java.util.ArrayList;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The master controller.
@@ -38,7 +38,7 @@ public class SystemController {
         tryRead();
 
         tradeManager.cancelAllUnconfirmedTrades();
-        ArrayList<String> cancelledUsers = tradeManager.getCancelledUsers();
+        List<String> cancelledUsers = tradeManager.getCancelledUsers();
 
         for (String username : cancelledUsers) {
             userManager.getNormalByUsername(username).increaseNumIncomplete();

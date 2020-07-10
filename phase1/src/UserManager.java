@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Stores all Users in the system.
@@ -9,13 +10,13 @@ import java.util.ArrayList;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-02
+ * last modified 2020-07-10
  */
 public class UserManager implements Serializable {
-    private ArrayList<NormalUser> allNormals;
-    private ArrayList<AdminUser> allAdmins;
-    private ArrayList<String> usernamesToFreeze;
-    private ArrayList<String> unfreezeRequests;
+    private List<NormalUser> allNormals;
+    private List<AdminUser> allAdmins;
+    private List<String> usernamesToFreeze;
+    private List<String> unfreezeRequests;
 
     /**
      * Class constructor.
@@ -43,10 +44,10 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given username that belongs to a non-admin user and returns the associated NormalUser.
+     * Takes the given username and returns the associated NormalUser.
      *
-     * @param username the username of the non-admin user being retrieved
-     * @return the non-admin user associated with the given username
+     * @param username the username of the normal user being retrieved
+     * @return the normal user associated with the given username
      */
     public NormalUser getNormalByUsername(String username) {
         for (NormalUser u : allNormals) {
@@ -73,10 +74,10 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given email that belongs to a non-admin user and returns the associated NormalUser.
+     * Takes the given email and returns the associated NormalUser.
      *
-     * @param email the email of the non-admin user being retrieved
-     * @return the non-admin user associated with the given email
+     * @param email the email of the normal user being retrieved
+     * @return the normal user associated with the given email
      */
     public NormalUser getNormalByEmail(String email) {
         for (NormalUser u : allNormals) {
@@ -103,23 +104,32 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Getter for all Users in the user database.
+     * Getter for all users in the user database.
      *
-     * @return an ArrayList of all Users in the database
+     * @return a list of all Users in the database
      */
-    public ArrayList<User> getAllUsers() {
-        ArrayList<User> allUsers = new ArrayList<>();
+    public List<User> getAllUsers() {
+        List<User> allUsers = new ArrayList<>();
         allUsers.addAll(allNormals);
         allUsers.addAll(allAdmins);
         return allUsers;
     }
 
-
-    public ArrayList<NormalUser> getAllNormals() {
+    /**
+     * Getter for all normal users in the user database.
+     *
+     * @return a list of all normal users in the user database
+     */
+    public List<NormalUser> getAllNormals() {
         return allNormals;
     }
 
-    public ArrayList<AdminUser> getAllAdmins() {
+    /**
+     * Getter for all admins in the user database.
+     *
+     * @return a list of all admins in the user database
+     */
+    public List<AdminUser> getAllAdmins() {
         return allAdmins;
     }
 
@@ -201,7 +211,7 @@ public class UserManager implements Serializable {
      *
      * @return usernames to freeze
      */
-    public ArrayList<String> getUsernamesToFreeze(){
+    public List<String> getUsernamesToFreeze(){
         return usernamesToFreeze;
     }
 
@@ -232,10 +242,10 @@ public class UserManager implements Serializable {
     /**
      * Getter for the list of unfreeze requests.
      *
-     * @return the list of frozen non-admin users who have requested their account be unfrozen
+     * @return the list of frozen normal users who have requested their account be unfrozen
      */
-    public ArrayList<NormalUser> getUnfreezeRequests() {
-        ArrayList<NormalUser> userRequests = new ArrayList<>();
+    public List<NormalUser> getUnfreezeRequests() {
+        List<NormalUser> userRequests = new ArrayList<>();
         for (String username : unfreezeRequests) {
             userRequests.add(getNormalByUsername(username));
         }
@@ -244,26 +254,28 @@ public class UserManager implements Serializable {
 
 
     /**
-     * Returns the username of someone's unfreeze request by
-     * their index in the arraylist
-     * @param index index in the arraylist
-     * @return the username
+     * Returns the username of someone's unfreeze request at the given index.
+     *
+     * @param index the index of an unfreeze request in the list
+     * @return the username at the given index
      */
     public String getUnfreezeRequest(int index){
         return unfreezeRequests.get(index - 1);
     }
 
     /**
-     * Returns the number of unfreeze requests
-     * @return number of unfreeze requests
+     * Returns the total number of unfreeze requests.
+     *
+     * @return the total number of unfreeze requests
      */
     public int getNumUnfreezeRequest(){
         return unfreezeRequests.size();
     }
 
     /**
-     * Removes a certain username from the arraylist of unfreeze requests
-     * @param username username
+     * Removes the given username from the list of unfreeze requests.
+     *
+     * @param username the username being removed from the unfreeze requests
      */
     public void removeUnfreezeRequest(String username){
         unfreezeRequests.remove(username);
@@ -272,26 +284,19 @@ public class UserManager implements Serializable {
     /**
      * Adds the given username to the list of unfreeze requests.
      *
-     * @param username the username of a non-admin user requesting to be unfrozen
+     * @param username the username of the normal user requesting to be unfrozen
      */
     public void addUnfreezeRequest(String username) {
         unfreezeRequests.add(username);
     }
 
     /**
-     * Checks if user already sent an unfreeze request
-     * @param username username
-     * @return true if they already did, false otherwise
+     * Checks if user already sent an unfreeze request.
+     *
+     * @param username the username of the user who's being checked
+     * @return true if the user already sent an unfreeze request, false otherwise
      */
     public boolean containsUnfreezeRequest(String username){
         return unfreezeRequests.contains(username);
-    }
-
-
-    //This method is just for testing!! Delete later
-    public void printAllUser() {
-        for (User u : getAllUsers()) {
-            System.out.println(u.getUsername());
-        }
     }
 }

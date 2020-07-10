@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Lets a frozen NormalUser request to be unfrozen, and lets an AdminUser accept/deny the requests.
@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-08
+ * last modified 2020-07-10
  */
 public class AccountUnfreezer {
     private User currentUser;
@@ -67,7 +67,7 @@ public class AccountUnfreezer {
     private void reviewUnfreezeRequests() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int indexInput;
-        ArrayList<NormalUser> users = userManager.getUnfreezeRequests();
+        List<NormalUser> users = userManager.getUnfreezeRequests();
 
         sp.adminGetUnfreezeRequests(users);
         sp.adminGetUnfreezeRequests(4);
