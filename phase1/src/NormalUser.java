@@ -30,7 +30,7 @@ public class NormalUser extends User implements Serializable {
 
     /**
      * Class constructor.
-     * Creates a NormalUser with given username, email, and password.
+     * Creates a <NormalUser></NormalUser> with given username, email, and password.
      * Also initializes default empty inventory, wishlist, and tradeRequests, and account status non-frozen.
      *
      * @param username the username being assigned to this NormalUser

@@ -23,7 +23,7 @@ public class CatalogViewer {
 
     /**
      * Class constructor.
-     * Creates an ItemPresenter with the given logged-in user and item/user/trade managers.
+     * Creates an <ItemPresenter></ItemPresenter> with the given logged-in user and item/user/trade managers.
      * Prints to the screen all items available for trade (excluding the current user's items).
      *
      * @param user the non-admin user who's currently logged in
