@@ -21,6 +21,14 @@ public class OngoingTradesViewer {
     private UserManager userManager;
     private TradeManager tradeManager;
 
+    /**
+     * Creates a OngoingTradesViewer for users to see their incompleted trades
+     * @param user current non admin user
+     * @param im the system's item manager
+     * @param um the system's user manager
+     * @param tm the system's trade manager
+     */
+
     public OngoingTradesViewer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         currentUser = user;
         itemManager = im;
@@ -175,6 +183,9 @@ public class OngoingTradesViewer {
         close();
     }
 
+    /**
+     * This method closes the current controller
+     */
     public void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
     }

@@ -12,7 +12,7 @@ public class Launcher {
 
     /**
      * Main method.
-     * creates a start menu
+     * creates a SystemController
      */
     public static void main(String[] args) {
         new SystemController();

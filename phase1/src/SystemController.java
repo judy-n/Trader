@@ -24,6 +24,9 @@ public class SystemController {
 
     SystemPresenter sp;
 
+    /**
+     * Creates a system controller
+     */
     public SystemController() {
 
         sp = new SystemPresenter();
