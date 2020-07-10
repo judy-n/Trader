@@ -31,7 +31,7 @@ public class SignUpSystem {
     /**
      * Takes input from the program's user based on signing a Normal or Admin user up.
      */
-    private void inputProcess() {
+    private void inputProcess(boolean isAdmin) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         sp.signUpSystem(1);
         try {
@@ -39,7 +39,7 @@ public class SignUpSystem {
             boolean invalidInput;
             do {
                 invalidInput = false;
-                if (userManager.emailExists(emailInput)) {
+                if (userManager.emailExists(emailInput, isAdmin)) {
                     invalidInput = true;
                     sp.signUpSystem(2);
                     emailInput = br.readLine();
@@ -60,7 +60,7 @@ public class SignUpSystem {
             boolean invalidInput;
             do {
                 invalidInput = false;
-                if (userManager.usernameExists(usernameInput)) {
+                if (userManager.usernameExists(usernameInput, isAdmin)) {
                     invalidInput = true;
                     sp.signUpSystem(5);
                     usernameInput = br.readLine();
@@ -100,7 +100,7 @@ public class SignUpSystem {
      */
     public NormalUser createNewNormal() {
         sp.signUpSystem(0);
-        inputProcess();
+        inputProcess(false);
         NormalUser newUser = new NormalUser(username, email, password);
         userManager.addUser(newUser);
         sp.signUpSystem(11);
@@ -112,7 +112,7 @@ public class SignUpSystem {
      */
     public void createNewAdmin() {
         sp.signUpSystem(12);
-        inputProcess();
+        inputProcess(true);
         AdminUser newUser = new AdminUser(username, email, password, userManager.getAdminId());
         userManager.addUser(newUser);
     }
