@@ -17,7 +17,7 @@ import java.io.File;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-08
+ * last modified 2020-07-10
  */
 public class UserGateway {
 
