@@ -4,12 +4,11 @@ import java.io.InputStreamReader;
 
 /**
  * Lets the user sign up.
- *
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-09
+ * last modified 2020-07-10
  */
 public class SignUpSystem {
     private String username;
@@ -29,6 +28,9 @@ public class SignUpSystem {
         sp = new SystemPresenter();
     }
 
+    /**
+     * Takes input from the program's user based on signing a Normal or Admin user up.
+     */
     private void inputProcess() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         sp.signUpSystem(1);
@@ -92,6 +94,10 @@ public class SignUpSystem {
         }
     }
 
+    /**
+     * Creates a new Normal User based on input
+     * @return New normalUser
+     */
     public NormalUser createNewNormal() {
         sp.signUpSystem(0);
         inputProcess();
@@ -101,6 +107,9 @@ public class SignUpSystem {
         return newUser;
     }
 
+    /**
+     * Creates a new admin based on input
+     */
     public void createNewAdmin() {
         sp.signUpSystem(12);
         inputProcess();
