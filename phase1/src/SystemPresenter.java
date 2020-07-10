@@ -585,7 +585,7 @@ public class SystemPresenter {
     public void thresholdEditor(int input) {
         switch (input) {
             case 1:
-                System.out.println("\nPlease enter the username of the user whose threshold you would like to change:");
+                System.out.println("\nPlease enter the username of the user whose threshold you would like to change(0 to quit):");
                 break;
             case 2:
                 System.out.println("\nWhich threshold would you like to change? (0 to quit) " +

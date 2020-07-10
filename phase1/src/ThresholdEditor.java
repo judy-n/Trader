@@ -38,10 +38,15 @@ public class ThresholdEditor {
         sp.thresholdEditor(1);
         try{
             usernameInput = br.readLine();
-            while(!userManager.usernameExists(usernameInput, false)){
+            while(!userManager.usernameExists(usernameInput, false)&&!usernameInput.equals("0")){
                 sp.invalidInput();
                 usernameInput = br.readLine();
             }
+            if(usernameInput.equals("0")){
+                close();
+            }
+
+
             subjectUser = userManager.getNormalByUsername(usernameInput);
 
             sp.thresholdEditor(2);
