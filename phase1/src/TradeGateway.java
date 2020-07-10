@@ -14,9 +14,10 @@ import java.io.File;
  *
  * @author Ning Zhang
  * @author Yingjia Liu
+ * @author Liam Huff
  * @version 1.0
  * @since 2020-07-08
- * last modified 2020-07-08
+ * last modified 2020-07-10
  */
 public class TradeGateway {
 
@@ -37,9 +38,12 @@ public class TradeGateway {
     public TradeManager readFromFile(String filePath) throws IOException, ClassNotFoundException {
 
         boolean fileCreated = new File(filePath).createNewFile();
+        boolean fileEmpty = false;
+
+        if (!fileCreated) {fileEmpty = (new File(filePath).length() == 0);}
         //returns true and creates new file if file doesn't exist yet, false otherwise
 
-        if (!fileCreated) {
+        if (!fileCreated && !fileEmpty) {
             FileInputStream fis = new FileInputStream(filePath);
             BufferedInputStream buffer = new BufferedInputStream(fis);
             ObjectInputStream ois = new ObjectInputStream(buffer);
