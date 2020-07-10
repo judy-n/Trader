@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Shows all the ongoing trades for the user.
@@ -41,8 +42,8 @@ public class OngoingTradesViewer {
         int indexInput;
         int choiceInput;
         String currUsername = currentUser.getUsername();
-        ArrayList<Trade> ongoingTrades = tradeManager.getOngoingTrades(currUsername);
-        ArrayList<Item[]> tradeItems = new ArrayList<>();
+        List<Trade> ongoingTrades = tradeManager.getOngoingTrades(currUsername);
+        List<Item[]> tradeItems = new ArrayList<>();
 
         for (Trade t : ongoingTrades) {
             String otherUsername = t.getOtherUsername(currUsername);

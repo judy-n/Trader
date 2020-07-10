@@ -9,8 +9,6 @@ import java.io.File;
 
 /**
  * UserGateway is a class that allows UserManagers to be serialized and de-serialized.
- * It will hold a UserManager, and have getters and setters for that UserManager.
- * It will also be able to read and write that user manager to a .ser file.
  *
  * @author Liam Huff
  * @author Ning Zhang
@@ -23,7 +21,6 @@ public class UserGateway {
 
     /**
      * Constructor for UserGateway.
-     *
      */
     public UserGateway() {
     }
@@ -33,18 +30,15 @@ public class UserGateway {
      *
      * @param filePath the path of the file being read
      * @return the de-serialized UserManager if the file exists, a new UserManager otherwise
-     * @throws IOException when an IO error occurs during deserialization
+     * @throws IOException            when an IO error occurs during deserialization
      * @throws ClassNotFoundException when UserManager or any of the classes it stores can't be found
      */
     public UserManager readFromFile(String filePath) throws IOException, ClassNotFoundException {
 
-        boolean fileCreated = new File(filePath).createNewFile();
-        boolean fileEmpty = false;
-
-        if (!fileCreated) {fileEmpty = (new File(filePath).length() == 0);}
         //returns true and creates new file if file doesn't exist yet, false otherwise
+        boolean fileCreated = new File(filePath).createNewFile();
 
-        if (!fileCreated && !fileEmpty) {
+        if (!fileCreated && new File(filePath).length() != 0) {
             FileInputStream fis = new FileInputStream(filePath);
             BufferedInputStream buffer = new BufferedInputStream(fis);
             ObjectInputStream ois = new ObjectInputStream(buffer);
@@ -60,7 +54,7 @@ public class UserGateway {
      * Serializes this system's UserManager.
      *
      * @param filePath the path of the file being written to
-     * @param um the UserManager being serialized
+     * @param um       the UserManager being serialized
      * @throws IOException when an IO error occurs during serialization
      */
     public void saveToFile(String filePath, UserManager um) throws IOException {

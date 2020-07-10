@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Map;
 
@@ -19,12 +20,12 @@ import java.util.Map;
  * last modified 2020-07-10
  */
 public class TradeManager implements Serializable {
-    private ArrayList<Trade> allTrades;
-    private ArrayList<String> cancelledUsers;
+    private List<Trade> allTrades;
+    private List<String> cancelledUsers;
 
     /**
      * Class constructor.
-     * Creates a new ArrayList of Trades and assigns its reference to allTrades.
+     * Creates a new list of Trades and assigns its reference to allTrades.
      */
     public TradeManager() {
         allTrades = new ArrayList<>();
@@ -34,19 +35,19 @@ public class TradeManager implements Serializable {
     /**
      * Getter for all Trades in the system.
      *
-     * @return an ArrayList of all Trade in the system
+     * @return a list of all Trades in the system
      */
-    public ArrayList<Trade> getAllTrades() {
+    public List<Trade> getAllTrades() {
         return allTrades;
     }
 
     /**
      * Getter for all temporary trades in the system.
      *
-     * @return an ArrayList of all TemporaryTrades in the system
+     * @return a list of all TemporaryTrades in the system
      */
-    public ArrayList<TemporaryTrade> getAllTempTrades() {
-        ArrayList<TemporaryTrade> allTempTrades = new ArrayList<>();
+    public List<TemporaryTrade> getAllTempTrades() {
+        List<TemporaryTrade> allTempTrades = new ArrayList<>();
         for (Trade t : allTrades) {
             if (t instanceof TemporaryTrade) {
                 allTempTrades.add((TemporaryTrade) t);
@@ -56,11 +57,12 @@ public class TradeManager implements Serializable {
     }
 
     /**
-     * Getter for all of the ongoing trades that have not been cancelled
-     * @return allOngoingNotCancelledTrades
+     * Getter for all of the ongoing trades that have not been cancelled.
+     *
+     * @return all ongoing trades that have not been cancelled
      */
-    private ArrayList<Trade> getAllOngoingNotCancelledTrades() {
-        ArrayList<Trade> allOngoingNotCancelledTrades = new ArrayList<>();
+    private List<Trade> getAllOngoingNotCancelledTrades() {
+        List<Trade> allOngoingNotCancelledTrades = new ArrayList<>();
         for (Trade t : allTrades) {
             if (!t.getIsComplete() && !t.getIsCancelled()) {
                 allOngoingNotCancelledTrades.add(t);
@@ -76,7 +78,7 @@ public class TradeManager implements Serializable {
      */
     public int getTimesLent(String username){
         int timesLent = 0;
-        ArrayList<Trade> trades = getCompletedTrades(username);
+        List<Trade> trades = getCompletedTrades(username);
         for(Trade t : trades){
             if(t.getInvolvedUsernames()[1].equals(username)){
                 timesLent ++;
@@ -125,7 +127,7 @@ public class TradeManager implements Serializable {
      * Getter for cancelledUsers
      * @return cancelledUsers the cancelled users
      */
-    public ArrayList<String> getCancelledUsers() {
+    public List<String> getCancelledUsers() {
         return cancelledUsers;
     }
 
@@ -140,10 +142,10 @@ public class TradeManager implements Serializable {
     /**
      * Getter for all permanent trades in the system.
      *
-     * @return an ArrayList of all PermanentTrades in the system
+     * @return a list of all PermanentTrades in the system
      */
-    public ArrayList<PermanentTrade> getAllPermTrades() {
-        ArrayList<PermanentTrade> allPermTrades = new ArrayList<>();
+    public List<PermanentTrade> getAllPermTrades() {
+        List<PermanentTrade> allPermTrades = new ArrayList<>();
         for (Trade t : allTrades) {
             if (t instanceof PermanentTrade) {
                 allPermTrades.add((PermanentTrade) t);
@@ -154,7 +156,7 @@ public class TradeManager implements Serializable {
 
 
     /**
-     * Adds the given Trade to the ArrayList of all Trades.
+     * Adds the given Trade to the list of all Trades.
      *
      * @param tradeToAdd the Trade being added
      */
@@ -163,7 +165,7 @@ public class TradeManager implements Serializable {
     }
 
     /**
-     * Removes the given Trade from the ArrayList of all Trades.
+     * Removes the given Trade from the list of all Trades.
      *
      * @param tradeToRemove the Trade being removed
      */
@@ -177,8 +179,8 @@ public class TradeManager implements Serializable {
      * @param username the username of the user whose list of ongoing trades is being retrieved
      * @return a list of the given user's ongoing Trades
      */
-    public ArrayList<Trade> getOngoingTrades(String username) {
-        ArrayList<Trade> ongoingTrades = new ArrayList<>();
+    public List<Trade> getOngoingTrades(String username) {
+        List<Trade> ongoingTrades = new ArrayList<>();
         for (Trade t : allTrades) {
             if (t.isInvolved(username) && !t.getIsComplete()) {
                 ongoingTrades.add(t);
@@ -192,8 +194,8 @@ public class TradeManager implements Serializable {
      * @param username the username of the user
      * @return completedTrades this user's completed trades
      */
-    private ArrayList<Trade> getCompletedTrades(String username) {
-        ArrayList<Trade> completedTrades = new ArrayList<>();
+    private List<Trade> getCompletedTrades(String username) {
+        List<Trade> completedTrades = new ArrayList<>();
         for (Trade t : allTrades) {
             if (t.isInvolved(username) && t.getIsComplete()) {
                 completedTrades.add(t);
@@ -207,8 +209,8 @@ public class TradeManager implements Serializable {
      * @param username this user's username
      * @return allTradesThisUser all of this user's trades
      */
-    private ArrayList<Trade> getAllTrades(String username) {
-        ArrayList<Trade> allTradesThisUser = new ArrayList<>();
+    private List<Trade> getAllTrades(String username) {
+        List<Trade> allTradesThisUser = new ArrayList<>();
         for (Trade t : allTrades) {
             if (t.isInvolved(username)) {
                 allTradesThisUser.add(t);
@@ -226,7 +228,7 @@ public class TradeManager implements Serializable {
      */
     public Trade[] getRecentThreeTrades(String username) {
         Trade[] recentThree = new Trade[3];
-        ArrayList<Trade> completedTrades = getCompletedTrades(username);
+        List<Trade> completedTrades = getCompletedTrades(username);
 
         for (int i = 0; i < 3; i++) {
             if (!completedTrades.isEmpty()) {
@@ -248,7 +250,7 @@ public class TradeManager implements Serializable {
      * @return the total number of meetings planned to occur in the same week as the given date for the given user
      */
     public int getNumMeetingsThisWeek(String username, LocalDate date) {
-        ArrayList<Trade> allTradesThisUser = getAllTrades(username);
+        List<Trade> allTradesThisUser = getAllTrades(username);
         int dow = date.getDayOfWeek().getValue();
         LocalDate dayBeforeWeek = date.minusDays(dow);
         LocalDate dayAfterWeek = date.plusDays(7 - dow + 1);
@@ -278,15 +280,15 @@ public class TradeManager implements Serializable {
      */
     //takes in a user and finds those top three most frequent trade partners
     public String[] getFrequentTradePartners(String username) {
-        ArrayList<String> tradePartners = new ArrayList<>();
+        List<String> tradePartners = new ArrayList<>();
         Set<String> uniquePartner = new HashSet<>();
         String[] frequentPartners = new String[]{"empty", "empty", "empty"};
 
-        ArrayList<Integer> frequency = new ArrayList<>();
+        List<Integer> frequency = new ArrayList<>();
         HashMap<String, Integer> freqToUsername = new HashMap<>();
-        ArrayList<String> sortedUsers = new ArrayList<>();
+        List<String> sortedUsers = new ArrayList<>();
 
-        ArrayList<Trade> completedTrades = getCompletedTrades(username);
+        List<Trade> completedTrades = getCompletedTrades(username);
         if (completedTrades.isEmpty()) {
             return frequentPartners;
         }

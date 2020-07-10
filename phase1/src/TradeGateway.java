@@ -9,8 +9,6 @@ import java.io.File;
 
 /**
  * TradeGateway is a class that allows TradeManagers to be serialized and de-serialized.
- * It will hold a TradeManager, and have getters and setters for that TradeManager.
- * It will also be able to read and write that TradeManager to a .ser file.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
@@ -37,13 +35,10 @@ public class TradeGateway {
      */
     public TradeManager readFromFile(String filePath) throws IOException, ClassNotFoundException {
 
-        boolean fileCreated = new File(filePath).createNewFile();
-        boolean fileEmpty = false;
-
-        if (!fileCreated) {fileEmpty = (new File(filePath).length() == 0);}
         //returns true and creates new file if file doesn't exist yet, false otherwise
+        boolean fileCreated = new File(filePath).createNewFile();
 
-        if (!fileCreated && !fileEmpty) {
+        if (!fileCreated && new File(filePath).length() != 0) {
             FileInputStream fis = new FileInputStream(filePath);
             BufferedInputStream buffer = new BufferedInputStream(fis);
             ObjectInputStream ois = new ObjectInputStream(buffer);

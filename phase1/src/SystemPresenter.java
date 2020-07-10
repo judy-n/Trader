@@ -1,6 +1,6 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The presenter used for the entire program. Prints to text UI.
@@ -106,7 +106,7 @@ public class SystemPresenter {
     }
 
     //helper method that prints inventory + pending
-    private void presentInventory(ArrayList<Item> itemInventory, ArrayList<Item> pendingItems) {
+    private void presentInventory(List<Item> itemInventory, List<Item> pendingItems) {
         System.out.println("\n-- Your inventory --");
         if (itemInventory.isEmpty()) {
             System.out.println("nothing here yet!");
@@ -125,7 +125,7 @@ public class SystemPresenter {
     }
 
     //helper method that prints wishlist
-    private void presentWishlist(ArrayList<Item> itemWishlist) {
+    private void presentWishlist(List<Item> itemWishlist) {
         System.out.println("\n-- Your wishlist --");
         if (itemWishlist.isEmpty()) {
             System.out.println("nothing here yet!");
@@ -135,7 +135,7 @@ public class SystemPresenter {
         }
     }
 
-    public void inventoryEditor(ArrayList<Item> itemInventory, ArrayList<Item> pendingItems) {
+    public void inventoryEditor(List<Item> itemInventory, List<Item> pendingItems) {
         presentInventory(itemInventory, pendingItems);
         System.out.println("\n   Choose one of the options: " +
                 "\n   1 - Add an item to inventory" +
@@ -187,7 +187,7 @@ public class SystemPresenter {
         }
     }
 
-    public void wishlistEditor(ArrayList<Item> itemWishlist) {
+    public void wishlistEditor(List<Item> itemWishlist) {
         presentWishlist(itemWishlist);
         System.out.println("\n   Choose one of the options:" +
                 "\n   1 - Remove item from wish list" +
@@ -217,7 +217,7 @@ public class SystemPresenter {
         }
     }
 
-    public void catalogViewer(ArrayList<Item> approvedItems) {
+    public void catalogViewer(List<Item> approvedItems) {
         System.out.println("\nThese are all the items available for trade:");
         presenterAllItems(approvedItems);
 
@@ -261,7 +261,7 @@ public class SystemPresenter {
         }
     }
 
-    public void catalogEditor(ArrayList<Item> pendingItems) {
+    public void catalogEditor(List<Item> pendingItems) {
         System.out.println("\nThese are all the items waiting for approval:");
         presenterAllItems(pendingItems);
     }
@@ -282,7 +282,7 @@ public class SystemPresenter {
         System.out.print("Would you like to 1) approve or 2) reject this item? (0 to quit): ");
     }
 
-    private void presenterAllItems(ArrayList<Item> items) {
+    private void presenterAllItems(List<Item> items) {
         if (items.isEmpty()) {
             System.out.println("Nothing here yet!");
         } else {
@@ -294,7 +294,7 @@ public class SystemPresenter {
         }
     }
 
-    public void accountFreezer(ArrayList<String> usernames) {
+    public void accountFreezer(List<String> usernames) {
         System.out.println("\nHere are the users that need to be frozen:");
         int index = 1;
         for (String username : usernames) {
@@ -325,7 +325,7 @@ public class SystemPresenter {
         }
     }
 
-    public void adminGetUnfreezeRequests(ArrayList<NormalUser> unfreezeRequests) {
+    public void adminGetUnfreezeRequests(List<NormalUser> unfreezeRequests) {
         System.out.println("\nHere are the users that requested to be unfrozen:");
         int index = 1;
         for (User u : unfreezeRequests) {
@@ -380,7 +380,7 @@ public class SystemPresenter {
         }
     }
 
-    public void tradeRequestViewer(ArrayList<Item> items) {
+    public void tradeRequestViewer(List<Item> items) {
         presenterAllItems(items);
     }
 
@@ -401,7 +401,7 @@ public class SystemPresenter {
 
     }
 
-    public void tradeRequestViewer(int input, ArrayList<Item> items, ArrayList<String> owners) {
+    public void tradeRequestViewer(int input, List<Item> items, List<String> owners) {
         switch (input) {
             case 1:
                 System.out.println("\nHere is all the trade requests you sent:");
@@ -415,7 +415,7 @@ public class SystemPresenter {
         }
     }
 
-    private void presentInitiatedTradeRequests(ArrayList<Item> items, ArrayList<String> users) {
+    private void presentInitiatedTradeRequests(List<Item> items, List<String> users) {
         if (items.isEmpty()) {
             System.out.println("You did not initiate any trades.");
         } else {
@@ -427,7 +427,7 @@ public class SystemPresenter {
         }
     }
 
-    private void presentReceivedTradeRequests(ArrayList<Item> items, ArrayList<String> users) {
+    private void presentReceivedTradeRequests(List<Item> items, List<String> users) {
         int index = 1;
         for (Item i : items) {
             System.out.println(index + ". Trade for " + i.getName() + " from user " + users.get(index - 1));
@@ -528,7 +528,7 @@ public class SystemPresenter {
         }
     }
 
-    public void ongoingTrades(ArrayList<Trade> ongoingTrades, ArrayList<Item[]> tradeItems, String username) {
+    public void ongoingTrades(List<Trade> ongoingTrades, List<Item[]> tradeItems, String username) {
         System.out.println("\nHere are all your ongoing trades:");
         int index = 1;
         for (Trade trade : ongoingTrades) {

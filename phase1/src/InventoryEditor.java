@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Shows the user their inventory and lets them edit it through user input.
@@ -40,8 +40,8 @@ public class InventoryEditor {
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        ArrayList<Item> itemInventory = itemManager.getApprovedItemsByIDs(currentUser.getInventory());
-        ArrayList<Item> pendingItems = itemManager.getPendingItemsByIDs(currentUser.getPendingInventory());
+        List<Item> itemInventory = itemManager.getApprovedItemsByIDs(currentUser.getInventory());
+        List<Item> pendingItems = itemManager.getPendingItemsByIDs(currentUser.getPendingInventory());
 
         sp.inventoryEditor(itemInventory, pendingItems);
         try {
