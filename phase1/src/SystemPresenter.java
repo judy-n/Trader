@@ -304,8 +304,14 @@ public class SystemPresenter {
         System.out.println("\nWould you like to freeze all of the accounts?(Y/N)");
     }
 
-    public void accountFreezer() {
-        System.out.println("\nAll frozen!");
+    public void accountFreezer(int input) {
+        switch (input) {
+            case 1:
+                System.out.println("\nAll frozen!");
+                break;
+            case 2:
+                System.out.println("\n Aborted!");
+        }
     }
 
     public void requestUnfreeze(int input) {
