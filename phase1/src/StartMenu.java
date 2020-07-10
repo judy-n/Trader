@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-08
+ * last modified 2020-07-10
  */
 public class StartMenu {
     private int userInput;
@@ -36,6 +36,10 @@ public class StartMenu {
         }
     }
 
+    /**
+     * Getter for userInput
+     * @return This class's userinput
+     */
     public int getUserInput() {
         return userInput;
     }
