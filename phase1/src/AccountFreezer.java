@@ -44,14 +44,16 @@ public class AccountFreezer {
             while (!input.equalsIgnoreCase("y") && !input.equalsIgnoreCase("n")) {
                 sp.invalidInput();
                 input = br.readLine();
+                sp.accountFreezer(1);
             }
             if (input.equalsIgnoreCase("y")) {
                 for (NormalUser u : users) {
                     u.freeze();
                 }
                 um.clearUsernamesToFreeze();
+                sp.accountFreezer(2);
             }
-            sp.accountFreezer();
+
             close();
         } catch (IOException e) {
             sp.exceptionMessage();
