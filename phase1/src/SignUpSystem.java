@@ -85,7 +85,7 @@ public class SignUpSystem {
             }
             sp.signUpSystem(9);
             String pwInput2 = br.readLine();
-            while (!pwInput1.equals(pwInput2)) {
+            while (!pwInput2.equals(pwInput1)) {
                 sp.signUpSystem(10);
                 pwInput2 = br.readLine();
             }
