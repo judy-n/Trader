@@ -45,6 +45,7 @@ public class OngoingTradesViewer {
         List<Trade> ongoingTrades = tradeManager.getOngoingTrades(currUsername);
         List<Item[]> tradeItems = new ArrayList<>();
 
+
         for (Trade t : ongoingTrades) {
             String otherUsername = t.getOtherUsername(currUsername);
             long[] tempItemIDs = {t.getLentItemID(currUsername), t.getLentItemID(otherUsername)};

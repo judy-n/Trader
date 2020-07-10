@@ -94,8 +94,6 @@ public class TradeRequestViewer {
         } //end
 
 
-        //if user is frozen, can not accept trade requests
-
         List<Item> receivedItems = new ArrayList<>();
         List<String> receivedOwners = new ArrayList<>();
         int index = 1;
@@ -196,6 +194,7 @@ public class TradeRequestViewer {
         }
         String[] keyToRemove = new String[] {traders.get(index-1)[0], traders.get(index -1)[1]};
         currentUser.setTradeRequests(keyToRemove);
+        System.out.println("SHOULD BE REMOVED?");
         String trader = traders.get(index - 1)[0];
         long itemId = itemIds.get(index - 1)[1];
         Item firstItem = itemManager.getApprovedItem(itemId);

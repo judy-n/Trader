@@ -49,8 +49,10 @@ public class CatalogViewer {
         int timesBorrowed = currentUser.getTimesBorrowed();
         int timesLent = tradeManager.getTimesLent(currentUser.getUsername());
 
+
+
         if(((timesLent - timesBorrowed) < currentUser.getLendMinimum())
-                &&!currentUser.getTradeRequest().isEmpty()){
+                &&currentUser.hasBorrowed()){
             sp.catalogViewer(5);
             close();
         }else {

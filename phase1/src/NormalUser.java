@@ -22,7 +22,7 @@ public class NormalUser extends User implements Serializable {
 
     private boolean isFrozen;
     private int numIncomplete;
-
+    private int timesBorrowed;
     private int weeklyTradeMax = 3;
     private int meetingEditMax = 3;
     private int lendMinimum = 1; //to borrow in a one-way trade, user must have lent at least lendMinimum item(s) more than they have borrowed
@@ -52,13 +52,21 @@ public class NormalUser extends User implements Serializable {
      * @return the number of times the user requested to borrow
      */
     public int getTimesBorrowed(){
-        int timesBorrowed = 0;
         for(String[] key : tradeRequests.keySet()){
             if(key[0].equals(getUsername())){
                 timesBorrowed ++;
             }
         }
         return timesBorrowed;
+    }
+
+    public boolean hasBorrowed(){
+        for(String[] key : tradeRequests.keySet()){
+            if(key[0].equals(getUsername())){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
