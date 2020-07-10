@@ -46,7 +46,7 @@ public class CatalogViewer {
         sp.catalogViewer(itemManager.getApprovedItems(currentUser.getUsername()));
 
 
-        int timesBorrowed = currentUser.getTimesBorrowed();
+        int timesBorrowed = currentUser.getTimesBorrowed()+tradeManager.getTimesBorrowed(currentUser.getUsername());
         int timesLent = tradeManager.getTimesLent(currentUser.getUsername());
 
 
