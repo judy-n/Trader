@@ -19,7 +19,13 @@ public class AccountUnfreezer {
     private TradeManager tradeManager;
     private SystemPresenter sp;
 
-    //for non-admin requesting to be unfrozen
+    /**
+     * Creates an account unfreezer for a non admin user
+     * @param user non admin user
+     * @param im the system's item manager
+     * @param um the system's user manager
+     * @param tm the system's trade manager
+     */
     public AccountUnfreezer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         currentUser = user;
         itemManager = im;
@@ -31,7 +37,12 @@ public class AccountUnfreezer {
         closeNormal();
     }
 
-    //for admin reviewing unfreeze requests
+    /**
+     * Creates an account unfreezer for admin users
+     * @param user admin user
+     * @param im the system's item manager
+     * @param um the system's user manager
+     */
     public AccountUnfreezer(AdminUser user, ItemManager im, UserManager um) {
         currentUser = user;
         itemManager = im;

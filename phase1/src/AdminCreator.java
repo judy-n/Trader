@@ -12,6 +12,12 @@ public class AdminCreator {
     private ItemManager im;
     private UserManager um;
 
+    /**
+     * Creates an admin creator that lets the initial admin create other admins
+     * @param user the initial admin
+     * @param im the system's item manager
+     * @param um the system's user manager
+     */
     public AdminCreator(AdminUser user, ItemManager im, UserManager um) {
         currentAdmin = user;
         this.im = im;
