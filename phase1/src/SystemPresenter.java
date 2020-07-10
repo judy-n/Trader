@@ -109,7 +109,7 @@ public class SystemPresenter {
     private void presentInventory(List<Item> itemInventory, List<Item> pendingItems) {
         System.out.println("\n-- Your inventory --");
         if (itemInventory.isEmpty()) {
-            System.out.println("nothing here yet!");
+            emptyListMessage();
         }
         for (Item i : itemInventory) {
             System.out.println((itemInventory.indexOf(i) + 1) + ". " + i);
@@ -117,7 +117,7 @@ public class SystemPresenter {
 
         System.out.println("\n-- Items awaiting approval --");
         if (pendingItems.isEmpty()) {
-            System.out.println("nothing here yet!");
+            emptyListMessage();
         }
         for (Item i : pendingItems) {
             System.out.println("- " + i);
@@ -128,7 +128,7 @@ public class SystemPresenter {
     private void presentWishlist(List<Item> itemWishlist) {
         System.out.println("\n-- Your wishlist --");
         if (itemWishlist.isEmpty()) {
-            System.out.println("nothing here yet!");
+            emptyListMessage();
         }
         for (Item i : itemWishlist) {
             System.out.println((itemWishlist.indexOf(i) + 1) + ". " + i);
@@ -174,16 +174,16 @@ public class SystemPresenter {
                 System.out.println("\nNo items to remove.");
                 break;
             case 2:
-                System.out.print("Enter the index of the item you would like to remove: ");
+                System.out.print("\nEnter the index of the item you would like to remove: ");
                 break;
         }
     }
 
     public void inventoryRemoveItem(String name, int index, int input) {
         if (input == 1) {
-            System.out.print("\nRemove " + index + ". " + name + " from your inventory? (Y/N): ");
+            System.out.print("\nRemove " + index + ". [" + name + "] from your inventory? (Y/N): ");
         } else {
-            System.out.println("\n" + name + " has been removed from your inventory!");
+            System.out.println("\n[" + name + "] has been removed from your inventory!");
         }
     }
 
@@ -201,7 +201,7 @@ public class SystemPresenter {
                 System.out.println("\nYour wish list is empty.");
                 break;
             case 2:
-                System.out.println("\nEnter the index of the item you would like to remove:");
+                System.out.print("\nEnter the index of the item you would like to remove:");
                 break;
         }
     }
@@ -209,10 +209,10 @@ public class SystemPresenter {
     public void wishlistRemoveItem(String name, int input) {
         switch (input) {
             case 1:
-                System.out.println("\nRemove " + name + " from your wishlist?(Y/N)");
+                System.out.print("\nRemove [" + name + "] from your wishlist? (Y/N): ");
                 break;
             case 2:
-                System.out.println("\n" + name + " is removed from your wishlist!");
+                System.out.println("\n[" + name + "] has been removed from your wishlist!");
                 break;
         }
     }
@@ -220,7 +220,6 @@ public class SystemPresenter {
     public void catalogViewer(List<Item> approvedItems) {
         System.out.println("\nThese are all the items available for trade:");
         presenterAllItems(approvedItems);
-
     }
 
     public void catalogViewer(int input) {
@@ -284,7 +283,7 @@ public class SystemPresenter {
 
     private void presenterAllItems(List<Item> items) {
         if (items.isEmpty()) {
-            System.out.println("Nothing here yet!");
+            emptyListMessage();
         } else {
             int index = 1;
             for (Item i : items) {
@@ -301,7 +300,11 @@ public class SystemPresenter {
             System.out.println(index + ". " + username);
             index++;
         }
-        System.out.println("\nWould you like to freeze all of the accounts?(Y/N)");
+        if (usernames.isEmpty()) {
+            emptyListMessage();
+        } else {
+            System.out.print("\nWould you like to freeze all of the accounts above? (Y/N): ");
+        }
     }
 
     public void accountFreezer(int input) {
@@ -309,8 +312,6 @@ public class SystemPresenter {
             case 1:
                 System.out.println("\nAll frozen!");
                 break;
-            case 2:
-                System.out.println("\n Aborted!");
         }
     }
 
@@ -332,6 +333,11 @@ public class SystemPresenter {
             System.out.println(index + ". " + u.getUsername());
             index++;
         }
+        if (unfreezeRequests.isEmpty()) {
+            emptyListMessage();
+        } else {
+            System.out.print("\nWould you like to unfreeze any of the accounts? (Y/N): ");
+        }
     }
 
     public void adminGetUnfreezeRequests(int input) {
@@ -345,37 +351,30 @@ public class SystemPresenter {
             case 3:
                 System.out.println("\nFinished!");
                 break;
-            case 4:
-                System.out.print("\nWould you like to unfreeze any of the accounts? (Y/N): ");
-                break;
         }
     }
 
     public void tradeRequestViewer(int input) {
         switch (input) {
             case 1:
-                System.out.println("You did not receive any trade requests.");
-                break;
+                System.out.print("\n Once you're done viewing your initiated trades, enter 0 to quit: ");
             case 2:
-                System.out.println("You did not initiate any trade requests.");
-                break;
-            case 3:
                 System.out.print("\nPlease suggest a place: ");
                 break;
-            case 4:
-                System.out.print("\nWould you like to accept any of these requests? (0 to quit): ");
-                break;
-            case 5:
+            case 3:
                 System.out.println("\nSorry, you can't view any trade requests because your account is currently frozen.");
                 break;
-            case 6:
+            case 4:
                 System.out.print("\nPlease suggest a date and time using the given format (YYYY/MM/DD-hh:mm): ");
                 break;
-            case 7:
+            case 5:
                 System.out.print("\nWould you like any item in their inventory? (0 if not): ");
                 break;
-            case 8:
+            case 6:
                 System.out.print("\nWould you like to make a 1) permanent or 2) temporary trade?: ");
+                break;
+            case 7:
+                System.out.println("\nThe other person's inventory is currently empty, so you cannot borrow anything from them.");
                 break;
         }
     }
@@ -387,7 +386,7 @@ public class SystemPresenter {
     public void tradeRequestViewer(int input, String owner, String itemName) {
         switch (input) {
             case 1:
-                System.out.print("\nAre you sure you want to borrow [" + itemName + "] from " + owner + " in a one-way ot two-way trade? (Y/N): ");
+                System.out.print("\nAre you sure you want to lend [" + itemName + "] to " + owner + " in a one-way ot two-way trade? (Y/N): ");
                 break;
             case 2:
                 System.out.println("\nInitiating trade with " + owner + ".");
@@ -416,14 +415,13 @@ public class SystemPresenter {
     }
 
     private void presentInitiatedTradeRequests(List<Item> items, List<String> users) {
+        int index = 0;
+        for (Item i : items) {
+            System.out.println("Trade for " + i.getName() + " from user " + users.get(index));
+            index++;
+        }
         if (items.isEmpty()) {
             System.out.println("You did not initiate any trades.");
-        } else {
-            int index = 0;
-            for (Item i : items) {
-                System.out.println("Trade for " + i.getName() + " from user " + users.get(index));
-                index++;
-            }
         }
     }
 
@@ -432,6 +430,11 @@ public class SystemPresenter {
         for (Item i : items) {
             System.out.println(index + ". Trade for " + i.getName() + " from user " + users.get(index - 1));
             index++;
+        }
+        if (items.isEmpty()) {
+            System.out.println("You haven't received any trade requests yet.");
+        } else {
+            System.out.print("\nWould you like to accept any of these requests? (0 to quit): ");
         }
     }
 
@@ -551,7 +554,12 @@ public class SystemPresenter {
             }
             index++;
         }
-        System.out.print("\nEnter the index of the trade you wish to view (0 to quit): ");
+
+        if (ongoingTrades.isEmpty()) {
+            emptyListMessage();
+        } else {
+            System.out.print("\nEnter the index of the trade you wish to view (0 to quit): ");
+        }
     }
 
     public void normalDashboard(int input) {
@@ -675,5 +683,9 @@ public class SystemPresenter {
         System.out.print("\nSorry, you can't suggest this date and time because you've " +
                 "reached the maximum number of meetings allowed in the same week." +
                 "\nPlease enter a different date and time (not within the same week): ");
+    }
+
+    private void emptyListMessage() {
+        System.out.println("nothing here yet!");
     }
 }
