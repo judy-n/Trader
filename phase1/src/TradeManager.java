@@ -16,7 +16,7 @@ import java.util.Map;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-08
+ * last modified 2020-07-10
  */
 public class TradeManager implements Serializable {
     private ArrayList<Trade> allTrades;
@@ -55,6 +55,10 @@ public class TradeManager implements Serializable {
         return allTempTrades;
     }
 
+    /**
+     * Getter for all of the ongoing trades that have not been cancelled
+     * @return allOngoingNotCancelledTrades
+     */
     private ArrayList<Trade> getAllOngoingNotCancelledTrades() {
         ArrayList<Trade> allOngoingNotCancelledTrades = new ArrayList<>();
         for (Trade t : allTrades) {
@@ -65,6 +69,11 @@ public class TradeManager implements Serializable {
         return allOngoingNotCancelledTrades;
     }
 
+    /**
+     * Getter for the number of times a user has lent an item
+     * @param username the user to query
+     * @return timesLent the number of times this user has lent an item
+     */
     public int getTimesLent(String username){
         int timesLent = 0;
         ArrayList<Trade> trades = getCompletedTrades(username);
@@ -77,6 +86,9 @@ public class TradeManager implements Serializable {
     }
 
 
+    /**
+     * Cancels all unconfirmed trades
+     */
     public void cancelAllUnconfirmedTrades() {
         LocalDateTime now = LocalDateTime.now();
         for (Trade t : getAllOngoingNotCancelledTrades()) {
@@ -100,15 +112,26 @@ public class TradeManager implements Serializable {
         }
     }
 
+    /**
+     * Adds users to cancelledUsers
+     * @param users the user to be added
+     */
     public void addCancelledUsers(String[] users) {
         cancelledUsers.add(users[0]);
         cancelledUsers.add(users[1]);
     }
 
+    /**
+     * Getter for cancelledUsers
+     * @return cancelledUsers the cancelled users
+     */
     public ArrayList<String> getCancelledUsers() {
         return cancelledUsers;
     }
 
+    /**
+     * Clears all users from cancelledUsers
+     */
     public void clearCancelledUsers(){
         cancelledUsers.clear();
     }
@@ -164,6 +187,11 @@ public class TradeManager implements Serializable {
         return ongoingTrades;
     }
 
+    /**
+     * Getter for all completed trades for a specific user
+     * @param username the username of the user
+     * @return completedTrades this user's completed trades
+     */
     private ArrayList<Trade> getCompletedTrades(String username) {
         ArrayList<Trade> completedTrades = new ArrayList<>();
         for (Trade t : allTrades) {
@@ -174,6 +202,11 @@ public class TradeManager implements Serializable {
         return completedTrades;
     }
 
+    /**
+     * Getter for all trades (completed & incomplete) by a specific user
+     * @param username this user's username
+     * @return allTradesThisUser all of this user's trades
+     */
     private ArrayList<Trade> getAllTrades(String username) {
         ArrayList<Trade> allTradesThisUser = new ArrayList<>();
         for (Trade t : allTrades) {
@@ -238,6 +271,11 @@ public class TradeManager implements Serializable {
         return count;
     }
 
+    /**
+     * Takes in a username and returns the associated user's top 3 most frequent trading partners
+     * @param username the queried user's username
+     * @return A list of the usernames of the three users this user trades with most frequently
+     */
     //takes in a user and finds those top three most frequent trade partners
     public String[] getFrequentTradePartners(String username) {
         ArrayList<String> tradePartners = new ArrayList<>();
