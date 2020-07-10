@@ -109,7 +109,7 @@ public class TradeRequestViewer {
         try {
             //pick a request to accept
             String temp = br.readLine();
-            while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > index) {
+            while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > index-1) {
                 sp.invalidInput();
                 temp = br.readLine();
             }
