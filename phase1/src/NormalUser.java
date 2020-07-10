@@ -10,7 +10,7 @@ import java.util.HashMap;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-08
+ * last modified 2020-07-10
  */
 
 public class NormalUser extends User implements Serializable {
@@ -45,6 +45,11 @@ public class NormalUser extends User implements Serializable {
         isFrozen = false;
     }
 
+    /**
+     * This method returns the number of times the user requested to borrow
+     * an item from someone else
+     * @return the number of times the user requested to borrow
+     */
     public int getTimesBorrowed(){
         int timesBorrowed = 0;
         for(String[] key : tradeRequests.keySet()){
@@ -55,14 +60,26 @@ public class NormalUser extends User implements Serializable {
         return timesBorrowed;
     }
 
+    /**
+     * This method removes a certain trade request given the key of that
+     * trade request
+     * @param key the key of the trade request
+     */
     public void setTradeRequests(String[] key){
         tradeRequests.remove(key);
     }
 
-
+    /**
+     * This method increases the user's number of incomplete trades
+     */
     public void increaseNumIncomplete(){
         numIncomplete ++;
     }
+
+    /**
+     * This method returns the user's number of incomplete trades
+     * @return number of incomplete trades
+     */
     public int getNumIncomplete(){
         return numIncomplete;
     }
@@ -185,7 +202,6 @@ public class NormalUser extends User implements Serializable {
     public void addTradeRequest(String[] usernames, long[] itemIDs) {
         tradeRequests.put(usernames, itemIDs);
     }
-
 
     /**
      * Getter for this NormalUser's trade requests.
