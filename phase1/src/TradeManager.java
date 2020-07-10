@@ -87,6 +87,23 @@ public class TradeManager implements Serializable {
         return timesLent;
     }
 
+    /**
+     * Getter for the number of times a user has borrowed an item
+     * @param username the user to query
+     * @return timesBorrowed the number of times this user has lent an item
+     */
+    public int getTimesBorrowed(String username){
+        int timesBorrowed = 0;
+        List<Trade> trades = getCompletedTrades(username);
+        for(Trade t : trades){
+            if(t.getInvolvedUsernames()[0].equals(username)){
+                timesBorrowed ++;
+            }
+        }
+        return timesBorrowed;
+    }
+
+
 
     /**
      * Cancels all unconfirmed trades
