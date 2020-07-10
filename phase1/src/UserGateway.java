@@ -39,9 +39,12 @@ public class UserGateway {
     public UserManager readFromFile(String filePath) throws IOException, ClassNotFoundException {
 
         boolean fileCreated = new File(filePath).createNewFile();
+        boolean fileEmpty = false;
+
+        if (!fileCreated) {fileEmpty = (new File(filePath).length() == 0);}
         //returns true and creates new file if file doesn't exist yet, false otherwise
 
-        if (!fileCreated) {
+        if (!fileCreated && !fileEmpty) {
             FileInputStream fis = new FileInputStream(filePath);
             BufferedInputStream buffer = new BufferedInputStream(fis);
             ObjectInputStream ois = new ObjectInputStream(buffer);
