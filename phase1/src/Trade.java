@@ -67,9 +67,10 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     }
 
 
-    public void setIsCancelled(){
-        isCancelled = true;
-    }
+    /**
+     * Sets isCancelled to True
+     */
+    public void setIsCancelled(){isCancelled = true;}
 
 
     /**
