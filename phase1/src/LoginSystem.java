@@ -59,7 +59,7 @@ public class LoginSystem {
             sp.loginSystem(2);
             try {
                 username = br.readLine();
-                while (!userManager.usernameExists(username)) {
+                while (!userManager.usernameExists(username, isAdmin)) {
                     sp.loginSystem(3);
                     username = br.readLine();
                 }
@@ -76,7 +76,7 @@ public class LoginSystem {
             sp.loginSystem(4);
             try {
                 email = br.readLine();
-                while (!userManager.emailExists(email)) {
+                while (!userManager.emailExists(email, isAdmin)) {
                     sp.loginSystem(5);
                     email = br.readLine();
                 }

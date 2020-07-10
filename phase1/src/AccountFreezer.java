@@ -17,6 +17,12 @@ public class AccountFreezer {
     private ItemManager im;
     private UserManager um;
 
+    /**
+     * Creates an AccountFreezer that sets a certain user's status to frozen
+     * @param user the admin user
+     * @param im the system's item manager
+     * @param um the system's user manager
+     */
     public AccountFreezer(AdminUser user, ItemManager im, UserManager um) {
         currentAdmin = user;
         this.im = im;

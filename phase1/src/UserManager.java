@@ -155,12 +155,20 @@ public class UserManager implements Serializable {
      * Checks if a User with the given email already exists in the user database.
      *
      * @param email the email being checked for whether it's already taken or not
+     * @param isAdmin true if the user is an admin false otherwise
      * @return true if User with the given email exists, false otherwise
      */
-    public boolean emailExists(String email) {
-        for (User u : getAllUsers()) {
-            if (u.getEmail().equals(email))
-                return true;
+    public boolean emailExists(String email, boolean isAdmin) {
+        if(isAdmin) {
+            for (AdminUser u : allAdmins) {
+                if (u.getEmail().equals(email))
+                    return true;
+            }
+        }else{
+            for(NormalUser u : allNormals){
+                if(u.getEmail().equals(email))
+                    return true;
+            }
         }
         return false;
     }
@@ -169,15 +177,24 @@ public class UserManager implements Serializable {
      * Checks if a User with the given username already exists in the user database.
      *
      * @param username the username being checked for whether it's already taken or not
+     * @param isAdmin true if the user is an admin false otherwise
      * @return true if User with the given username exists, false otherwise
      */
-    public boolean usernameExists(String username) {
-        for (User u : getAllUsers()) {
-            if (u.getUsername().equals(username))
-                return true;
+    public boolean usernameExists(String username, boolean isAdmin) {
+        if(isAdmin) {
+            for (AdminUser u : allAdmins) {
+                if (u.getUsername().equals(username))
+                    return true;
+            }
+        }else{
+            for(NormalUser u : allNormals){
+                if(u.getUsername().equals(username))
+                    return true;
+            }
         }
         return false;
     }
+
 
     /**
      * Return all the usernames that needs to be frozen.

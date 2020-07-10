@@ -183,10 +183,7 @@ public class OngoingTradesViewer {
         close();
     }
 
-    /**
-     * This method closes the current controller
-     */
-    public void close() {
+    private void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
     }
 }
