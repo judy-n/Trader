@@ -30,6 +30,7 @@ public class SignUpSystem {
 
     /**
      * Takes input from the program's user based on signing a Normal or Admin user up.
+     * @param isAdmin true if the user is an admin, false otherwise
      */
     private void inputProcess(boolean isAdmin) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

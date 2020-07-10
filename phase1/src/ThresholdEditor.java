@@ -16,6 +16,13 @@ public class ThresholdEditor {
     private UserManager userManager;
     private AdminUser currentUser;
 
+    /**
+     * Creates a threshold editor that lets an admin user change a certain user's threshold
+     * values
+     * @param user admin user
+     * @param im the system's item manager
+     * @param um the system's user manager
+     */
     public ThresholdEditor(AdminUser user, ItemManager im, UserManager um){
         currentUser = user;
         itemManager = im;

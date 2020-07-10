@@ -15,6 +15,12 @@ public class CatalogEditor {
     private ItemManager itemManager;
     private UserManager userManager;
 
+    /**
+     * Creates a catalog editor that lets an admin user approve or deny certain items
+     * @param user admin user
+     * @param im the system's item manager
+     * @param um the system's user manager
+     */
     public CatalogEditor(AdminUser user, ItemManager im, UserManager um) {
         currentAdmin = user;
         itemManager = im;

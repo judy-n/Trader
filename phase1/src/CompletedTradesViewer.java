@@ -18,7 +18,14 @@ public class CompletedTradesViewer {
     private TradeManager tradeManager;
     private NormalUser currentUser;
 
-
+    /**
+     * Creates a completed trades viewer that lets an non admin user view their most recent
+     * completed trades or trade partners
+     * @param user non admin user
+     * @param im the system's item manager
+     * @param um the system's user manager
+     * @param tm the system's trade manager
+     */
     public CompletedTradesViewer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         currentUser = user;
         itemManager = im;
@@ -59,6 +66,9 @@ public class CompletedTradesViewer {
 //        tradeManager.addTrade(t1);
     }
 
+    /**
+     * This method lets the non admin user viewer their three most recent trades
+     */
     public void viewRecentThreeTrades() {
 
         String currUsername = currentUser.getUsername();
@@ -102,6 +112,9 @@ public class CompletedTradesViewer {
         close();
     }
 
+    /**
+     * This method lets the non admin user view their top three frequent trade partners
+     */
     public void viewTopThreeTrader() {
         String[] topTraders = tradeManager.getFrequentTradePartners(currentUser.getUsername());
         System.out.println("\nHere are your top 3 most frequent trade partners:");
