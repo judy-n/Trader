@@ -39,8 +39,12 @@ public class ItemGateway {
 
         boolean fileCreated = new File(filePath).createNewFile();
         //returns true and creates new file if file doesn't exist yet, false otherwise
+        boolean fileEmpty = false;
 
-        if (!fileCreated) {
+        if (!fileCreated) {fileEmpty = (new File(filePath).length() == 0);}
+        //returns true and creates new file if file doesn't exist yet, false otherwise
+
+        if (!fileCreated && !fileEmpty) {
             FileInputStream fis = new FileInputStream(filePath);
             BufferedInputStream buffer = new BufferedInputStream(fis);
             ObjectInputStream ois = new ObjectInputStream(buffer);
