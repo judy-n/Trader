@@ -61,7 +61,7 @@ public class WishlistEditor {
                         sp.invalidInput();
                         temp2 = br.readLine();
                     }
-                    int indexInput = Integer.parseInt(br.readLine());
+                    int indexInput = Integer.parseInt(temp2);
                     Item selected = itemWishlist.get(indexInput - 1);
                     sp.wishlistRemoveItem(selected.getName(), 1);
 

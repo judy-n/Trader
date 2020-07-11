@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * @author Yiwei Chen
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-07
+ * last modified 2020-07-10
  */
 
 public abstract class Trade implements Serializable, Comparable<Trade> {
@@ -49,12 +49,8 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
         meetingLocation1 = firstLocation;
         lastEditor = involvedUsernames[1];
 
-        isCancelled = true;
+        isCancelled = false;
         isComplete = false;
-        //since the recipient of the trade request always makes the first suggestion
-
-        //test v
-        //isComplete = true;
     }
 
     /**
