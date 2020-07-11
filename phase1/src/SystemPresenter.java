@@ -6,7 +6,7 @@ import java.util.List;
  * The presenter used for the entire program. Prints to text UI.
  *
  * @author Ning Zhang
- * @author Kushagra
+ * @author Kushagra Mehta
  * @author Yingjia Liu
  * @author Judy Naamani
  * @version 1.0
@@ -810,4 +810,8 @@ public class SystemPresenter {
     private void emptyListMessage() {
         System.out.println("nothing here yet!");
     }
+
+    // Presenter methods for AccountOnVacation and AccountNotOnVacation classes
+    // TODO
+
 }
