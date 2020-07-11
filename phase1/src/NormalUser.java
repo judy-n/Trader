@@ -61,6 +61,10 @@ public class NormalUser extends User implements Serializable {
         return timesBorrowed;
     }
 
+    /**
+     * This method returns true if the user has tried to borrow something
+     * @return true if the user has tried to borrow something, false otherwise
+     */
     public boolean hasBorrowed(){
         for(String[] key : tradeRequests.keySet()){
             if(key[0].equals(getUsername())){

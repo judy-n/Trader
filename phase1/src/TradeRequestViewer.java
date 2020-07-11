@@ -134,6 +134,7 @@ public class TradeRequestViewer {
                     if (inputConfirm.equalsIgnoreCase("y")) {
                         //this line removes the trade request once its been accepted
                         currentUser.setTradeRequests(getKeyToRemove());
+                        trader.setTradeRequests(getKeyToRemove());
                         sp.tradeRequestViewer(2, a[0], a[1]);
                         int twoWayItem;
                         if (!trader.getInventory().isEmpty()) {
