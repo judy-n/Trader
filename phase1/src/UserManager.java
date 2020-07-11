@@ -136,11 +136,39 @@ public class UserManager implements Serializable {
     /**
      * Takes the given username and returns the associated account password.
      *
+     * @param username the username of the AdminUser whose password is being searched for
+     * @return the account password associated with the given username
+     */
+    public String adminUsernamePassword(String username) {
+        for (User u : getAllAdmins()) {
+            if (u.getUsername().equals(username))
+                return u.getPassword();
+        }
+        return null;
+    }
+
+    /**
+     * Takes the given username for a NormalUser and returns the associated account password.
+     *
+     * @param username the username of the NormalUser whose password is being searched for
+     * @return the account password associated with the given username
+     */
+    public String normalUsernamePassword(String username) {
+        for (User u : getAllNormals()) {
+            if (u.getUsername().equals(username))
+                return u.getPassword();
+        }
+        return null;
+    }
+
+    /**
+     * Takes the given username for a User and returns the associated account password.
+     *
      * @param username the username of the User whose password is being searched for
      * @return the account password associated with the given username
      */
     public String usernamePassword(String username) {
-        for (User u : getAllUsers()) {
+        for (User u : getAllNormals()) {
             if (u.getUsername().equals(username))
                 return u.getPassword();
         }
