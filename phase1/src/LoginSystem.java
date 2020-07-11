@@ -63,11 +63,12 @@ public class LoginSystem {
                     sp.loginSystem(3);
                     username = br.readLine();
                 }
-                validPw = userManager.usernamePassword(username);
                 if (isAdmin) {
                     user = userManager.getAdminByUsername(username);
+                    validPw = userManager.adminUsernamePassword(username);
                 } else {
                     user = userManager.getNormalByUsername(username);
+                    validPw = userManager.normalUsernamePassword(username);
                 }
             } catch (IOException e) {
                 sp.exceptionMessage();
@@ -83,11 +84,12 @@ public class LoginSystem {
             } catch (IOException e) {
                 sp.exceptionMessage();
             }
-            validPw = userManager.emailPassword(email);
             if (isAdmin) {
                 user = userManager.getAdminByEmail(email);
+                validPw = userManager.adminEmailPassword(email);
             } else {
                 user = userManager.getNormalByEmail(email);
+                validPw = userManager.normalEmailPassword(email);
             }
         }
 
