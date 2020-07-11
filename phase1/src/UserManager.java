@@ -21,7 +21,6 @@ public class UserManager implements Serializable {
     /**
      * Class constructor.
      * Creates a UserManager, setting all lists to empty by default.
-     *
      */
     public UserManager() {
         allNormals = new ArrayList<>();
@@ -190,7 +189,7 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given email and returns the associated Admin account password.
+     * Takes the given email and returns the associated admin account password.
      *
      * @param email the email of the AdminUser whose password is being searched for
      * @return the account password associated with the given email
@@ -218,71 +217,105 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Checks if a User with the given email already exists in the user database.
+     * Checks if a user with the given email already exists in the user database,
+     * regardless of what type of user is passed in.
      *
      * @param email the email being checked for whether it's already taken or not
-     * @param isAdmin true if the user is an admin false otherwise
-     * @return true if User with the given email exists, false otherwise
+     * @return true if user with given email exists, false otherwise
+     */
+    public boolean emailExists(String email) {
+        for (User u : getAllUsers()) {
+            if (u.getEmail().equals(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if a user with the given username already exists in the user database,
+     * regardless of what type of user is passed in.
+     *
+     * @param username the username being checked for whether it's already taken or not
+     * @return true if user with given username exists, false otherwise
+     */
+    public boolean usernameExists(String username) {
+        for (User u : getAllUsers()) {
+            if (u.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if a user with the given email already exists in the user database.
+     * Searches separately in normal or admin database depending on given boolean isAdmin.
+     *
+     * @param email   the email being checked for whether it's already taken or not
+     * @param isAdmin true if the user is an admin, false otherwise
+     * @return true if user with the given email exists in the correct database, false otherwise
      */
     public boolean emailExists(String email, boolean isAdmin) {
-        if(isAdmin) {
+        if (isAdmin) {
             for (AdminUser u : allAdmins) {
                 if (u.getEmail().equals(email))
                     return true;
             }
-        }else{
-            for(NormalUser u : allNormals){
-                if(u.getEmail().equals(email))
+        } else {
+            for (NormalUser u : allNormals) {
+                if (u.getEmail().equals(email))
                     return true;
             }
         }
         return false;
     }
 
+    // made the method below the inverse of the original usernameExists function
+    // cuz Intellij will give a warning otherwise
     /**
-     * Checks if a User with the given username already exists in the user database.
+     * Checks if a user with the given username does NOT exist in the user database.
+     * Searches separately in normal or admin database depending on given boolean isAdmin.
      *
      * @param username the username being checked for whether it's already taken or not
-     * @param isAdmin true if the user is an admin false otherwise
-     * @return true if User with the given username exists, false otherwise
+     * @param isAdmin  true if the user is an admin, false otherwise
+     * @return true if the given username does NOT exist in the correct database, false otherwise
      */
-    public boolean usernameExists(String username, boolean isAdmin) {
-        if(isAdmin) {
+    public boolean usernameNotExists(String username, boolean isAdmin) {
+        if (isAdmin) {
             for (AdminUser u : allAdmins) {
                 if (u.getUsername().equals(username))
-                    return true;
+                    return false;
             }
-        }else{
-            for(NormalUser u : allNormals){
-                if(u.getUsername().equals(username))
-                    return true;
+        } else {
+            for (NormalUser u : allNormals) {
+                if (u.getUsername().equals(username))
+                    return false;
             }
         }
-        return false;
+        return true;
     }
 
 
     /**
-     * Return all the usernames that needs to be frozen.
+     * Return usernames of all accounts that needs to be frozen.
      *
      * @return usernames to freeze
      */
-    public List<String> getUsernamesToFreeze(){
+    public List<String> getUsernamesToFreeze() {
         return usernamesToFreeze;
     }
 
 
-
-    public void addUsernamesToFreeze(String username){
+    public void addUsernamesToFreeze(String username) {
         usernamesToFreeze.add(username);
     }
 
 
     /**
      * Clears the usernamesToFreeze arraylist.
-     *
      */
-    public void clearUsernamesToFreeze(){
+    public void clearUsernamesToFreeze() {
         usernamesToFreeze.clear();
     }
 
@@ -291,7 +324,7 @@ public class UserManager implements Serializable {
      *
      * @return the next admin ID
      */
-    public int getAdminId(){
+    public int getAdminId() {
         return allAdmins.size() + 1;
     }
 
@@ -315,7 +348,7 @@ public class UserManager implements Serializable {
      * @param index the index of an unfreeze request in the list
      * @return the username at the given index
      */
-    public String getUnfreezeRequest(int index){
+    public String getUnfreezeRequest(int index) {
         return unfreezeRequests.get(index - 1);
     }
 
@@ -324,7 +357,7 @@ public class UserManager implements Serializable {
      *
      * @return the total number of unfreeze requests
      */
-    public int getNumUnfreezeRequest(){
+    public int getNumUnfreezeRequest() {
         return unfreezeRequests.size();
     }
 
@@ -333,7 +366,7 @@ public class UserManager implements Serializable {
      *
      * @param username the username being removed from the unfreeze requests
      */
-    public void removeUnfreezeRequest(String username){
+    public void removeUnfreezeRequest(String username) {
         unfreezeRequests.remove(username);
     }
 
@@ -352,7 +385,7 @@ public class UserManager implements Serializable {
      * @param username the username of the user who's being checked
      * @return true if the user already sent an unfreeze request, false otherwise
      */
-    public boolean containsUnfreezeRequest(String username){
+    public boolean containsUnfreezeRequest(String username) {
         return unfreezeRequests.contains(username);
     }
 }

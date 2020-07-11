@@ -135,6 +135,7 @@ public class TradeManager implements Serializable {
         }
     }
 
+
     /**
      * Adds users to cancelledUsers
      *
@@ -156,12 +157,27 @@ public class TradeManager implements Serializable {
 
     /**
      * Clears all users from cancelledUsers
+     *
      */
     public void clearCancelledUsers() {
         cancelledUsers.clear();
     }
 
-
+    /**
+     * Takes in an item and gets whether or not it's involved in a cancelled trade.
+     *
+     * @param item the item to query
+     * @return true if the given item is involved in a cancelled trade, false otherwise
+     */
+    public boolean getItemInCancelledTrade(Item item) {
+        for (Trade t : allTrades) {
+            if ((t.getInvolvedItemIDs()[0] == item.getID() || t.getInvolvedItemIDs()[1] == item.getID()) &&
+                    t.getIsCancelled()) {
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * Getter for all permanent trades in the system.
      *
@@ -176,7 +192,6 @@ public class TradeManager implements Serializable {
         }
         return allPermTrades;
     }
-
 
     /**
      * Adds the given Trade to the list of all Trades.
@@ -205,7 +220,7 @@ public class TradeManager implements Serializable {
     public List<Trade> getOngoingTrades(String username) {
         List<Trade> ongoingTrades = new ArrayList<>();
         for (Trade t : allTrades) {
-            if (t.isInvolved(username) && !t.getIsComplete()) {
+            if (t.isInvolved(username) && !t.getIsComplete() && !t.getIsCancelled()) {
                 ongoingTrades.add(t);
             }
         }

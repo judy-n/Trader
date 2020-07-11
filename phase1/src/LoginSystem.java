@@ -60,7 +60,7 @@ public class LoginSystem {
             sp.loginSystem(2);
             try {
                 username = br.readLine();
-                while (!userManager.usernameExists(username, isAdmin)) {
+                while (userManager.usernameNotExists(username, isAdmin)) {
                     sp.loginSystem(3);
                     username = br.readLine();
                 }

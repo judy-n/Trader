@@ -85,6 +85,8 @@ public class CatalogViewer {
                 } else if (tradeOrWishlist == 1) {
                     if (currentUser.getIsFrozen()) {
                         sp.catalogViewer(2);
+                    } else if (currentUser.isRequestedInTrade(selectedItem.getID())) {
+                        sp.catalogViewer(6);
                     } else if (currentUser.hasBorrowed() && ((timesLent - timesBorrowed) < currentUser.getLendMinimum())) {
                         sp.catalogViewer(currentUser);
                     } else {

@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-10
+ * last modified 2020-07-11
  */
 public class SignUpSystem {
     private String username;
@@ -40,7 +40,7 @@ public class SignUpSystem {
             boolean invalidInput;
             do {
                 invalidInput = false;
-                if (userManager.emailExists(emailInput, isAdmin)) {
+                if (userManager.emailExists(emailInput)) {
                     invalidInput = true;
                     sp.signUpSystem(2);
                     emailInput = br.readLine();
@@ -61,7 +61,7 @@ public class SignUpSystem {
             boolean invalidInput;
             do {
                 invalidInput = false;
-                if (userManager.usernameExists(usernameInput, isAdmin)) {
+                if (userManager.usernameExists(usernameInput)) {
                     invalidInput = true;
                     sp.signUpSystem(5);
                     usernameInput = br.readLine();

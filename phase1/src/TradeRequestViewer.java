@@ -70,13 +70,11 @@ public class TradeRequestViewer {
         long secondItem = 0;
 
         //separate into initiated trades and received trades
-        for (String[] key : currentUser.getTradeRequest().keySet()) {
+        for (String[] key : currentUser.getTradeRequests().keySet()) {
             if (currentUser.getUsername().equals(key[0])) {
-                initiatedTrades.put(key, currentUser.getTradeRequest().get(key));
-            } else {
-                if (!userManager.getNormalByUsername(key[1]).getIsFrozen()) {
-                    receivedTrades.put(key, currentUser.getTradeRequest().get(key));
-                }
+                initiatedTrades.put(key, currentUser.getTradeRequests().get(key));
+            } else if (!userManager.getNormalByUsername(key[1]).getIsFrozen()) {
+                receivedTrades.put(key, currentUser.getTradeRequests().get(key));
             }
         }
         List<Item> initiatedItems = new ArrayList<>();
@@ -103,6 +101,7 @@ public class TradeRequestViewer {
         }
         sp.tradeRequestViewer(2, receivedItems, receivedOwners);
 
+        //doesn't show trade requests from frozen users
         try {
             if (receivedTrades.isEmpty() && !initiatedTrades.isEmpty()) {
                 //let them quit with 0 after viewing their initiated trades
@@ -113,7 +112,9 @@ public class TradeRequestViewer {
                     quitInput = br.readLine();
                 }
             } else if (!receivedTrades.isEmpty()) {
-                //pick a request to accept (0 to quit)
+
+                //pick a request to accept/reject (0 to quit)
+
                 String temp = br.readLine();
                 while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > index - 1) {
                     sp.invalidInput();
@@ -127,8 +128,39 @@ public class TradeRequestViewer {
                     trader = userManager.getNormalByUsername(a[0]);
                     firstItem = receivedItems.get(input - 1).getID();
 
-                    //only allow trade if item being requested is available for trade
-                    if (itemManager.getApprovedItem(firstItem).getAvailability()) {
+                    //1) accept, or 2) reject ?
+                    sp.tradeRequestViewer(3, a[0], a[1]);
+
+                    String temp2 = br.readLine();
+                    while (!temp2.matches("[1-2]")) {
+                        sp.invalidInput();
+                        temp2 = br.readLine();
+                    }
+                    int acceptReject = Integer.parseInt(temp2);
+
+                    if (acceptReject == 2) { //reject request
+
+                        //sure you want to reject?
+                        sp.tradeRequestViewer(4, a[0], a[1]);
+                        String inputConfirm = br.readLine();
+                        while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
+                            sp.invalidInput();
+                            inputConfirm = br.readLine();
+                        }
+                        //confirm rejection
+                        if (inputConfirm.equalsIgnoreCase("y")) {
+
+                            currentUser.removeTradeRequests(getKeyToRemove());
+                            trader.removeTradeRequests(getKeyToRemove());
+
+                            sp.tradeRequestViewer(9);
+                        } else {
+                            sp.cancelled();
+                        }
+                    } else if (acceptReject == 1 &&
+                            itemManager.getApprovedItem(firstItem).getAvailability()) {
+                        //only allow trade if item being requested is available for trade
+
                         //trade with xx person?
                         sp.tradeRequestViewer(1, a[0], a[1]);
                         String inputConfirm = br.readLine();
@@ -139,26 +171,26 @@ public class TradeRequestViewer {
                         //confirm trade
                         if (inputConfirm.equalsIgnoreCase("y")) {
                             //remove the trade request from both parties once its been accepted
-                            currentUser.setTradeRequests(getKeyToRemove());
-                            trader.setTradeRequests(getKeyToRemove());
+                            currentUser.removeTradeRequests(getKeyToRemove());
+                            trader.removeTradeRequests(getKeyToRemove());
 
                             sp.tradeRequestViewer(2, a[0], a[1]);   //initiating trade
                             int twoWayItem;
+                            List<Item> tempItems = itemManager.getApprovedItemsByIDs(trader.getInventory());
+                            List<Item> availableInventory = itemManager.getAvailableItems(tempItems);
 
-                            //if other user's inventory isn't empty, allow this user to choose what item they want
-                            if (!trader.getInventory().isEmpty()) {
-                                List<Item> tempItems = itemManager.getApprovedItemsByIDs(trader.getInventory());
-                                List<Item> items = itemManager.getAvailableItems(tempItems);
-                                sp.tradeRequestViewer(items);
+                            //if other user's available inventory isn't empty, allow this user to choose what item they want
+                            if (!availableInventory.isEmpty()) {
+                                sp.tradeRequestViewer(availableInventory);
                                 sp.tradeRequestViewer(5);
-                                String temp2 = br.readLine();
-                                while (!temp2.matches("[0-9]+") || Integer.parseInt(temp2) > items.size()) {
+                                String temp3 = br.readLine();
+                                while (!temp3.matches("[0-9]+") || Integer.parseInt(temp3) > availableInventory.size()) {
                                     sp.invalidInput();
-                                    temp2 = br.readLine();
+                                    temp3 = br.readLine();
                                 }
-                                twoWayItem = Integer.parseInt(temp);
+                                twoWayItem = Integer.parseInt(temp3);
                                 if (twoWayItem != 0) {
-                                    secondItem = items.get(twoWayItem - 1).getID();
+                                    secondItem = availableInventory.get(twoWayItem - 1).getID();
                                 }
                             } else {
                                 sp.tradeRequestViewer(7);
@@ -202,6 +234,8 @@ public class TradeRequestViewer {
                                 //set last editor to this user
                                 tt.setLastEditor(currentUser.getUsername());
                             }
+                        } else {
+                            sp.cancelled();
                         }
                     } else {
                         sp.tradeRequestViewer(8);

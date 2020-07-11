@@ -259,6 +259,9 @@ public class SystemPresenter {
             case 5:
                 System.out.println("\nThis item is already in your wishlist!");
                 break;
+            case 6:
+                System.out.println("\nYou've already sent a request to borrow this item!");
+                break;
         }
     }
 
@@ -388,10 +391,13 @@ public class SystemPresenter {
                 System.out.print("\nWould you like to make a 1) permanent or 2) temporary trade?: ");
                 break;
             case 7:
-                System.out.println("\nThe other person's inventory is currently empty, so you cannot borrow anything from them.");
+                System.out.println("\nThe other user currently has no items available for trade, so you cannot borrow anything from them.");
                 break;
             case 8:
                 System.out.println("\nThe item that this user wants to borrow is currently being lent to someone else!");
+                break;
+            case 9:
+                System.out.println("\nTrade request has been rejected.");
                 break;
         }
     }
@@ -405,16 +411,17 @@ public class SystemPresenter {
     public void tradeRequestViewer(int input, String owner, String itemName) {
         switch (input) {
             case 1:
-                System.out.print("\nAre you sure you want to lend [" + itemName + "] to " + owner + " in a one-way or two-way trade? (Y/N): ");
+                System.out.print("\nAre you sure you want to lend [" + itemName + "] to < " + owner + " > in a one-way or two-way trade? (Y/N): ");
                 break;
             case 2:
-                System.out.println("\nInitiating trade with " + owner + ".");
+                System.out.println("\nInitiating trade with < " + owner + " >");
                 break;
             case 3:
-                System.out.println("Sorry but " + owner + " is currently frozen. " +
-                        "\nPlease pick another request: ");
+                System.out.print("\nWould you like to 1) accept, or 2) reject < " + owner + " >'s request?: ");
                 break;
-
+            case 4:
+                System.out.print("\nAre you sure you want to reject < " + owner + " >'s request? (Y/N): ");
+                break;
         }
 
     }
@@ -463,7 +470,7 @@ public class SystemPresenter {
         if (items.isEmpty()) {
             System.out.println("You haven't received any trade requests yet.");
         } else {
-            System.out.print("\nWould you like to accept any of these requests? Enter the request's index (0 to quit): ");
+            System.out.print("\nWould you like to accept/reject any of these requests? Enter the request's index (0 to quit): ");
         }
     }
 
@@ -531,6 +538,9 @@ public class SystemPresenter {
             case 17:
                 System.out.println("\nYou've already confirmed that the latest transaction took place!");
                 break;
+            case 18:
+                System.out.println("\nYou may not cancel a trade after the meeting has already been scheduled.");
+                break;
         }
     }
 
@@ -589,12 +599,7 @@ public class SystemPresenter {
                 tradePrint = trade.toString(username) + "you're lending [" +
                         tempItems[0].getName() + "] for [" + tempItems[1].getName() + "]";
             }
-            if (trade.getIsCancelled()) {
-                System.out.println(index + ". " + "(Cancelled) " + tradePrint);
-                //delete cancelled trade from program after letting them know it got cancelled?
-            } else {
-                System.out.println(index + ". " + tradePrint);
-            }
+            System.out.println(index + ". " + tradePrint);
             index++;
         }
 

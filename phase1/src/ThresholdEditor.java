@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-10
+ * last modified 2020-07-11
  */
 public class ThresholdEditor {
     private ItemManager itemManager;
@@ -22,10 +22,10 @@ public class ThresholdEditor {
      * Creates a ThresholdEditor that lets an admin change a certain user's threshold values.
      *
      * @param user admin user
-     * @param im the system's item manager
-     * @param um the system's user manager
+     * @param im   the system's item manager
+     * @param um   the system's user manager
      */
-    public ThresholdEditor(AdminUser user, ItemManager im, UserManager um){
+    public ThresholdEditor(AdminUser user, ItemManager im, UserManager um) {
         currentUser = user;
         itemManager = im;
         userManager = um;
@@ -38,53 +38,52 @@ public class ThresholdEditor {
         int newThreshold;
 
         sp.thresholdEditor(1);
-        try{
+        try {
             usernameInput = br.readLine();
-            while(!userManager.usernameExists(usernameInput, false)&&!usernameInput.equals("0")){
+            while (userManager.usernameNotExists(usernameInput, false) && !usernameInput.equals("0")) {
                 sp.invalidInput();
                 usernameInput = br.readLine();
             }
-            if(usernameInput.equals("0")){
-                close();
-            }
 
-            subjectUser = userManager.getNormalByUsername(usernameInput);
+            if (!usernameInput.equals("0")) {
+                subjectUser = userManager.getNormalByUsername(usernameInput);
 
-            sp.thresholdEditor(2);
-            String temp = br.readLine();
-            while (!temp.matches("[0-4]")) {
-                sp.invalidInput();
-                temp = br.readLine();
-            }
-            int choiceInput = Integer.parseInt(temp);
+                sp.thresholdEditor(2);
+                String temp = br.readLine();
+                while (!temp.matches("[0-4]")) {
+                    sp.invalidInput();
+                    temp = br.readLine();
+                }
+                int choiceInput = Integer.parseInt(temp);
 
-            switch(choiceInput){
-                case 0:
-                    break;
-                case 1:
-                    sp.thresholdEditor(1, subjectUser.getWeeklyTradeMax());
-                    newThreshold = thresholdInputCheck();
-                    subjectUser.setWeeklyTradeMax(newThreshold);
-                    break;
-                case 2:
-                    sp.thresholdEditor(2, subjectUser.getMeetingEditMax());
-                    newThreshold = thresholdInputCheck();
-                    subjectUser.setMeetingEditMax(newThreshold);
-                    break;
-                case 3:
-                    sp.thresholdEditor(3, subjectUser.getLendMinimum());
-                    newThreshold = thresholdInputCheck();
-                    subjectUser.setLendMinimum(newThreshold);
-                    break;
-                case 4:
-                    sp.thresholdEditor(4, subjectUser.getIncompleteMax());
-                    newThreshold = thresholdInputCheck();
-                    subjectUser.setIncompleteMax(newThreshold);
-                    break;
+                switch (choiceInput) {
+                    case 0:
+                        break;
+                    case 1:
+                        sp.thresholdEditor(1, subjectUser.getWeeklyTradeMax());
+                        newThreshold = thresholdInputCheck();
+                        subjectUser.setWeeklyTradeMax(newThreshold);
+                        break;
+                    case 2:
+                        sp.thresholdEditor(2, subjectUser.getMeetingEditMax());
+                        newThreshold = thresholdInputCheck();
+                        subjectUser.setMeetingEditMax(newThreshold);
+                        break;
+                    case 3:
+                        sp.thresholdEditor(3, subjectUser.getLendMinimum());
+                        newThreshold = thresholdInputCheck();
+                        subjectUser.setLendMinimum(newThreshold);
+                        break;
+                    case 4:
+                        sp.thresholdEditor(4, subjectUser.getIncompleteMax());
+                        newThreshold = thresholdInputCheck();
+                        subjectUser.setIncompleteMax(newThreshold);
+                        break;
+                }
             }
             close();
 
-        }catch (IOException e){
+        } catch (IOException e) {
             sp.exceptionMessage();
         }
     }

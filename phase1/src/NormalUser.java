@@ -50,13 +50,14 @@ public class NormalUser extends User implements Serializable {
     /**
      * This method returns the number of times the user requested to borrow
      * an item from someone else
+     *
      * @return the number of times the user requested to borrow
      */
-    public int getTimesBorrowed(){
+    public int getTimesBorrowed() {
         int timesBorrowed = 0;
-        for(String[] key : tradeRequests.keySet()){
-            if(key[0].equals(getUsername())){
-                timesBorrowed ++;
+        for (String[] key : tradeRequests.keySet()) {
+            if (key[0].equals(getUsername())) {
+                timesBorrowed++;
             }
         }
         return timesBorrowed;
@@ -64,11 +65,12 @@ public class NormalUser extends User implements Serializable {
 
     /**
      * This method returns true if the user has tried to borrow something
+     *
      * @return true if the user has tried to borrow something, false otherwise
      */
-    public boolean hasBorrowed(){
-        for(String[] key : tradeRequests.keySet()){
-            if(key[0].equals(getUsername())){
+    public boolean hasBorrowed() {
+        for (String[] key : tradeRequests.keySet()) {
+            if (key[0].equals(getUsername())) {
                 return true;
             }
         }
@@ -76,26 +78,27 @@ public class NormalUser extends User implements Serializable {
     }
 
     /**
-     * This method removes a certain trade request given the key of that
-     * trade request
+     * This method removes a certain trade request given the key of that trade request.
+     *
      * @param key the key of the trade request
      */
-    public void setTradeRequests(String[] key){
+    public void removeTradeRequests(String[] key) {
         tradeRequests.remove(key);
     }
 
     /**
      * This method increases the user's number of incomplete trades
      */
-    public void increaseNumIncomplete(){
-        numIncomplete ++;
+    public void increaseNumIncomplete() {
+        numIncomplete++;
     }
 
     /**
      * This method returns the user's number of incomplete trades
+     *
      * @return number of incomplete trades
      */
-    public int getNumIncomplete(){
+    public int getNumIncomplete() {
         return numIncomplete;
     }
 
@@ -193,7 +196,6 @@ public class NormalUser extends User implements Serializable {
 
     /**
      * Sets this NormalUser's status to frozen.
-     *
      */
     public void freeze() {
         isFrozen = true;
@@ -201,7 +203,6 @@ public class NormalUser extends User implements Serializable {
 
     /**
      * Sets this NormalUser's status to NOT frozen.
-     *
      */
     public void unfreeze() {
         isFrozen = false;
@@ -223,7 +224,7 @@ public class NormalUser extends User implements Serializable {
      *
      * @return a map containing all of this user's trade requests
      */
-    public Map<String[], long[]> getTradeRequest() {
+    public Map<String[], long[]> getTradeRequests() {
         return tradeRequests;
     }
 

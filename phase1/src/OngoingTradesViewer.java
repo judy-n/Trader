@@ -23,11 +23,13 @@ public class OngoingTradesViewer {
     private TradeManager tradeManager;
 
     /**
-     * Creates a OngoingTradesViewer for users to see their incompleted trades
-     * @param user current non admin user
-     * @param im the system's item manager
-     * @param um the system's user manager
-     * @param tm the system's trade manager
+     * Creates a OngoingTradesViewer with the given logged-in user and item/user/trade managers.
+     * Lets users see their incomplete trades that haven't been cancelled and edit/confirm trade meetings.
+     *
+     * @param user the normal user who's currently logged in
+     * @param im   the system's item manager
+     * @param um   the system's user manager
+     * @param tm   the system's trade manager
      */
 
     public OngoingTradesViewer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
@@ -148,7 +150,7 @@ public class OngoingTradesViewer {
                             if (selected instanceof TemporaryTrade &&
                                     ((TemporaryTrade) selected).getUserTransactionConfirmation2(currUsername)) {
                                 sp.ongoingTrades(17);
-                                 break;
+                                break;
                             } else if (selected.getUserTransactionConfirmation1(currUsername)) {
                                 sp.ongoingTrades(17);
                                 break;
@@ -187,8 +189,22 @@ public class OngoingTradesViewer {
                             break;
                         //Cancel this trade (just cancels, doesn't contribute to possible freezing)
                         case 4:
-                            selected.setIsCancelled();
-                            sp.ongoingTrades(2);
+                            if (selected.getHasAgreedMeeting1()) {  //can't cancel if meeting already scheduled
+                                sp.ongoingTrades(18);
+                            } else {
+                                selected.setIsCancelled();
+                                long[] itemIDs = selected.getInvolvedItemIDs();
+                                if (itemIDs[0] != 0) {
+                                    Item tempItem1 = im.getApprovedItem(itemIDs[0]);
+                                    tempItem1.setAvailability(true);
+                                }
+                                if (itemIDs[1] != 0) {
+                                    Item tempItem2 = im.getApprovedItem(itemIDs[1]);
+                                    tempItem2.setAvailability(true);
+                                }
+
+                                sp.ongoingTrades(2);
+                            }
                             break;
                         case 5:
                             break;

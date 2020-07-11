@@ -101,9 +101,12 @@ public class InventoryEditor {
                     int indexInput = Integer.parseInt(temp2);
                     Item selectedItem = itemInventory.get(indexInput - 1);
 
+                    //allow removal if item is available + not being asked for in a trade request
+                    // OR if item is in a trade that's been cancelled due to users failing to confirm the transaction
                     if (currentUser.isRequestedInTrade(selectedItem.getID())) {
                         sp.inventoryRemoveItem(4);
-                    } else if (selectedItem.getAvailability()) {
+                    } else if (selectedItem.getAvailability() ||
+                            (!selectedItem.getAvailability() && tradeManager.getItemInCancelledTrade(selectedItem))) {
                         sp.inventoryRemoveItem(selectedItem.getName(), indexInput, 1);
 
                         String confirmInput = br.readLine();
