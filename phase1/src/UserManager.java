@@ -10,7 +10,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-10
+ * last modified 2020-07-11
  */
 public class UserManager implements Serializable {
     private List<NormalUser> allNormals;
@@ -183,6 +183,34 @@ public class UserManager implements Serializable {
      */
     public String emailPassword(String email) {
         for (User u : getAllUsers()) {
+            if (u.getEmail().equals(email))
+                return u.getPassword();
+        }
+        return null;
+    }
+
+    /**
+     * Takes the given email and returns the associated Admin account password.
+     *
+     * @param email the email of the AdminUser whose password is being searched for
+     * @return the account password associated with the given email
+     */
+    public String adminEmailPassword(String email) {
+        for (User u : getAllAdmins()) {
+            if (u.getEmail().equals(email))
+                return u.getPassword();
+        }
+        return null;
+    }
+
+    /**
+     * Takes the given email and returns the associated Normal account password.
+     *
+     * @param email the email of the NormalUser whose password is being searched for
+     * @return the account password associated with the given email
+     */
+    public String normalEmailPassword(String email) {
+        for (User u : getAllNormals()) {
             if (u.getEmail().equals(email))
                 return u.getPassword();
         }
