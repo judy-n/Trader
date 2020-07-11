@@ -162,7 +162,7 @@ public class TradeRequestViewer {
                         LocalDateTime time = new DateTimeSuggestion(currentUser, tradeManager).suggestDateTime();
                         sp.tradeRequestViewer(2);
                         String place = br.readLine();
-                        while (place.isEmpty()) {
+                        while (place.trim().isEmpty()) {
                             sp.invalidInput();
                             place = br.readLine();
                         }

@@ -51,11 +51,9 @@ public class CatalogViewer {
 
 
 
-        if(((timesLent - timesBorrowed) < currentUser.getLendMinimum())
-                &&currentUser.hasBorrowed()){
-            sp.catalogViewer(5);
-            close();
-        }else {
+        if(currentUser.hasBorrowed() && ((timesLent - timesBorrowed) < currentUser.getLendMinimum())){
+            sp.catalogViewer(currentUser);
+        } else {
             sp.catalogViewer(1);
             try {
                 String temp = br.readLine();
@@ -99,17 +97,18 @@ public class CatalogViewer {
                         }
                     }
 
-                    if (tradeOrWishlist == 2) {
+                    if (tradeOrWishlist == 2 && !currentUser.getWishlist().contains(selectedItem.getID())) {
                         currentUser.addWishlist(selectedItem.getID());
                         sp.catalogViewer(4);
+                    } else if (tradeOrWishlist == 2 && currentUser.getWishlist().contains(selectedItem.getID())) {
+                        sp.catalogViewer(5);
                     }
                 }
-                close();
-
             } catch (IOException e) {
                 sp.exceptionMessage();
             }
         }
+        close();
     }
 
     private void startTradeAttempt(Item selectedItem) throws IOException {

@@ -98,24 +98,28 @@ public class InventoryEditor {
                         sp.invalidInput();
                         temp2 = br.readLine();
                     }
-                    int indexInput = Integer.parseInt(br.readLine());
+                    int indexInput = Integer.parseInt(temp2);
                     Item selectedItem = itemInventory.get(indexInput - 1);
 
-                    sp.inventoryRemoveItem(selectedItem.getName(), indexInput, 1);
+                    if (selectedItem.getAvailability()) {
+                        sp.inventoryRemoveItem(selectedItem.getName(), indexInput, 1);
 
-                    String confirmInput = br.readLine();
-                    while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
-                        sp.invalidInput();
-                        confirmInput = br.readLine();
-                    }
-                    if (confirmInput.equalsIgnoreCase("Y")) {
+                        String confirmInput = br.readLine();
+                        while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
+                            sp.invalidInput();
+                            confirmInput = br.readLine();
+                        }
+                        if (confirmInput.equalsIgnoreCase("Y")) {
 
-                        currentUser.removeInventory(selectedItem.getID());
-                        itemManager.removeApprovedItem(selectedItem);
+                            currentUser.removeInventory(selectedItem.getID());
+                            itemManager.removeApprovedItem(selectedItem);
 
-                        sp.inventoryRemoveItem(selectedItem.getName(), 0, 2);
+                            sp.inventoryRemoveItem(selectedItem.getName(), 0, 2);
+                        } else {
+                            sp.cancelled();
+                        }
                     } else {
-                        sp.cancelled();
+                        sp.inventoryRemoveItem(3);
                     }
                 }
             }

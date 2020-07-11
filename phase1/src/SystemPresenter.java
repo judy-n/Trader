@@ -11,7 +11,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-09
+ * last modified 2020-07-10
  */
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
@@ -130,8 +130,14 @@ public class SystemPresenter {
         if (itemWishlist.isEmpty()) {
             emptyListMessage();
         }
+        int index = 1;
         for (Item i : itemWishlist) {
-            System.out.println((itemWishlist.indexOf(i) + 1) + ". " + i);
+            if (i != null) {
+                System.out.println(index + ". " + i);
+            } else {
+                System.out.println(index + ". (item has been removed from system)");
+            }
+            index++;
         }
     }
 
@@ -176,6 +182,9 @@ public class SystemPresenter {
             case 2:
                 System.out.print("\nEnter the index of the item you would like to remove: ");
                 break;
+            case 3:
+                System.out.println("\nYou may not remove this item as it is currently involved in a trade.");
+                break;
         }
     }
 
@@ -190,7 +199,7 @@ public class SystemPresenter {
     public void wishlistEditor(List<Item> itemWishlist) {
         presentWishlist(itemWishlist);
         System.out.println("\n   Choose one of the options:" +
-                "\n   1 - Remove item from wish list" +
+                "\n   1 - Remove item from wishlist" +
                 "\n   2 - Cancel ");
         System.out.print(choicePrompt);
     }
@@ -198,10 +207,10 @@ public class SystemPresenter {
     public void wishlistRemoveItem(int input) {
         switch (input) {
             case 1:
-                System.out.println("\nYour wish list is empty.");
+                System.out.println("\nYour wishlist is empty.");
                 break;
             case 2:
-                System.out.print("\nEnter the index of the item you would like to remove:");
+                System.out.print("\nEnter the index of the item you would like to remove: ");
                 break;
         }
     }
@@ -222,6 +231,10 @@ public class SystemPresenter {
         presenterAllItems(approvedItems);
     }
 
+    public void catalogViewer(NormalUser user) {
+        System.out.println("\nYou're borrowing too much! You need to lend AT LEAST " + user.getLendMinimum() + " more item(s) than you've borrowed.");
+    }
+
     public void catalogViewer(int input) {
         switch (input) {
             case 1:
@@ -240,7 +253,7 @@ public class SystemPresenter {
                 System.out.println("\nItem has been added to your wishlist!");
                 break;
             case 5:
-                System.out.println("\nYou've borrowed more than your lend minimum");
+                System.out.println("\nThis item is already in your wishlist!");
                 break;
         }
     }
@@ -307,12 +320,8 @@ public class SystemPresenter {
         }
     }
 
-    public void accountFreezer(int input) {
-        switch (input) {
-            case 1:
-                System.out.println("\nAll frozen!");
-                break;
-        }
+    public void accountFreezer() {
+        System.out.println("\nAll frozen!");
     }
 
     public void requestUnfreeze(int input) {
@@ -357,7 +366,8 @@ public class SystemPresenter {
     public void tradeRequestViewer(int input) {
         switch (input) {
             case 1:
-                System.out.print("\n Once you're done viewing your initiated trades, enter 0 to quit: ");
+                System.out.print("\nOnce you're done viewing your initiated trades, enter 0 to quit: ");
+                break;
             case 2:
                 System.out.print("\nPlease suggest a place: ");
                 break;
@@ -380,13 +390,14 @@ public class SystemPresenter {
     }
 
     public void tradeRequestViewer(List<Item> items) {
+        //for viewing initiator's inventory
         presenterAllItems(items);
     }
 
     public void tradeRequestViewer(int input, String owner, String itemName) {
         switch (input) {
             case 1:
-                System.out.print("\nAre you sure you want to lend [" + itemName + "] to " + owner + " in a one-way ot two-way trade? (Y/N): ");
+                System.out.print("\nAre you sure you want to lend [" + itemName + "] to " + owner + " in a one-way or two-way trade? (Y/N): ");
                 break;
             case 2:
                 System.out.println("\nInitiating trade with " + owner + ".");
@@ -403,11 +414,11 @@ public class SystemPresenter {
     public void tradeRequestViewer(int input, List<Item> items, List<String> owners) {
         switch (input) {
             case 1:
-                System.out.println("\nHere is all the trade requests you sent:");
+                System.out.println("\nHere are all the trade requests you sent:");
                 presentInitiatedTradeRequests(items, owners);
                 break;
             case 2:
-                System.out.println("\nHere is all the trade requests you received:");
+                System.out.println("\nHere are all the trade requests you received:");
                 presentReceivedTradeRequests(items, owners);
 
                 break;
@@ -415,20 +426,34 @@ public class SystemPresenter {
     }
 
     private void presentInitiatedTradeRequests(List<Item> items, List<String> users) {
-        int index = 0;
+        int index = 1;
         for (Item i : items) {
-            System.out.println("Trade for " + i.getName() + " from user " + users.get(index));
+            if (i != null && i.getAvailability()) {
+                System.out.println(index + ". Trade for [" + i.getName() + "] sent to <" + users.get(index - 1) + ">");
+            } else if (i == null) {
+                System.out.println(index + ". The item you requested to borrow is not in the other user's inventory anymore.");
+            } else {
+                System.out.println(index + ". Trade for [" + i.getName() + "] sent to <" + users.get(index - 1) + ">" +
+                        "\n    (item currently lent out to someone else)");
+            }
             index++;
         }
         if (items.isEmpty()) {
-            System.out.println("You did not initiate any trades.");
+            System.out.println("You don't have any sent trade requests waiting for approval.");
         }
     }
 
     private void presentReceivedTradeRequests(List<Item> items, List<String> users) {
         int index = 1;
         for (Item i : items) {
-            System.out.println(index + ". Trade for " + i.getName() + " from user " + users.get(index - 1));
+            if (i != null && i.getAvailability()) {
+                System.out.println(index + ". Trade for [" + i.getName() + "] from <" + users.get(index - 1) + ">");
+            } else if (i == null) {
+                System.out.println(index + ". The item this user requested to borrow is not in your inventory anymore.");
+            } else {
+                System.out.println(index + ". Trade for [" + i.getName() + "] from <" + users.get(index - 1) + ">" +
+                        "\n    (item currently lent out to someone else)");
+            }
             index++;
         }
         if (items.isEmpty()) {
@@ -447,6 +472,7 @@ public class SystemPresenter {
                         "\n 3. Confirm the latest meeting took place" +
                         "\n 4. Cancel this trade" +
                         "\n 5. Quit");
+                System.out.print(choicePrompt);
                 break;
             case 2:
                 System.out.println("\nThis trade has been cancelled!");
@@ -509,17 +535,21 @@ public class SystemPresenter {
 
         switch(situation) {
             case 1:
-                System.out.println("\nMost recent meeting suggestion: " + date + " at " + time);
+                System.out.println("\nMost recent meeting suggestion: " + date + " at " + time +
+                        " - " + trade.getMeetingLocation1());
                 break;
             case 2:
                 if (trade instanceof TemporaryTrade) {
-                    System.out.println("\nFirst meeting on " + date + " at " + time);
+                    System.out.println("\nFirst meeting: " + date + " at " + time +
+                            " - " + trade.getMeetingLocation1());
                 } else {
-                    System.out.println("\nMeeting will occur on " + date + " at " + time);
+                    System.out.println("\nMeeting: " + date + " at " + time +
+                            " - " + trade.getMeetingLocation1());
                 }
                 break;
             case 3:
-                System.out.println("\nSecond meeting on " + date + " at " + time);
+                System.out.println("\nSecond meeting: " + date + " at " + time +
+                        " - " + ((TemporaryTrade) trade).getMeetingLocation2());
                 break;
         }
     }
@@ -536,7 +566,13 @@ public class SystemPresenter {
         int index = 1;
         for (Trade trade : ongoingTrades) {
             Item[] tempItems = tradeItems.get(index - 1);
-            long[] tempItemIDs = {tempItems[0].getID(), tempItems[1].getID()};
+            long[] tempItemIDs = new long[2];
+            if (tempItems[0] != null) {
+                tempItemIDs[0] = tempItems[0].getID();
+            }
+            if (tempItems[1] != null) {
+                tempItemIDs[1] = tempItems[1].getID();
+            }
             String tradePrint;
             if (tempItemIDs[0] == 0) {
                 tradePrint = trade.toString(username) + "you're borrowing " + tempItems[1].getName();
@@ -577,12 +613,10 @@ public class SystemPresenter {
 
         switch (input) {
             case 1:
-                System.out.println(menuUnfrozen + logoutOption);
-                System.out.print(choicePrompt);
+                System.out.print(menuUnfrozen + logoutOption + choicePrompt);
                 break;
             case 2:
-                System.out.println(frozenWarning + menuUnfrozen + menuFrozen + logoutOption);
-                System.out.print(choicePrompt);
+                System.out.println(frozenWarning + menuUnfrozen + menuFrozen + logoutOption + choicePrompt);
                 break;
             case 3:
                 System.out.println("\nLogging out of the program now. See ya!");

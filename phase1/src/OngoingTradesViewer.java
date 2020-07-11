@@ -64,13 +64,8 @@ public class OngoingTradesViewer {
                 indexInput = Integer.parseInt(temp);
 
                 if (indexInput != 0) {
+
                     Trade selected = ongoingTrades.get(indexInput - 1);
-                    sp.ongoingTrades(1);
-                    String temp2 = br.readLine();
-                    while (!temp.matches("[1-5]")) {
-                        temp2 = br.readLine();
-                    }
-                    choiceInput = Integer.parseInt(temp2);
 
                     if (!selected.getHasAgreedMeeting1()) { //print latest meeting suggestion
                         sp.ongoingTrades(1, selected.getMeetingDateTime1(), selected);
@@ -83,6 +78,14 @@ public class OngoingTradesViewer {
                             sp.ongoingTrades(3, tempSelected.getMeetingDateTime2(), selected);
                         }
                     }
+
+                    sp.ongoingTrades(1);
+
+                    String temp2 = br.readLine();
+                    while (!temp.matches("[1-5]")) {
+                        temp2 = br.readLine();
+                    }
+                    choiceInput = Integer.parseInt(temp2);
 
                     switch (choiceInput) {
                         //Edit meeting time and/or place
