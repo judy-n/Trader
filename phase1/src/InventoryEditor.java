@@ -133,6 +133,9 @@ public class InventoryEditor {
         }
     }
 
+    /**
+     * Closes inventory editing, returning program back to the dashboard
+     */
     private void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
     }
