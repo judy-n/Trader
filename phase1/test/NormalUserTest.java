@@ -31,4 +31,9 @@ public class NormalUserTest {
 
     }
 
+    @Test
+    public void testUserFrozen(){
+        assertFalse(User1.getIsFrozen());
+    }
+
 }

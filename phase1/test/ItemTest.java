@@ -32,5 +32,17 @@ public class ItemTest {
         assertTrue(available);
     }
 
+    @Test
+    public void testItemToString(){
+        String itemString = item.toString();
+        assertEquals("book: A book", itemString);
+    }
+
+    @Test
+    public void testItemToStringUnavailable(){
+        item.setAvailability(false);
+        String itemString = item.toString();
+        assertEquals("book: A book\n   (currently unavailable)", itemString);
+    }
 
 }
