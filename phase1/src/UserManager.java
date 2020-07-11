@@ -21,6 +21,7 @@ public class UserManager implements Serializable {
     /**
      * Class constructor.
      * Creates a UserManager, setting all lists to empty by default.
+     *
      */
     public UserManager() {
         allNormals = new ArrayList<>();
