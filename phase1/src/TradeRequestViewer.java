@@ -11,9 +11,10 @@ import java.util.ArrayList;
  * Shows all trade requests received/sent by a user and lets them take actions through user input.
  *
  * @author Ning Zhang
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-29
- * last modified 2020-07-10
+ * last modified 2020-07-11
  */
 public class TradeRequestViewer {
     private LinkedHashMap<String[], long[]> initiatedTrades;
@@ -34,7 +35,7 @@ public class TradeRequestViewer {
      * Creates an <TradeRequestViewer></TradeRequestViewer> with the given logged-in user and item/user/trade managers.
      * Prints to the screen all trade requests received/sent by the given user and options on actions to take.
      *
-     * @param user the non-admin user who's currently logged in
+     * @param user the normal user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
      * @param tm   the system's trade manager
@@ -83,7 +84,6 @@ public class TradeRequestViewer {
 
 
         //this just displays the initiated trades no action required
-
         for (String[] key : initiatedTrades.keySet()) {
             Item i = itemManager.getApprovedItem(initiatedTrades.get(key)[1]);
             initiatedItems.add(i);
@@ -113,73 +113,98 @@ public class TradeRequestViewer {
                     quitInput = br.readLine();
                 }
             } else if (!receivedTrades.isEmpty()) {
-                //pick a request to accept
+                //pick a request to accept (0 to quit)
                 String temp = br.readLine();
                 while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > index - 1) {
                     sp.invalidInput();
                     temp = br.readLine();
                 }
                 int input = Integer.parseInt(temp);
+
+                //input is selected request index
                 if (input != 0) {
                     a = getTradeHelper(input);
                     trader = userManager.getNormalByUsername(a[0]);
                     firstItem = receivedItems.get(input - 1).getID();
-                    //trade with xx person?
-                    sp.tradeRequestViewer(1, a[0], a[1]);
-                    String inputConfirm = br.readLine();
-                    while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-                        sp.invalidInput();
-                        inputConfirm = br.readLine();
-                    }
-                    if (inputConfirm.equalsIgnoreCase("y")) {
-                        //this line removes the trade request once its been accepted
-                        currentUser.setTradeRequests(getKeyToRemove());
-                        trader.setTradeRequests(getKeyToRemove());
-                        sp.tradeRequestViewer(2, a[0], a[1]);
-                        int twoWayItem;
-                        if (!trader.getInventory().isEmpty()) {
-                            sp.tradeRequestViewer(5);
-                            List<Item> items = itemManager.getApprovedItemsByIDs(trader.getInventory());
-                            sp.tradeRequestViewer(items);
-                            String temp2 = br.readLine();
-                            while (!temp2.matches("[0-9]+") || Integer.parseInt(temp2) > items.size()) {
+
+                    //only allow trade if item being requested is available for trade
+                    if (itemManager.getApprovedItem(firstItem).getAvailability()) {
+                        //trade with xx person?
+                        sp.tradeRequestViewer(1, a[0], a[1]);
+                        String inputConfirm = br.readLine();
+                        while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
+                            sp.invalidInput();
+                            inputConfirm = br.readLine();
+                        }
+                        //confirm trade
+                        if (inputConfirm.equalsIgnoreCase("y")) {
+                            //remove the trade request from both parties once its been accepted
+                            currentUser.setTradeRequests(getKeyToRemove());
+                            trader.setTradeRequests(getKeyToRemove());
+
+                            sp.tradeRequestViewer(2, a[0], a[1]);   //initiating trade
+                            int twoWayItem;
+
+                            //if other user's inventory isn't empty, allow this user to choose what item they want
+                            if (!trader.getInventory().isEmpty()) {
+                                List<Item> tempItems = itemManager.getApprovedItemsByIDs(trader.getInventory());
+                                List<Item> items = itemManager.getAvailableItems(tempItems);
+                                sp.tradeRequestViewer(items);
+                                sp.tradeRequestViewer(5);
+                                String temp2 = br.readLine();
+                                while (!temp2.matches("[0-9]+") || Integer.parseInt(temp2) > items.size()) {
+                                    sp.invalidInput();
+                                    temp2 = br.readLine();
+                                }
+                                twoWayItem = Integer.parseInt(temp);
+                                if (twoWayItem != 0) {
+                                    secondItem = items.get(twoWayItem - 1).getID();
+                                }
+                            } else {
+                                sp.tradeRequestViewer(7);
+                            }
+                            sp.tradeRequestViewer(6);
+
+                            String permOrTemp = br.readLine();
+                            while (!permOrTemp.equals("1") && !(permOrTemp.equals("2"))) {
                                 sp.invalidInput();
-                                temp2 = br.readLine();
+                                permOrTemp = br.readLine();
                             }
-                            twoWayItem = Integer.parseInt(temp);
-                            if (twoWayItem != 0) {
-                                secondItem = itemManager.getApprovedItem(trader.getInventory().get(twoWayItem - 1)).getID();
+
+                            //suggest time
+                            sp.tradeRequestViewer(4);
+                            LocalDateTime time = new DateTimeSuggestion(currentUser, tradeManager).suggestDateTime();
+
+                            //suggest place
+                            sp.tradeRequestViewer(2);
+                            String place = br.readLine();
+                            while (place.trim().isEmpty()) {
+                                sp.invalidInput();
+                                place = br.readLine();
                             }
-                        } else {
-                            sp.tradeRequestViewer(7);
+
+                            //set item status to unavailable
+                            itemManager.getApprovedItem(firstItem).setAvailability(false);
+                            if (secondItem != 0) {
+                                itemManager.getApprovedItem(secondItem).setAvailability(false);
+                            }
+
+                            if (permOrTemp.equals("1")) {
+                                PermanentTrade pt = new PermanentTrade(new String[]{currentUser.getUsername(), a[0]},
+                                        new long[]{firstItem, secondItem}, time, place);
+                                tradeManager.addTrade(pt);
+                                //set last editor to this user
+                                pt.setLastEditor(currentUser.getUsername());
+                            } else {
+                                TemporaryTrade tt = new TemporaryTrade(new String[]{currentUser.getUsername(), a[0]},
+                                        new long[]{firstItem, secondItem}, time, place);
+                                tradeManager.addTrade(tt);
+                                //set last editor to this user
+                                tt.setLastEditor(currentUser.getUsername());
+                            }
                         }
-                        sp.tradeRequestViewer(6);
-                        String permOrTemp = br.readLine();
-                        while (!permOrTemp.equals("1") && !(permOrTemp.equals("2"))) {
-                            sp.invalidInput();
-                            permOrTemp = br.readLine();
-                        }
-                        sp.tradeRequestViewer(4);
-                        LocalDateTime time = new DateTimeSuggestion(currentUser, tradeManager).suggestDateTime();
-                        sp.tradeRequestViewer(2);
-                        String place = br.readLine();
-                        while (place.trim().isEmpty()) {
-                            sp.invalidInput();
-                            place = br.readLine();
-                        }
-                        itemManager.getApprovedItem(firstItem).setAvailability(false);
-                        if (secondItem != 0) {
-                            itemManager.getApprovedItem(secondItem).setAvailability(false);
-                        }
-                        if (permOrTemp.equals("1")) {
-                            PermanentTrade pt = new PermanentTrade(new String[]{currentUser.getUsername(), a[0]},
-                                    new long[]{firstItem, secondItem}, time, place);
-                            tradeManager.addTrade(pt);
-                        } else {
-                            TemporaryTrade tt = new TemporaryTrade(new String[]{currentUser.getUsername(), a[0]},
-                                    new long[]{firstItem, secondItem}, time, place);
-                            tradeManager.addTrade(tt);
-                        }
+                    } else {
+                        sp.tradeRequestViewer(8);
                     }
                 }
             }
@@ -199,7 +224,7 @@ public class TradeRequestViewer {
             traders.add(e.getKey());
             itemIds.add(e.getValue());
         }
-        String[] keyToRemove = traders.get(index-1);
+        String[] keyToRemove = traders.get(index - 1);
         setKeyToRemove(keyToRemove);
         String trader = traders.get(index - 1)[0];
         long itemId = itemIds.get(index - 1)[1];
@@ -207,10 +232,12 @@ public class TradeRequestViewer {
         String itemName = firstItem.getName();
         return new String[]{trader, itemName};
     }
-    private void setKeyToRemove(String[]keyToRemove){
+
+    private void setKeyToRemove(String[] keyToRemove) {
         this.keyToRemove = keyToRemove;
     }
-    private String[] getKeyToRemove(){
+
+    private String[] getKeyToRemove() {
         return keyToRemove;
     }
 

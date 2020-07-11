@@ -143,6 +143,17 @@ public class OngoingTradesViewer {
                                 sp.ongoingTrades(15);
                                 break;
                             }
+
+                            //can't confirm more than once
+                            if (selected instanceof TemporaryTrade &&
+                                    ((TemporaryTrade) selected).getUserTransactionConfirmation2(currUsername)) {
+                                sp.ongoingTrades(17);
+                                 break;
+                            } else if (selected.getUserTransactionConfirmation1(currUsername)) {
+                                sp.ongoingTrades(17);
+                                break;
+                            }
+
                             LocalDateTime now = LocalDateTime.now();
                             if (selected instanceof TemporaryTrade && ((TemporaryTrade) selected).hasSecondMeeting() &&
                                     now.compareTo(((TemporaryTrade) selected).getMeetingDateTime2()) > 0) {

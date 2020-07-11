@@ -3,14 +3,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Displays a dashboard once a non-administrative user logs in.
+ * Displays a dashboard once a normal user logs in.
  *
  * @author Ning Zhang
  * @author Judy Naamani
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-08
+ * last modified 2020-07-11
  */
 
 

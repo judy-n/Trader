@@ -11,7 +11,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-10
+ * last modified 2020-07-11
  */
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
@@ -185,6 +185,10 @@ public class SystemPresenter {
             case 3:
                 System.out.println("\nYou may not remove this item as it is currently involved in a trade.");
                 break;
+            case 4:
+                System.out.println("\nYou may not remove this item as it has been requested by one or more other users." +
+                        "\nPlease reject their requests before attempting to remove this item again.");
+                break;
         }
     }
 
@@ -264,10 +268,10 @@ public class SystemPresenter {
                 System.out.print("\nYou have chosen: [" + item + "]\n Would you like to 1) trade or 2) wishlist this item? (0 to cancel): ");
                 break;
             case 2:
-                System.out.print("\nAre you sure you want to trade for this item with user, " + item.getOwnerUsername() + " ? (Y/N): ");
+                System.out.print("\nAre you sure you want to trade for this item with user < " + item.getOwnerUsername() + " >? (Y/N): ");
                 break;
             case 3:
-                System.out.println("\nYour request to borrow [" + item + "] has been sent to " + item.getOwnerUsername() +
+                System.out.println("\nYour request to borrow [" + item + "] has been sent to < " + item.getOwnerUsername() + " >" +
                         "\nIf this item was not already in your wishlist, it has automatically been added.");
                 break;
         }
@@ -378,7 +382,7 @@ public class SystemPresenter {
                 System.out.print("\nPlease suggest a date and time using the given format (YYYY/MM/DD-hh:mm): ");
                 break;
             case 5:
-                System.out.print("\nWould you like any item in their inventory? (0 if not): ");
+                System.out.print("Would you like any item in their inventory? Enter the item's index (0 if not): ");
                 break;
             case 6:
                 System.out.print("\nWould you like to make a 1) permanent or 2) temporary trade?: ");
@@ -386,11 +390,15 @@ public class SystemPresenter {
             case 7:
                 System.out.println("\nThe other person's inventory is currently empty, so you cannot borrow anything from them.");
                 break;
+            case 8:
+                System.out.println("\nThe item that this user wants to borrow is currently being lent to someone else!");
+                break;
         }
     }
 
     public void tradeRequestViewer(List<Item> items) {
         //for viewing initiator's inventory
+        System.out.println("\nTheir inventory:");
         presenterAllItems(items);
     }
 
@@ -428,13 +436,11 @@ public class SystemPresenter {
     private void presentInitiatedTradeRequests(List<Item> items, List<String> users) {
         int index = 1;
         for (Item i : items) {
-            if (i != null && i.getAvailability()) {
-                System.out.println(index + ". Trade for [" + i.getName() + "] sent to <" + users.get(index - 1) + ">");
-            } else if (i == null) {
-                System.out.println(index + ". The item you requested to borrow is not in the other user's inventory anymore.");
+            if (i.getAvailability()) {
+                System.out.println(index + ". Trade for [" + i.getName() + "] sent to < " + users.get(index - 1) + " >");
             } else {
-                System.out.println(index + ". Trade for [" + i.getName() + "] sent to <" + users.get(index - 1) + ">" +
-                        "\n    (item currently lent out to someone else)");
+                System.out.println(index + ". Trade for [" + i.getName() + "] sent to < " + users.get(index - 1) + " >" +
+                        "\n    (their item is currently lent out to someone else)");
             }
             index++;
         }
@@ -446,20 +452,18 @@ public class SystemPresenter {
     private void presentReceivedTradeRequests(List<Item> items, List<String> users) {
         int index = 1;
         for (Item i : items) {
-            if (i != null && i.getAvailability()) {
-                System.out.println(index + ". Trade for [" + i.getName() + "] from <" + users.get(index - 1) + ">");
-            } else if (i == null) {
-                System.out.println(index + ". The item this user requested to borrow is not in your inventory anymore.");
+            if (i.getAvailability()) {
+                System.out.println(index + ". Trade for [" + i.getName() + "] from < " + users.get(index - 1) + " >");
             } else {
-                System.out.println(index + ". Trade for [" + i.getName() + "] from <" + users.get(index - 1) + ">" +
-                        "\n    (item currently lent out to someone else)");
+                System.out.println(index + ". Trade for [" + i.getName() + "] from < " + users.get(index - 1) + " >" +
+                        "\n    (your item is currently lent out to someone else)");
             }
             index++;
         }
         if (items.isEmpty()) {
             System.out.println("You haven't received any trade requests yet.");
         } else {
-            System.out.print("\nWould you like to accept any of these requests? (0 to quit): ");
+            System.out.print("\nWould you like to accept any of these requests? Enter the request's index (0 to quit): ");
         }
     }
 
@@ -524,6 +528,9 @@ public class SystemPresenter {
             case 16:
                 System.out.println("\nCannot confirm a meeting before it is scheduled to take place.");
                 break;
+            case 17:
+                System.out.println("\nYou've already confirmed that the latest transaction took place!");
+                break;
         }
     }
 
@@ -575,12 +582,12 @@ public class SystemPresenter {
             }
             String tradePrint;
             if (tempItemIDs[0] == 0) {
-                tradePrint = trade.toString(username) + "you're borrowing " + tempItems[1].getName();
+                tradePrint = trade.toString(username) + "you're borrowing [" + tempItems[1].getName() + "]";
             } else if (tempItemIDs[1] == 0) {
-                tradePrint = trade.toString(username) + "you're lending " + tempItems[0].getName();
+                tradePrint = trade.toString(username) + "you're lending [" + tempItems[0].getName() + "]";
             } else {
-                tradePrint = trade.toString(username) + "you're lending " +
-                        tempItems[0].getName() + " for " + tempItems[1].getName();
+                tradePrint = trade.toString(username) + "you're lending [" +
+                        tempItems[0].getName() + "] for [" + tempItems[1].getName() + "]";
             }
             if (trade.getIsCancelled()) {
                 System.out.println(index + ". " + "(Cancelled) " + tradePrint);
@@ -627,15 +634,14 @@ public class SystemPresenter {
     public void thresholdEditor(int input) {
         switch (input) {
             case 1:
-                System.out.println("\nPlease enter the username of the user whose threshold you would like to change(0 to quit):");
+                System.out.print("\nPlease enter the username of the user whose threshold you would like to change (0 to quit): ");
                 break;
             case 2:
-                System.out.println("\nWhich threshold would you like to change? (0 to quit) " +
+                System.out.print("\nWhich threshold would you like to change? (0 to quit) " +
                         "\n 1 - Weekly trade maximum " +
                         "\n 2 - Meeting edit maximum " +
                         "\n 3 - Lend minimum" +
-                        "\n 4 - Incomplete trade maximum");
-                System.out.print(choicePrompt);
+                        "\n 4 - Incomplete trade maximum" + choicePrompt);
                 break;
         }
     }
@@ -643,20 +649,20 @@ public class SystemPresenter {
     public void thresholdEditor(int input, int oldThreshold) {
         switch (input) {
             case 1:
-                System.out.println("The current weekly trade max is " + oldThreshold +
-                        "\n Change it to :");
+                System.out.print("\nThe current weekly trade max is " + oldThreshold +
+                        "\n Change it to: ");
                 break;
             case 2:
-                System.out.println("The current meeting edit max is " + oldThreshold +
-                        "\n Change it to :");
+                System.out.print("\nThe current meeting edit max is " + oldThreshold +
+                        "\n Change it to: ");
                 break;
             case 3:
-                System.out.println("The current lend min is " + oldThreshold +
-                        "\n Change it to :");
+                System.out.print("\nThe current lend min is " + oldThreshold +
+                        "\n Change it to: ");
                 break;
             case 4:
-                System.out.println("The current incomplete trade max is " + oldThreshold +
-                        "\n Change it to :");
+                System.out.print("\nThe current incomplete trade max is " + oldThreshold +
+                        "\n Change it to: ");
                 break;
         }
     }

@@ -46,7 +46,7 @@ public class PermanentTrade extends Trade implements Serializable {
 
     @Override
     public String toString(String currentUsername) {
-        return "Permanent trade with <" + getOtherUsername(currentUsername) + "> - ";
+        return "Permanent trade with < " + getOtherUsername(currentUsername) + " > - ";
     }
 
     @Override

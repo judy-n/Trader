@@ -76,13 +76,21 @@ public class TemporaryTrade extends Trade implements Serializable {
         }
     }
 
+    public boolean getUserTransactionConfirmation2(String username) {
+        if (username.equals(getInvolvedUsernames()[0])) {
+            return transactionConfirmed2[0];
+        } else {
+            return transactionConfirmed2[1];
+        }
+    }
+
     public boolean hasSecondMeeting() {
         return meetingDateTime2 != null;
     }
 
     @Override
     public String toString(String currentUsername) {
-        return "Temporary trade with <" + getOtherUsername(currentUsername) + "> - ";
+        return "Temporary trade with < " + getOtherUsername(currentUsername) + " > - ";
     }
 
     @Override

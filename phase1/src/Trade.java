@@ -11,10 +11,9 @@ import java.time.LocalDateTime;
  *
  * @author Ning Zhang
  * @author Yingjia Liu
- * @author Yiwei Chen
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-10
+ * last modified 2020-07-11
  */
 
 public abstract class Trade implements Serializable, Comparable<Trade> {
@@ -220,7 +219,7 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
         } else {
             numEdits1[1]++;
         }
-        lastEditor = username;
+        setLastEditor(username);
     }
 
     public int getUserEditCount1(String username) {
@@ -231,6 +230,9 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
         }
     }
 
+    public void setLastEditor(String username) {
+        lastEditor = username;
+    }
     public abstract LocalDateTime getFinalMeetingDateTime();
 
     public abstract String toString(String currentUsername);

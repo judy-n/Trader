@@ -12,7 +12,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-08
+ * last modified 2020-07-11
  */
 
 public class InventoryEditor {
@@ -26,7 +26,7 @@ public class InventoryEditor {
      * Creates an InventoryEditor with the given logged-in user and item/user/trade managers.
      * Prints to the screen the given user's inventory and options to add/remove/cancel.
      *
-     * @param user the non-admin user who's currently logged in
+     * @param user the normal user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
      * @param tm   the system's trade manager
@@ -101,7 +101,9 @@ public class InventoryEditor {
                     int indexInput = Integer.parseInt(temp2);
                     Item selectedItem = itemInventory.get(indexInput - 1);
 
-                    if (selectedItem.getAvailability()) {
+                    if (currentUser.isRequestedInTrade(selectedItem.getID())) {
+                        sp.inventoryRemoveItem(4);
+                    } else if (selectedItem.getAvailability()) {
                         sp.inventoryRemoveItem(selectedItem.getName(), indexInput, 1);
 
                         String confirmInput = br.readLine();
@@ -112,7 +114,8 @@ public class InventoryEditor {
                         if (confirmInput.equalsIgnoreCase("Y")) {
 
                             currentUser.removeInventory(selectedItem.getID());
-                            itemManager.removeApprovedItem(selectedItem);
+                            itemManager.getApprovedItem(selectedItem.getID()).setIsRemoved(true);
+                            //don't remove from ItemManager
 
                             sp.inventoryRemoveItem(selectedItem.getName(), 0, 2);
                         } else {

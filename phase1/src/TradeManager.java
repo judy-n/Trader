@@ -17,7 +17,7 @@ import java.util.Map;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-10
+ * last modified 2020-07-11
  */
 public class TradeManager implements Serializable {
     private List<Trade> allTrades;
@@ -72,41 +72,45 @@ public class TradeManager implements Serializable {
     }
 
     /**
-     * Getter for the number of times a user has lent an item
+     * Getter for the number of times a user has lent an item.
+     *
      * @param username the user to query
-     * @return timesLent the number of times this user has lent an item
+     * @return the number of times this user has lent an item
      */
-    public int getTimesLent(String username){
+    public int getTimesLent(String username) {
         int timesLent = 0;
         List<Trade> trades = getCompletedTrades(username);
-        for(Trade t : trades){
-            if(t.getInvolvedUsernames()[1].equals(username)){
-                timesLent ++;
+        trades.addAll(getAllOngoingNotCancelledTrades());
+        for (Trade t : trades) {
+            if (t.getLentItemID(username) != 0) {
+                timesLent++;
             }
         }
         return timesLent;
     }
 
     /**
-     * Getter for the number of times a user has borrowed an item
+     * Getter for the number of times a user has borrowed an item.
+     *
      * @param username the user to query
-     * @return timesBorrowed the number of times this user has lent an item
+     * @return the number of times this user has borrowed an item
      */
-    public int getTimesBorrowed(String username){
+    public int getTimesBorrowed(String username) {
         int timesBorrowed = 0;
         List<Trade> trades = getCompletedTrades(username);
-        for(Trade t : trades){
-            if(t.getInvolvedUsernames()[0].equals(username)){
-                timesBorrowed ++;
+        trades.addAll(getAllOngoingNotCancelledTrades());
+        for (Trade t : trades) {
+            if (t.getLentItemID(t.getOtherUsername(username)) != 0) {
+                timesBorrowed++;
             }
         }
         return timesBorrowed;
     }
 
-
-
     /**
-     * Cancels all unconfirmed trades
+     * Cancels all unconfirmed trades. This is when two users have scheduled a meeting for their
+     * transaction but at least one of them has not yet confirmed the transaction within one day
+     * of the meeting date/time.
      */
     public void cancelAllUnconfirmedTrades() {
         LocalDateTime now = LocalDateTime.now();
@@ -133,6 +137,7 @@ public class TradeManager implements Serializable {
 
     /**
      * Adds users to cancelledUsers
+     *
      * @param users the user to be added
      */
     public void addCancelledUsers(String[] users) {
@@ -142,6 +147,7 @@ public class TradeManager implements Serializable {
 
     /**
      * Getter for cancelledUsers
+     *
      * @return cancelledUsers the cancelled users
      */
     public List<String> getCancelledUsers() {
@@ -151,7 +157,7 @@ public class TradeManager implements Serializable {
     /**
      * Clears all users from cancelledUsers
      */
-    public void clearCancelledUsers(){
+    public void clearCancelledUsers() {
         cancelledUsers.clear();
     }
 
@@ -208,6 +214,7 @@ public class TradeManager implements Serializable {
 
     /**
      * Getter for all completed trades for a specific user
+     *
      * @param username the username of the user
      * @return completedTrades this user's completed trades
      */
@@ -223,6 +230,7 @@ public class TradeManager implements Serializable {
 
     /**
      * Getter for all trades (completed & incomplete) by a specific user
+     *
      * @param username this user's username
      * @return allTradesThisUser all of this user's trades
      */
@@ -292,6 +300,7 @@ public class TradeManager implements Serializable {
 
     /**
      * Takes in a username and returns the associated user's top 3 most frequent trading partners
+     *
      * @param username the queried user's username
      * @return A list of the usernames of the three users this user trades with most frequently
      */

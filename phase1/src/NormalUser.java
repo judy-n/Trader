@@ -2,23 +2,24 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * NormalUser is a class that represents a non-administrative user of our trade program.
+ * NormalUser is a class that represents a normal user of our trade program.
  *
  * @author Ning Zhang
  * @author Liam Huff
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-10
+ * last modified 2020-07-11
  */
 
 public class NormalUser extends User implements Serializable {
     private List<Long> inventory;
     private List<Long> pendingInventory;
     private List<Long> wishlist;
-    private HashMap<String[], long[]> tradeRequests;
+    private Map<String[], long[]> tradeRequests;
 
     private boolean isFrozen;
     private int numIncomplete;
@@ -216,9 +217,9 @@ public class NormalUser extends User implements Serializable {
     /**
      * Getter for this NormalUser's trade requests.
      *
-     * @return a HashMap containing all of this user's trade requests
+     * @return a map containing all of this user's trade requests
      */
-    public HashMap<String[], long[]> getTradeRequest() {
+    public Map<String[], long[]> getTradeRequest() {
         return tradeRequests;
     }
 
@@ -292,6 +293,21 @@ public class NormalUser extends User implements Serializable {
      */
     public void setIncompleteMax(int newMax) {
         incompleteMax = newMax;
+    }
+
+    /**
+     * Finds whether or not the given item is involved in this normal user's trade requests.
+     *
+     * @param itemID the ID of the item being searched for in trade requests
+     * @return true if the item is involved in a trade request, false otherwise
+     */
+    public boolean isRequestedInTrade(long itemID) {
+        for (Map.Entry<String[], long[]> entry : tradeRequests.entrySet()) {
+            if (entry.getValue()[1] == itemID) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

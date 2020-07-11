@@ -7,10 +7,9 @@ import java.security.SecureRandom;
  * @author Ning Zhang
  * @author Yingjia Liu
  * @author Liam Huff
- * @author Yiwei Chen
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-08
+ * last modified 2020-07-11
  */
 
 public class Item implements Serializable {
@@ -19,6 +18,7 @@ public class Item implements Serializable {
     private final String description;
     private final String ownerUsername;
     private boolean isAvailable;
+    private boolean isRemoved;
 
     /**
      * Class constructor.
@@ -37,6 +37,7 @@ public class Item implements Serializable {
         this.ownerUsername = ownerUsername;
         assignID();
         isAvailable = true;
+        isRemoved = false;
     }
 
     //helper method that creates and assigns a unique ID to this Item
@@ -100,6 +101,24 @@ public class Item implements Serializable {
     }
 
     /**
+     * Getter for whether or not this item has been removed from its owner's inventory.
+     *
+     * @return true if this item has been removed from its owner's inventory, false otherwise
+     */
+    public boolean getIsRemoved() {
+        return isRemoved;
+    }
+
+    /**
+     * Setter for whether or not this item has been removed from its owner's inventory.
+     *
+     * @param status whether or not this item has been removed from its owner's inventory
+     */
+    public void setIsRemoved(boolean status) {
+        isRemoved = status;
+    }
+
+    /**
      * Returns a string representation of this Item.
      *
      * @return this Item's ID, name, description, and availability as a string
@@ -108,7 +127,7 @@ public class Item implements Serializable {
         if (isAvailable) {
             return name + ": " + description;
         } else {
-            return name + ": " + description + ("\n   (currently unavailable)");
+            return name + ": " + description + ("   (currently unavailable)");
         }
     }
 }

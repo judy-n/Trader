@@ -94,16 +94,16 @@ public class CompletedTradesViewer {
                     if (tempItemIDs[0] == 0) {
                         Item itemBorrowed = itemManager.getApprovedItem(tempItemIDs[1]);
                         tradePrint = meeting.format(formatter) + "   " +
-                                trade.toString(currUsername) + "you borrowed " + itemBorrowed.getName();
+                                trade.toString(currUsername) + "you borrowed [" + itemBorrowed.getName() + "]";
                     } else if (tempItemIDs[1] == 0) {
                         Item itemLent = itemManager.getApprovedItem(tempItemIDs[0]);
                         tradePrint = meeting.format(formatter) + "   " +
-                                trade.toString(currUsername) + "you lent " + itemLent.getName();
+                                trade.toString(currUsername) + "you lent [" + itemLent.getName() + "]";
                     } else {
                         Item[] tempItems = {itemManager.getApprovedItem(tempItemIDs[0]), itemManager.getApprovedItem(tempItemIDs[1])};
                         tradePrint = meeting.format(formatter) + "   " +
-                                trade.toString(currUsername) + "you lent " +
-                                tempItems[0].getName() + " for " + tempItems[1].getName();
+                                trade.toString(currUsername) + "you lent [" +
+                                tempItems[0].getName() + "] for [" + tempItems[1].getName() + "]";
                     }
                 }
                 System.out.println((i + 1) + ". " + tradePrint);
