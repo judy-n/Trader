@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 /**
  * Represents a temporary trade.
  *
@@ -42,13 +43,10 @@ public class TemporaryTrade extends Trade implements Serializable {
         return meetingLocation2;
     }
 
-    //should only be called on completed temporary trades
+    //should only be called on temp trades with a second meeting in place
     @Override
     public LocalDateTime getFinalMeetingDateTime() {
-        if (getIsComplete()) {
-            return meetingDateTime2;
-        }
-        return null;
+        return meetingDateTime2;
     }
 
     @Override
@@ -78,21 +76,41 @@ public class TemporaryTrade extends Trade implements Serializable {
         }
     }
 
+    public boolean getUserTransactionConfirmation2(String username) {
+        if (username.equals(getInvolvedUsernames()[0])) {
+            return transactionConfirmed2[0];
+        } else {
+            return transactionConfirmed2[1];
+        }
+    }
+
     public boolean hasSecondMeeting() {
         return meetingDateTime2 != null;
     }
 
     @Override
     public String toString(String currentUsername) {
-        return "Temporary trade with " + getOtherUsername(currentUsername) + " - ";
+        return "Temporary trade with < " + getOtherUsername(currentUsername) + " > - ";
     }
 
     @Override
     public int compareTo(Trade t) {
         if (t instanceof TemporaryTrade) {
-            return meetingDateTime2.compareTo(((TemporaryTrade) t).getMeetingDateTime2());
+            if (((TemporaryTrade) t).hasSecondMeeting() && this.hasSecondMeeting()) {
+                return meetingDateTime2.compareTo(t.getFinalMeetingDateTime());
+            } else if (((TemporaryTrade) t).hasSecondMeeting()) {
+                return getMeetingDateTime1().compareTo(t.getFinalMeetingDateTime());
+            } else if (this.hasSecondMeeting()) {
+                return meetingDateTime2.compareTo(t.getMeetingDateTime1());
+            } else {
+                return getMeetingDateTime1().compareTo(t.getMeetingDateTime1());
+            }
         } else {
-            return meetingDateTime2.compareTo(t.getMeetingDateTime1());
+            if (this.hasSecondMeeting()) {
+                return meetingDateTime2.compareTo(t.getMeetingDateTime1());
+            } else {
+                return getMeetingDateTime1().compareTo(t.getMeetingDateTime1());
+            }
         }
     }
 }

@@ -3,22 +3,24 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * ThresholdEditor.java
- * lets admin change a certain trade threshold for a certain user
+ * Lets an admin change a certain threshold value for a certain user.
  *
  * @author Ning Zhang
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-08
+ * last modified 2020-07-10
  */
 public class ThresholdEditor {
     private ItemManager itemManager;
     private UserManager userManager;
     private AdminUser currentUser;
+    private SystemPresenter sp;
+    private BufferedReader br;
 
     /**
-     * Creates a threshold editor that lets an admin user change a certain user's threshold
-     * values
+     * Creates a ThresholdEditor that lets an admin change a certain user's threshold values.
+     *
      * @param user admin user
      * @param im the system's item manager
      * @param um the system's user manager
@@ -28,8 +30,8 @@ public class ThresholdEditor {
         itemManager = im;
         userManager = um;
 
-        SystemPresenter sp = new SystemPresenter();
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        sp = new SystemPresenter();
+        br = new BufferedReader(new InputStreamReader(System.in));
 
         NormalUser subjectUser;
         String usernameInput;
@@ -46,7 +48,6 @@ public class ThresholdEditor {
                 close();
             }
 
-
             subjectUser = userManager.getNormalByUsername(usernameInput);
 
             sp.thresholdEditor(2);
@@ -62,22 +63,22 @@ public class ThresholdEditor {
                     break;
                 case 1:
                     sp.thresholdEditor(1, subjectUser.getWeeklyTradeMax());
-                    newThreshold = Integer.parseInt(br.readLine());
+                    newThreshold = thresholdInputCheck();
                     subjectUser.setWeeklyTradeMax(newThreshold);
                     break;
                 case 2:
                     sp.thresholdEditor(2, subjectUser.getMeetingEditMax());
-                    newThreshold = Integer.parseInt(br.readLine());
+                    newThreshold = thresholdInputCheck();
                     subjectUser.setMeetingEditMax(newThreshold);
                     break;
                 case 3:
                     sp.thresholdEditor(3, subjectUser.getLendMinimum());
-                    newThreshold = Integer.parseInt(br.readLine());
+                    newThreshold = thresholdInputCheck();
                     subjectUser.setLendMinimum(newThreshold);
                     break;
                 case 4:
                     sp.thresholdEditor(4, subjectUser.getIncompleteMax());
-                    newThreshold = Integer.parseInt(br.readLine());
+                    newThreshold = thresholdInputCheck();
                     subjectUser.setIncompleteMax(newThreshold);
                     break;
             }
@@ -86,6 +87,15 @@ public class ThresholdEditor {
         }catch (IOException e){
             sp.exceptionMessage();
         }
+    }
+
+    private int thresholdInputCheck() throws IOException {
+        String temp2 = br.readLine();
+        while (!temp2.matches("[0-9]+")) {
+            sp.invalidInput();
+            temp2 = br.readLine();
+        }
+        return Integer.parseInt(temp2);
     }
 
     private void close() {

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-08
- * last modified 2020-07-09
+ * last modified 2020-07-11
  */
 public class DateTimeSuggestion {
     private NormalUser currentUser;
@@ -29,7 +29,7 @@ public class DateTimeSuggestion {
      * Class constructor.
      * Creates a DateTimeSuggestion with the given logged-in user and trade manager.
      *
-     * @param user the non-admin user who's currently logged in
+     * @param user the normal user who's currently logged in
      * @param tm   the system's trade manager
      */
     public DateTimeSuggestion(NormalUser user, TradeManager tm) {

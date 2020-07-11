@@ -70,41 +70,43 @@ public class AccountUnfreezer {
         List<NormalUser> users = userManager.getUnfreezeRequests();
 
         sp.adminGetUnfreezeRequests(users);
-        sp.adminGetUnfreezeRequests(4);
-        try {
-            String input = br.readLine();
-            while (!input.equalsIgnoreCase("y") && !input.equalsIgnoreCase("n")) {
-                sp.invalidInput();
-                input = br.readLine();
+
+        if (!users.isEmpty()) {
+            try {
+                String input = br.readLine();
+                while (!input.equalsIgnoreCase("y") && !input.equalsIgnoreCase("n")) {
+                    sp.invalidInput();
+                    input = br.readLine();
+                }
+                if (input.equalsIgnoreCase("y")) {
+                    do {
+
+                        sp.adminGetUnfreezeRequests(1);
+
+                        int max = userManager.getNumUnfreezeRequest();
+                        String temp = br.readLine();
+                        while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > max) {
+                            sp.invalidInput();
+                            temp = br.readLine();
+                        }
+                        indexInput = Integer.parseInt(temp);
+
+                        if (indexInput != 0) {
+                            NormalUser userToUnfreeze = userManager.getNormalByUsername(userManager.getUnfreezeRequest(indexInput));
+                            userToUnfreeze.unfreeze();
+                            userManager.removeUnfreezeRequest(userToUnfreeze.getUsername());
+
+                            sp.adminGetUnfreezeRequests(2);
+
+                            users = userManager.getUnfreezeRequests(); //update list
+                            sp.adminGetUnfreezeRequests(users); //reprint the list to update indexes
+                        }
+                    } while (indexInput != 0);
+                }
+                sp.adminGetUnfreezeRequests(3);
+            } catch (IOException e) {
+                sp.exceptionMessage();
             }
-            if (input.equalsIgnoreCase("y")) {
-                do {
-
-                    sp.adminGetUnfreezeRequests(1);
-
-                    int max = userManager.getNumUnfreezeRequest();
-                    String temp = br.readLine();
-                    while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > max) {
-                        sp.invalidInput();
-                        temp = br.readLine();
-                    }
-                    indexInput = Integer.parseInt(temp);
-
-                    if (indexInput != 0) {
-                        NormalUser userToUnfreeze = userManager.getNormalByUsername(userManager.getUnfreezeRequest(indexInput));
-                        userToUnfreeze.unfreeze();
-                        userManager.removeUnfreezeRequest(userToUnfreeze.getUsername());
-
-                        sp.adminGetUnfreezeRequests(2);
-
-                        users = userManager.getUnfreezeRequests(); //update list
-                        sp.adminGetUnfreezeRequests(users); //reprint the list to update indexes
-                    }
-                } while (indexInput != 0);
-            }
-            sp.adminGetUnfreezeRequests(3);
-        } catch (IOException e) {
-            sp.exceptionMessage();
         }
     }
 

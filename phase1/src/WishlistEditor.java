@@ -10,7 +10,7 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-08
+ * last modified 2020-07-11
  */
 
 public class WishlistEditor {
@@ -24,7 +24,7 @@ public class WishlistEditor {
      * Creates a WishlistEditor with the given logged-in user and item/user/trade managers.
      * Prints to the screen the given user's wishlist and options to remove/cancel.
      *
-     * @param user the non-admin user who's currently logged in
+     * @param user the normal user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
      * @param tm   the system's trade manager
@@ -61,7 +61,7 @@ public class WishlistEditor {
                         sp.invalidInput();
                         temp2 = br.readLine();
                     }
-                    int indexInput = Integer.parseInt(br.readLine());
+                    int indexInput = Integer.parseInt(temp2);
                     Item selected = itemWishlist.get(indexInput - 1);
                     sp.wishlistRemoveItem(selected.getName(), 1);
 

@@ -1,11 +1,10 @@
 /**
  * Confirms and closes permanent trades.
  *
- * @author Yiwei Chen
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-09
+ * last modified 2020-07-11
  */
 public class ConfirmAndClosePermTrade {
 
@@ -25,18 +24,16 @@ public class ConfirmAndClosePermTrade {
             assert tempUser1 != null && tempUser2 != null;
 
             long[] itemIDs = a.getInvolvedItemIDs();
-            if (itemIDs[0] != 0 && im.getApprovedItem(itemIDs[0]) != null) {
-                Item tempItem1 = im.getApprovedItem(itemIDs[0]);
+            if (itemIDs[0] != 0) {
                 tempUser1.removeInventory(itemIDs[0]);
-                im.removeApprovedItem(tempItem1);
+                im.getApprovedItem(itemIDs[0]).setIsRemoved(true);
                 if (tempUser2.getWishlist().contains(itemIDs[0])) {
                     tempUser2.removeWishlist(itemIDs[0]);
                 }
             }
-            if (itemIDs[1] != 0 && im.getApprovedItem(itemIDs[1]) != null) {
-                Item tempItem2 = im.getApprovedItem(itemIDs[1]);
+            if (itemIDs[1] != 0) {
                 tempUser2.removeInventory(itemIDs[1]);
-                im.removeApprovedItem(tempItem2);
+                im.getApprovedItem(itemIDs[1]).setIsRemoved(true);
                 if (tempUser1.getWishlist().contains(itemIDs[1])) {
                     tempUser1.removeWishlist(itemIDs[1]);
                 }

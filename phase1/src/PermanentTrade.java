@@ -46,13 +46,13 @@ public class PermanentTrade extends Trade implements Serializable {
 
     @Override
     public String toString(String currentUsername) {
-        return "Permanent trade with " + getOtherUsername(currentUsername) + " - ";
+        return "Permanent trade with < " + getOtherUsername(currentUsername) + " > - ";
     }
 
     @Override
     public int compareTo(Trade t) {
-        if (t instanceof TemporaryTrade) {
-            return getMeetingDateTime1().compareTo(((TemporaryTrade) t).getMeetingDateTime2());
+        if (t instanceof TemporaryTrade && ((TemporaryTrade) t).hasSecondMeeting()) {
+            return getMeetingDateTime1().compareTo(t.getFinalMeetingDateTime());
         } else {
             return getMeetingDateTime1().compareTo(t.getMeetingDateTime1());
         }

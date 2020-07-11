@@ -12,7 +12,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-08
+ * last modified 2020-07-11
  */
 
 public class InventoryEditor {
@@ -26,7 +26,7 @@ public class InventoryEditor {
      * Creates an InventoryEditor with the given logged-in user and item/user/trade managers.
      * Prints to the screen the given user's inventory and options to add/remove/cancel.
      *
-     * @param user the non-admin user who's currently logged in
+     * @param user the normal user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
      * @param tm   the system's trade manager
@@ -98,24 +98,31 @@ public class InventoryEditor {
                         sp.invalidInput();
                         temp2 = br.readLine();
                     }
-                    int indexInput = Integer.parseInt(br.readLine());
+                    int indexInput = Integer.parseInt(temp2);
                     Item selectedItem = itemInventory.get(indexInput - 1);
 
-                    sp.inventoryRemoveItem(selectedItem.getName(), indexInput, 1);
+                    if (currentUser.isRequestedInTrade(selectedItem.getID())) {
+                        sp.inventoryRemoveItem(4);
+                    } else if (selectedItem.getAvailability()) {
+                        sp.inventoryRemoveItem(selectedItem.getName(), indexInput, 1);
 
-                    String confirmInput = br.readLine();
-                    while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
-                        sp.invalidInput();
-                        confirmInput = br.readLine();
-                    }
-                    if (confirmInput.equalsIgnoreCase("Y")) {
+                        String confirmInput = br.readLine();
+                        while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
+                            sp.invalidInput();
+                            confirmInput = br.readLine();
+                        }
+                        if (confirmInput.equalsIgnoreCase("Y")) {
 
-                        currentUser.removeInventory(selectedItem.getID());
-                        itemManager.removeApprovedItem(selectedItem);
+                            currentUser.removeInventory(selectedItem.getID());
+                            itemManager.getApprovedItem(selectedItem.getID()).setIsRemoved(true);
+                            //don't remove from ItemManager
 
-                        sp.inventoryRemoveItem(selectedItem.getName(), 0, 2);
+                            sp.inventoryRemoveItem(selectedItem.getName(), 0, 2);
+                        } else {
+                            sp.cancelled();
+                        }
                     } else {
-                        sp.cancelled();
+                        sp.inventoryRemoveItem(3);
                     }
                 }
             }
