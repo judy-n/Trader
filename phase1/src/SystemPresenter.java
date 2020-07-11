@@ -812,6 +812,25 @@ public class SystemPresenter {
     }
 
     // Presenter methods for AccountOnVacation and AccountNotOnVacation classes
-    // TODO
+    public void accountsOnVacation(){
+        System.out.println("All on vacation!");
+    }
+
+    public void accountsOnVacation(List<String> usernames) {
+        System.out.println("\nThere are the users that are on vacation:");
+        int i = 1;
+
+        for (String username : usernames) {
+            System.out.println(i + ". " + username);
+            i++;
+        }
+
+        if (usernames.isEmpty()) {
+            emptyListMessage();
+        }
+        else {
+            System.out.print("\nWould you like to put all the accounts above on Vacation? (Y/N): ");
+        }
+    }
 
 }

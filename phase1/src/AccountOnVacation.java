@@ -38,6 +38,6 @@ public class AccountOnVacation {
         List<String> usernames = um.getUsernamesOnVacation();
         List<NormalUser> users = new ArrayList<>();
 
-        sp.accountOnVacation(usernames);
+        sp.accountsOnVacation(usernames);
     }
 }
