@@ -16,6 +16,10 @@ import java.util.List;
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
 
+    /**
+     * Opens menus for logging in, singing up, or closing the program based on user input
+     * @param input The input either 1, 2, or 3.
+     */
     public void startMenu(int input) {
         switch (input) {
             case 1:
@@ -27,6 +31,10 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Prompt based system for signing up a user based on the user's input
+     * @param input the user's input
+     */
     public void signUpSystem(int input) {
         switch (input) {
             case 0:
@@ -72,6 +80,10 @@ public class SystemPresenter {
     }
 
 
+    /**
+     * Prompt based system for logging in an already existing user based on userinput
+     * @param input the user's input
+     */
     public void loginSystem(int input) {
         switch (input) {
             case 1:
@@ -141,6 +153,11 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Prompts for if a user would like to edit their inventory
+     * @param itemInventory The approved inventory of the user
+     * @param pendingItems THe pending inventory of the user
+     */
     public void inventoryEditor(List<Item> itemInventory, List<Item> pendingItems) {
         presentInventory(itemInventory, pendingItems);
         System.out.println("\n   Choose one of the options: " +
@@ -150,6 +167,10 @@ public class SystemPresenter {
         System.out.print(choicePrompt);
     }
 
+    /**
+     * Prompts user for an item they would like to add
+     * @param input the user's input
+     */
     public void inventoryAddItem(int input) {
         switch (input) {
             case 1:
@@ -170,10 +191,19 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Prints details of an item to be added
+     * @param name the name of the item
+     * @param description the description of the item
+     */
     public void inventoryAddItem(String name, String description) {
         System.out.println(name + " : " + description);
     }
 
+    /**
+     * Prompts for removing an item from a user's inventory
+     * @param input the user's input
+     */
     public void inventoryRemoveItem(int input) {
         switch (input) {
             case 1:
@@ -192,6 +222,12 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Prompts a user for if they want to remove an item from their inventory, and tells them if it has been removed
+     * @param name the name of the item
+     * @param index the index of the item
+     * @param input the user's input
+     */
     public void inventoryRemoveItem(String name, int index, int input) {
         if (input == 1) {
             System.out.print("\nRemove " + index + ". [" + name + "] from your inventory? (Y/N): ");
@@ -200,6 +236,10 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Prompts for editing a user's wishlist
+     * @param itemWishlist  the user's wishlist
+     */
     public void wishlistEditor(List<Item> itemWishlist) {
         presentWishlist(itemWishlist);
         System.out.println("\n   Choose one of the options:" +
@@ -208,6 +248,10 @@ public class SystemPresenter {
         System.out.print(choicePrompt);
     }
 
+    /**
+     * Prompts user with whether they would like to choose an item to remove from their wishlist
+     * @param input the the user's input
+     */
     public void wishlistRemoveItem(int input) {
         switch (input) {
             case 1:
@@ -219,6 +263,11 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Prompts the user on whether to remove a specific item from their wishlist
+     * @param name the name of the item
+     * @param input the user's input
+     */
     public void wishlistRemoveItem(String name, int input) {
         switch (input) {
             case 1:
@@ -230,15 +279,27 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Prints the available approved items that can be borrowed from the marketplace
+     * @param approvedItems the approved items
+     */
     public void catalogViewer(List<Item> approvedItems) {
         System.out.println("\nThese are all the items available for trade:");
         presenterAllItems(approvedItems);
     }
 
+    /**
+     * Tells a user that they are borrowing more than their threshold
+     * @param user the user to be notified
+     */
     public void catalogViewer(NormalUser user) {
         System.out.println("\nYou're borrowing too much! You need to lend AT LEAST " + user.getLendMinimum() + " more item(s) than you've borrowed.");
     }
 
+    /**
+     * Prompts user about items in the catalog
+     * @param input the user's input
+     */
     public void catalogViewer(int input) {
         switch (input) {
             case 1:
@@ -262,6 +323,11 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Prompts the user about an item they have chosen from the catalog
+     * @param item the item the user has chosen
+     * @param input the user's input
+     */
     public void catalogViewer(Item item, int input) {
         switch (input) {
             case 1:
@@ -277,11 +343,18 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents pending items
+     * @param pendingItems the pending items
+     */
     public void catalogEditor(List<Item> pendingItems) {
         System.out.println("\nThese are all the items waiting for approval:");
         presenterAllItems(pendingItems);
     }
 
+    /** takes input from user on which items to approve/reject iff items exist
+     * @param input the user's input
+     */
     public void catalogEditor(int input) {
         switch (input) {
             case 1:
@@ -293,6 +366,10 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Prompts the user about whether to approve or reject a chosen item
+     * @param item the chosen item
+     */
     public void catalogEditor(Item item) {
         System.out.println("\nYou have chosen: [" + item + "]");
         System.out.print("Would you like to 1) approve or 2) reject this item? (0 to quit): ");
