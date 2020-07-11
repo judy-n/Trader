@@ -31,13 +31,42 @@ public class AccountOnVacation {
         this.im = im;
         this.um = um;
 
-        SystemPresenter sp = new SystemPresenter();
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        String input;
         List<String> usernames = um.getUsernamesOnVacation();
         List<NormalUser> users = new ArrayList<>();
+        String input;
 
+        SystemPresenter sp = new SystemPresenter();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         sp.accountsOnVacation(usernames);
+
+        for (String username : usernames) {
+            users.add(um.getNormalByUsername(username));
+        }
+
+        if (!usernames.isEmpty()) {
+            try {
+                input = br.readLine();
+                while ((!input.equalsIgnoreCase("y")) && (!input.equalsIgnoreCase("n"))) {
+                    sp.invalidInput();
+                    input = br.readLine();
+                    sp.accountsOnVacation();
+                }
+
+                if (input.equalsIgnoreCase("y")) {
+                    for (NormalUser u : users) {
+                        u.freeze();
+                    }
+                    um.clearUsernamesToFreeze();
+                }
+            }
+            catch (IOException e) {
+                sp.exceptionMessage();
+            }
+        }
+        close();
+    }
+
+    private void close() {
+        new AdminDashboard(currentAdmin, im, um);
     }
 }
