@@ -7,9 +7,10 @@ import java.io.InputStreamReader;
  *
  * @author Ning Zhang
  * @author Yingjia Liu
+ * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-08
+ * last modified 2020-07-11
  */
 
 public class LoginSystem {
@@ -106,6 +107,10 @@ public class LoginSystem {
         sp.loginSystem(8);
     }
 
+    /**
+     * Getter for this LoginSystem's logged in User
+     * @return user
+     */
     public User getUser() {
         return user;
     }
