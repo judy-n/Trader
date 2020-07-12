@@ -10,7 +10,6 @@ import java.util.Map;
  * @author Ning Zhang
  * @author Liam Huff
  * @author Yingjia Liu
- * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-06-26
  * last modified 2020-07-11
@@ -24,8 +23,6 @@ public class NormalUser extends User implements Serializable {
 
     private boolean isFrozen;
     private int numIncomplete;
-
-    private boolean isOnVacation;
 
     private int weeklyTradeMax = 3;
     private int meetingEditMax = 3;
@@ -316,29 +313,6 @@ public class NormalUser extends User implements Serializable {
             }
         }
         return false;
-    }
-
-    /**
-     * Returns where the NormalUser is on Vacation or not.
-     *
-     * @return true if this user is on vacation, else false
-     */
-    public boolean getIsOnVacation() {
-        return isOnVacation;
-    }
-
-    /**
-     * Sets NormalUser's status to on Vacation
-     */
-    public void OonVacation() {
-        isOnVacation = true;
-    }
-
-    /**
-     * Sets NormalUser's status to not on Vacation
-     */
-    public void notOnVacation() {
-        isOnVacation = false;
     }
 }
 
