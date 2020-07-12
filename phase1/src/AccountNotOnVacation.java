@@ -41,10 +41,10 @@ public class AccountNotOnVacation {
     // Sends a request to be not on Vacation.
     private void requestNotOnVacation (NormalUser currentUser) {
         if (userManager.containsNotOnVacationRequest(currentUser.getUsername())) {
-            sp.requestNotOnVacation();
+            sp.requestNotOnVacation(1);
         } else {
             userManager.addNotOnVacationRequest(currentUser.getUsername());
-            sp.requestOnVacation);
+            sp.requestNotOnVacation(2);
         }
     }
 
