@@ -811,17 +811,13 @@ public class SystemPresenter {
         System.out.println("nothing here yet!");
     }
 
-
     // Presenter methods for AccountOnVacation and AccountNotOnVacation classes
-    // @Author: Kushagra Mehta (I am still working on these)
-    //  (give me till July 13)
-
     public void accountsOnVacation(){
         System.out.println("All on vacation!");
     }
 
     public void accountsOnVacation(List<String> usernames) {
-        System.out.println("\nThese are the users that are on vacation:");
+        System.out.println("\nThere are the users that are on vacation:");
         int i = 1;
 
         for (String username : usernames) {
@@ -837,42 +833,4 @@ public class SystemPresenter {
         }
     }
 
-    public void requestNotOnVacation(int input) {
-        switch (input) {
-            case 1:
-                System.out.println("\nYou already sent an not on vacation request, please wait for it to be reviewed.");
-                break;
-            case 2:
-                System.out.println("\nYour request has been sent in! Please allow some time to review it.");
-                break;
-        }
-    }
-
-    public void adminNotOnVacationRequests(List<NormalUser> notOnVacationRequests) {
-        System.out.println("\nHere are the users that requested to put on vacation:");
-        int index = 1;
-        for (User u : notOnVacationRequests) {
-            System.out.println(index + ". " + u.getUsername());
-            index++;
-        }
-        if (notOnVacationRequests.isEmpty()) {
-            emptyListMessage();
-        } else {
-            System.out.print("\nWould you like to put any of the accounts on vacation? (Y/N): ");
-        }
-    }
-
-    public void adminNotOnVacationRequests(int input) {
-        switch (input) {
-            case 1:
-                System.out.print("\nEnter the index of user you would like to put on Vacation (0 to quit): ");
-                break;
-            case 2:
-                System.out.println("\nThe user has is not on vacation now!");
-                break;
-            case 3:
-                System.out.println("\nFinished!");
-                break;
-        }
-    }
 }
