@@ -39,8 +39,8 @@ public class UserManagerTest {
     @Test
     public void usernameExistsTest(){
         um.addUser(User1);
-        assertTrue(um.usernameExists("Tom", false));
-        assertFalse(um.usernameExists("Jerry", true));
+        assertTrue(um.usernameExists("Tom"));
+        assertFalse(um.usernameExists("Jerry"));
     }
 
     @Test
