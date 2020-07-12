@@ -194,6 +194,11 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
         return lastEditor;
     }
 
+    /**
+     * Returns true iff user has confirmed the transaction
+     * @param username the user's username
+     * @return true iff user confirmed
+     */
     public boolean getUserTransactionConfirmation1(String username) {
         if (username.equals(involvedUsernames[0])) {
             return transactionConfirmed1[0];
@@ -202,6 +207,10 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
         }
     }
 
+    /**
+     * Confirms transaction for a user
+     * @param username the user's username
+     */
     public void confirmTransaction1(String username) {
         if (username.equals(involvedUsernames[0])) {
             transactionConfirmed1[0] = true;
@@ -210,10 +219,17 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
         }
     }
 
+    /**
+     * Closes a transaction for a trade (Completes the transaction)
+     */
     public void closeTransaction() {
         isComplete = true;
     }
 
+    /**
+     * Adds one to the number of edits whichever user that has edited has made
+     * @param username the username of the user
+     */
     public void addUserEditCount1(String username) {
         if (username.equals(involvedUsernames[0])) {
             numEdits1[0]++;
@@ -223,6 +239,11 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
         setLastEditor(username);
     }
 
+    /**
+     * Gets the number of edits a user in the trade has made, based on their username
+     * @param username the user's username
+     * @return The number of edits they have made to the trade
+     */
     public int getUserEditCount1(String username) {
         if (username.equals(involvedUsernames[0])) {
             return numEdits1[0];
@@ -231,9 +252,14 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
         }
     }
 
+    /**
+     * Sets the lastEditor to the given username
+     * @param username the user who has edited the trade last
+     */
     public void setLastEditor(String username) {
         lastEditor = username;
     }
+
     public abstract LocalDateTime getFinalMeetingDateTime();
 
     public abstract String toString(String currentUsername);
