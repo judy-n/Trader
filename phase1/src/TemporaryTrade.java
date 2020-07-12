@@ -39,16 +39,28 @@ public class TemporaryTrade extends Trade implements Serializable {
         return meetingDateTime2;
     }
 
+    /**
+     * Getter for the meeting location of the second transaction
+     * @return the second meeting time
+     */
     public String getMeetingLocation2() {
         return meetingLocation2;
     }
 
+    /**
+     * Getter for the meeting time of the second transaction
+     * @return The second meeting time
+     */
     //should only be called on temp trades with a second meeting in place
     @Override
     public LocalDateTime getFinalMeetingDateTime() {
         return meetingDateTime2;
     }
 
+    /**
+     * Confirms the second transaction for a user
+     * @param username the user's username
+     */
     @Override
     public void confirmTransaction1(String username) {
 
@@ -64,6 +76,10 @@ public class TemporaryTrade extends Trade implements Serializable {
         }
     }
 
+    /**
+     * Confirms second transaction for a user
+     * @param username the user's username
+     */
     public void confirmTransaction2(String username) {
         if (username.equals(getInvolvedUsernames()[0])) {
             transactionConfirmed2[0] = true;
@@ -76,6 +92,12 @@ public class TemporaryTrade extends Trade implements Serializable {
         }
     }
 
+
+    /**
+     * Return true iff user has confirmed the meeting
+     * @param username the user's username
+     * @return boolean true iff confirmed
+     */
     public boolean getUserTransactionConfirmation2(String username) {
         if (username.equals(getInvolvedUsernames()[0])) {
             return transactionConfirmed2[0];
@@ -84,10 +106,19 @@ public class TemporaryTrade extends Trade implements Serializable {
         }
     }
 
+    /**
+     * Return whether or not second meeting time exists
+     * @return true iff the second meeting time exists
+     */
     public boolean hasSecondMeeting() {
         return meetingDateTime2 != null;
     }
 
+    /**
+     * Return string representation of the temporary trade, so that the current user can confirm or reject it
+     * @param currentUsername the current user that is confirming the trade
+     * @return String representation of the temporary trade
+     */
     @Override
     public String toString(String currentUsername) {
         return "Temporary trade with < " + getOtherUsername(currentUsername) + " > - ";
