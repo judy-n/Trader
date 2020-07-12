@@ -1,5 +1,6 @@
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -143,6 +144,50 @@ public class TradeManagerTest {
         assertEquals(trade3, tm.getRecentThreeTrades("Tom")[0]);
         assertEquals(trade2, tm.getRecentThreeTrades("Tom")[2]);
     }
+
+    @Test
+    public void testFrequentTradersNoTrades() {
+        assertEquals("empty", tm.getFrequentTradePartners("Tom")[0]);
+        assertEquals("empty", tm.getFrequentTradePartners("Tom")[1]);
+        assertEquals("empty", tm.getFrequentTradePartners("Tom")[2]);
+    }
+
+    @Test
+    public void testFrequentTraders() {
+        Item item = new Item("book", "A book", "Tom");
+        User1.addInventory(item.getID());
+        TemporaryTrade trade = new TemporaryTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+                LocalDateTime.of(2020, 8, 12, 5, 0), "Robarts");
+        tm.addTrade(trade);
+        trade.closeTransaction();
+        assertEquals("Jerry", tm.getFrequentTradePartners("Tom")[0]);
+        assertEquals("empty", tm.getFrequentTradePartners("Tom")[1]);
+        assertEquals("empty", tm.getFrequentTradePartners("Tom")[2]);
+        assertEquals("Tom", tm.getFrequentTradePartners("Jerry")[0]);
+    }
+
+    @Test
+    public void testGetMeetingsThisWeek(){
+        Item item = new Item("book", "A book", "Tom");
+        Item item2 = new Item("pencil", "A pencil", "Jerry");
+        User1.addInventory(item.getID());
+        User2.addInventory(item2.getID());
+        PermanentTrade trade2 = new PermanentTrade(new String[]{"Tom", "Jerry"}, new long[]{0, item2.getID()},
+                LocalDateTime.of(2020, 7, 8, 11, 0),"UofT");
+        PermanentTrade trade1 = new PermanentTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+                LocalDateTime.of(2020, 7, 10, 13, 0), "Robarts");
+        TemporaryTrade trade3 = new TemporaryTrade(new String[]{"Tom", "Jerry"}, new long[]{0, item.getID()},
+                LocalDateTime.of(2020, 7, 12, 13, 0), "Robarts");
+        tm.addTrade(trade2);
+        tm.addTrade(trade1);
+        tm.addTrade(trade3);
+        trade1.confirmAgreedMeeting1();
+        trade2.confirmAgreedMeeting1();
+        trade3.confirmAgreedMeeting1();
+        assertEquals(3, tm.getNumMeetingsThisWeek("Tom", LocalDate.of(2020, 7, 8)));
+    }
+
+
 
 
 
