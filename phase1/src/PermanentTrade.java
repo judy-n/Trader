@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-08
+ * last modified 2020-07-12
  */
 public class PermanentTrade extends Trade implements Serializable {
     /**
@@ -24,6 +24,10 @@ public class PermanentTrade extends Trade implements Serializable {
         super(usernames, itemIDs, firstDateTime, firstLocation);
     }
 
+    /**
+     * Confirms transaction for a user
+     * @param username the user's username
+     */
     @Override
     public void confirmTransaction1(String username) {
 
@@ -35,6 +39,10 @@ public class PermanentTrade extends Trade implements Serializable {
         }
     }
 
+    /**
+     * Return the time the meeting has been chosen to take place
+     * @return The time the meeting takes place
+     */
     //should only be called on completed permanent trades
     @Override
     public LocalDateTime getFinalMeetingDateTime() {
@@ -44,11 +52,16 @@ public class PermanentTrade extends Trade implements Serializable {
         return null;
     }
 
+    /**
+     * Return string representation of the permanent trade
+     * @param currentUsername the username of the current editor of the trade
+     * @return a string representation of the trade
+     */
     @Override
     public String toString(String currentUsername) {
         return "Permanent trade with < " + getOtherUsername(currentUsername) + " > - ";
     }
-
+    
     @Override
     public int compareTo(Trade t) {
         if (t instanceof TemporaryTrade && ((TemporaryTrade) t).hasSecondMeeting()) {
