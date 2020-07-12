@@ -74,6 +74,16 @@ public class TradeTest {
     }
 
     @Test
+    public void TradeGetOtherUsernameTest(){
+        Item item = new Item("book", "A book", "Tom");
+        User1.addInventory(item.getID());
+        TemporaryTrade trade = new TemporaryTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+                LocalDateTime.of(2020, 8, 12, 5, 0), "Robarts");
+        assertEquals("Jerry", trade.getOtherUsername("Tom"));
+        assertEquals("Tom", trade.getOtherUsername("Jerry"));
+    }
+
+    @Test
     public void TemporaryTradeToString(){
         Item item = new Item("book", "A book", "Tom");
         User1.addInventory(item.getID());
