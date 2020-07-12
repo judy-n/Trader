@@ -8,7 +8,6 @@ import java.util.List;
  * @author Ning Zhang
  * @author Liam Huff
  * @author Yingjia Liu
- * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-06-26
  * last modified 2020-07-11
@@ -18,8 +17,6 @@ public class UserManager implements Serializable {
     private List<AdminUser> allAdmins;
     private List<String> usernamesToFreeze;
     private List<String> unfreezeRequests;
-    private List<String> getUsernamesOnVacation;
-    private List<String> NotOnVacationRequests;
 
     /**
      * Class constructor.
@@ -391,13 +388,5 @@ public class UserManager implements Serializable {
      */
     public boolean containsUnfreezeRequest(String username) {
         return unfreezeRequests.contains(username);
-    }
-
-    /**
-     * Returns usernames of all account that need to be put on vacation status
-     * @return getUsernamesOnVacation
-     */
-    public List<String> getUsernamesOnVacation(){
-        return getUsernamesOnVacation;
     }
 }
