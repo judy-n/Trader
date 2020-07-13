@@ -397,6 +397,10 @@ public class SystemPresenter {
         System.out.print("Would you like to 1) approve or 2) reject this item? (0 to quit): ");
     }
 
+    /**
+     * Presents all items in a list of items to the user
+     * @param items a list of items
+     */
     private void presenterAllItems(List<Item> items) {
         if (items.isEmpty()) {
             emptyListMessage();
@@ -409,6 +413,11 @@ public class SystemPresenter {
         }
     }
 
+
+    /**
+     * Presents all the usernames of all NormalUsers which can be frozen to the user
+     * @param usernames the usernames of the NormalUsers
+     */
     public void accountFreezer(List<String> usernames) {
         System.out.println("\nHere are the users that need to be frozen:");
         int index = 1;
@@ -423,10 +432,17 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents that the accounts have been frozen
+     */
     public void accountFreezer() {
         System.out.println("\nAll frozen!");
     }
 
+    /**
+     * Presents whether or not a request to unfreeze their account has been confirmed, based off an input
+     * @param input the input
+     */
     public void requestUnfreeze(int input) {
         switch (input) {
             case 1:
@@ -438,6 +454,10 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents to an admin the NormalUsers that have requested to be unfrozen.
+     * @param unfreezeRequests the NormalUsers to be unfrozen
+     */
     public void adminGetUnfreezeRequests(List<NormalUser> unfreezeRequests) {
         System.out.println("\nHere are the users that requested to be unfrozen:");
         int index = 1;
@@ -452,6 +472,10 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents admin with information about unfreeze requests based on an input
+     * @param input the input
+     */
     public void adminGetUnfreezeRequests(int input) {
         switch (input) {
             case 1:
@@ -466,6 +490,10 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents user with trade request related text based off an input
+     * @param input the input
+     */
     public void tradeRequestViewer(int input) {
         switch (input) {
             case 1:
@@ -498,12 +526,23 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents an inventory of items from the trade initiator to the user
+     * @param items the inventory of items
+     */
     public void tradeRequestViewer(List<Item> items) {
         //for viewing initiator's inventory
         System.out.println("\nTheir inventory:");
         presenterAllItems(items);
     }
 
+    /**
+     * Presents text based on input relating to specifics about trades
+     *
+     * @param input the input
+     * @param owner the user who owns the item to be traded
+     * @param itemName the name of the item to be traded
+     */
     public void tradeRequestViewer(int input, String owner, String itemName) {
         switch (input) {
             case 1:
@@ -522,6 +561,12 @@ public class SystemPresenter {
 
     }
 
+    /**
+     * Presents requested and received trades to a user, based off an input
+     * @param input the input
+     * @param items the items in the request
+     * @param owners the owners of the items in the request
+     */
     public void tradeRequestViewer(int input, List<Item> items, List<String> owners) {
         switch (input) {
             case 1:
@@ -536,6 +581,11 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents trade requests user has initiated
+     * @param items the items in the initiated trade requests
+     * @param users the users in the initiated trade requests
+     */
     private void presentInitiatedTradeRequests(List<Item> items, List<String> users) {
         int index = 1;
         for (Item i : items) {
@@ -552,6 +602,11 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents trade requests user has received
+     * @param items the items in the received trade requests
+     * @param users the users in the received trade requests
+     */
     private void presentReceivedTradeRequests(List<Item> items, List<String> users) {
         int index = 1;
         for (Item i : items) {
@@ -570,6 +625,10 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents information relating to a user's ongoing trades, based off an input
+     * @param input the input
+     */
     public void ongoingTrades(int input) {
         switch (input) {
             case 1:
@@ -643,6 +702,12 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents information regarding an ongoing trade to a user, based off a situation
+     * @param situation the input situation
+     * @param meeting the meeting time of the trade
+     * @param trade the trade
+     */
     public void ongoingTrades(int situation, LocalDateTime meeting, Trade trade) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String meetingStr = meeting.format(formatter);
@@ -670,6 +735,11 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents the number of edits a user has made, and if they are on their final edit
+     * @param numEdits the number of edits the user has made
+     * @param isFinalEdit true iff this is the user's final edit
+     */
     public void ongoingTrades(int numEdits, boolean isFinalEdit) {
         System.out.println("\n# of edits you've made so far: " + numEdits);
         if (isFinalEdit) {
@@ -677,6 +747,12 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents all ongoing trades to a user
+     * @param ongoingTrades the list of ongoing trades
+     * @param tradeItems the items involved the trades
+     * @param username the username of the user
+     */
     public void ongoingTrades(List<Trade> ongoingTrades, List<Item[]> tradeItems, String username) {
         System.out.println("\nHere are all your ongoing trades:");
         int index = 1;
@@ -709,6 +785,10 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents a dashboard to a user, and prints information based on an input
+     * @param input the input
+     */
     public void normalDashboard(int input) {
         String frozenWarning = "\n-- Your account is currently frozen due to you reaching the limit on incomplete trades --";
         String menuUnfrozen = "\nWhat would you like to do:" +
@@ -735,6 +815,10 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents a threshold editor to the AdminUser, based on an input
+     * @param input the input
+     */
     public void thresholdEditor(int input) {
         switch (input) {
             case 1:
@@ -750,6 +834,11 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents information about a user's threshold data to an admin user, based on an input
+     * @param input the input
+     * @param oldThreshold the threshold of a user (before edits)
+     */
     public void thresholdEditor(int input, int oldThreshold) {
         switch (input) {
             case 1:
@@ -771,14 +860,25 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presnets that a new admin has been created
+     */
     public void adminCreator() {
         System.out.println("\n New admin created!");
     }
 
+    /**
+     * presents an admin user's ID
+     * @param user The AdminUser
+     */
     public void showAdminID(AdminUser user) {
         System.out.println("\nYour admin ID: " + user.getAdminID());
     }
 
+    /**
+     * Presents the AdminDashboard, based off an input
+     * @param input the input
+     */
     public void adminDashboard(int input) {
         String menuNotInitAdmin = "What would you like to do:" +
                 "\n 1 - view items awaiting approval" +
@@ -798,15 +898,27 @@ public class SystemPresenter {
         }
     }
 
+    /**
+     * Presents that a trade has been cancelled
+     */
     public void cancelled() {
         System.out.println("\nCancelled!");
     }
 
+    /**
+     * Presents an error reading user input
+     */
     public void exceptionMessage() {
         System.out.println("\nError reading user input!");
         System.exit(-1);
     }
 
+    /**
+     * Presents errors based on a type and a process, based off an input
+     * @param input the input
+     * @param process the process
+     * @param type the type of error
+     */
     public void exceptionMessage(int input, String process, String type) {
         switch (input) {
             case 1:
@@ -819,16 +931,25 @@ public class SystemPresenter {
         System.exit(-1);
     }
 
+    /**
+     * Presents that an invalid input was made
+     */
     public void invalidInput() {
         System.out.print("\nInvalid input. Please try again: ");
     }
 
+    /**
+     * Presents that a date time suggestion failed due to exceeding maximum meeting threshold for chosen week
+     */
     public void failedSuggestion() {
         System.out.print("\nSorry, you can't suggest this date and time because you've " +
                 "reached the maximum number of meetings allowed in the same week." +
                 "\nPlease enter a different date and time (not within the same week): ");
     }
 
+    /**
+     * Presents that a list is empty
+     */
     private void emptyListMessage() {
         System.out.println("nothing here yet!");
     }
