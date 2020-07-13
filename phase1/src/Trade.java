@@ -2,18 +2,18 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Represents an approved trade between 2 Users.
- * Trade stores the usernames of both Users in an array which is parallel to an array
- * containing the IDs of the Items each User is lending in this trade.
- * Note that an ID of 0.0 means the associated User is not lending an Item (aka a one-way trade).
- * Also note that in the username array,
- * the username at index 0 is the initiator while the username at index 1 was the recipient of the trade request.
+ * Represents an approved trade between two normal users.
+ * <Trade></Trade> stores the usernames of both users in an array which is parallel to an array
+ * containing the IDs of the items each user is lending in this trade.
+ * Note that an ID of 0.0 means the associated user is not lending an item (aka a one-way trade).
+ * Also note that in the username array, the username at index 0 is the user who accepted the trade request
+ * while the username at index 1 is the sender of the trade request.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
 
 public abstract class Trade implements Serializable, Comparable<Trade> {
@@ -30,10 +30,10 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     private boolean[] transactionConfirmed1 = new boolean[2];
 
     /**
-     * Class constructor.
-     * Creates a Trade with given username array, item ID array, and first suggestions for meeting time/date/location.
+     * Creates a <Trade></Trade> with given username array, item ID array,
+     * and first suggestions for meeting time/date/location.
      *
-     * @param usernames     an array containing the usernames of the two Users involved in this Trade
+     * @param usernames     an array containing the usernames of the two users involved in this Trade
      * @param itemIDs       an array containing the IDs of the Items being traded (parallel to usernames)
      * @param firstDateTime the first date and time suggested for this Trade's meeting
      * @param firstLocation the first location suggested for this Trade's meeting
@@ -46,52 +46,52 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
 
         meetingDateTime1 = firstDateTime;
         meetingLocation1 = firstLocation;
-        lastEditor = involvedUsernames[1];
+        lastEditor = involvedUsernames[0];
 
         isCancelled = false;
         isComplete = false;
     }
 
     /**
-     * Getter for the usernames of the two Users involved in this Trade.
+     * Getter for the usernames of the two users involved in this trade.
      *
-     * @return an array containing the usernames of the two Users involved in this Trade
+     * @return an array containing the usernames of the two users involved in this trade
      */
     public String[] getInvolvedUsernames() {
         return involvedUsernames;
     }
 
-
     /**
-     * Sets isCancelled to True
+     * Cancels this trade by setting <isCancelled></isCancelled> to true.
      */
-    public void setIsCancelled(){isCancelled = true;}
-
+    public void setIsCancelled() {
+        isCancelled = true;
+    }
 
     /**
-     * Getter for the IDs of the Items involved in this Trade.
+     * Getter for the IDs of the items involved in this trade.
      *
-     * @return an array containing the IDs of the Items involved in this Trade
+     * @return an array containing the IDs of the items involved in this trade
      */
     public long[] getInvolvedItemIDs() {
         return involvedItemIDs;
     }
 
     /**
-     * Takes in a username and returns whether or not they're a part of this Trade.
+     * Takes in a username and returns whether or not they're a part of this trade.
      *
-     * @param username the username whose involvement in this Trade is being determined
-     * @return whether or not the given user is part of this Trade
+     * @param username the username whose involvement in this trade is being determined
+     * @return true if the given user is involved in this trade, false otherwise
      */
     public boolean isInvolved(String username) {
         return involvedUsernames[0].equals(username) || involvedUsernames[1].equals(username);
     }
 
     /**
-     * Takes in the username of a user who's a part of this Trade and returns the ID of the item they lent in this Trade.
+     * Takes in the username of a user who's a part of this trade and returns the ID of the item they lent in this trade.
      *
      * @param username the username of the user whose lent item ID is being retrieved
-     * @return the ID of the item the given user lent in this Trade
+     * @return the ID of the item the given user lent in this trade
      */
     public long getLentItemID(String username) {
         if (involvedUsernames[0].equals(username)) {
@@ -102,7 +102,7 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     }
 
     /**
-     * Takes in the username of a user who's part of this Trade and return the username of their trade partner.
+     * Takes in the username of a user who's part of this trade and return the username of their trade partner.
      *
      * @param username the username of the user who's trade partner is being retrieved
      * @return the username of the given user's trade partner
@@ -116,9 +116,9 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     }
 
     /**
-     * Get whether or not this Trade is complete.
+     * Get whether or not this trade is complete.
      *
-     * @return a boolean representing whether or not this Trade is complete
+     * @return true if this trade is complete, false otherwise
      */
     public boolean getIsComplete() {
         return isComplete;
@@ -126,16 +126,18 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
 
 
     /**
-     * Get whether or not this Trade is cancelled.
+     * Get whether or not this trade is cancelled.
      *
-     * @return a boolean representing whether or not this Trade is cancelled
+     * @return true if this trade is cancelled, false otherwise
      */
-    public boolean getIsCancelled(){return isCancelled;}
+    public boolean getIsCancelled() {
+        return isCancelled;
+    }
 
     /**
-     * Get whether or not this Trade has a first meeting that both traders have agreed upon.
+     * Get whether or not this trade has a first meeting that both traders have agreed upon.
      *
-     * @return a boolean representing whether or not this Trade has a first meeting that both traders have agreed upon
+     * @return true if this trade has an agreed first meeting, false otherwise
      */
     public boolean getHasAgreedMeeting1() {
         return hasAgreedMeeting1;
@@ -143,23 +145,22 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
 
     /**
      * Confirms that both traders have agreed on a first meeting time and place.
-     *
      */
     public void confirmAgreedMeeting1() {
         hasAgreedMeeting1 = true;
     }
 
     /**
-     * Getter for this Trade's current first meeting date and time.
+     * Getter for this trade's current first meeting date and time.
      *
-     * @return a LocalDateTime object representing this Trade's current first meeting date and time
+     * @return a <LocalDateTime></LocalDateTime> object representing this trade's current first meeting date and time
      */
     public LocalDateTime getMeetingDateTime1() {
         return meetingDateTime1;
     }
 
     /**
-     * Setter for this Trade's first meeting date and time.
+     * Setter for this trade's first meeting date and time.
      *
      * @param dateTime the new date and time for the first meeting
      */
@@ -168,16 +169,16 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     }
 
     /**
-     * Getter for this Trade's current first meeting location.
+     * Getter for this trade's current first meeting location.
      *
-     * @return a String representing this Trade's current first meeting location
+     * @return a String representing this trade's current first meeting location
      */
     public String getMeetingLocation1() {
         return meetingLocation1;
     }
 
     /**
-     * Setter for this Trade's first meeting date and time.
+     * Setter for this trade's first meeting date and time.
      *
      * @param location the new location for the first meeting
      */
@@ -186,18 +187,19 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     }
 
     /**
-     * Getter for the username of the user who last edited this Trade's meeting details.
+     * Getter for the username of the user who last edited this trade's meeting details.
      *
-     * @return the username of the user who last edited this Trade's meeting details
+     * @return the username of the user who last edited this trade's meeting details
      */
     public String getLastEditor() {
         return lastEditor;
     }
 
     /**
-     * Returns true iff user has confirmed the transaction
-     * @param username the user's username
-     * @return true iff user confirmed
+     * Returns whether or not the given user has confirmed this trade's first transaction.
+     *
+     * @param username the username of the user to query
+     * @return true if the given user has confirmed the first transaction, false otherwise
      */
     public boolean getUserTransactionConfirmation1(String username) {
         if (username.equals(involvedUsernames[0])) {
@@ -208,8 +210,9 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     }
 
     /**
-     * Confirms transaction for a user
-     * @param username the user's username
+     * Confirms this trade's first transaction for the given user.
+     *
+     * @param username the username of the user confirming the first transaction
      */
     public void confirmTransaction1(String username) {
         if (username.equals(involvedUsernames[0])) {
@@ -220,15 +223,17 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     }
 
     /**
-     * Closes a transaction for a trade (Completes the transaction)
+     * Closes this trade's transaction (completes the trade).
      */
     public void closeTransaction() {
         isComplete = true;
     }
 
     /**
-     * Adds one to the number of edits whichever user that has edited has made
-     * @param username the username of the user
+     * Adds one to the number of edits made by the given user.
+     * Automatically sets the last editor of this trade's meeting to the given user.
+     *
+     * @param username the username of the user whose edit count is being incremented
      */
     public void addUserEditCount1(String username) {
         if (username.equals(involvedUsernames[0])) {
@@ -236,13 +241,14 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
         } else {
             numEdits1[1]++;
         }
-        setLastEditor(username);
+        lastEditor = username;
     }
 
     /**
-     * Gets the number of edits a user in the trade has made, based on their username
-     * @param username the user's username
-     * @return The number of edits they have made to the trade
+     * Gets the number of edits the given user has made on this trade's meeting.
+     *
+     * @param username the username of the user to query
+     * @return the number of edits the given user has made
      */
     public int getUserEditCount1(String username) {
         if (username.equals(involvedUsernames[0])) {
@@ -253,17 +259,30 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     }
 
     /**
-     * Sets the lastEditor to the given username
-     * @param username the user who has edited the trade last
+     * Getter for final meeting date and time of this trade.
+     * Abstract method implemented by subclasses of <Trade></Trade>.
+     *
+     * @return the final meeting date and time of this trade
      */
-    public void setLastEditor(String username) {
-        lastEditor = username;
-    }
-
     public abstract LocalDateTime getFinalMeetingDateTime();
 
+    /**
+     * Returns a String representation of this trade.
+     * Abstract method implemented by subclasses of <Trade></Trade>.
+     *
+     * @param currentUsername the username of the user who's currently logged in
+     * @return a String representation of this trade
+     */
     public abstract String toString(String currentUsername);
 
-    public abstract int compareTo(Trade t);
-    //returns -ve if this trade comes before t, 0 if exactly the same, and +ve if it comes after t
+    /**
+     * Allows trades to be compared to each other based on their latest meeting time.
+     * Abstract method implemented by subclasses of <Trade></Trade>.
+     *
+     * @param trade the trade being compared to this trade
+     * @return a negative value if this trade comes before the given trade,
+     * 0 if exactly the same, and a positive value if it comes after the given trade
+     */
+    public abstract int compareTo(Trade trade);
+
 }

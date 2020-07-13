@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
  * @since 2020-06-26
  * last modified 2020-07-12
  */
-public class PermanentTrade extends Trade implements Serializable {
+public class PermanentTrade extends Trade implements Serializable, Comparable<Trade> {
     /**
-     * PermanentTrade
-     * Creates a PermanentTrade with given username array, item ID array, and first suggestions for meeting time/date/location.
+     * Creates a <PermanentTrade></PermanentTrade> with given username array, item ID array,
+     * and first suggestions for meeting time/date/location.
      *
      * @param usernames     an array containing the usernames of the two Users involved in this TemporaryTrade
      * @param itemIDs       an array containing the IDs of the Items being traded (parallel to usernames)
@@ -25,8 +25,10 @@ public class PermanentTrade extends Trade implements Serializable {
     }
 
     /**
-     * Confirms transaction for a user
-     * @param username the user's username
+     * Confirms this permanent trade's transaction for the given user.
+     * Automatically closes the transaction if both traders have confirmed.
+     *
+     * @param username the username of the user confirming the transaction
      */
     @Override
     public void confirmTransaction1(String username) {
@@ -40,10 +42,11 @@ public class PermanentTrade extends Trade implements Serializable {
     }
 
     /**
-     * Return the time the meeting has been chosen to take place
-     * @return The time the meeting takes place
+     * Return the scheduled meeting time.
+     * Should only be called on a completed permanent trade.
+     *
+     * @return the scheduled meeting time
      */
-    //should only be called on completed permanent trades
     @Override
     public LocalDateTime getFinalMeetingDateTime() {
         if (getIsComplete()) {
@@ -53,21 +56,29 @@ public class PermanentTrade extends Trade implements Serializable {
     }
 
     /**
-     * Return string representation of the permanent trade
-     * @param currentUsername the username of the current editor of the trade
-     * @return a string representation of the trade
+     * Return a String representation of this permanent trade.
+     *
+     * @param currentUsername the username of the user currently logged in
+     * @return the trade type and the given user's trade partner in a string
      */
     @Override
     public String toString(String currentUsername) {
         return "Permanent trade with < " + getOtherUsername(currentUsername) + " > - ";
     }
-    
+
+    /**
+     * Allows this permanent trade to be compared to both types of trade base on the date and time of their meetings.
+     *
+     * @param trade the trade being compared with this permanent trade
+     * @return a negative value if this permanent trade comes before the given trade,
+     * 0 if exactly the same, and a positive value if it comes after the given trade
+     */
     @Override
-    public int compareTo(Trade t) {
-        if (t instanceof TemporaryTrade && ((TemporaryTrade) t).hasSecondMeeting()) {
-            return getMeetingDateTime1().compareTo(t.getFinalMeetingDateTime());
+    public int compareTo(Trade trade) {
+        if (trade instanceof TemporaryTrade && ((TemporaryTrade) trade).hasSecondMeeting()) {
+            return getMeetingDateTime1().compareTo(trade.getFinalMeetingDateTime());
         } else {
-            return getMeetingDateTime1().compareTo(t.getMeetingDateTime1());
+            return getMeetingDateTime1().compareTo(trade.getMeetingDateTime1());
         }
     }
 }

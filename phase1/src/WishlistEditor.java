@@ -10,9 +10,8 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
-
 public class WishlistEditor {
     private NormalUser currentUser;
     private ItemManager itemManager;
@@ -20,9 +19,10 @@ public class WishlistEditor {
     private TradeManager tradeManager;
 
     /**
-     * Class constructor.
-     * Creates a WishlistEditor with the given logged-in user and item/user/trade managers.
-     * Prints to the screen the given user's wishlist and options to remove/cancel.
+     * Creates a <WishlistEditor></WishlistEditor> with the given normal user and item/user/trade managers.
+     * Prints to the screen the given user's wishlist and options to remove/cancel using <SystemPresenter></SystemPresenter>.
+     * This class lets the user remove items from their wishlist through user input.
+     * They can only add items to their wishlist when browsing items available for trade.
      *
      * @param user the normal user who's currently logged in
      * @param im   the system's item manager
@@ -30,8 +30,6 @@ public class WishlistEditor {
      * @param tm   the system's trade manager
      */
     public WishlistEditor(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
-        // This lets the User remove Items from the wish list. Assuming that they only add Items to
-        // the wishlist when browsing items available for trade.
 
         currentUser = user;
         userManager = um;
@@ -50,7 +48,7 @@ public class WishlistEditor {
                 temp = br.readLine();
             }
             int input = Integer.parseInt(temp);
-            if (input == 1) {   //remove item
+            if (input == 1) {
                 if (currentUser.getWishlist().isEmpty()) {
                     sp.wishlistRemoveItem(1);
                 } else {

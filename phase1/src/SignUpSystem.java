@@ -3,12 +3,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Lets the user sign up.
+ * Signs a new user up in the system.
+ *
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
 public class SignUpSystem {
     private String username;
@@ -18,8 +19,7 @@ public class SignUpSystem {
     private SystemPresenter sp;
 
     /**
-     * Class constructor.
-     * Creates a SignUpSystem with the given user manager.
+     * Creates a <SignUpSystem></SignUpSystem> with the given user manager.
      *
      * @param um the system's user manager
      */
@@ -28,11 +28,12 @@ public class SignUpSystem {
         sp = new SystemPresenter();
     }
 
-    /**
-     * Takes input from the program's user based on signing a Normal or Admin user up.
-     * @param isAdmin true if the user is an admin, false otherwise
+    /*
+     * Allows a new user to be created through user input.
+     * Runs checks to ensure that usernames and emails are unique, and that login credentials
+     * follow certain rules (e.g. no spaces, at least x characters long, etc).
      */
-    private void inputProcess(boolean isAdmin) {
+    private void inputProcess() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         sp.signUpSystem(1);
         try {
@@ -79,7 +80,8 @@ public class SignUpSystem {
         sp.signUpSystem(7);
         try {
             String pwInput1 = br.readLine();
-            while (pwInput1.isEmpty() || pwInput1.contains(" ")) {
+            while (pwInput1.isEmpty() || pwInput1.contains(" ") ||
+                    pwInput1.length() < 6 || pwInput1.length() > 20) {
                 sp.signUpSystem(8);
                 pwInput1 = br.readLine();
             }
@@ -96,12 +98,13 @@ public class SignUpSystem {
     }
 
     /**
-     * Creates a new Normal User based on input
-     * @return New normalUser
+     * Creates a new <NormalUser></NormalUser> based on input from <inputProcess()></inputProcess()>.
+     *
+     * @return the normal user that was just created
      */
     public NormalUser createNewNormal() {
         sp.signUpSystem(0);
-        inputProcess(false);
+        inputProcess();
         NormalUser newUser = new NormalUser(username, email, password);
         userManager.addUser(newUser);
         sp.signUpSystem(11);
@@ -109,11 +112,11 @@ public class SignUpSystem {
     }
 
     /**
-     * Creates a new admin based on input
+     * Creates a new <AdminUser></AdminUser> based on input from <inputProcess()></inputProcess()>.
      */
     public void createNewAdmin() {
         sp.signUpSystem(12);
-        inputProcess(true);
+        inputProcess();
         AdminUser newUser = new AdminUser(username, email, password, userManager.getAdminId());
         userManager.addUser(newUser);
     }

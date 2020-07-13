@@ -4,21 +4,25 @@
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
-
 public class ConfirmAndCloseTempTrade {
 
-    //javadoc properly later
-    //confirms the transaction for logged-in user
-    //TemporaryTrade automatically closes it if both users have confirmed the second meeting (isComplete = true)
-    //if item ID is not 0 and the item still exists then set it's availability to true
-    public void confirmAndCloseTempTransaction(String username, TemporaryTrade a, ItemManager im) {
+    /**
+     * Confirms the final transaction in a temporary trade for the logged-in normal user.
+     * <TemporaryTrade></TemporaryTrade> automatically closes it if both users have confirmed the second meeting (isComplete = true)
+     * If item ID is not 0 then set the item's availability to true.
+     *
+     * @param username  the username of the normal user who's currently logged in
+     * @param tempTrade the temporary trade transaction being confirmed
+     * @param im        the system's item manager
+     */
+    public void confirmAndCloseTempTransaction(String username, TemporaryTrade tempTrade, ItemManager im) {
 
-        a.confirmTransaction2(username);
+        tempTrade.confirmTransaction2(username);
 
-        if (a.getIsComplete()) {
-            long[] itemIDs = a.getInvolvedItemIDs();
+        if (tempTrade.getIsComplete()) {
+            long[] itemIDs = tempTrade.getInvolvedItemIDs();
 
             if (itemIDs[0] != 0) {
                 Item tempItem1 = im.getApprovedItem(itemIDs[0]);

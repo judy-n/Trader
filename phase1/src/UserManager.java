@@ -3,14 +3,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Stores all Users in the system.
+ * Stores all <User></User>s in the system.
  *
  * @author Ning Zhang
  * @author Liam Huff
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
 public class UserManager implements Serializable {
     private List<NormalUser> allNormals;
@@ -19,9 +19,7 @@ public class UserManager implements Serializable {
     private List<String> unfreezeRequests;
 
     /**
-     * Class constructor.
-     * Creates a UserManager, setting all lists to empty by default.
-     *
+     * Creates a <UserManager></UserManager>, setting all lists to empty by default.
      */
     public UserManager() {
         allNormals = new ArrayList<>();
@@ -31,9 +29,9 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Adds the given User to the user database.
+     * Adds the given <User></User> to the user database.
      *
-     * @param userToAdd the User being added to the database
+     * @param userToAdd the <User></User> being added to the database
      */
     public void addUser(User userToAdd) {
         if (userToAdd instanceof AdminUser) {
@@ -44,7 +42,7 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given username and returns the associated NormalUser.
+     * Takes the given username and returns the associated <NormalUser></NormalUser>.
      *
      * @param username the username of the normal user being retrieved
      * @return the normal user associated with the given username
@@ -59,7 +57,7 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given username that belongs to an admin and returns the associated AdminUser.
+     * Takes the given username that belongs to an admin and returns the associated <AdminUser></AdminUser>.
      *
      * @param username the username of the admin being retrieved
      * @return the admin associated with the given username
@@ -74,7 +72,7 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given email and returns the associated NormalUser.
+     * Takes the given email and returns the associated <NormalUser></NormalUser>.
      *
      * @param email the email of the normal user being retrieved
      * @return the normal user associated with the given email
@@ -89,7 +87,7 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given email that belongs to an admin and returns the associated AdminUser.
+     * Takes the given email that belongs to an admin and returns the associated <AdminUser></AdminUser>.
      *
      * @param email the email of the admin being retrieved
      * @return the admin associated with the given email
@@ -106,7 +104,7 @@ public class UserManager implements Serializable {
     /**
      * Getter for all users in the user database.
      *
-     * @return a list of all Users in the database
+     * @return a list of all users in the database
      */
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
@@ -134,10 +132,10 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given username and returns the associated account password.
+     * Takes the given username and returns the associated admin account password.
      *
-     * @param username the username of the AdminUser whose password is being searched for
-     * @return the account password associated with the given username
+     * @param username the username of the <AdminUser></AdminUser> whose password is being retrieved
+     * @return the account password associated with the given admin username
      */
     public String adminUsernamePassword(String username) {
         for (User u : getAllAdmins()) {
@@ -148,9 +146,9 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given username for a NormalUser and returns the associated account password.
+     * Takes the given username and returns the associated normal account password.
      *
-     * @param username the username of the NormalUser whose password is being searched for
+     * @param username the username of the <NormalUser></NormalUser> whose password is being retrieved
      * @return the account password associated with the given username
      */
     public String normalUsernamePassword(String username) {
@@ -162,9 +160,9 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given username for a User and returns the associated account password.
+     * Takes the given username for any type of user and returns the associated account password.
      *
-     * @param username the username of the User whose password is being searched for
+     * @param username the username of the user whose password is being retrieved
      * @return the account password associated with the given username
      */
     public String usernamePassword(String username) {
@@ -176,9 +174,9 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given email and returns the associated account password.
+     * Takes the given email for any type of user and returns the associated account password.
      *
-     * @param email the email of the User whose password is being searched for
+     * @param email the email of the user whose password is being retrieved
      * @return the account password associated with the given email
      */
     public String emailPassword(String email) {
@@ -192,7 +190,7 @@ public class UserManager implements Serializable {
     /**
      * Takes the given email and returns the associated admin account password.
      *
-     * @param email the email of the AdminUser whose password is being searched for
+     * @param email the email of the <AdminUser></AdminUser> whose password is being retrieved
      * @return the account password associated with the given email
      */
     public String adminEmailPassword(String email) {
@@ -204,9 +202,9 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Takes the given email and returns the associated Normal account password.
+     * Takes the given email and returns the associated normal account password.
      *
-     * @param email the email of the NormalUser whose password is being searched for
+     * @param email the email of the <NormalUser></NormalUser> whose password is being retrieved
      * @return the account password associated with the given email
      */
     public String normalEmailPassword(String email) {
@@ -251,7 +249,7 @@ public class UserManager implements Serializable {
 
     /**
      * Checks if a user with the given email already exists in the user database.
-     * Searches separately in normal or admin database depending on given boolean isAdmin.
+     * Searches separately in normal or admin database depending on given boolean <isAdmin></isAdmin>.
      *
      * @param email   the email being checked for whether it's already taken or not
      * @param isAdmin true if the user is an admin, false otherwise
@@ -272,8 +270,11 @@ public class UserManager implements Serializable {
         return false;
     }
 
-    // made the method below the inverse of the original usernameExists function
-    // cuz Intellij will give a warning otherwise
+    /*
+     * Made the method below the inverse of the original usernameExists function
+     * cuz Intellij will give a warning otherwise :(
+     */
+
     /**
      * Checks if a user with the given username does NOT exist in the user database.
      * Searches separately in normal or admin database depending on given boolean isAdmin.
@@ -301,7 +302,7 @@ public class UserManager implements Serializable {
     /**
      * Return usernames of all accounts that needs to be frozen.
      *
-     * @return usernames to freeze
+     * @return the list of usernames belonging to accounts that need to be frozen
      */
     public List<String> getUsernamesToFreeze() {
         return usernamesToFreeze;
@@ -314,14 +315,14 @@ public class UserManager implements Serializable {
 
 
     /**
-     * Clears the usernamesToFreeze arraylist.
+     * Clears the list of usernames to freeze.
      */
     public void clearUsernamesToFreeze() {
         usernamesToFreeze.clear();
     }
 
     /**
-     * Returns the next admin ID.
+     * Returns the next admin ID in the system.
      *
      * @return the next admin ID
      */
@@ -341,7 +342,6 @@ public class UserManager implements Serializable {
         }
         return userRequests;
     }
-
 
     /**
      * Returns the username of someone's unfreeze request at the given index.
@@ -381,7 +381,7 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Checks if user already sent an unfreeze request.
+     * Checks if the given user already sent an unfreeze request.
      *
      * @param username the username of the user who's being checked
      * @return true if the user already sent an unfreeze request, false otherwise

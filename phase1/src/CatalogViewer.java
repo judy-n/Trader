@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Shows all Items available for trade in all users' inventory.
+ * Shows all items available for trade from all users' inventories except for the user who's currently logged in.
  * Allows users to initiate trades and add items to their wishlist.
  *
  * @author Ning Zhang
@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
 public class CatalogViewer {
     private NormalUser currentUser;
@@ -22,9 +22,8 @@ public class CatalogViewer {
     private BufferedReader br;
 
     /**
-     * Class constructor.
-     * Creates an <ItemPresenter></ItemPresenter> with the given logged-in user and item/user/trade managers.
-     * Prints to the screen all items available for trade (excluding the current user's items).
+     * Creates an <CatalogViewer></CatalogViewer> with the given normal user and item/user/trade managers.
+     * Displays all items available for trade (excluding the current user's items).
      *
      * @param user the normal user who's currently logged in
      * @param im   the system's item manager

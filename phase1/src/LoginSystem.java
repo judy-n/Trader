@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
 
 public class LoginSystem {
@@ -23,8 +23,8 @@ public class LoginSystem {
     private String optionInput;
 
     /**
-     * Class constructor.
-     * Creates a login system that takes in user input.
+     * Creates a <LoginSystem></LoginSystem> that lets the user log in through user input.
+     * Checks if username/email and password match using <UserManager></UserManager>.
      */
     public LoginSystem(UserManager um) {
         userManager = um;
@@ -108,8 +108,9 @@ public class LoginSystem {
     }
 
     /**
-     * Getter for this LoginSystem's logged in User
-     * @return user
+     * Getter for this <LoginSystem></LoginSystem>'s logged-in user.
+     *
+     * @return the user who just logged in
      */
     public User getUser() {
         return user;

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Shows all the ongoing trades for the user.
+ * Lets users see their ongoing trades that haven't been cancelled and edit/confirm trade meetings.
  *
  * @author Kushagra Mehta
  * @author Ning Zhang
@@ -14,7 +14,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-09
+ * last modified 2020-07-12
  */
 public class OngoingTradesViewer {
     private NormalUser currentUser;
@@ -23,15 +23,14 @@ public class OngoingTradesViewer {
     private TradeManager tradeManager;
 
     /**
-     * Creates a OngoingTradesViewer with the given logged-in user and item/user/trade managers.
-     * Lets users see their incomplete trades that haven't been cancelled and edit/confirm trade meetings.
+     * Creates a <OngoingTradesViewer></OngoingTradesViewer> with the given normal user and item/user/trade managers.
+     * Lets users see their ongoing trades that haven't been cancelled and edit/confirm trade meetings.
      *
      * @param user the normal user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
      * @param tm   the system's trade manager
      */
-
     public OngoingTradesViewer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         currentUser = user;
         itemManager = im;
@@ -69,15 +68,24 @@ public class OngoingTradesViewer {
 
                     Trade selected = ongoingTrades.get(indexInput - 1);
 
-                    if (!selected.getHasAgreedMeeting1()) { //print latest meeting suggestion
+                    if (!selected.getHasAgreedMeeting1()) {
+
+                        /* print latest meeting suggestion */
                         sp.ongoingTrades(1, selected.getMeetingDateTime1(), selected);
-                    } else {    //print first meeting details
+
+                    } else {
+
+                        /* print first meeting details */
                         sp.ongoingTrades(2, selected.getMeetingDateTime1(), selected);
+
                     }
                     if (selected instanceof TemporaryTrade) {
                         TemporaryTrade tempSelected = (TemporaryTrade) selected;
-                        if (tempSelected.hasSecondMeeting()) {  //print second meeting details
+                        if (tempSelected.hasSecondMeeting()) {
+
+                            /* print second meeting details */
                             sp.ongoingTrades(3, tempSelected.getMeetingDateTime2(), selected);
+
                         }
                     }
 
@@ -90,15 +98,22 @@ public class OngoingTradesViewer {
                     choiceInput = Integer.parseInt(temp2);
 
                     switch (choiceInput) {
-                        //Edit meeting time and/or place
+
+                        /* Edit meeting time and/or place */
                         case 1:
-                            if (selected.getHasAgreedMeeting1()) {  //can't edit if already agreed upon
+
+                            /* can't edit if already agreed upon */
+                            if (selected.getHasAgreedMeeting1()) {
                                 sp.ongoingTrades(12);
                                 break;
-                            } else if (selected.getLastEditor().equals(currUsername)) { //can't edit if latest suggestion is yours
+                            }
+
+                            /* can't edit if latest suggestion is yours */
+                            if (selected.getLastEditor().equals(currUsername)) {
                                 sp.ongoingTrades(6);
                                 break;
                             }
+
                             int editCount = selected.getUserEditCount1(currUsername);
                             int editMax = currentUser.getMeetingEditMax();
                             if (editCount < editMax) {
@@ -121,16 +136,28 @@ public class OngoingTradesViewer {
                                 sp.ongoingTrades(9);
                             }
                             break;
-                        //Confirm this trade's current meeting time and place
+
+                        /* Confirm this trade's current meeting time and place */
                         case 2:
-                            if (selected.getHasAgreedMeeting1()) {  //can't confirm meeting if already agreed upon
+
+                            /* can't confirm meeting if already agreed upon */
+                            if (selected.getHasAgreedMeeting1()) {
                                 sp.ongoingTrades(5);
                                 break;
                             }
-                            if (selected.getLastEditor().equals(currUsername)) {    //can't confirm your own suggestion
+
+                            /* can't confirm your own suggestion */
+                            if (selected.getLastEditor().equals(currUsername)) {
                                 sp.ongoingTrades(6);
                                 break;
                             }
+
+                            /* can't confirm a meeting time that has already passed */
+                            if (LocalDateTime.now().isAfter(selected.getMeetingDateTime1())) {
+                                sp.ongoingTrades(19);
+                                break;
+                            }
+
                             int weeklyTrade = tradeManager.getNumMeetingsThisWeek(currUsername, selected.getMeetingDateTime1().toLocalDate());
                             if (weeklyTrade > currentUser.getWeeklyTradeMax()) {
                                 sp.ongoingTrades(10);
@@ -139,14 +166,17 @@ public class OngoingTradesViewer {
                                 sp.ongoingTrades(4);
                             }
                             break;
-                        //Confirm the latest meeting took place
+
+                        /* Confirm the latest meeting took place */
                         case 3:
-                            if (!selected.getHasAgreedMeeting1()) { //can't confirm transaction if no agreed meeting
+
+                            /* can't confirm transaction if no agreed meeting */
+                            if (!selected.getHasAgreedMeeting1()) {
                                 sp.ongoingTrades(15);
                                 break;
                             }
 
-                            //can't confirm more than once
+                            /* can't confirm more than once */
                             if (selected instanceof TemporaryTrade &&
                                     ((TemporaryTrade) selected).getUserTransactionConfirmation2(currUsername)) {
                                 sp.ongoingTrades(17);
@@ -183,28 +213,32 @@ public class OngoingTradesViewer {
                                 } else {
                                     sp.ongoingTrades(3);
                                 }
-                            } else {    //can't confirm transaction before its scheduled time
+                            } else {
+                                /* can't confirm transaction before its scheduled time */
                                 sp.ongoingTrades(16);
                             }
                             break;
-                        //Cancel this trade (just cancels, doesn't contribute to possible freezing)
-                        case 4:
-                            if (selected.getHasAgreedMeeting1()) {  //can't cancel if meeting already scheduled
-                                sp.ongoingTrades(18);
-                            } else {
-                                selected.setIsCancelled();
-                                long[] itemIDs = selected.getInvolvedItemIDs();
-                                if (itemIDs[0] != 0) {
-                                    Item tempItem1 = im.getApprovedItem(itemIDs[0]);
-                                    tempItem1.setAvailability(true);
-                                }
-                                if (itemIDs[1] != 0) {
-                                    Item tempItem2 = im.getApprovedItem(itemIDs[1]);
-                                    tempItem2.setAvailability(true);
-                                }
 
-                                sp.ongoingTrades(2);
+                        /* Cancel this trade (just cancels, doesn't contribute to possible freezing) */
+                        case 4:
+
+                            /* can't cancel if meeting already scheduled */
+                            if (selected.getHasAgreedMeeting1()) {
+                                sp.ongoingTrades(18);
+                                break;
                             }
+
+                            selected.setIsCancelled();
+                            long[] itemIDs = selected.getInvolvedItemIDs();
+                            if (itemIDs[0] != 0) {
+                                Item tempItem1 = im.getApprovedItem(itemIDs[0]);
+                                tempItem1.setAvailability(true);
+                            }
+                            if (itemIDs[1] != 0) {
+                                Item tempItem2 = im.getApprovedItem(itemIDs[1]);
+                                tempItem2.setAvailability(true);
+                            }
+                            sp.ongoingTrades(2);
                             break;
                         case 5:
                             break;

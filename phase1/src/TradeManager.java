@@ -10,22 +10,22 @@ import java.util.Set;
 import java.util.Map;
 
 /**
- * Stores and manages all Trades in the system.
+ * Stores and manages all <Trade></Trade>s in the system.
  *
  * @author Judy Naamani
  * @author Yingjia Liu
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
 public class TradeManager implements Serializable {
     private List<Trade> allTrades;
     private List<String> cancelledUsers;
 
     /**
-     * Class constructor.
-     * Creates a new list of Trades and assigns its reference to allTrades.
+     * Creates a <TradeManager></TradeManager>.
+     * Initializes the empty lists of all trades and cancelled users.
      */
     public TradeManager() {
         allTrades = new ArrayList<>();
@@ -33,9 +33,9 @@ public class TradeManager implements Serializable {
     }
 
     /**
-     * Getter for all Trades in the system.
+     * Getter for all trades in the system.
      *
-     * @return a list of all Trades in the system
+     * @return a list of all trades in the system
      */
     public List<Trade> getAllTrades() {
         return allTrades;
@@ -44,7 +44,7 @@ public class TradeManager implements Serializable {
     /**
      * Getter for all temporary trades in the system.
      *
-     * @return a list of all TemporaryTrades in the system
+     * @return a list of all temporary trades in the system
      */
     public List<TemporaryTrade> getAllTempTrades() {
         List<TemporaryTrade> allTempTrades = new ArrayList<>();
@@ -59,7 +59,7 @@ public class TradeManager implements Serializable {
     /**
      * Getter for all of the ongoing trades that have not been cancelled.
      *
-     * @return all ongoing trades that have not been cancelled
+     * @return a list of all ongoing trades that have not been cancelled
      */
     private List<Trade> getAllOngoingNotCancelledTrades() {
         List<Trade> allOngoingNotCancelledTrades = new ArrayList<>();
@@ -72,10 +72,10 @@ public class TradeManager implements Serializable {
     }
 
     /**
-     * Getter for the number of times a user has lent an item.
+     * Getter for the number of times the given user has lent an item.
      *
-     * @param username the user to query
-     * @return the number of times this user has lent an item
+     * @param username the username of the user to query
+     * @return the number of times the given user has lent an item
      */
     public int getTimesLent(String username) {
         int timesLent = 0;
@@ -90,10 +90,10 @@ public class TradeManager implements Serializable {
     }
 
     /**
-     * Getter for the number of times a user has borrowed an item.
+     * Getter for the number of times the given user has borrowed an item.
      *
-     * @param username the user to query
-     * @return the number of times this user has borrowed an item
+     * @param username the username of the user to query
+     * @return the number of times the given user has borrowed an item
      */
     public int getTimesBorrowed(String username) {
         int timesBorrowed = 0;
@@ -135,11 +135,10 @@ public class TradeManager implements Serializable {
         }
     }
 
-
     /**
-     * Adds users to cancelledUsers
+     * Adds usernames to the list of users with cancelled trades.
      *
-     * @param users the user to be added
+     * @param users the usernames to be added to the list of users with cancelled trades
      */
     public void addCancelledUsers(String[] users) {
         cancelledUsers.add(users[0]);
@@ -147,17 +146,16 @@ public class TradeManager implements Serializable {
     }
 
     /**
-     * Getter for cancelledUsers
+     * Getter for the list of users with cancelled trades.
      *
-     * @return cancelledUsers the cancelled users
+     * @return the list of users with cancelled trades
      */
     public List<String> getCancelledUsers() {
         return cancelledUsers;
     }
 
     /**
-     * Clears all users from cancelledUsers
-     *
+     * Clears all users from the list of users with cancelled trades.
      */
     public void clearCancelledUsers() {
         cancelledUsers.clear();
@@ -178,10 +176,11 @@ public class TradeManager implements Serializable {
         }
         return false;
     }
+
     /**
      * Getter for all permanent trades in the system.
      *
-     * @return a list of all PermanentTrades in the system
+     * @return a list of all permanent trades in the system
      */
     public List<PermanentTrade> getAllPermTrades() {
         List<PermanentTrade> allPermTrades = new ArrayList<>();
@@ -194,28 +193,28 @@ public class TradeManager implements Serializable {
     }
 
     /**
-     * Adds the given Trade to the list of all Trades.
+     * Adds the given trade to the list of all trades.
      *
-     * @param tradeToAdd the Trade being added
+     * @param tradeToAdd the trade being added
      */
     public void addTrade(Trade tradeToAdd) {
         allTrades.add(tradeToAdd);
     }
 
     /**
-     * Removes the given Trade from the list of all Trades.
+     * Removes the given trade from the list of all Trades.
      *
-     * @param tradeToRemove the Trade being removed
+     * @param tradeToRemove the trade being removed
      */
     public void removeTrade(Trade tradeToRemove) {
         allTrades.remove(tradeToRemove);
     }
 
     /**
-     * Takes in a username and returns a list of all their ongoing Trades.
+     * Takes in a username and returns a list of all their ongoing trades.
      *
      * @param username the username of the user whose list of ongoing trades is being retrieved
-     * @return a list of the given user's ongoing Trades
+     * @return a list of the given user's ongoing trades
      */
     public List<Trade> getOngoingTrades(String username) {
         List<Trade> ongoingTrades = new ArrayList<>();
@@ -228,10 +227,10 @@ public class TradeManager implements Serializable {
     }
 
     /**
-     * Getter for all completed trades for a specific user
+     * Getter for all completed trades for the given user.
      *
-     * @param username the username of the user
-     * @return completedTrades this user's completed trades
+     * @param username the username of the user whose completed trades are being retrieved
+     * @return a list of the given user's completed trades
      */
     private List<Trade> getCompletedTrades(String username) {
         List<Trade> completedTrades = new ArrayList<>();
@@ -244,10 +243,10 @@ public class TradeManager implements Serializable {
     }
 
     /**
-     * Getter for all trades (completed & incomplete) by a specific user
+     * Getter for all trades (completed, incomplete, and cancelled) for the given user.
      *
-     * @param username this user's username
-     * @return allTradesThisUser all of this user's trades
+     * @param username the username of the user whose trades are being retrieved
+     * @return a list of the given user's trades
      */
     private List<Trade> getAllTrades(String username) {
         List<Trade> allTradesThisUser = new ArrayList<>();
@@ -314,10 +313,10 @@ public class TradeManager implements Serializable {
     }
 
     /**
-     * Takes in a username and returns the associated user's top 3 most frequent trading partners
+     * Takes in a username and returns the associated user's top 3 most frequent trading partners.
      *
-     * @param username the queried user's username
-     * @return A list of the usernames of the three users this user trades with most frequently
+     * @param username the username of the user to query
+     * @return a list of the usernames of the three users this user trades with most frequently
      */
     //takes in a user and finds those top three most frequent trade partners
     public String[] getFrequentTradePartners(String username) {

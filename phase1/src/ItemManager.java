@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Stores all Items in the system (approved and non-approved).
- * Even if an item has been removed from a user's inventory, it still exists in ItemManager.
+ * Stores all <Item></Item>s in the system (approved and non-approved).
+ * Even if an item has been removed from a user's inventory, it still exists in <ItemManager></ItemManager>.
  *
  * @author Judy Naamani
  * @author Yingjia Liu
@@ -12,38 +12,47 @@ import java.util.List;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
 public class ItemManager implements Serializable {
     private List<Item> approvedItems;
     private List<Item> pendingItems;
 
+    /**
+     * Creates and <ItemManager></ItemManager>.
+     * Initializes the empty lists of approved items and pending items.
+     */
     public ItemManager() {
         approvedItems = new ArrayList<>();
         pendingItems = new ArrayList<>();
     }
 
     /**
-     * Getter for all approved items in the system.
+     * Getter for all approved items in the system, excluding those that have been removed from inventory.
      *
-     * @return a list of all approved items in the system
+     * @return a list of all approved items in the system, excluding those that have been removed from inventory
      */
     public List<Item> getApprovedItems() {
-        return approvedItems;
+        List<Item> approved = new ArrayList<>();
+        for (Item i : approvedItems) {
+            if (i.isInInventory()) {
+                approved.add(i);
+            }
+        }
+        return approved;
     }
 
     /**
      * Getter for all approved items that haven't been removed from inventory,
-     * except for those belonging to the given user.
+     * excluding those belonging to the given user.
      *
      * @param username the username of the user whose approved items are being excluded
-     * @return a list of all approved items not owned by the given user
+     * @return a list of all approved items in inventories not owned by the given user
      */
-
     public List<Item> getApprovedItems(String username) {
         List<Item> approved = new ArrayList<>();
         for (Item i : approvedItems) {
-            if (!i.getOwnerUsername().equals(username) && !i.getIsRemoved()) {
+            if (!i.getOwnerUsername().equals(username) && i.isInInventory()) {
                 approved.add(i);
             }
         }
@@ -60,7 +69,7 @@ public class ItemManager implements Serializable {
     }
 
     /**
-     * Getter for all items, pending and approved.
+     * Getter for all items, pending and approved and those removed from inventory.
      *
      * @return a list of all items in the system
      */
@@ -72,19 +81,20 @@ public class ItemManager implements Serializable {
     }
 
     /**
-     * Returns the total number of approved items in the system.
+     * Returns the total number of approved items in the system, excluding those removed from inventory.
      *
-     * @return the total number of approved items in the system
+     * @return the total number of approved items in the system, excluding those removed from inventory
      */
     public int getNumApprovedItems() {
-        return approvedItems.size();
+        return getApprovedItems().size();
     }
 
     /**
-     * Returns the number of approved items in the system that don't belong to the given user.
+     * Returns the number of approved items in the system that don't belong to the given user
+     * and haven't been removed from inventory.
      *
      * @param username the username of the user whose approved items aren't being counted
-     * @return the number of approved items that don't belong to the given user
+     * @return the number of approved items that don't belong to the given user and haven't been removed from inventory
      */
     public int getNumApprovedItems(String username) {
         return getApprovedItems(username).size();
@@ -101,10 +111,10 @@ public class ItemManager implements Serializable {
     }
 
     /**
-     * Takes in an approved item ID and returns the associated Item object.
+     * Takes in an approved item ID and returns the associated <Item></Item> object.
      *
      * @param itemID the ID of an approved item
-     * @return the Item associated with the given ID
+     * @return the <Item></Item> associated with the given ID
      */
     public Item getApprovedItem(long itemID) {
         return idGetItem(approvedItems, itemID);
@@ -113,26 +123,31 @@ public class ItemManager implements Serializable {
     /**
      * Returns the approved item found at the given index.
      *
-     * @param index the index of an Item in the list of approved items
-     * @return the Item at the given index
+     * @param index the index of an item in the list of approved items
+     * @return the item at the given index
      */
     public Item getApprovedItem(int index) {
         return approvedItems.get(index - 1);
     }
 
     /**
-     * Returns the approved item found at the given index in the list of all items excluding the given user's.
+     * Returns the approved item found at the given index in the list of all
+     * approved items that haven't been removed from inventory, excluding the given user's.
      *
      * @param username the username of the user whose items are being excluded from the list
-     * @param index    the index of an Item in the list of approved items excluding the given user's
-     * @return the Item at the given index
+     * @param index    the index of an item in the list of approved items
+     *                 that haven't been removed from inventory, excluding the given user's
+     * @return the item at the given index
      */
     public Item getApprovedItem(String username, int index) {
         return getApprovedItems(username).get(index);
     }
 
     /**
-     * ahhh
+     * Takes in a list of items and returns a list that only includes the items that are available for trade.
+     *
+     * @param items a list of items of which the available ones are being retrieved
+     * @return a list of items that only includes the available items from the given list
      */
     public List<Item> getAvailableItems(List<Item> items) {
         List<Item> availableItems = new ArrayList<>();
@@ -145,25 +160,29 @@ public class ItemManager implements Serializable {
     }
 
     /**
-     * Takes in a pending item ID and returns the associated Item object.
+     * Takes in a pending item ID and returns the associated <Item></Item> object.
      *
      * @param itemID the ID of an item waiting for approval
-     * @return the Item associated with the given ID
+     * @return the pending <Item></Item> associated with the given ID
      */
     public Item getPendingItem(long itemID) {
         return idGetItem(pendingItems, itemID);
     }
 
     /**
-     * This method returns a pendingItem by its index
+     * Returns the pending item at the given index.
      *
-     * @param index index
-     * @return Item
+     * @param index the index of an item in the list of pending items
+     * @return the pending item at the given index
      */
     public Item getPendingItem(int index) {
         return pendingItems.get(index - 1);
     }
 
+    /*
+     * Helper method that takes in a list of items and an ID,
+     * then returns the item associated with the given ID if it exists in the given list.
+     */
     private Item idGetItem(List<Item> items, long itemid) {
         for (Item i : items) {
             if (i.getID() == itemid) {
@@ -174,10 +193,10 @@ public class ItemManager implements Serializable {
     }
 
     /**
-     * Takes in a list of approved item IDs and returns a parallel list of the associated Item objects.
+     * Takes in a list of approved item IDs and returns a parallel list of the associated <Item></Item> objects.
      *
      * @param itemIDs a list of IDs belonging to approved items
-     * @return the corresponding list of associated Item objects
+     * @return the corresponding list of associated <Item></Item> objects
      */
     public List<Item> getApprovedItemsByIDs(List<Long> itemIDs) {
         List<Item> items = new ArrayList<>();
@@ -188,10 +207,10 @@ public class ItemManager implements Serializable {
     }
 
     /**
-     * Takes in a list of pending item IDs and returns a parallel list of the associated Item objects.
+     * Takes in a list of pending item IDs and returns a parallel list of the associated <Item></Item> objects.
      *
      * @param itemIDs a list of IDs belonging to items waiting for approval
-     * @return the corresponding list of associated Item objects
+     * @return the corresponding list of associated <Item></Item> objects
      */
     public List<Item> getPendingItemsByIDs(List<Long> itemIDs) {
         List<Item> items = new ArrayList<>();
@@ -202,16 +221,16 @@ public class ItemManager implements Serializable {
     }
 
     /**
-     * Adds item to the list of pending items.
+     * Adds the given item to the list of pending items.
      *
-     * @param itemToAdd the item being added
+     * @param itemToAdd the item being added to the list of pending items
      */
     public void addPendingItem(Item itemToAdd) {
         pendingItems.add(itemToAdd);
     }
 
     /**
-     * Removes an item from the pending items and adds it to the approved items, if that item is pending.
+     * Removes the given item from the list of pending items and adds it to the list of approved items.
      *
      * @param itemToApprove the item being approved
      */
@@ -221,9 +240,9 @@ public class ItemManager implements Serializable {
     }
 
     /**
-     * Rejects the given Item by removing it from pendingItems.
+     * Rejects the given item by removing it from the list of pending items.
      *
-     * @param itemToReject the Item being rejected
+     * @param itemToReject the item being rejected
      */
     public void rejectItem(Item itemToReject) {
         pendingItems.remove(itemToReject);

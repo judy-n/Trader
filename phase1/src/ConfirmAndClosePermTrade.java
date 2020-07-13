@@ -4,26 +4,31 @@
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
 public class ConfirmAndClosePermTrade {
 
-    //javadoc properly later
-    //confirms the transaction for logged-in user
-    //PermanentTrade automatically closes it if both users have confirmed the meeting (isComplete = true)
-    //if item ID is not 0 and the item still exists then 
-    //remove it from its owner's inventory and the ItemManager list + remove from the other user's wishlist
-    public void confirmAndClosePermTransaction(String username, PermanentTrade a, ItemManager im, UserManager um) {
+    /**
+     * Confirms the transaction in a permanent trade for the logged-in normal user.
+     * <PermanentTrade></PermanentTrade> automatically closes it if both users have confirmed the meeting (isComplete = true).
+     * If item ID is not 0 then remove the item from its owner's inventory and from the other user's wishlist.
+     *
+     * @param username  the username of the normal user who's currently logged in
+     * @param permTrade the permanent trade transaction being confirmed
+     * @param im        the system's item manager
+     * @param um        the system's user manager
+     */
+    public void confirmAndClosePermTransaction(String username, PermanentTrade permTrade, ItemManager im, UserManager um) {
 
-        a.confirmTransaction1(username);
-        String[] usernames = a.getInvolvedUsernames();
+        permTrade.confirmTransaction1(username);
+        String[] usernames = permTrade.getInvolvedUsernames();
 
-        if (a.getIsComplete()) {
+        if (permTrade.getIsComplete()) {
             NormalUser tempUser1 = um.getNormalByUsername(usernames[0]);
             NormalUser tempUser2 = um.getNormalByUsername(usernames[1]);
             assert tempUser1 != null && tempUser2 != null;
 
-            long[] itemIDs = a.getInvolvedItemIDs();
+            long[] itemIDs = permTrade.getInvolvedItemIDs();
             if (itemIDs[0] != 0) {
                 tempUser1.removeInventory(itemIDs[0]);
                 im.getApprovedItem(itemIDs[0]).setIsRemoved(true);

@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-09
+ * last modified 2020-07-12
  */
 public class CatalogEditor {
     private AdminUser currentAdmin;
@@ -16,10 +16,12 @@ public class CatalogEditor {
     private UserManager userManager;
 
     /**
-     * Creates a catalog editor that lets an admin user approve or deny certain items
-     * @param user admin user
-     * @param im the system's item manager
-     * @param um the system's user manager
+     * Creates a <CatalogEditor></CatalogEditor> with the given admin and item/user managers.
+     * Lets an admin user approve or reject items added to the system by normal users.
+     *
+     * @param user the admin who's currently logged in
+     * @param im   the system's item manager
+     * @param um   the system's user manager
      */
     public CatalogEditor(AdminUser user, ItemManager im, UserManager um) {
         currentAdmin = user;
@@ -60,7 +62,7 @@ public class CatalogEditor {
                     if (actionInput == 1) {
                         itemManager.approveItem(i);
                         itemOwner.addInventory(i.getID());
-                    } else if (actionInput == 2){
+                    } else if (actionInput == 2) {
                         itemManager.rejectItem(i);
                         itemOwner.removePendingInventory(i.getID());
                     } else {

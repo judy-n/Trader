@@ -8,30 +8,30 @@ import java.io.ObjectOutputStream;
 import java.io.File;
 
 /**
- * ItemGateway is a class that allows ItemManagers to be serialized and de-serialized.
+ * <ItemGateway></ItemGateway> is a class that serializes and deserializes <ItemManager></ItemManager>.
  *
  * @author Liam Huff
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-10
+ * last modified 2020-07-12
  */
 public class ItemGateway {
 
     /**
-     * Constructor for ItemGateway.
+     * Constructor for <ItemGateway></ItemGateway>.
      */
     public ItemGateway() {
     }
 
     /**
-     * De-serializes the .ser file that stores ItemManager's serialization.
+     * De-serializes the .ser file that stores an <ItemManager></ItemManager>'s serialization.
      *
      * @param filePath the path of the file being read
-     * @return the de-serialized ItemManager if the file exists, a new ItemManager otherwise
-     * @throws IOException when an IO error occurs during deserialization
-     * @throws ClassNotFoundException when ItemManager or any of the classes it stores can't be found
+     * @return the de-serialized <ItemManager></ItemManager> if the file exists, a new <ItemManager></ItemManager> otherwise
+     * @throws IOException            when an IO error occurs during deserialization
+     * @throws ClassNotFoundException when <ItemManager></ItemManager> or any of the classes it depends on can't be found
      */
     public ItemManager readFromFile(String filePath) throws IOException, ClassNotFoundException {
 
@@ -52,10 +52,10 @@ public class ItemGateway {
 
 
     /**
-     * Serializes the system's ItemManager.
+     * Serializes the system's <ItemManager></ItemManager>.
      *
      * @param filePath the path of the file being written to
-     * @param im       the ItemManager being serialized
+     * @param im       the <ItemManager></ItemManager> being serialized
      * @throws IOException when an IO error occurs during serialization
      */
     public void saveToFile(String filePath, ItemManager im) throws IOException {

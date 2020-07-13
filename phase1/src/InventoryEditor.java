@@ -12,7 +12,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
 
 public class InventoryEditor {
@@ -22,8 +22,7 @@ public class InventoryEditor {
     private TradeManager tradeManager;
 
     /**
-     * Class constructor.
-     * Creates an InventoryEditor with the given logged-in user and item/user/trade managers.
+     * Creates an <InventoryEditor></InventoryEditor> with the given normal user and item/user/trade managers.
      * Prints to the screen the given user's inventory and options to add/remove/cancel.
      *
      * @param user the normal user who's currently logged in
@@ -52,7 +51,7 @@ public class InventoryEditor {
             }
             int input = Integer.parseInt(temp);
 
-            if (input == 1) {   //add item
+            if (input == 1) {           /* add item */
                 String itemNameInput;
                 String itemDescriptionInput;
 
@@ -61,14 +60,14 @@ public class InventoryEditor {
                 while (itemNameInput.length() < 3) {
                     sp.invalidInput();
                     itemNameInput = br.readLine().trim();
-                }   //name at least 3 char long
+                }   // item name at least 3 char long
 
                 sp.inventoryAddItem(2);
                 itemDescriptionInput = br.readLine().trim();
                 while (!itemDescriptionInput.contains(" ")) {
                     sp.invalidInput();
                     itemDescriptionInput = br.readLine().trim();
-                }   //description at least two words
+                }   // item description at least two words
 
                 sp.inventoryAddItem(3);
                 sp.inventoryAddItem(itemNameInput, itemDescriptionInput);
@@ -86,13 +85,14 @@ public class InventoryEditor {
                 } else {
                     sp.cancelled();
                 }
-            } else if (input == 2) {    //remove item
+            } else if (input == 2) {    /* remove item */
                 if (itemInventory.isEmpty()) {
                     sp.inventoryRemoveItem(1);
                 } else {
                     sp.inventoryRemoveItem(2);
                     String temp2 = br.readLine();
-                    //no (0 to quit) option
+
+                    /* no (0 to quit) option */
                     while (!temp2.matches("[0-9]+") ||
                             Integer.parseInt(temp2) > itemInventory.size() || Integer.parseInt(temp2) < 1) {
                         sp.invalidInput();
@@ -101,8 +101,10 @@ public class InventoryEditor {
                     int indexInput = Integer.parseInt(temp2);
                     Item selectedItem = itemInventory.get(indexInput - 1);
 
-                    //allow removal if item is available + not being asked for in a trade request
-                    // OR if item is in a trade that's been cancelled due to users failing to confirm the transaction
+                    /*
+                     * Allow removal if item is available + not being asked for in a trade request
+                     * OR if item is in a trade that's been cancelled due to users failing to confirm the transaction
+                     */
                     if (currentUser.isRequestedInTrade(selectedItem.getID())) {
                         sp.inventoryRemoveItem(4);
                     } else if (selectedItem.getAvailability() ||

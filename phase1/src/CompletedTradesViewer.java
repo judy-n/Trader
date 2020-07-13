@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-08
+ * last modified 2020-07-12
  */
 public class CompletedTradesViewer {
     private ItemManager itemManager;
@@ -19,55 +19,23 @@ public class CompletedTradesViewer {
     private NormalUser currentUser;
 
     /**
-     * Creates a completed trades viewer that lets an normal user view their three most recent
+     * Creates a <CompletedTradesViewer></CompletedTradesViewer> that lets a normal user view their three most recent
      * completed trades or three most frequent trade partners.
+     *
      * @param user the normal user who's currently logged in
-     * @param im the system's item manager
-     * @param um the system's user manager
-     * @param tm the system's trade manager
+     * @param im   the system's item manager
+     * @param um   the system's user manager
+     * @param tm   the system's trade manager
      */
     public CompletedTradesViewer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         currentUser = user;
         itemManager = im;
         userManager = um;
         tradeManager = tm;
-
-        //test v
-//        Item i = new Item("4.0 gpa", "hi hi", "UofT");
-//        Item i2 = new Item("your soul", "hi hi", "yingjia");
-//        NormalUser u = um.getNormalByUsername("UofT");
-//        NormalUser u2 = um.getNormalByUsername("yingjia");
-//        im.addPendingItem(i);
-//        u.addPendingInventory(i.getID());
-//        im.approveItem(i);
-//        u.addInventory(i.getID());
-//        im.addPendingItem(i2);
-//        u2.addPendingInventory(i2.getID());
-//        im.approveItem(i2);
-//        u2.addInventory(i2.getID());
-//        String[] usernames = {"UofT", "yingjia"};
-//        long[] IDs = {i.getID(), i2.getID()};
-//        PermanentTrade t = new PermanentTrade(usernames, IDs, LocalDateTime.now(), "address");
-//        tradeManager.addTrade(t);
-//
-//        Item i3 = new Item("doge", "hi hi", "Angelina");
-//        NormalUser u3 = um.getNormalByUsername("Angelina");
-//
-//        String dateString = "2020-07-08T17:45:55.9483536";
-//        DateTimeFormatter formatter1 = DateTimeFormatter.ISO_DATE_TIME;
-//        LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter1);
-//        im.approveItem(i3);
-//        u3.addInventory(i3.getID());
-//        im.approveItem(i3);
-//        u3.addInventory(i3.getID());
-//        String[] usernames1 = {"Angelina", "yingjia"};
-//        long[] IDs1 = {i3.getID(), 0};
-//        TemporaryTrade t1 = new TemporaryTrade(usernames1, IDs1, dateTime, "address");
-//        tradeManager.addTrade(t1);
     }
 
     /**
-     * This method lets the normal user viewer their three most recent trades
+     * Displays the three most recent trades for a normal user.
      */
     public void viewRecentThreeTrades() {
 
@@ -88,7 +56,10 @@ public class CompletedTradesViewer {
                     LocalDateTime meeting = trade.getFinalMeetingDateTime();
                     String otherUsername = trade.getOtherUsername(currUsername);
 
-                    //index 0 - item (ID) lent by current user ; index 1 - item (ID) borrowed by current user
+                    /*
+                     * tempItemIDs[0] - ID of item lent by current user
+                     * tempItemIDs[1] - ID of item borrowed by current user
+                     */
                     long[] tempItemIDs = {trade.getLentItemID(currUsername), trade.getLentItemID(otherUsername)};
 
                     if (tempItemIDs[0] == 0) {
@@ -113,7 +84,7 @@ public class CompletedTradesViewer {
     }
 
     /**
-     * This method lets the normal user view their top three frequent trade partners
+     * Displays the top three frequent trade partners for a normal user.
      */
     public void viewTopThreeTrader() {
         String[] topTraders = tradeManager.getFrequentTradePartners(currentUser.getUsername());

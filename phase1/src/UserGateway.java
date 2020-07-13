@@ -8,30 +8,30 @@ import java.io.ObjectOutputStream;
 import java.io.File;
 
 /**
- * UserGateway is a class that allows UserManagers to be serialized and de-serialized.
+ * <UserGateway></UserGateway> is a class that serializes and deserializes <UserManager></UserManager>.
  *
  * @author Liam Huff
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-10
+ * last modified 2020-07-12
  */
 public class UserGateway {
 
     /**
-     * Constructor for UserGateway.
+     * Constructor for <UserGateway></UserGateway>.
      */
     public UserGateway() {
     }
 
     /**
-     * Deserializes the .ser file that contains UserManager's serialization.
+     * Deserializes the .ser file that contains <UserManager></UserManager>'s serialization.
      *
      * @param filePath the path of the file being read
-     * @return the de-serialized UserManager if the file exists, a new UserManager otherwise
+     * @return the de-serialized <UserManager></UserManager> if the file exists, a new <UserManager></UserManager> otherwise
      * @throws IOException            when an IO error occurs during deserialization
-     * @throws ClassNotFoundException when UserManager or any of the classes it stores can't be found
+     * @throws ClassNotFoundException when <UserManager></UserManager> or any of the classes it depends on can't be found
      */
     public UserManager readFromFile(String filePath) throws IOException, ClassNotFoundException {
 
@@ -51,10 +51,10 @@ public class UserGateway {
     }
 
     /**
-     * Serializes this system's UserManager.
+     * Serializes this system's <UserManager></UserManager>.
      *
      * @param filePath the path of the file being written to
-     * @param um       the UserManager being serialized
+     * @param um       the <UserManager></UserManager> being serialized
      * @throws IOException when an IO error occurs during serialization
      */
     public void saveToFile(String filePath, UserManager um) throws IOException {

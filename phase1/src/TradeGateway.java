@@ -8,30 +8,30 @@ import java.io.ObjectOutputStream;
 import java.io.File;
 
 /**
- * TradeGateway is a class that allows TradeManagers to be serialized and de-serialized.
+ * <TradeGateway></TradeGateway> is a class that serializes and deserializes <TradeManager></TradeManager>.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
  * @author Liam Huff
  * @version 1.0
  * @since 2020-07-08
- * last modified 2020-07-10
+ * last modified 2020-07-12
  */
 public class TradeGateway {
 
     /**
-     * Constructor for TradeGateway.
+     * Constructor for <TradeGateway></TradeGateway>.
      */
     public TradeGateway() {
     }
 
     /**
-     * Deserializes the .ser file that stores TradeManager's serialization.
+     * Deserializes the .ser file that stores <TradeManager></TradeManager>'s serialization.
      *
      * @param filePath the path of the file being read
-     * @return the de-serialized TradeManager if the file exists, a new TradeManager otherwise
+     * @return the de-serialized <TradeManager></TradeManager> if the file exists, a new <TradeManager></TradeManager> otherwise
      * @throws IOException            when an IO error occurs during deserialization
-     * @throws ClassNotFoundException when TradeManager or any of the classes it stores can't be found
+     * @throws ClassNotFoundException when <TradeManager></TradeManager> or any of the classes it depends on can't be found
      */
     public TradeManager readFromFile(String filePath) throws IOException, ClassNotFoundException {
 
@@ -52,10 +52,10 @@ public class TradeGateway {
 
 
     /**
-     * Serializes the system's TradeManager.
+     * Serializes the system's <TradeManager></TradeManager>.
      *
      * @param filePath the path of the file being written to
-     * @param tm       the TradeManager being serialized
+     * @param tm       the <TradeManager></TradeManager> being serialized
      * @throws IOException when an IO error occurs during serialization
      */
     public void saveToFile(String filePath, TradeManager tm) throws IOException {

@@ -1,11 +1,11 @@
 /**
- * Lets the initial admin create and add a new admin ot the system.
+ * Lets the initial admin create and add a new admin to the system.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-08
+ * last modified 2020-07-12
  */
 public class AdminCreator {
     private AdminUser currentAdmin;
@@ -13,10 +13,12 @@ public class AdminCreator {
     private UserManager um;
 
     /**
-     * Creates an admin creator that lets the initial admin create other admins
+     * Creates an <AdminCreator></AdminCreator> with the given admin and item/user managers.
+     * Lets the initial admin create other admins using <SignUpSystem></SignUpSystem>.
+     *
      * @param user the initial admin
-     * @param im the system's item manager
-     * @param um the system's user manager
+     * @param im   the system's item manager
+     * @param um   the system's user manager
      */
     public AdminCreator(AdminUser user, ItemManager im, UserManager um) {
         currentAdmin = user;

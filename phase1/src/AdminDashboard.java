@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-05
+ * last modified 2020-07-12
  */
 
 public class AdminDashboard {
@@ -18,7 +18,7 @@ public class AdminDashboard {
     private int input;
 
     /**
-     * Creates an AdminDashboard that stores the given logged-in admin and item/user managers.
+     * Creates an <AdminDashboard></AdminDashboard> with the given admin and item/user managers.
      *
      * @param user the admin who's currently logged in
      * @param im   the system's item manager

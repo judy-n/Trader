@@ -11,13 +11,14 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
 
     /**
      * Opens menus for logging in, singing up, or closing the program based on user input
+     *
      * @param input The input either 1, 2, or 3.
      */
     public void startMenu(int input) {
@@ -33,6 +34,7 @@ public class SystemPresenter {
 
     /**
      * Prompt based system for signing up a user based on the user's input
+     *
      * @param input the user's input
      */
     public void signUpSystem(int input) {
@@ -59,7 +61,7 @@ public class SystemPresenter {
                 System.out.print("\nInvalid username. Please try again: ");
                 break;
             case 7:
-                System.out.print("\nPlease enter a password: ");
+                System.out.print("\nPlease enter a password (6-20 characters): ");
                 break;
             case 8:
                 System.out.print("\nInvalid password. Please try again: ");
@@ -82,6 +84,7 @@ public class SystemPresenter {
 
     /**
      * Prompt based system for logging in an already existing user based on userinput
+     *
      * @param input the user's input
      */
     public void loginSystem(int input) {
@@ -155,8 +158,9 @@ public class SystemPresenter {
 
     /**
      * Prompts for if a user would like to edit their inventory
+     *
      * @param itemInventory The approved inventory of the user
-     * @param pendingItems THe pending inventory of the user
+     * @param pendingItems  THe pending inventory of the user
      */
     public void inventoryEditor(List<Item> itemInventory, List<Item> pendingItems) {
         presentInventory(itemInventory, pendingItems);
@@ -169,6 +173,7 @@ public class SystemPresenter {
 
     /**
      * Prompts user for an item they would like to add
+     *
      * @param input the user's input
      */
     public void inventoryAddItem(int input) {
@@ -193,7 +198,8 @@ public class SystemPresenter {
 
     /**
      * Prints details of an item to be added
-     * @param name the name of the item
+     *
+     * @param name        the name of the item
      * @param description the description of the item
      */
     public void inventoryAddItem(String name, String description) {
@@ -202,6 +208,7 @@ public class SystemPresenter {
 
     /**
      * Prompts for removing an item from a user's inventory
+     *
      * @param input the user's input
      */
     public void inventoryRemoveItem(int input) {
@@ -224,7 +231,8 @@ public class SystemPresenter {
 
     /**
      * Prompts a user for if they want to remove an item from their inventory, and tells them if it has been removed
-     * @param name the name of the item
+     *
+     * @param name  the name of the item
      * @param index the index of the item
      * @param input the user's input
      */
@@ -238,7 +246,8 @@ public class SystemPresenter {
 
     /**
      * Prompts for editing a user's wishlist
-     * @param itemWishlist  the user's wishlist
+     *
+     * @param itemWishlist the user's wishlist
      */
     public void wishlistEditor(List<Item> itemWishlist) {
         presentWishlist(itemWishlist);
@@ -250,6 +259,7 @@ public class SystemPresenter {
 
     /**
      * Prompts user with whether they would like to choose an item to remove from their wishlist
+     *
      * @param input the the user's input
      */
     public void wishlistRemoveItem(int input) {
@@ -265,7 +275,8 @@ public class SystemPresenter {
 
     /**
      * Prompts the user on whether to remove a specific item from their wishlist
-     * @param name the name of the item
+     *
+     * @param name  the name of the item
      * @param input the user's input
      */
     public void wishlistRemoveItem(String name, int input) {
@@ -281,6 +292,7 @@ public class SystemPresenter {
 
     /**
      * Prints the available approved items that can be borrowed from the marketplace
+     *
      * @param approvedItems the approved items
      */
     public void catalogViewer(List<Item> approvedItems) {
@@ -290,6 +302,7 @@ public class SystemPresenter {
 
     /**
      * Tells a user that they are borrowing more than their threshold
+     *
      * @param user the user to be notified
      */
     public void catalogViewer(NormalUser user) {
@@ -298,6 +311,7 @@ public class SystemPresenter {
 
     /**
      * Prompts user about items in the catalog
+     *
      * @param input the user's input
      */
     public void catalogViewer(int input) {
@@ -328,7 +342,8 @@ public class SystemPresenter {
 
     /**
      * Prompts the user about an item they have chosen from the catalog
-     * @param item the item the user has chosen
+     *
+     * @param item  the item the user has chosen
      * @param input the user's input
      */
     public void catalogViewer(Item item, int input) {
@@ -348,6 +363,7 @@ public class SystemPresenter {
 
     /**
      * Presents pending items
+     *
      * @param pendingItems the pending items
      */
     public void catalogEditor(List<Item> pendingItems) {
@@ -355,7 +371,9 @@ public class SystemPresenter {
         presenterAllItems(pendingItems);
     }
 
-    /** takes input from user on which items to approve/reject iff items exist
+    /**
+     * takes input from user on which items to approve/reject iff items exist
+     *
      * @param input the user's input
      */
     public void catalogEditor(int input) {
@@ -371,6 +389,7 @@ public class SystemPresenter {
 
     /**
      * Prompts the user about whether to approve or reject a chosen item
+     *
      * @param item the chosen item
      */
     public void catalogEditor(Item item) {
@@ -618,6 +637,9 @@ public class SystemPresenter {
             case 18:
                 System.out.println("\nYou may not cancel a trade after the meeting has already been scheduled.");
                 break;
+            case 19:
+                System.out.println("\nThe suggested meeting time has already passed! You'll have to suggest a new time and place.");
+                break;
         }
     }
 
@@ -627,7 +649,7 @@ public class SystemPresenter {
         String date = meetingStr.substring(0, meetingStr.indexOf(" "));
         String time = meetingStr.substring(meetingStr.indexOf(" ") + 1);
 
-        switch(situation) {
+        switch (situation) {
             case 1:
                 System.out.println("\nMost recent meeting suggestion: " + date + " at " + time +
                         " - " + trade.getMeetingLocation1());

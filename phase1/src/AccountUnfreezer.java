@@ -4,13 +4,13 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 /**
- * Lets a frozen NormalUser request to be unfrozen, and lets an AdminUser accept/deny the requests.
+ * Lets frozen normal users request to be unfrozen, and lets admins accept the requests.
  *
  * @author Judy Naamani
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-10
+ * last modified 2020-07-12
  */
 public class AccountUnfreezer {
     private User currentUser;
@@ -20,9 +20,11 @@ public class AccountUnfreezer {
     private SystemPresenter sp;
 
     /**
-     * Creates an account unfreezer for a normal user
+     * Creates an <AccountUnfreezer></AccountUnfreezer> with the given normal user and item/user/trade managers.
+     * Calls a private method that adds the user's username
+     * to a list of accounts that requested to be unfrozen (only if they haven't already requested).
      *
-     * @param user normal user
+     * @param user the normal user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
      * @param tm   the system's trade manager
@@ -39,9 +41,10 @@ public class AccountUnfreezer {
     }
 
     /**
-     * Creates an account unfreezer for admin users
+     * Creates an <AccountUnfreezer></AccountUnfreezer> with the given admin and item/user managers.
+     * Calls a private method that lets the admin view requests to be unfrozen and choose which ones to accept.
      *
-     * @param user admin user
+     * @param user the admin who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
      */
@@ -55,7 +58,7 @@ public class AccountUnfreezer {
         closeAdmin();
     }
 
-    // Sends a request to be unfrozen.
+    /* Sends a request to be unfrozen. */
     private void requestUnfreeze(NormalUser currentUser) {
         if (userManager.containsUnfreezeRequest(currentUser.getUsername())) {
             sp.requestUnfreeze(1);
@@ -65,7 +68,10 @@ public class AccountUnfreezer {
         }
     }
 
-    // Displays the list of Users that requested to be unfrozen, and the admin can choose which ones to unfreeze (or none).
+    /*
+     * Displays the list of Users that requested to be unfrozen,
+     * and the admin can choose which ones to unfreeze (or none).
+     */
     private void reviewUnfreezeRequests() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int indexInput;

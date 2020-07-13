@@ -5,13 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Displays a list of usernames that need to be frozen
- * and lets admin user freeze them
+ * Displays a list of usernames that need to be frozen and lets an admin freeze them.
  *
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-08
+ * last modified 2020-07-12
  */
 public class AccountFreezer {
     private AdminUser currentAdmin;
@@ -19,10 +18,12 @@ public class AccountFreezer {
     private UserManager um;
 
     /**
-     * Creates an AccountFreezer that sets a certain user's status to frozen
-     * @param user the admin user
-     * @param im the system's item manager
-     * @param um the system's user manager
+     * Creates an <AccountFreezer></AccountFreezer> with the given admin and item/user managers.
+     * Sets all normal users on the list's status to frozen.
+     *
+     * @param user the admin currently logged in
+     * @param im   the system's item manager
+     * @param um   the system's user manager
      */
     public AccountFreezer(AdminUser user, ItemManager im, UserManager um) {
         currentAdmin = user;

@@ -10,10 +10,8 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
-
-
 public class NormalDashboard {
     private NormalUser currentUser;
     private ItemManager itemManager;
@@ -22,9 +20,9 @@ public class NormalDashboard {
     private int input;
 
     /**
-     * Creates a NormalDashboard with the given logged-in user and item/user/trade managers.
+     * Creates a <NormalDashboard></NormalDashboard> with the given normal user and item/user/trade managers.
      *
-     * @param user current normal user that is logged in
+     * @param user the normal user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
      * @param tm   the system's trade manager
@@ -83,30 +81,24 @@ public class NormalDashboard {
                 break;
 
             case 5:
-                // view ongoing trades
-                // use getOngoingTrades in TradeManager
-                // in the new class created for this option, handle the whole meeting suggestion thing?
-                // make sure you check if the meeting is a suggestion or if it's already agreed upon
-                // before editing a meeting check if they've reached the max number of times they can edit (meetingEditMax in NormalUser)
-                // if both users have reached their max, the recipient of the last suggestion either accepts the suggestion or cancels the trade
-
-                // btw what to do about cancelled trades? (when both users have reached their max edits and the last suggestion is rejected)
-                // >> have to let both users know it got cancelled
                 new OngoingTradesViewer(currentUser, itemManager, userManager, tradeManager);
                 break;
 
             case 6:
-                // view most recent three *completed* trades
+                /* View most recent three completed trades */
                 new CompletedTradesViewer(currentUser, itemManager, userManager, tradeManager).viewRecentThreeTrades();
                 break;
 
             case 7:
-                // view top three most frequent trading partners (only counts if trades are completed)
+                /* View top three most frequent trading partners (only counts if trades are completed) */
                 new CompletedTradesViewer(currentUser, itemManager, userManager, tradeManager).viewTopThreeTrader();
                 break;
 
             case 8:
-                // unfreeze request option for frozen account
+                /*
+                 * Unfreeze request option.
+                 * Only appears for frozen accounts.
+                 */
                 new AccountUnfreezer(currentUser, itemManager, userManager, tradeManager);
                 break;
         }

@@ -7,9 +7,8 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-08
+ * last modified 2020-07-12
  */
-
 public class SystemController {
     UserGateway ug;
     ItemGateway ig;
@@ -25,7 +24,9 @@ public class SystemController {
     SystemPresenter sp;
 
     /**
-     * Creates a system controller
+     * Creates a <SystemController></SystemController>.
+     * Calls methods in the item, user, and trade gateway classes to read and write the system's item, user, and trade managers.
+     * If there are no users in the system, this class automatically creates the initial admin with preset login credentials.
      */
     public SystemController() {
 
@@ -80,9 +81,9 @@ public class SystemController {
         try {
             userManager = ug.readFromFile(userManagerPath);
         } catch (IOException e) {
-            sp.exceptionMessage(1,"Reading", "UserManager");
+            sp.exceptionMessage(1, "Reading", "UserManager");
         } catch (ClassNotFoundException e) {
-            sp.exceptionMessage(2, "Reading","UserManager");
+            sp.exceptionMessage(2, "Reading", "UserManager");
         }
 
         try {

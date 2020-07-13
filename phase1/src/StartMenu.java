@@ -9,14 +9,13 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-10
+ * last modified 2020-07-12
  */
 public class StartMenu {
     private int userInput;
 
     /**
-     * Class constructor.
-     * Creates a start menu that takes in user input.
+     * Creates a <StartMenu></StartMenu> that lets the user choose their next course of action through user input.
      */
     public StartMenu() {
         userInput = 0;
@@ -26,7 +25,7 @@ public class StartMenu {
         sp.startMenu(1);
         try {
             String temp = br.readLine();
-            while (!temp.matches("[1-3]")){
+            while (!temp.matches("[1-3]")) {
                 sp.invalidInput();
                 temp = br.readLine();
             }
@@ -37,8 +36,9 @@ public class StartMenu {
     }
 
     /**
-     * Getter for userInput
-     * @return This class's userinput
+     * Getter for the option input by the user.
+     *
+     * @return the option input by the user
      */
     public int getUserInput() {
         return userInput;

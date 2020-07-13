@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-08
- * last modified 2020-07-11
+ * last modified 2020-07-12
  */
 public class DateTimeSuggestion {
     private NormalUser currentUser;
@@ -26,8 +26,7 @@ public class DateTimeSuggestion {
     private String[] time;
 
     /**
-     * Class constructor.
-     * Creates a DateTimeSuggestion with the given logged-in user and trade manager.
+     * Creates a <DateTimeSuggestion></DateTimeSuggestion> with the given normal user and trade manager.
      *
      * @param user the normal user who's currently logged in
      * @param tm   the system's trade manager
@@ -118,8 +117,10 @@ public class DateTimeSuggestion {
     }
 
 
-    //Checks if the given date is valid.
-    //based on code by mkyong from https://mkyong.com/java/how-to-check-if-date-is-valid-in-java/.
+    /*
+     * Checks if the given date is valid.
+     * Based on code by mkyong from https://mkyong.com/java/how-to-check-if-date-is-valid-in-java/.
+     */
     private boolean isThisDateValid(String dateToValidate) {
         if (dateToValidate.isEmpty() || dateToValidate.contains(" ")) {
             return false;
