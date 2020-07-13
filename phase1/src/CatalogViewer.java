@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-12
+ * last modified 2020-07-13
  */
 public class CatalogViewer {
     private NormalUser currentUser;
@@ -86,7 +86,7 @@ public class CatalogViewer {
                         sp.catalogViewer(2);
                     } else if (currentUser.isRequestedInTrade(selectedItem.getID())) {
                         sp.catalogViewer(6);
-                    } else if (currentUser.hasBorrowed() && ((timesLent - timesBorrowed) < currentUser.getLendMinimum())) {
+                    } else if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < currentUser.getLendMinimum())) {
                         sp.catalogViewer(currentUser);
                     } else {
                         startTradeAttempt(selectedItem);

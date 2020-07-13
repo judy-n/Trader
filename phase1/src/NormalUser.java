@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-12
+ * last modified 2020-07-13
  */
 public class NormalUser extends User implements Serializable {
     private List<Long> inventory;
@@ -68,21 +68,6 @@ public class NormalUser extends User implements Serializable {
             }
         }
         return timesBorrowed;
-    }
-
-    /**
-     * Returns whether or not this user has requested to borrow something.
-     * Only counts requests that have yet to be accepted or rejected.
-     *
-     * @return true if this user has tried to borrow something, false otherwise
-     */
-    public boolean hasBorrowed() {
-        for (String[] key : tradeRequests.keySet()) {
-            if (key[0].equals(getUsername())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
