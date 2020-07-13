@@ -113,21 +113,24 @@ public class TradeManager implements Serializable {
      * of the meeting date/time.
      */
     public void cancelAllUnconfirmedTrades() {
+
+        long TIME_LIMIT = 24; // # of hours allowed for confirming a transaction after it's scheduled time
+
         LocalDateTime now = LocalDateTime.now();
         for (Trade t : getAllOngoingNotCancelledTrades()) {
             if (t instanceof TemporaryTrade && t.getHasAgreedMeeting1()) {
                 TemporaryTrade temp = (TemporaryTrade) t;
                 LocalDateTime meeting1 = temp.getMeetingDateTime1();
-                if (now.compareTo(meeting1.plusDays(1)) > 0 && !temp.hasSecondMeeting()) {
+                if (now.compareTo(meeting1.plusHours(TIME_LIMIT)) > 0 && !temp.hasSecondMeeting()) {
                     t.setIsCancelled();
                     addCancelledUsers(t.getInvolvedUsernames());
-                } else if (now.compareTo(((TemporaryTrade) t).getMeetingDateTime2().plusDays(1)) > 0
+                } else if (now.compareTo(((TemporaryTrade) t).getMeetingDateTime2().plusHours(TIME_LIMIT)) > 0
                         && !t.getIsComplete()) {
                     t.setIsCancelled();
                     addCancelledUsers(t.getInvolvedUsernames());
                 }
             } else if (t instanceof PermanentTrade && t.getHasAgreedMeeting1()) {
-                if (now.compareTo(t.getMeetingDateTime1().plusDays(1)) > 0 && !t.getIsComplete()) {
+                if (now.compareTo(t.getMeetingDateTime1().plusHours(TIME_LIMIT)) > 0 && !t.getIsComplete()) {
                     t.setIsCancelled();
                     addCancelledUsers(t.getInvolvedUsernames());
                 }

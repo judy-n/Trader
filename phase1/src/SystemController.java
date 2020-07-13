@@ -7,21 +7,21 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-12
+ * last modified 2020-07-13
  */
 public class SystemController {
-    UserGateway ug;
-    ItemGateway ig;
-    TradeGateway tg;
-    UserManager userManager;
-    ItemManager itemManager;
-    TradeManager tradeManager;
+    private UserGateway ug;
+    private ItemGateway ig;
+    private TradeGateway tg;
+    private UserManager userManager;
+    private ItemManager itemManager;
+    private TradeManager tradeManager;
 
-    String userManagerPath = "src/usermanager.ser";
-    String itemManagerPath = "src/itemmanager.ser";
-    String tradeManagerPath = "src/trademanager.ser";
+    private String userManagerPath = "src/usermanager.ser";
+    private String itemManagerPath = "src/itemmanager.ser";
+    private String tradeManagerPath = "src/trademanager.ser";
 
-    SystemPresenter sp;
+    private SystemPresenter sp;
 
     /**
      * Creates a <SystemController></SystemController>.
