@@ -273,18 +273,18 @@ public class NormalUser extends User implements Serializable {
     }
 
     /**
-     * Getter for this user's minimum lending over borrowing limit.
+     * Getter for this user's minimum lending over borrowing threshold.
      *
-     * @return this user's minimum lending over borrowing limit
+     * @return this user's minimum lending over borrowing threshold
      */
     public int getLendMinimum() {
         return lendMinimum;
     }
 
     /**
-     * Setter for this user's minimum lending over borrowing limit.
+     * Setter for this user's minimum lending over borrowing threshold.
      *
-     * @param newMin the new minimum lending over borrowing limit
+     * @param newMin the new minimum lending over borrowing threshold
      */
     public void setLendMinimum(int newMin) {
         lendMinimum = newMin;
