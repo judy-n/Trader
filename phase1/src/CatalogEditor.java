@@ -32,9 +32,10 @@ public class CatalogEditor {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int input;
-        int max = itemManager.getNumPendingItems();
         try {
             do {
+                int max = itemManager.getNumPendingItems();
+
                 if (itemManager.getPendingItems().isEmpty()) {
                     sp.catalogEditor(1);
                     break;
