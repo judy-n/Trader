@@ -196,12 +196,33 @@ public class TradeManager implements Serializable {
     }
 
     /**
-     * Adds the given trade to the list of all trades.
+     * Creates a new <TemporaryTrade></TemporaryTrade> with the given information,
+     * then adds it to the list of all trades.
      *
-     * @param tradeToAdd the trade being added
+     * @param usernames     an array containing the usernames of the two users involved in the new trade
+     * @param itemIDs       an array containing the IDs of the items being traded (parallel to usernames)
+     * @param firstDateTime the first date and time suggested for the new trade's meeting
+     * @param firstLocation the first location suggested for the new trade's meeting
      */
-    public void addTrade(Trade tradeToAdd) {
-        allTrades.add(tradeToAdd);
+    public TemporaryTrade createTempTrade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
+        TemporaryTrade newTempTrade = new TemporaryTrade(usernames, itemIDs, firstDateTime, firstLocation);
+        allTrades.add(newTempTrade);
+        return newTempTrade;
+    }
+
+    /**
+     * Creates a new <PermanentTrade></PermanentTrade> with the given information,
+     * then adds it to the list of all trades.
+     *
+     * @param usernames     an array containing the usernames of the two users involved in the new trade
+     * @param itemIDs       an array containing the IDs of the items being traded (parallel to usernames)
+     * @param firstDateTime the first date and time suggested for the new trade's meeting
+     * @param firstLocation the first location suggested for the new trade's meeting
+     */
+    public PermanentTrade createPermTrade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
+        PermanentTrade newPermTrade = new PermanentTrade(usernames, itemIDs, firstDateTime, firstLocation);
+        allTrades.add(newPermTrade);
+        return newPermTrade;
     }
 
     /**

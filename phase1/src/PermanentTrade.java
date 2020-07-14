@@ -8,17 +8,17 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-12
+ * last modified 2020-07-13
  */
 public class PermanentTrade extends Trade implements Serializable, Comparable<Trade> {
     /**
      * Creates a <PermanentTrade></PermanentTrade> with given username array, item ID array,
      * and first suggestions for meeting time/date/location.
      *
-     * @param usernames     an array containing the usernames of the two Users involved in this TemporaryTrade
-     * @param itemIDs       an array containing the IDs of the Items being traded (parallel to usernames)
-     * @param firstDateTime the first date and time suggested for this TemporaryTrade's meeting
-     * @param firstLocation the first location suggested for this TemporaryTrade's meeting
+     * @param usernames     an array containing the usernames of the two Users involved in this <PermanentTrade></PermanentTrade>
+     * @param itemIDs       an array containing the IDs of the items being traded (parallel to usernames)
+     * @param firstDateTime the first date and time suggested for this <PermanentTrade></PermanentTrade>'s meeting
+     * @param firstLocation the first location suggested for this <PermanentTrade></PermanentTrade>'s meeting
      */
     public PermanentTrade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
         super(usernames, itemIDs, firstDateTime, firstLocation);

@@ -33,10 +33,10 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
      * Creates a <Trade></Trade> with given username array, item ID array,
      * and first suggestions for meeting time/date/location.
      *
-     * @param usernames     an array containing the usernames of the two users involved in this Trade
-     * @param itemIDs       an array containing the IDs of the Items being traded (parallel to usernames)
-     * @param firstDateTime the first date and time suggested for this Trade's meeting
-     * @param firstLocation the first location suggested for this Trade's meeting
+     * @param usernames     an array containing the usernames of the two users involved in this <Trade></Trade>
+     * @param itemIDs       an array containing the IDs of the items being traded (parallel to usernames)
+     * @param firstDateTime the first date and time suggested for this <Trade></Trade>'s meeting
+     * @param firstLocation the first location suggested for this <Trade></Trade>'s meeting
      */
     public Trade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
         involvedUsernames[0] = usernames[0];

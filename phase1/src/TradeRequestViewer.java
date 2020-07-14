@@ -227,13 +227,11 @@ public class TradeRequestViewer {
                             }
 
                             if (permOrTemp.equals("1")) {
-                                PermanentTrade pt = new PermanentTrade(new String[]{currentUser.getUsername(), a[0]},
+                                tradeManager.createPermTrade(new String[]{currentUser.getUsername(), a[0]},
                                         new long[]{firstItem, secondItem}, time, place);
-                                tradeManager.addTrade(pt);
                             } else {
-                                TemporaryTrade tt = new TemporaryTrade(new String[]{currentUser.getUsername(), a[0]},
+                                tradeManager.createTempTrade(new String[]{currentUser.getUsername(), a[0]},
                                         new long[]{firstItem, secondItem}, time, place);
-                                tradeManager.addTrade(tt);
                             }
                         } else {
                             sp.cancelled();

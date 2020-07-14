@@ -21,10 +21,10 @@ public class TemporaryTrade extends Trade implements Serializable, Comparable<Tr
      * Creates a <TemporaryTrade></TemporaryTrade> with given username array, item ID array,
      * and first suggestions for meeting time/date/location.
      *
-     * @param usernames     an array containing the usernames of the two Users involved in this TemporaryTrade
-     * @param itemIDs       an array containing the IDs of the Items being traded (parallel to usernames)
-     * @param firstDateTime the first date and time suggested for this TemporaryTrade's meeting
-     * @param firstLocation the first location suggested for this TemporaryTrade's meeting
+     * @param usernames     an array containing the usernames of the two Users involved in this <TemporaryTrade></TemporaryTrade>
+     * @param itemIDs       an array containing the IDs of the items being traded (parallel to usernames)
+     * @param firstDateTime the first date and time suggested for this <TemporaryTrade></TemporaryTrade>'s meeting
+     * @param firstLocation the first location suggested for this <TemporaryTrade></TemporaryTrade>'s meeting
      */
     public TemporaryTrade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
         super(usernames, itemIDs, firstDateTime, firstLocation);

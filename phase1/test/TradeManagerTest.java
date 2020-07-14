@@ -15,9 +15,9 @@ public class TradeManagerTest {
     public void testAddTemporaryTrade(){
         Item item = new Item("book", "A book", "Tom");
         User1.addInventory(item.getID());
-        TemporaryTrade trade = new TemporaryTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+        TemporaryTrade trade = tm.createTempTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
                 LocalDateTime.of(2020, 8, 12, 5, 0), "Robarts");
-        tm.addTrade(trade);
+
         assert tm.getAllTempTrades().contains(trade);
         assert tm.getAllTrades().contains(trade);
     }
@@ -25,9 +25,9 @@ public class TradeManagerTest {
     public void testAddPermanentTrade(){
         Item item = new Item("book", "A book", "Tom");
         User1.addInventory(item.getID());
-        PermanentTrade trade = new PermanentTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+        PermanentTrade trade = tm.createPermTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
                 LocalDateTime.of(2020, 8, 12, 5, 0), "Robarts");
-        tm.addTrade(trade);
+
         assert tm.getAllPermTrades().contains(trade);
         assert tm.getAllTrades().contains(trade);
     }
@@ -36,9 +36,9 @@ public class TradeManagerTest {
     public void testRemoveTrade(){
         Item item = new Item("book", "A book", "Tom");
         User1.addInventory(item.getID());
-        PermanentTrade trade = new PermanentTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+        PermanentTrade trade = tm.createPermTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
                 LocalDateTime.of(2020, 8, 12, 5, 0), "Robarts");
-        tm.addTrade(trade);
+
         tm.removeTrade(trade);
         assert tm.getAllPermTrades().isEmpty();
         assert tm.getAllTrades().isEmpty();
@@ -48,9 +48,9 @@ public class TradeManagerTest {
     public void testGetOngoingTrades(){
         Item item = new Item("book", "A book", "Tom");
         User1.addInventory(item.getID());
-        TemporaryTrade trade = new TemporaryTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+        TemporaryTrade trade = tm.createTempTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
                 LocalDateTime.of(2020, 8, 12, 5, 0), "Robarts");
-        tm.addTrade(trade);
+
         assert tm.getOngoingTrades("Tom").contains(trade);
         assert tm.getOngoingTrades("Jerry").contains(trade);
     }
@@ -59,9 +59,9 @@ public class TradeManagerTest {
     public void testGetItemCancelled(){
         Item item = new Item("book", "A book", "Tom");
         User1.addInventory(item.getID());
-        TemporaryTrade trade = new TemporaryTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+        TemporaryTrade trade = tm.createTempTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
                 LocalDateTime.of(2020, 8, 12, 5, 0), "Robarts");
-        tm.addTrade(trade);
+
         assertFalse(tm.getItemInCancelledTrade(item));
         trade.setIsCancelled();
         assertTrue(tm.getItemInCancelledTrade(item));
@@ -72,9 +72,9 @@ public class TradeManagerTest {
     public void testGetTimesLentOrBorrowed(){
         Item item = new Item("book", "A book", "Tom");
         User1.addInventory(item.getID());
-        TemporaryTrade trade = new TemporaryTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+        TemporaryTrade trade = tm.createTempTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
                 LocalDateTime.of(2020, 8, 12, 5, 0), "Robarts");
-        tm.addTrade(trade);
+
         trade.closeTransaction();
         assertEquals(1, tm.getTimesLent("Tom"));
         assertEquals(1, tm.getTimesBorrowed("Jerry"));
@@ -84,9 +84,9 @@ public class TradeManagerTest {
     public void testCancelUnconfirmed(){
         Item item = new Item("book", "A book", "Tom");
         User1.addInventory(item.getID());
-        PermanentTrade trade = new PermanentTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+        PermanentTrade trade = tm.createPermTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
                 LocalDateTime.of(2020, 7, 10, 13, 0), "Robarts");
-        tm.addTrade(trade);
+
         trade.confirmAgreedMeeting1();
         trade.confirmTransaction1("Tom");
         tm.cancelAllUnconfirmedTrades();
@@ -97,9 +97,9 @@ public class TradeManagerTest {
     public void test1RecentTrade(){
         Item item = new Item("book", "A book", "Tom");
         User1.addInventory(item.getID());
-        PermanentTrade trade1 = new PermanentTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+        PermanentTrade trade1 = tm.createPermTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
                 LocalDateTime.of(2020, 7, 10, 13, 0), "Robarts");
-        tm.addTrade(trade1);
+
         trade1.closeTransaction();
         assertEquals(trade1, tm.getRecentThreeTrades("Tom")[0]);
     }
@@ -110,12 +110,11 @@ public class TradeManagerTest {
         Item item2 = new Item("pencil", "A pencil", "Jerry");
         User1.addInventory(item.getID());
         User2.addInventory(item2.getID());
-        PermanentTrade trade2 = new PermanentTrade(new String[]{"Tom", "Jerry"}, new long[]{0, item2.getID()},
+        PermanentTrade trade2 = tm.createPermTrade(new String[]{"Tom", "Jerry"}, new long[]{0, item2.getID()},
                 LocalDateTime.of(2020, 7, 6, 11, 0),"UofT");
-        PermanentTrade trade1 = new PermanentTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+        PermanentTrade trade1 = tm.createPermTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
                 LocalDateTime.of(2020, 7, 10, 13, 0), "Robarts");
-        tm.addTrade(trade2);
-        tm.addTrade(trade1);
+
         trade2.closeTransaction();
         trade1.closeTransaction();
         assertEquals(trade2, tm.getRecentThreeTrades("Tom")[1]);
@@ -128,15 +127,13 @@ public class TradeManagerTest {
         Item item2 = new Item("pencil", "A pencil", "Jerry");
         User1.addInventory(item.getID());
         User2.addInventory(item2.getID());
-        PermanentTrade trade2 = new PermanentTrade(new String[]{"Tom", "Jerry"}, new long[]{0, item2.getID()},
+        PermanentTrade trade2 = tm.createPermTrade(new String[]{"Tom", "Jerry"}, new long[]{0, item2.getID()},
                 LocalDateTime.of(2020, 7, 6, 11, 0),"UofT");
-        PermanentTrade trade1 = new PermanentTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+        PermanentTrade trade1 = tm.createPermTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
                 LocalDateTime.of(2020, 7, 10, 13, 0), "Robarts");
-        TemporaryTrade trade3 = new TemporaryTrade(new String[]{"Tom", "Jerry"}, new long[]{0, item.getID()},
+        TemporaryTrade trade3 = tm.createTempTrade(new String[]{"Tom", "Jerry"}, new long[]{0, item.getID()},
                 LocalDateTime.of(2020, 7, 11, 13, 0), "Robarts");
-        tm.addTrade(trade2);
-        tm.addTrade(trade1);
-        tm.addTrade(trade3);
+
         trade2.closeTransaction();
         trade1.closeTransaction();
         trade3.closeTransaction();
@@ -156,9 +153,9 @@ public class TradeManagerTest {
     public void testFrequentTraders() {
         Item item = new Item("book", "A book", "Tom");
         User1.addInventory(item.getID());
-        TemporaryTrade trade = new TemporaryTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+        TemporaryTrade trade = tm.createTempTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
                 LocalDateTime.of(2020, 8, 12, 5, 0), "Robarts");
-        tm.addTrade(trade);
+
         trade.closeTransaction();
         assertEquals("Jerry", tm.getFrequentTradePartners("Tom")[0]);
         assertEquals("empty", tm.getFrequentTradePartners("Tom")[1]);
@@ -172,15 +169,13 @@ public class TradeManagerTest {
         Item item2 = new Item("pencil", "A pencil", "Jerry");
         User1.addInventory(item.getID());
         User2.addInventory(item2.getID());
-        PermanentTrade trade2 = new PermanentTrade(new String[]{"Tom", "Jerry"}, new long[]{0, item2.getID()},
+        PermanentTrade trade2 = tm.createPermTrade(new String[]{"Tom", "Jerry"}, new long[]{0, item2.getID()},
                 LocalDateTime.of(2020, 7, 8, 11, 0),"UofT");
-        PermanentTrade trade1 = new PermanentTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
+        PermanentTrade trade1 = tm.createPermTrade(new String[]{"Tom", "Jerry"}, new long[]{item.getID(), 0},
                 LocalDateTime.of(2020, 7, 10, 13, 0), "Robarts");
-        TemporaryTrade trade3 = new TemporaryTrade(new String[]{"Tom", "Jerry"}, new long[]{0, item.getID()},
+        TemporaryTrade trade3 = tm.createTempTrade(new String[]{"Tom", "Jerry"}, new long[]{0, item.getID()},
                 LocalDateTime.of(2020, 7, 12, 13, 0), "Robarts");
-        tm.addTrade(trade2);
-        tm.addTrade(trade1);
-        tm.addTrade(trade3);
+
         trade1.confirmAgreedMeeting1();
         trade2.confirmAgreedMeeting1();
         trade3.confirmAgreedMeeting1();
