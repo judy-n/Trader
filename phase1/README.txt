@@ -48,3 +48,18 @@ When logged in as a normal user, the following apply:
 When logged in as an admin, the following apply:
 
 - when viewing accounts that need to be frozen, you can either freeze all of them or none of them
+
+
+
+
+------things i think u should add lol------
+- lent min 
+- how to get frozen (if u have too many incomplete trades) 
+- sending an unfreeze request
+- to change threshold u have to enter the username first 
+- u can only send one trade request to the same person at a time (until that trade is completed then u can send another one) if u send multiple it will get overriden by the most recent one 
+- what happens if u try to remove item thats in the middle of a trade 
+- username and email has to be unique, username must have 3 characters and email must have @. (Idk if u changed the error msgs lol ignore if u did) 
+- ehh maybe that if u dont log out correctly and the system prints IO exception delete the .sers and restart (Idk if this is still a problem ahh maybe last resort type thing) 
+- also that log out means close the sytem lol (maybe i can add the actual log out thing tmr) 
+GJ!!!!!! pat pat u worked hard 
