@@ -2,6 +2,8 @@
 The files used to save information outside of the program will be created during the first execution of the program.
 Due to the fixed file path of these external files, please ensure that the project is open under the phase1 folder and not the group_0043 folder or anything else.
 
+* The main method to start the program is located in the Launcher class *
+
 =======================================================================
 
 Here are the login details for the very first admin:
