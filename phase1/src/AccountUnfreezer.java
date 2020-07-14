@@ -60,7 +60,7 @@ public class AccountUnfreezer {
 
     /* Sends a request to be unfrozen. */
     private void requestUnfreeze(NormalUser currentUser) {
-        if (userManager.containsUnfreezeRequest(currentUser.getUsername())) {
+        if (userManager.getUnfreezeRequests().contains(currentUser.getUsername())) {
             sp.requestUnfreeze(1);
         } else {
             userManager.addUnfreezeRequest(currentUser.getUsername());
@@ -75,11 +75,11 @@ public class AccountUnfreezer {
     private void reviewUnfreezeRequests() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int indexInput;
-        List<NormalUser> users = userManager.getUnfreezeRequests();
+        List<String> usernames = userManager.getUnfreezeRequests();
 
-        sp.adminGetUnfreezeRequests(users);
+        sp.adminGetUnfreezeRequests(usernames);
 
-        if (!users.isEmpty()) {
+        if (!usernames.isEmpty()) {
             try {
                 String input = br.readLine();
                 while (!input.equalsIgnoreCase("y") && !input.equalsIgnoreCase("n")) {
@@ -100,14 +100,12 @@ public class AccountUnfreezer {
                         indexInput = Integer.parseInt(temp);
 
                         if (indexInput != 0) {
-                            NormalUser userToUnfreeze = userManager.getNormalByUsername(userManager.getUnfreezeRequest(indexInput));
-                            userToUnfreeze.unfreeze();
-                            userManager.removeUnfreezeRequest(userToUnfreeze.getUsername());
+                            userManager.removeUnfreezeRequest(indexInput);
 
                             sp.adminGetUnfreezeRequests(2);
 
-                            users = userManager.getUnfreezeRequests(); //update list
-                            sp.adminGetUnfreezeRequests(users); //reprint the list to update indexes
+                            usernames = userManager.getUnfreezeRequests(); // update list
+                            sp.adminGetUnfreezeRequests(usernames); // reprint the list to update indexes
                         }
                     } while (indexInput != 0);
                 }

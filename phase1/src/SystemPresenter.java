@@ -147,10 +147,10 @@ public class SystemPresenter {
         }
         int index = 1;
         for (Item i : itemWishlist) {
-            if (i != null) {
+            if (i.isInInventory()) {
                 System.out.println(index + ". " + i);
             } else {
-                System.out.println(index + ". (item has been removed from system)");
+                System.out.println(index + ". " + i + " (item has been removed from its owner's inventory)");
             }
             index++;
         }
@@ -455,14 +455,15 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents to an admin the NormalUsers that have requested to be unfrozen.
-     * @param unfreezeRequests the NormalUsers to be unfrozen
+     * Presents to an admin the usernames of accounts that have requested to be unfrozen.
+     *
+     * @param unfreezeRequests the list of usernames of accounts that have requested to be unfrozen
      */
-    public void adminGetUnfreezeRequests(List<NormalUser> unfreezeRequests) {
+    public void adminGetUnfreezeRequests(List<String> unfreezeRequests) {
         System.out.println("\nHere are the users that requested to be unfrozen:");
         int index = 1;
-        for (User u : unfreezeRequests) {
-            System.out.println(index + ". " + u.getUsername());
+        for (String username : unfreezeRequests) {
+            System.out.println(index + ". " + username);
             index++;
         }
         if (unfreezeRequests.isEmpty()) {
@@ -799,7 +800,7 @@ public class SystemPresenter {
                 "\n 6 - view most recent 3 trades" +
                 "\n 7 - view top 3 trade partners";
         String menuFrozen = "\n 8 - request to unfreeze account";
-        String logoutOption = "\n 0 - logout ";
+        String logoutOption = "\n 0 - log out";
 
         switch (input) {
             case 1:
@@ -885,7 +886,7 @@ public class SystemPresenter {
                 "\n 3 - view requests to unfreeze account" +
                 "\n 4 - edit a user's threshold values";
         String menuInitAdmin = "\n 5 - add new admin to the system";
-        String logoutOption = "\n 0 - logout ";
+        String logoutOption = "\n 0 - log out";
 
         switch (input) {
             case 1:

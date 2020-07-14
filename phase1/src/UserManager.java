@@ -344,24 +344,10 @@ public class UserManager implements Serializable {
     /**
      * Getter for the list of unfreeze requests.
      *
-     * @return the list of frozen normal users who have requested their account be unfrozen
+     * @return the list of usernames of frozen normal users who have requested their account be unfrozen
      */
-    public List<NormalUser> getUnfreezeRequests() {
-        List<NormalUser> userRequests = new ArrayList<>();
-        for (String username : unfreezeRequests) {
-            userRequests.add(getNormalByUsername(username));
-        }
-        return userRequests;
-    }
-
-    /**
-     * Returns the username of someone's unfreeze request at the given index.
-     *
-     * @param index the index of an unfreeze request in the list
-     * @return the username at the given index
-     */
-    public String getUnfreezeRequest(int index) {
-        return unfreezeRequests.get(index - 1);
+    public List<String> getUnfreezeRequests() {
+        return unfreezeRequests;
     }
 
     /**
@@ -374,12 +360,14 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Removes the given username from the list of unfreeze requests.
+     * Removes the user at the given index from the list of unfreeze requests and unfreezes them.
      *
-     * @param username the username being removed from the unfreeze requests
+     * @param index the index of the user being unfrozen
      */
-    public void removeUnfreezeRequest(String username) {
-        unfreezeRequests.remove(username);
+    public void removeUnfreezeRequest(int index) {
+        NormalUser unfreezeUser = getNormalByUsername(unfreezeRequests.get(index));
+        unfreezeUser.unfreeze();
+        unfreezeRequests.remove(unfreezeUser.getUsername());
     }
 
     /**
@@ -389,15 +377,5 @@ public class UserManager implements Serializable {
      */
     public void addUnfreezeRequest(String username) {
         unfreezeRequests.add(username);
-    }
-
-    /**
-     * Checks if the given user already sent an unfreeze request.
-     *
-     * @param username the username of the user who's being checked
-     * @return true if the user already sent an unfreeze request, false otherwise
-     */
-    public boolean containsUnfreezeRequest(String username) {
-        return unfreezeRequests.contains(username);
     }
 }
