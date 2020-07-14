@@ -55,11 +55,6 @@ public class AdminDashboard {
 
         switch (input) {
             case 0:
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    sp.exceptionMessage();
-                }
                 sp.normalDashboard(3);
                 break;
             case 1:

@@ -953,4 +953,11 @@ public class SystemPresenter {
     private void emptyListMessage() {
         System.out.println("nothing here yet!");
     }
+
+    /**
+     * Presents an exist message when user exits the program
+     */
+    public void exitProgram(){
+        System.out.println("Exiting... Thank you for using our program!");
+    }
 }

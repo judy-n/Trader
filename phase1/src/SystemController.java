@@ -7,7 +7,7 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-13
+ * last modified 2020-07-14
  */
 public class SystemController {
     private UserGateway ug;
@@ -52,26 +52,28 @@ public class SystemController {
         }
         tradeManager.clearCancelledUsers();
 
-
         if (userManager.getAllUsers().isEmpty()) {
             userManager.createAdminUser("Hello_World", "admin01@email.com", "pa55word");
         }
+        StartMenu sm = new StartMenu();
+        int choice = sm.getUserInput();
+        while(choice != 3) {
+            if (choice == 1) {
+                NormalUser newUser = new SignUpSystem(userManager).createNewNormal();
+                new NormalDashboard(newUser, itemManager, userManager, tradeManager);
 
-        int choice = new StartMenu().getUserInput();
-
-        if (choice == 1) {
-            NormalUser newUser = new SignUpSystem(userManager).createNewNormal();
-            new NormalDashboard(newUser, itemManager, userManager, tradeManager);
-
-        } else if (choice == 2) {
-            User currentUser = new LoginSystem(userManager).getUser();
-            if (currentUser instanceof AdminUser) {
-                new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
-            } else {
-                new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
+            } else if (choice == 2) {
+                User currentUser = new LoginSystem(userManager).getUser();
+                if (currentUser instanceof AdminUser) {
+                    new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
+                } else {
+                    new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
+                }
             }
+            sm = new StartMenu();
+            choice = sm.getUserInput();
         }
-
+        sp.exitProgram();
         tryWrite();
         System.exit(0);
     }
