@@ -70,11 +70,11 @@ public class SystemController {
                     new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
                 }
             }
+            tryWrite();
             sm = new StartMenu();
             choice = sm.getUserInput();
         }
         sp.exitProgram();
-        tryWrite();
         System.exit(0);
     }
 
