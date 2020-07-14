@@ -101,7 +101,6 @@ public class TemporaryTrade extends Trade implements Serializable, Comparable<Tr
         }
     }
 
-
     /**
      * Return whether or not the user with the given username has confirmed this
      * temporary trade's second transaction.

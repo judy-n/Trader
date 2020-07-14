@@ -198,9 +198,9 @@ public class ItemManager implements Serializable {
      * Helper method that takes in a list of items and an ID,
      * then returns the item associated with the given ID if it exists in the given list.
      */
-    private Item idGetItem(List<Item> items, long itemid) {
+    private Item idGetItem(List<Item> items, long itemID) {
         for (Item i : items) {
-            if (i.getID() == itemid) {
+            if (i.getID() == itemID) {
                 return i;
             }
         }

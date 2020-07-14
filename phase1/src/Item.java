@@ -119,6 +119,7 @@ public class Item implements Serializable {
      *
      * @return this <Item></Item>'s ID, name, description, and availability as a String
      */
+    @Override
     public String toString() {
         if (isAvailable) {
             return name + ": " + description;

@@ -319,11 +319,14 @@ public class UserManager implements Serializable {
         return usernamesToFreeze;
     }
 
-
+    /**
+     * Adds the given username to the list of usernames to freeze.
+     *
+     * @param username the username of a user that needs to be frozen
+     */
     public void addUsernamesToFreeze(String username) {
         usernamesToFreeze.add(username);
     }
-
 
     /**
      * Clears the list of usernames to freeze.

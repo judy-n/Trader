@@ -109,7 +109,7 @@ public class NormalUser extends User implements Serializable {
      *
      * @param itemIDToAdd the ID of the approved item being added to this user's inventory
      */
-    public void addInventory(Long itemIDToAdd) {
+    public void addInventory(long itemIDToAdd) {
         inventory.add(itemIDToAdd);
         pendingInventory.remove(itemIDToAdd);
     }
@@ -119,7 +119,7 @@ public class NormalUser extends User implements Serializable {
      *
      * @param itemIDToRemove the item ID being removed from this user's inventory
      */
-    public void removeInventory(Long itemIDToRemove) {
+    public void removeInventory(long itemIDToRemove) {
         inventory.remove(itemIDToRemove);
     }
 
@@ -137,7 +137,7 @@ public class NormalUser extends User implements Serializable {
      *
      * @param itemIDToAdd the item ID being added to this user's pending inventory
      */
-    public void addPendingInventory(Long itemIDToAdd) {
+    public void addPendingInventory(long itemIDToAdd) {
         pendingInventory.add(itemIDToAdd);
     }
 
@@ -147,7 +147,7 @@ public class NormalUser extends User implements Serializable {
      *
      * @param itemIDToRemove the item ID being removed from this user's pending inventory
      */
-    public void removePendingInventory(Long itemIDToRemove) {
+    public void removePendingInventory(long itemIDToRemove) {
         pendingInventory.remove(itemIDToRemove);
     }
 
@@ -165,7 +165,7 @@ public class NormalUser extends User implements Serializable {
      *
      * @param itemIDToAdd the item ID being added to this user's wishlist
      */
-    public void addWishlist(Long itemIDToAdd) {
+    public void addWishlist(long itemIDToAdd) {
         wishlist.add(itemIDToAdd);
     }
 
@@ -174,7 +174,7 @@ public class NormalUser extends User implements Serializable {
      *
      * @param itemIDToRemove the item ID being removed from this user's wishlist
      */
-    public void removeWishlist(Long itemIDToRemove) {
+    public void removeWishlist(long itemIDToRemove) {
         wishlist.remove(itemIDToRemove);
     }
 
