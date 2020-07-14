@@ -24,7 +24,7 @@ public class SystemPresenter {
     public void startMenu(int input) {
         switch (input) {
             case 1:
-                System.out.print("----- WELCOME -----\n 1) Sign up \n 2) Log in \n 3) Exit the program" + choicePrompt);
+                System.out.print("\n----- WELCOME -----\n 1) Sign up \n 2) Log in \n 3) Exit the program" + choicePrompt);
                 break;
             case 2:
                 System.out.println("Exiting the program. Hope to see you again soon!");
@@ -955,9 +955,17 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents an exist message when user exits the program
+     * Presents an exit message when user exits the program
      */
     public void exitProgram(){
-        System.out.println("Exiting... Thank you for using our program!");
+        System.out.println("\nExiting... Thank you for using our program!");
+    }
+
+    /**
+     * Presents an error message when the program fails to close the input stream.
+     */
+    public void streamExceptionMessage() {
+        System.out.println("\nError closing the input stream!");
+        System.exit(-1);
     }
 }

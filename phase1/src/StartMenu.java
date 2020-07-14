@@ -33,6 +33,14 @@ public class StartMenu {
         } catch (IOException e) {
             sp.exceptionMessage();
         }
+
+        if (userInput == 3) {
+            try {
+                br.close();
+            } catch (IOException e) {
+                sp.streamExceptionMessage();
+            }
+        }
     }
 
     /**
