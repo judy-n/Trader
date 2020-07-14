@@ -29,16 +29,27 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Adds the given <User></User> to the user database.
+     * Creates a new <NormalUser></NormalUser> with given username, email, and password,
+     * then adds it to the list of all normal users.
      *
-     * @param userToAdd the <User></User> being added to the database
+     * @param username the new user's username
+     * @param email the new user's email
+     * @param password the new user's password
      */
-    public void addUser(User userToAdd) {
-        if (userToAdd instanceof AdminUser) {
-            allAdmins.add((AdminUser) userToAdd);
-        } else {
-            allNormals.add((NormalUser) userToAdd);
-        }
+    public void createNormalUser(String username, String email, String password) {
+        allNormals.add(new NormalUser(username, email, password));
+    }
+
+    /**
+     * Creates a new <AdminUser></AdminUser> with given username, email, and password,
+     * then adds it to the list of all admins.
+     *
+     * @param username the new user's username
+     * @param email the new user's email
+     * @param password the new user's password
+     */
+    public void createAdminUser(String username, String email, String password) {
+        allAdmins.add(new AdminUser(username, email, password, getNextAdminID()));
     }
 
     /**
@@ -326,7 +337,7 @@ public class UserManager implements Serializable {
      *
      * @return the next admin ID
      */
-    public int getAdminId() {
+    public int getNextAdminID() {
         return allAdmins.size() + 1;
     }
 

@@ -54,8 +54,7 @@ public class SystemController {
 
 
         if (userManager.getAllUsers().isEmpty()) {
-            AdminUser mod01 = new AdminUser("Hello_World", "admin01@email.com", "pa55word", 1);
-            userManager.addUser(mod01);
+            userManager.createAdminUser("Hello_World", "admin01@email.com", "pa55word");
         }
 
         int choice = new StartMenu().getUserInput();

@@ -105,10 +105,9 @@ public class SignUpSystem {
     public NormalUser createNewNormal() {
         sp.signUpSystem(0);
         inputProcess();
-        NormalUser newUser = new NormalUser(username, email, password);
-        userManager.addUser(newUser);
+        userManager.createNormalUser(username, email, password);
         sp.signUpSystem(11);
-        return newUser;
+        return userManager.getNormalByUsername(username);
     }
 
     /**
@@ -117,7 +116,6 @@ public class SignUpSystem {
     public void createNewAdmin() {
         sp.signUpSystem(12);
         inputProcess();
-        AdminUser newUser = new AdminUser(username, email, password, userManager.getAdminId());
-        userManager.addUser(newUser);
+        userManager.createAdminUser(username, email, password);
     }
 }

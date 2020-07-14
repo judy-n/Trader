@@ -5,62 +5,63 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserManagerTest {
 
     UserManager um = new UserManager();
-    NormalUser User1 = new NormalUser("Tom", "tom@hotmail.com", "123");
-    AdminUser User2 = new AdminUser("Jerry", "jerry@hotmail.com", "123", 0);
 
     @Test
-    public void addNormalUserTest(){
-        um.addUser(User1);
-        assert um.getAllNormals().contains(User1);
-        assert um.getAllUsers().contains(User1);
+    public void addNormalUserTest() {
+        um.createNormalUser("Tom", "tom@hotmail.com", "123");
+        assert um.usernameExists("Tom");
+        assert um.emailExists("tom@hotmail.com");
+        assert um.normalEmailPassword("tom@hotmail.com").equals("123");
     }
 
     @Test
-    public void usernamePasswordTest(){
-        um.addUser(User1);
+    public void usernamePasswordTest() {
+        um.createNormalUser("Tom", "tom@hotmail.com", "123");
         assertEquals("123", um.usernamePassword("Tom"));
     }
 
     @Test
-    public void emailPasswordTest(){
-        um.addUser(User1);
+    public void emailPasswordTest() {
+        um.createNormalUser("Tom", "tom@hotmail.com", "123");
         assertEquals("123", um.emailPassword("tom@hotmail.com"));
     }
 
 
     @Test
-    public void emailExistsTest(){
-        um.addUser(User1);
+    public void emailExistsTest() {
+        um.createNormalUser("Tom", "tom@hotmail.com", "123");
         assertTrue(um.emailExists("tom@hotmail.com", false));
         assertFalse(um.emailExists("jerry@hotmail.com", true));
 
     }
 
     @Test
-    public void usernameExistsTest(){
-        um.addUser(User1);
+    public void usernameExistsTest() {
+        um.createNormalUser("Tom", "tom@hotmail.com", "123");
         assertTrue(um.usernameExists("Tom"));
         assertFalse(um.usernameExists("Jerry"));
     }
 
     @Test
-    public void addAdminUserTest(){
-        um.addUser(User2);
-        assert um.getAllAdmins().contains(User2);
-        assert um.getAllUsers().contains(User2);
+    public void addAdminUserTest() {
+        um.createAdminUser("Jerry", "jerry@hotmail.com", "123");
+        assert um.usernameExists("Jerry");
+        assert um.emailExists("jerry@hotmail.com");
+        assert um.adminEmailPassword("jerry@hotmail.com").equals("123");
     }
 
     @Test
-    public void getNormalByTest(){
-        um.addUser(User1);
-        assertEquals(User1, um.getNormalByUsername("Tom"));
-        assertEquals(User1, um.getNormalByEmail("tom@hotmail.com"));
+    public void getNormalByTest() {
+        um.createNormalUser("Tom", "tom@hotmail.com", "123");
+        assertEquals("123", um.getNormalByUsername("Tom").getPassword());
+        assertEquals("123", um.getNormalByEmail("tom@hotmail.com").getPassword());
     }
+
     @Test
-    public void getAdminByTest(){
-        um.addUser(User2);
-        assertEquals(User2, um.getAdminByUsername("Jerry"));
-        assertEquals(User2, um.getAdminByEmail("jerry@hotmail.com"));
+    public void getAdminByTest() {
+        um.createAdminUser("Jerry", "jerry@hotmail.com", "123");
+        assertEquals("123", um.getAdminByUsername("Jerry").getPassword());
+        assertEquals("123", um.getAdminByEmail("jerry@hotmail.com").getPassword());
     }
 
 }
