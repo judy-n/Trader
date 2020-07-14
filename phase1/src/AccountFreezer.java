@@ -10,12 +10,12 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-12
+ * last modified 2020-07-13
  */
 public class AccountFreezer {
     private AdminUser currentAdmin;
-    private ItemManager im;
-    private UserManager um;
+    private ItemManager itemManager;
+    private UserManager userManager;
 
     /**
      * Creates an <AccountFreezer></AccountFreezer> with the given admin and item/user managers.
@@ -27,19 +27,19 @@ public class AccountFreezer {
      */
     public AccountFreezer(AdminUser user, ItemManager im, UserManager um) {
         currentAdmin = user;
-        this.im = im;
-        this.um = um;
+        itemManager = im;
+        userManager = um;
 
         SystemPresenter sp = new SystemPresenter();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         String input;
-        List<String> usernames = um.getUsernamesToFreeze();
+        List<String> usernames = userManager.getUsernamesToFreeze();
         List<NormalUser> users = new ArrayList<>();
 
         sp.accountFreezer(usernames);
         for (String username : usernames) {
-            users.add(um.getNormalByUsername(username));
+            users.add(userManager.getNormalByUsername(username));
         }
 
         if (!usernames.isEmpty()) {
@@ -54,7 +54,7 @@ public class AccountFreezer {
                     for (NormalUser u : users) {
                         u.freeze();
                     }
-                    um.clearUsernamesToFreeze();
+                    userManager.clearUsernamesToFreeze();
                 }
             } catch (IOException e) {
                 sp.exceptionMessage();
@@ -64,7 +64,7 @@ public class AccountFreezer {
     }
 
     private void close() {
-        new AdminDashboard(currentAdmin, im, um);
+        new AdminDashboard(currentAdmin, itemManager, userManager);
     }
 
 }

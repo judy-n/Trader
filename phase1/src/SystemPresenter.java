@@ -637,8 +637,7 @@ public class SystemPresenter {
                         "\n 2. Confirm this trade's current meeting time and place" +
                         "\n 3. Confirm the latest meeting took place" +
                         "\n 4. Cancel this trade" +
-                        "\n 5. Quit");
-                System.out.print(choicePrompt);
+                        "\n 5. Quit" + choicePrompt);
                 break;
             case 2:
                 System.out.println("\nThis trade has been cancelled!");
@@ -861,14 +860,14 @@ public class SystemPresenter {
     }
 
     /**
-     * Presnets that a new admin has been created
+     * Presents that a new admin has been created.
      */
     public void adminCreator() {
         System.out.println("\n New admin created!");
     }
 
     /**
-     * presents an admin user's ID
+     * Presents an admin user's ID
      * @param user The AdminUser
      */
     public void showAdminID(AdminUser user) {
