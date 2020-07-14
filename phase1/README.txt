@@ -27,9 +27,9 @@ Our program uses a text UI so all navigation of the program will be through typi
     + emails must contain '@' and '.'
     + passwords must be 6-20 characters long
 
-- the 'log out' option on both the normal and admin dashboard will close the program (stop its execution)
+- the 'log out' option on both the normal and admin dashboard will bring you back to the start menu, where you can then exit the program (or sign up or log in)
 
--------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 When logged in as a normal user, the following apply:
 
@@ -78,7 +78,7 @@ When logged in as a normal user, the following apply:
 - at the end of a permanent trade, the item you lent (if you lent one) will automatically be removed from your inventory
     and if you have your trade partner's item in your wishlist, it will also be removed
 
--------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 When logged in as an admin, the following apply:
 
@@ -87,16 +87,3 @@ When logged in as an admin, the following apply:
 - when viewing requests to be unfrozen, you can either accept a request or leave it there
 
 - upon choosing the 'edit a user's threshold values' option, you must enter the username of the normal user whose thresholds you wish to change
-
-
-
-------things i think u should add lol------
-
-- ehh maybe that if u dont log out correctly and the system prints IO exception delete the .sers and restart (Idk if this is still a problem ahh maybe last resort type thing)
-^^^ ahhh idk if it still happens either ^^^
-
-- also that log out means close the system lol (maybe i can add the actual log out thing tmr)
-^^^ added that point, lmk if you implement that or change the point yourself (in the section right after init admin login details)
-
-GJ!!!!!! pat pat u worked hard
-> u too bb !! T^T
