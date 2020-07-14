@@ -78,9 +78,9 @@ public class InventoryEditor {
                     confirmInput = br.readLine();
                 }
                 if (confirmInput.equalsIgnoreCase("Y")) {
-                    Item requestedItem = new Item(itemNameInput, itemDescriptionInput, currentUser.getUsername());
-                    currentUser.addPendingInventory(requestedItem.getID());
-                    itemManager.addPendingItem(requestedItem);
+                    long newItemID = itemManager.createItem(itemNameInput, itemDescriptionInput, currentUser.getUsername());
+                    currentUser.addPendingInventory(newItemID);
+
                     sp.inventoryAddItem(4);
                 } else {
                     sp.cancelled();

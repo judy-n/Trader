@@ -7,36 +7,35 @@ public class ItemManagerTest {
 
     NormalUser User1 = new NormalUser("Ackle", "ackle@gmail.com", "gol");
     ItemManager im = new ItemManager();
-    UserManager um = new UserManager();
-    TradeManager tm = new TradeManager();
 
     @Test
     public void testAddToPendingInventory(){
-        Item requestedItem = new Item("book", "A book", "Ackle");
-        User1.addPendingInventory(requestedItem.getID());
-        im.addPendingItem(requestedItem);
-        assert User1.getPendingInventory().contains(requestedItem.getID());
-        assert im.getPendingItems().contains(requestedItem);
+        long newItemID = im.createItem("book", "A book", "Ackle");
+        User1.addPendingInventory(newItemID);
+        assert User1.getPendingInventory().contains(newItemID);
+        assert im.getPendingItems().contains(im.getPendingItem(newItemID));
     }
 
     @Test
     public void testApproveItems(){
-        Item requestedItem = new Item("book", "A book", "Ackle");
-        User1.addPendingInventory(requestedItem.getID());
-        im.addPendingItem(requestedItem);
-        im.approveItem(requestedItem);
+        long newItemID = im.createItem("book", "A book", "Ackle");
+        User1.addPendingInventory(newItemID);
+
+        Item newItem = im.getPendingItem(newItemID);
+        im.approveItem(newItem);
         assert im.getPendingItems().isEmpty();
-        assert im.getApprovedItems().contains(requestedItem);
-        User1.addInventory(requestedItem.getID());
-        assert User1.getInventory().contains(requestedItem.getID());
+        assert im.getApprovedItems().contains(newItem);
+        User1.addInventory(newItemID);
+        assert User1.getInventory().contains(newItemID);
     }
 
     @Test
     public void testRejectItems(){
-        Item requestedItem = new Item("book", "A book", "Ackle");
-        User1.addPendingInventory(requestedItem.getID());
-        im.addPendingItem(requestedItem);
-        im.rejectItem(requestedItem);
+        long newItemID = im.createItem("book", "A book", "Ackle");
+        User1.addPendingInventory(newItemID);
+
+        Item newItem = im.getPendingItem(newItemID);
+        im.rejectItem(newItem);
         assert im.getPendingItems().isEmpty();
         assert im.getApprovedItems().isEmpty();
         assert User1.getInventory().isEmpty();
@@ -44,9 +43,11 @@ public class ItemManagerTest {
 
     @Test
     public void testRemoveInventory() {
-        Item item = new Item("book", "A book", "Ackle");
-        User1.addInventory(item.getID());
-        User1.removeInventory(item.getID());
+        long newItemID = im.createItem("book", "A book", "Ackle");
+        User1.addPendingInventory(newItemID);
+
+        User1.addInventory(newItemID);
+        User1.removeInventory(newItemID);
         assert User1.getInventory().isEmpty();
     }
 

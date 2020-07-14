@@ -12,7 +12,7 @@ import java.util.List;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-12
+ * last modified 2020-07-13
  */
 public class ItemManager implements Serializable {
     private List<Item> approvedItems;
@@ -25,6 +25,21 @@ public class ItemManager implements Serializable {
     public ItemManager() {
         approvedItems = new ArrayList<>();
         pendingItems = new ArrayList<>();
+    }
+
+    /**
+     * Creates a new <Item></Item> with the given name and description,
+     * then adds it to the list of pending items.
+     *
+     * @param name the new item's name
+     * @param description the new item's description
+     * @param owner the username of the new item's owner
+     * @return the newly created <Item></Item>
+     */
+    public long createItem(String name, String description, String owner) {
+        Item newItem = new Item(name, description, owner);
+        pendingItems.add(newItem);
+        return newItem.getID();
     }
 
     /**
@@ -218,15 +233,6 @@ public class ItemManager implements Serializable {
             items.add(getPendingItem(l));
         }
         return items;
-    }
-
-    /**
-     * Adds the given item to the list of pending items.
-     *
-     * @param itemToAdd the item being added to the list of pending items
-     */
-    public void addPendingItem(Item itemToAdd) {
-        pendingItems.add(itemToAdd);
     }
 
     /**
