@@ -17,6 +17,8 @@ public class UserManager implements Serializable {
     private List<AdminUser> allAdmins;
     private List<String> usernamesToFreeze;
     private List<String> unfreezeRequests;
+    private List<String> notOnVacationRequests;
+    private List<String> usernamesToGoOnVacation;
 
     /**
      * Creates a <UserManager></UserManager>, setting all lists to empty by default.
@@ -381,4 +383,52 @@ public class UserManager implements Serializable {
     public void addUnfreezeRequest(String username) {
         unfreezeRequests.add(username);
     }
+
+
+    /**
+     * Returns usernames of all account that need to be put on vacation status
+     * @return getUsernamesOnVacation
+     */
+    public List<String> getUsernamesOnVacation(){
+        return usernamesToGoOnVacation;
+    }
+
+    /**
+     * Checks if user already sent a on vacation request.
+     *
+     * @param username the username of the user who's being checked
+     * @return true if the user already sent an on vacation request,
+     * else false
+     */
+    public boolean containsNotOnVacationRequest(String username) {
+        return notOnVacationRequests.contains(username);
+    }
+
+    /**
+     * Removes the given username from the list of not on vacation requests.
+     *
+     * @param username the username being removed from not on vacation requests
+     */
+    public void removeNotOnVacationRequest(String username) {
+        notOnVacationRequests.remove(username);
+    }
+
+    /**
+     * Adds the given username to the list of on vacation requests.
+     *
+     * @param username the username of the normal user requesting to be not on vacation
+     */
+    public void addNotOnVacationRequest(String username) {
+        notOnVacationRequests.add(username);
+    }
+
+    /**
+     * Returns the total number of unfreeze requests.
+     *
+     * @return the total number of unfreeze requests
+     */
+    public int getNumNotOnVacationRequest() {
+        return notOnVacationRequests.size();
+    }
+
 }
