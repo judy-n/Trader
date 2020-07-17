@@ -58,6 +58,7 @@ public class NormalUser extends User implements Serializable {
         wishlist = new ArrayList<>();
         tradeRequests = new HashMap<>();
         isFrozen = false;
+        isOnVacation = false;
     }
 
     /**
