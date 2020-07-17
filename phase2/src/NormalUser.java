@@ -22,7 +22,10 @@ public class NormalUser extends User implements Serializable {
     private List<Long> wishlist;
     private Map<String[], long[]> tradeRequests;
 
+    /*status on if the user is frozen*/
     private boolean isFrozen;
+
+    /*number of incomplete trades the user has*/
     private int numIncomplete;
 
     /* the maximum number of transactions this user can schedule in a week */
@@ -36,6 +39,9 @@ public class NormalUser extends User implements Serializable {
 
     /* the maximum number of incomplete trades this user can have before their account is at risk of being frozen */
     private int incompleteMax = 5;
+
+    /*status on if the user is on vacation*/
+    private boolean isOnVacation;
 
     /**
      * Creates a <NormalUser></NormalUser> with the given username, email, and password.
@@ -306,6 +312,29 @@ public class NormalUser extends User implements Serializable {
             }
         }
         return false;
+    }
+
+    /**
+     * Returns where the NormalUser is on Vacation or not.
+     *
+     * @return true if this user is on vacation, else false
+     */
+    public boolean getIsOnVacation() {
+        return isOnVacation;
+    }
+
+    /**
+     * Sets NormalUser's status to on Vacation
+     */
+    public void OonVacation() {
+        isOnVacation = true;
+    }
+
+    /**
+     * Sets NormalUser's status to not on Vacation
+     */
+    public void notOnVacation() {
+        isOnVacation = false;
     }
 }
 
