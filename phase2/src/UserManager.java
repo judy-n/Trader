@@ -12,7 +12,7 @@ import java.util.List;
  * @since 2020-06-26
  * last modified 2020-07-12
  */
-public class UserManager implements Serializable {
+public class UserManager extends Manager implements Serializable {
     private List<NormalUser> allNormals;
     private List<AdminUser> allAdmins;
     private List<String> usernamesToFreeze;
@@ -431,4 +431,4 @@ public class UserManager implements Serializable {
 //        return notOnVacationRequests.size();
     }
 
-}
+

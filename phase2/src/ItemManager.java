@@ -14,7 +14,7 @@ import java.util.List;
  * @since 2020-06-26
  * last modified 2020-07-13
  */
-public class ItemManager implements Serializable {
+public class ItemManager extends Manager implements Serializable {
     private List<Item> approvedItems;
     private List<Item> pendingItems;
 

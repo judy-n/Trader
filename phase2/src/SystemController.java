@@ -7,15 +7,14 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-14
+ * last modified 2020-07-17
  */
 public class SystemController {
-    private UserGateway ug;
-    private ItemGateway ig;
-    private TradeGateway tg;
     private UserManager userManager;
     private ItemManager itemManager;
     private TradeManager tradeManager;
+
+    private ReadWriter readWriter;
 
     private String userManagerPath = "src/usermanager.ser";
     private String itemManagerPath = "src/itemmanager.ser";
@@ -32,10 +31,7 @@ public class SystemController {
 
         sp = new SystemPresenter();
 
-        ug = new UserGateway();
-        ig = new ItemGateway();
-        tg = new TradeGateway();
-
+        readWriter = new ReadWriter();
         tryRead();
 
         tradeManager.cancelAllUnconfirmedTrades();
@@ -80,7 +76,7 @@ public class SystemController {
 
     private void tryRead() {
         try {
-            userManager = ug.readFromFile(userManagerPath);
+            userManager = (UserManager)readWriter.readFromFile(userManagerPath, 1);
         } catch (IOException e) {
             sp.exceptionMessage(1, "Reading", "UserManager");
         } catch (ClassNotFoundException e) {
@@ -88,7 +84,7 @@ public class SystemController {
         }
 
         try {
-            itemManager = ig.readFromFile(itemManagerPath);
+            itemManager = (ItemManager) readWriter.readFromFile(itemManagerPath, 2);
         } catch (IOException e) {
             sp.exceptionMessage(1, "Reading", "ItemManager");
         } catch (ClassNotFoundException e) {
@@ -96,7 +92,7 @@ public class SystemController {
         }
 
         try {
-            tradeManager = tg.readFromFile(tradeManagerPath);
+            tradeManager = (TradeManager) readWriter.readFromFile(tradeManagerPath, 3);
         } catch (IOException e) {
             sp.exceptionMessage(1, "Reading", "TradeManager");
         } catch (ClassNotFoundException e) {
@@ -106,19 +102,19 @@ public class SystemController {
 
     private void tryWrite() {
         try {
-            ug.saveToFile(userManagerPath, userManager);
+            readWriter.saveToFile(userManagerPath, userManager);
         } catch (IOException e) {
             sp.exceptionMessage(1, "Writing", "UserManager");
         }
 
         try {
-            ig.saveToFile(itemManagerPath, itemManager);
+            readWriter.saveToFile(itemManagerPath, itemManager);
         } catch (IOException e) {
             sp.exceptionMessage(1, "Writing", "ItemManager");
         }
 
         try {
-            tg.saveToFile(tradeManagerPath, tradeManager);
+            readWriter.saveToFile(tradeManagerPath, tradeManager);
         } catch (IOException e) {
             sp.exceptionMessage(1, "Writing", "TradeManager");
         }

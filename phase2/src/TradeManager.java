@@ -19,7 +19,7 @@ import java.util.Map;
  * @since 2020-06-26
  * last modified 2020-07-12
  */
-public class TradeManager implements Serializable {
+public class TradeManager extends Manager implements Serializable {
     private List<Trade> allTrades;
     private List<String> cancelledUsers;
 
