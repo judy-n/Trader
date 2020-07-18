@@ -63,6 +63,26 @@ public class NormalUser extends User implements Serializable {
     }
 
     /**
+     * Creates a <NormalUser></NormalUser> with the given username, email, and password, and homeCity
+     * Also initializes default empty inventory, wishlist, and tradeRequests, and account status non-frozen.
+     *
+     * @param username the username being assigned to this <NormalUser></NormalUser>
+     * @param email    the email address being assigned to this <NormalUser></NormalUser>
+     * @param password the password being assigned to this <NormalUser></NormalUser>
+     * @param homeCity the homeCity of this NormalUser
+     */
+    public NormalUser(String username, String email, String password, String homeCity) {
+        super(username, email, password);
+        inventory = new ArrayList<>();
+        pendingInventory = new ArrayList<>();
+        wishlist = new ArrayList<>();
+        tradeRequests = new HashMap<>();
+        isFrozen = false;
+        isOnVacation = false;
+        this.homeCity  = homeCity;
+    }
+
+    /**
      * Returns the number of times this user has requested to borrow an item from someone else.
      * Only counts requests that have yet to be accepted or rejected.
      *
