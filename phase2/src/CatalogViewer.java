@@ -46,7 +46,7 @@ public class CatalogViewer {
 
         systemPresenter.catalogViewer(itemManager.getApprovedItems(username));
 
-        int timesBorrowed = userManager.getNormalUserTimesBorrwed(username) + tradeManager.getTimesBorrowed(username);
+        int timesBorrowed = userManager.getNormalUserTimesBorrowed(username) + tradeManager.getTimesBorrowed(username);
         int timesLent = tradeManager.getTimesLent(username);
 
         systemPresenter.catalogViewer(1);
