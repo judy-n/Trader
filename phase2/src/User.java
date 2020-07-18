@@ -13,7 +13,6 @@ public abstract class User implements Serializable {
     private String username;
     private String email;
     private String password;
-    private String homeCity;
 
     /**
      * Creates a <User></User> with the given username, email, and password.
@@ -54,9 +53,4 @@ public abstract class User implements Serializable {
     public String getPassword() {
         return password;
     }
-
-    public String getHomeCity() {return homeCity;}
-
-    public void setHomeCity(String homeCity) {this.homeCity = homeCity;}
 }
-

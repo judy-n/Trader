@@ -21,6 +21,7 @@ public class NormalUser extends User implements Serializable {
     private List<Long> pendingInventory;
     private List<Long> wishlist;
     private Map<String[], long[]> tradeRequests;
+    private String homeCity;
 
     /*status on if the user is frozen*/
     private boolean isFrozen;
@@ -337,7 +338,14 @@ public class NormalUser extends User implements Serializable {
     public void notOnVacation() {
         isOnVacation = false;
     }
+
+    public String getHomeCity() {return homeCity;}
+
+    public void setHomeCity(String homeCity) {this.homeCity = homeCity;}
+
+
 }
+
 
 
 

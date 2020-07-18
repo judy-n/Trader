@@ -384,6 +384,17 @@ public class UserManager extends Manager implements Serializable {
         unfreezeRequests.add(username);
     }
 
+    /**
+     * Gets a user by a username (could be an admin user, or a user)
+     * @param username the user's username
+     * @return the User
+     */
+    public User getUserByUsername(String username) {
+        if (getNormalByUsername(username) != null) {
+            return getNormalByUsername(username);
+        } else return getAdminByUsername(username);
+    }
+
 
     /**
      * Returns usernames of all account that need to be put on vacation status
@@ -392,6 +403,11 @@ public class UserManager extends Manager implements Serializable {
     public List<String> getUsernamesOnVacation(){
         return usernamesToGoOnVacation;
     }
+
+    public void setNormalUserHomeCity(String username, String homeCity) {
+        getNormalByUsername(username).setHomeCity(homeCity);
+    }
+
 //
 //    /**
 //     * Checks if user already sent a on vacation request.
