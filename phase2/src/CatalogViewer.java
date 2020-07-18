@@ -20,8 +20,8 @@ public class CatalogViewer {
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
-    private SystemPresenter sp;
-    private BufferedReader br;
+    private SystemPresenter systemPresenter;
+    private BufferedReader bufferedReader;
     private String username;
     /**
      * Creates an <CatalogViewer></CatalogViewer> with the given normal user and item/user/trade managers.
@@ -39,22 +39,22 @@ public class CatalogViewer {
         tradeManager = tm;
         username = user.getUsername();
 
-        sp = new SystemPresenter();
-        br = new BufferedReader(new InputStreamReader(System.in));
+        systemPresenter = new SystemPresenter();
+        bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         int maxIndex = itemManager.getNumApprovedItems(username);
 
-        sp.catalogViewer(itemManager.getApprovedItems(username));
+        systemPresenter.catalogViewer(itemManager.getApprovedItems(username));
 
         int timesBorrowed = userManager.getNormalUserTimesBorrwed(username) + tradeManager.getTimesBorrowed(username);
         int timesLent = tradeManager.getTimesLent(username);
 
-        sp.catalogViewer(1);
+        systemPresenter.catalogViewer(1);
         try {
-            String temp = br.readLine();
+            String temp = bufferedReader.readLine();
             while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > maxIndex) {
-                sp.invalidInput();
-                temp = br.readLine();
+                systemPresenter.invalidInput();
+                temp = bufferedReader.readLine();
             }
             int input = Integer.parseInt(temp);
             if (input != 0) {
@@ -63,23 +63,23 @@ public class CatalogViewer {
                 assert selectedItem != null;
                 long itemID = selectedItem.getID();
 
-                sp.catalogViewer(selectedItem, 1);
+                systemPresenter.catalogViewer(selectedItem, 1);
 
-                String temp2 = br.readLine();
+                String temp2 = bufferedReader.readLine();
                 while (!temp2.matches("[0-2]")) {
-                    sp.invalidInput();
-                    temp2 = br.readLine();
+                    systemPresenter.invalidInput();
+                    temp2 = bufferedReader.readLine();
                 }
                 int tradeOrWishlist = Integer.parseInt(temp2);
 
                 if (tradeOrWishlist == 1 && !selectedItem.getAvailability()) {
-                    sp.catalogViewer(3);
+                    systemPresenter.catalogViewer(3);
 
                     //option to add unavailable item to wishlist
-                    String confirmInput = br.readLine();
+                    String confirmInput = bufferedReader.readLine();
                     while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
-                        sp.invalidInput();
-                        confirmInput = br.readLine();
+                        systemPresenter.invalidInput();
+                        confirmInput = bufferedReader.readLine();
                     }
 
                     if (confirmInput.equalsIgnoreCase("Y")) {
@@ -88,11 +88,11 @@ public class CatalogViewer {
 
                 } else if (tradeOrWishlist == 1) {
                     if (currentUser.getIsFrozen()) {
-                        sp.catalogViewer(2);
+                        systemPresenter.catalogViewer(2);
                     } else if (userManager.isRequestedInTrade(username, itemID)) {
-                        sp.catalogViewer(6);
+                        systemPresenter.catalogViewer(6);
                     } else if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < currentUser.getLendMinimum())) {
-                        sp.catalogViewer(currentUser);
+                        systemPresenter.catalogViewer(currentUser);
                     } else {
                         startTradeAttempt(selectedItem);
                     }
@@ -100,25 +100,25 @@ public class CatalogViewer {
 
                 if (tradeOrWishlist == 2 && !currentUser.getWishlist().contains(itemID)) {
                     currentUser.addWishlist(itemID);
-                    sp.catalogViewer(4);
+                    systemPresenter.catalogViewer(4);
                 } else if (tradeOrWishlist == 2 && currentUser.getWishlist().contains(itemID)) {
-                    sp.catalogViewer(5);
+                    systemPresenter.catalogViewer(5);
                 }
             }
         } catch (IOException e) {
-            sp.exceptionMessage();
+            systemPresenter.exceptionMessage();
         }
         close();
     }
 
     private void startTradeAttempt(Item selectedItem) throws IOException {
 
-        sp.catalogViewer(selectedItem, 2);
+        systemPresenter.catalogViewer(selectedItem, 2);
 
-        String inputConfirm = br.readLine();
+        String inputConfirm = bufferedReader.readLine();
         while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-            sp.invalidInput();
-            inputConfirm = br.readLine();
+            systemPresenter.invalidInput();
+            inputConfirm = bufferedReader.readLine();
         }
         if (inputConfirm.equalsIgnoreCase("Y")) {
 
@@ -132,10 +132,10 @@ public class CatalogViewer {
                 currentUser.addWishlist(selectedItem.getID());
             }
 
-            sp.catalogViewer(selectedItem, 3);
+            systemPresenter.catalogViewer(selectedItem, 3);
 
         } else {
-            sp.cancelled();
+            systemPresenter.cancelled();
         }
     }
 
