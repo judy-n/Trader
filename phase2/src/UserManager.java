@@ -420,7 +420,12 @@ public class UserManager extends Manager implements Serializable {
      */
     public String getNormalUserHomeCity(String username) {return getNormalByUsername(username).getHomeCity();}
 
-    public int getNormalUserTimesBorrwed(String username) {return getNormalByUsername(username).getTimesBorrowed();}
+    /**
+     * Getter for a Normal User's number of times borrowed
+     * @param username the username of the Normal User
+     * @return the number of times they borrowed
+     */
+    public int getNormalUserTimesBorrowed(String username) {return getNormalByUsername(username).getTimesBorrowed();}
 
     public boolean isRequestedInTrade(String username, long id) {
         return getNormalByUsername(username).isRequestedInTrade(id);
