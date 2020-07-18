@@ -404,10 +404,21 @@ public class UserManager extends Manager implements Serializable {
         return usernamesToGoOnVacation;
     }
 
+    /**
+     * Setter for the HomeCity of the NormalUser with the given username
+     * @param username the username
+     * @param homeCity the homecity
+     */
     public void setNormalUserHomeCity(String username, String homeCity) {
         getNormalByUsername(username).setHomeCity(homeCity);
     }
 
+    /**
+     * Getter for the HomeCity of the NormalUser with the given Username
+     * @param username the username
+     * @return that user's homeCity
+     */
+    public String getNormalUserHomeCity(String username) {return getNormalByUsername(username).getHomeCity();}
 //
 //    /**
 //     * Checks if user already sent a on vacation request.
