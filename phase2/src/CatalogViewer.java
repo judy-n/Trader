@@ -44,7 +44,7 @@ public class CatalogViewer {
 
         int maxIndex = itemManager.getNumApprovedItems(username);
 
-        systemPresenter.catalogViewer(itemManager.getApprovedItems(username));
+        systemPresenter.catalogViewer(itemManager.getApprovedItems(username), userManager);
 
         int timesBorrowed = userManager.getNormalUserTimesBorrowed(username) + tradeManager.getTimesBorrowed(username);
         int timesLent = tradeManager.getTimesLent(username);
