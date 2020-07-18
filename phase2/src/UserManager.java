@@ -43,6 +43,19 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
+     * Creates a new <NormalUser></NormalUser> with given username, email, and password,
+     * then adds it to the list of all normal users.
+     *
+     * @param username the new user's username
+     * @param email the new user's email
+     * @param password the new user's password
+     * @param homeCity the new user's homeCity
+     */
+    public void createNormalUser(String username, String email, String password, String homeCity) {
+        allNormals.add(new NormalUser(username, email, password));
+    }
+
+    /**
      * Creates a new <AdminUser></AdminUser> with given username, email, and password,
      * then adds it to the list of all admins.
      *
