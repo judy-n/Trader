@@ -328,7 +328,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Sets NormalUser's status to on Vacation
      */
-    public void OonVacation() {
+    public void onVacation() {
         isOnVacation = true;
     }
 
@@ -339,8 +339,16 @@ public class NormalUser extends User implements Serializable {
         isOnVacation = false;
     }
 
+    /**
+     * Getter for this user's homecity
+     * @return this user's homecity
+     */
     public String getHomeCity() {return homeCity;}
 
+    /**
+     * Setter for the homecity of NormalUser
+     * @param homeCity the home city
+     */
     public void setHomeCity(String homeCity) {this.homeCity = homeCity;}
 
 
