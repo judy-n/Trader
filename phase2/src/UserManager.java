@@ -427,6 +427,12 @@ public class UserManager extends Manager implements Serializable {
      */
     public int getNormalUserTimesBorrowed(String username) {return getNormalByUsername(username).getTimesBorrowed();}
 
+    /**
+     * Getter for if a normal user is requested in trade based on the item's id and the user's username
+     * @param username the Normal User's username
+     * @param id the item id
+     * @return true iff the item is requested in trade
+     */
     public boolean isRequestedInTrade(String username, long id) {
         return getNormalByUsername(username).isRequestedInTrade(id);
     }
