@@ -304,6 +304,16 @@ public class SystemPresenter {
     }
 
     /**
+     * Prints the available approved items that can be borrowed from the marketplace
+     *
+     * @param approvedItems the approved items
+     */
+    public void catalogViewer(List<Item> approvedItems, UserManager userManager) {
+        System.out.println("\nThese are all the items available for trade:");
+        presenterAllItems(approvedItems, userManager);
+    }
+
+    /**
      * Tells a user that they are borrowing more than their threshold
      *
      * @param user the user to be notified
@@ -410,7 +420,21 @@ public class SystemPresenter {
         } else {
             int index = 1;
             for (Item i : items) {
-                System.out.println(index + ". " + i);
+                System.out.println(index + ". " + i + " by " + i.getOwnerUsername());
+                index++;
+            }
+        }
+    }
+
+    private void presenterAllItems(List<Item> items, UserManager userManager) {
+        if (items.isEmpty()) {
+            emptyListMessage();
+        } else {
+            int index = 1;
+            for (Item i : items) {
+                String ownerUsername = i.getOwnerUsername();
+                String homeCity = userManager.getNormalUserHomeCity(ownerUsername);
+                System.out.println(index + ". " + i + " by " + ownerUsername + ' ' + homeCity);
                 index++;
             }
         }
