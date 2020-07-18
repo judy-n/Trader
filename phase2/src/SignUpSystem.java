@@ -124,7 +124,7 @@ public class SignUpSystem {
     private void homeCityInputProcess(BufferedReader bufferedReader) {
         systemPresenter.signUpSystem(13);
         try {
-            String homeCity = bufferedReader.readLine();
+             this.homeCity = bufferedReader.readLine();
         } catch (IOException e) {
             systemPresenter.exceptionMessage();
         }
