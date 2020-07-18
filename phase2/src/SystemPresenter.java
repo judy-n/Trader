@@ -78,6 +78,9 @@ public class SystemPresenter {
             case 12:
                 System.out.println("\n--- New Admin ---");
                 break;
+            case 13:
+                System.out.println("\nPlease enter a Home City");
+                break;
         }
     }
 
