@@ -15,6 +15,7 @@ public class SignUpSystem {
     private String username;
     private String email;
     private String password;
+    private String homeCity;
     private UserManager userManager;
     private SystemPresenter systemPresenter;
 
@@ -95,6 +96,7 @@ public class SignUpSystem {
         } catch (IOException e) {
             systemPresenter.exceptionMessage();
         }
+        homeCityInputProcess(br);
     }
 
     /**
@@ -106,6 +108,7 @@ public class SignUpSystem {
         systemPresenter.signUpSystem(0);
         inputProcess();
         userManager.createNormalUser(username, email, password);
+        userManager.getNormalByUsername(username).setHomeCity(homeCity);
         systemPresenter.signUpSystem(11);
         return userManager.getNormalByUsername(username);
     }
@@ -118,4 +121,14 @@ public class SignUpSystem {
         inputProcess();
         userManager.createAdminUser(username, email, password);
     }
+
+    private void homeCityInputProcess(BufferedReader bufferedReader) {
+        systemPresenter.signUpSystem(13);
+        try {
+            String homeCity = bufferedReader.readLine();
+        } catch (IOException e) {
+            systemPresenter.exceptionMessage();
+        }
+    }
+
 }
