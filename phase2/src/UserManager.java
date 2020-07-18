@@ -52,7 +52,7 @@ public class UserManager extends Manager implements Serializable {
      * @param homeCity the new user's homeCity
      */
     public void createNormalUser(String username, String email, String password, String homeCity) {
-        allNormals.add(new NormalUser(username, email, password));
+        allNormals.add(new NormalUser(username, email, password, homeCity));
     }
 
     /**
