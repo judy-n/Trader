@@ -16,7 +16,7 @@ public class SignUpSystem {
     private String email;
     private String password;
     private UserManager userManager;
-    private SystemPresenter sp;
+    private SystemPresenter systemPresenter;
 
     /**
      * Creates a <SignUpSystem></SignUpSystem> with the given user manager.
@@ -25,17 +25,17 @@ public class SignUpSystem {
      */
     public SignUpSystem(UserManager um) {
         userManager = um;
-        sp = new SystemPresenter();
+        systemPresenter = new SystemPresenter();
     }
 
     /*
      * Allows a new user to be created through user input.
      * Runs checks to ensure that usernames and emails are unique, and that login credentials
-     * follow certain rules (e.g. no spaces, at least x characters long, etc).
+     * follow certain rules (e.g. no systemPresenteraces, at least x characters long, etc).
      */
     private void inputProcess() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        sp.signUpSystem(1);
+        systemPresenter.signUpSystem(1);
         try {
             String emailInput = br.readLine();
             boolean invalidInput;
@@ -43,20 +43,20 @@ public class SignUpSystem {
                 invalidInput = false;
                 if (userManager.emailExists(emailInput)) {
                     invalidInput = true;
-                    sp.signUpSystem(2);
+                    systemPresenter.signUpSystem(2);
                     emailInput = br.readLine();
                 } else if (!(emailInput.contains("@") && emailInput.contains(".")) || emailInput.contains(" ")) {
                     invalidInput = true;
-                    sp.signUpSystem(3);
+                    systemPresenter.signUpSystem(3);
                     emailInput = br.readLine();
                 }
             } while (invalidInput);
             email = emailInput;
         } catch (IOException e) {
-            sp.exceptionMessage();
+            systemPresenter.exceptionMessage();
         }
 
-        sp.signUpSystem(4);
+        systemPresenter.signUpSystem(4);
         try {
             String usernameInput = br.readLine();
             boolean invalidInput;
@@ -64,36 +64,36 @@ public class SignUpSystem {
                 invalidInput = false;
                 if (userManager.usernameExists(usernameInput)) {
                     invalidInput = true;
-                    sp.signUpSystem(5);
+                    systemPresenter.signUpSystem(5);
                     usernameInput = br.readLine();
                 } else if (usernameInput.isEmpty() || usernameInput.contains(" ") || usernameInput.length() < 3) {
                     invalidInput = true;
-                    sp.signUpSystem(6);
+                    systemPresenter.signUpSystem(6);
                     usernameInput = br.readLine();
                 }
             } while (invalidInput);
             username = usernameInput;
         } catch (IOException e) {
-            sp.exceptionMessage();
+            systemPresenter.exceptionMessage();
         }
 
-        sp.signUpSystem(7);
+        systemPresenter.signUpSystem(7);
         try {
             String pwInput1 = br.readLine();
             while (pwInput1.isEmpty() || pwInput1.contains(" ") ||
                     pwInput1.length() < 6 || pwInput1.length() > 20) {
-                sp.signUpSystem(8);
+                systemPresenter.signUpSystem(8);
                 pwInput1 = br.readLine();
             }
-            sp.signUpSystem(9);
+            systemPresenter.signUpSystem(9);
             String pwInput2 = br.readLine();
             while (!pwInput2.equals(pwInput1)) {
-                sp.signUpSystem(10);
+                systemPresenter.signUpSystem(10);
                 pwInput2 = br.readLine();
             }
             password = pwInput1;
         } catch (IOException e) {
-            sp.exceptionMessage();
+            systemPresenter.exceptionMessage();
         }
     }
 
@@ -103,10 +103,10 @@ public class SignUpSystem {
      * @return the normal user that was just created
      */
     public NormalUser createNewNormal() {
-        sp.signUpSystem(0);
+        systemPresenter.signUpSystem(0);
         inputProcess();
         userManager.createNormalUser(username, email, password);
-        sp.signUpSystem(11);
+        systemPresenter.signUpSystem(11);
         return userManager.getNormalByUsername(username);
     }
 
@@ -114,7 +114,7 @@ public class SignUpSystem {
      * Creates a new <AdminUser></AdminUser> based on input from <inputProcess()></inputProcess()>.
      */
     public void createNewAdmin() {
-        sp.signUpSystem(12);
+        systemPresenter.signUpSystem(12);
         inputProcess();
         userManager.createAdminUser(username, email, password);
     }
