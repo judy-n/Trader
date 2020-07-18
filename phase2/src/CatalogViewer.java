@@ -1,3 +1,5 @@
+import com.sun.org.apache.xml.internal.resolver.Catalog;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,7 +22,7 @@ public class CatalogViewer {
     private TradeManager tradeManager;
     private SystemPresenter sp;
     private BufferedReader br;
-
+    private String username;
     /**
      * Creates an <CatalogViewer></CatalogViewer> with the given normal user and item/user/trade managers.
      * Displays all items available for trade (excluding the current user's items).
@@ -35,16 +37,17 @@ public class CatalogViewer {
         itemManager = im;
         userManager = um;
         tradeManager = tm;
+        username = user.getUsername();
 
         sp = new SystemPresenter();
         br = new BufferedReader(new InputStreamReader(System.in));
 
-        int maxIndex = itemManager.getNumApprovedItems(currentUser.getUsername());
+        int maxIndex = itemManager.getNumApprovedItems(username);
 
-        sp.catalogViewer(itemManager.getApprovedItems(currentUser.getUsername()));
+        sp.catalogViewer(itemManager.getApprovedItems(username));
 
-        int timesBorrowed = currentUser.getTimesBorrowed() + tradeManager.getTimesBorrowed(currentUser.getUsername());
-        int timesLent = tradeManager.getTimesLent(currentUser.getUsername());
+        int timesBorrowed = userManager.getNormalUserTimesBorrwed(username) + tradeManager.getTimesBorrowed(username);
+        int timesLent = tradeManager.getTimesLent(username);
 
         sp.catalogViewer(1);
         try {
@@ -55,8 +58,10 @@ public class CatalogViewer {
             }
             int input = Integer.parseInt(temp);
             if (input != 0) {
-                Item selectedItem = itemManager.getApprovedItem(currentUser.getUsername(), input - 1);
+                Item selectedItem = itemManager.getApprovedItem(username, input - 1);
+
                 assert selectedItem != null;
+                long itemID = selectedItem.getID();
 
                 sp.catalogViewer(selectedItem, 1);
 
@@ -84,7 +89,7 @@ public class CatalogViewer {
                 } else if (tradeOrWishlist == 1) {
                     if (currentUser.getIsFrozen()) {
                         sp.catalogViewer(2);
-                    } else if (currentUser.isRequestedInTrade(selectedItem.getID())) {
+                    } else if (userManager.isRequestedInTrade(username, itemID)) {
                         sp.catalogViewer(6);
                     } else if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < currentUser.getLendMinimum())) {
                         sp.catalogViewer(currentUser);
@@ -93,10 +98,10 @@ public class CatalogViewer {
                     }
                 }
 
-                if (tradeOrWishlist == 2 && !currentUser.getWishlist().contains(selectedItem.getID())) {
-                    currentUser.addWishlist(selectedItem.getID());
+                if (tradeOrWishlist == 2 && !currentUser.getWishlist().contains(itemID)) {
+                    currentUser.addWishlist(itemID);
                     sp.catalogViewer(4);
-                } else if (tradeOrWishlist == 2 && currentUser.getWishlist().contains(selectedItem.getID())) {
+                } else if (tradeOrWishlist == 2 && currentUser.getWishlist().contains(itemID)) {
                     sp.catalogViewer(5);
                 }
             }
@@ -119,7 +124,7 @@ public class CatalogViewer {
 
             NormalUser trader = userManager.getNormalByUsername(selectedItem.getOwnerUsername());
             assert trader != null;
-            String[] traders = {currentUser.getUsername(), trader.getUsername()};
+            String[] traders = {username, trader.getUsername()};
             long[] items = {0, selectedItem.getID()};
             trader.addTradeRequest(traders, items);
             currentUser.addTradeRequest(traders, items);
@@ -132,6 +137,17 @@ public class CatalogViewer {
         } else {
             sp.cancelled();
         }
+    }
+
+    /**
+     * Creates a catalog viewer for the given username's associated user
+     * @param username the username
+     * @param im the item manager
+     * @param um the user manager
+     * @param tm the trade manager
+     */
+    public CatalogViewer(String username, ItemManager im, UserManager um, TradeManager tm) {
+        new CatalogViewer(um.getNormalByUsername(username), im, um, tm);
     }
 
     private void close() {

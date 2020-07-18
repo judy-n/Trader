@@ -251,6 +251,17 @@ public class OngoingTradesViewer {
         close();
     }
 
+    /**
+     * Constructs an OngoingTradesViewer based on username rather than user (PLEASE USE THIS ONE INSTEAD)
+     * @param currentUsername the username of the current user
+     * @param im the item manager
+     * @param um the user manager
+     * @param tm the trade manager
+     */
+    public OngoingTradesViewer(String currentUsername, ItemManager im, UserManager um, TradeManager tm) {
+        new OngoingTradesViewer(um.getNormalByUsername(currentUsername), im, um, tm);
+    }
+
     private void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
     }

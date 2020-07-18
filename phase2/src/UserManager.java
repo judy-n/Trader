@@ -419,6 +419,14 @@ public class UserManager extends Manager implements Serializable {
      * @return that user's homeCity
      */
     public String getNormalUserHomeCity(String username) {return getNormalByUsername(username).getHomeCity();}
+
+    public int getNormalUserTimesBorrwed(String username) {return getNormalByUsername(username).getTimesBorrowed();}
+
+    public boolean isRequestedInTrade(String username, long id) {
+        return getNormalByUsername(username).isRequestedInTrade(id);
+    }
+
+
 //
 //    /**
 //     * Checks if user already sent a on vacation request.
