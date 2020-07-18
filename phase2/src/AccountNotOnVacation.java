@@ -34,19 +34,19 @@ public class AccountNotOnVacation {
         tradeManager = tm;
 
         sp = new SystemPresenter();
-        requestNotOnVacation((NormalUser) currentUser);
+        // requestNotOnVacation((NormalUser) currentUser);
         closeNormal();
     }
 
     // Sends a request to be not on Vacation.
-    private void requestNotOnVacation (NormalUser currentUser) {
-        if (userManager.containsNotOnVacationRequest(currentUser.getUsername())) {
-            sp.requestNotOnVacation(1);
-        } else {
-            userManager.addNotOnVacationRequest(currentUser.getUsername());
-            sp.requestNotOnVacation(2);
-        }
-    }
+//    private void requestNotOnVacation (NormalUser currentUser) {
+//        if (userManager.containsNotOnVacationRequest(currentUser.getUsername())) {
+//            sp.requestNotOnVacation(1);
+//        } else {
+//            userManager.addNotOnVacationRequest(currentUser.getUsername());
+//            sp.requestNotOnVacation(2);
+//        }
+//    }
 
     // closes normally as done by non admin
     private void closeNormal() {
