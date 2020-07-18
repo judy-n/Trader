@@ -107,8 +107,7 @@ public class SignUpSystem {
     public NormalUser createNewNormal() {
         systemPresenter.signUpSystem(0);
         inputProcess();
-        userManager.createNormalUser(username, email, password);
-        userManager.getNormalByUsername(username).setHomeCity(homeCity);
+        userManager.createNormalUser(username, email, password, homeCity);
         systemPresenter.signUpSystem(11);
         return userManager.getNormalByUsername(username);
     }
