@@ -949,6 +949,31 @@ public class SystemPresenter {
             emptyListMessage();
         }
     }
+
+    /**
+     * presents string for when all users in list are not on vacation
+     */
+    public void accountsNotOnVacation(){
+        System.out.println("All accounts not on vacation!");
+    }
+
+    /**
+     * Presents vacation accounts' command options
+     * @param usernames usernames of users not on vacation
+     */
+    public void accountsNotOnVacation(List<String> usernames) {
+        System.out.println("\nThese are the users that are not on vacation:");
+        int i = 1;
+
+        for (String username : usernames) {
+            System.out.println(i + ". " + username);
+            i++;
+        }
+
+        if (usernames.isEmpty()) {
+            emptyListMessage();
+        }
+    }
 //
 //    /**
 //     * Presents output for requesting not on vacation status

@@ -13,22 +13,25 @@ import java.io.InputStreamReader;
  * last modified 2020-07-19
  */
 public class AccountOnVacation {
-    private AdminUser currentAdmin;
+    private NormalUser currentAdmin;
     private ItemManager im;
     private UserManager um;
+    private TradeManager tm;
 
     /**
      * Creates an instance of AccountOnVacation that sets a certain
      * user's status to on Vacation
      *
-     * @param user the admin user
+     * @param user the normal user
      * @param im   the system's item manager
      * @param um   the system's user manager
+     * @param tm   the system's trade manager
      */
-    public AccountOnVacation(AdminUser user, ItemManager im, UserManager um) {
+    public AccountOnVacation(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
         currentAdmin = user;
         this.im = im;
         this.um = um;
+        this.tm = tm;
 
         List<String> usernames = um.getUsernamesOnVacation();
         List<NormalUser> users = new ArrayList<>();

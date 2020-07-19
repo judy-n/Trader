@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-13
+ * last modified 2020-07-19
  */
 public class NormalUser extends User implements Serializable {
     private List<Long> inventory;
