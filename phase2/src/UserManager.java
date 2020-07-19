@@ -36,7 +36,7 @@ public class UserManager extends Manager implements Serializable {
      * then adds it to the list of all normal users.
      *
      * @param username the new user's username
-     * @param email the new user's email
+     * @param email    the new user's email
      * @param password the new user's password
      */
     public void createNormalUser(String username, String email, String password) {
@@ -48,7 +48,7 @@ public class UserManager extends Manager implements Serializable {
      * then adds it to the list of all normal users.
      *
      * @param username the new user's username
-     * @param email the new user's email
+     * @param email    the new user's email
      * @param password the new user's password
      * @param homeCity the new user's homeCity
      */
@@ -61,7 +61,7 @@ public class UserManager extends Manager implements Serializable {
      * then adds it to the list of all admins.
      *
      * @param username the new user's username
-     * @param email the new user's email
+     * @param email    the new user's email
      * @param password the new user's password
      */
     public void createAdminUser(String username, String email, String password) {
@@ -400,6 +400,7 @@ public class UserManager extends Manager implements Serializable {
 
     /**
      * Gets a user by a username (could be an admin user, or a user)
+     *
      * @param username the user's username
      * @return the User
      */
@@ -414,7 +415,9 @@ public class UserManager extends Manager implements Serializable {
      *
      * @param username the username of a user on vacation
      */
-    public void addUsernamesOnVacation(String username) { usernamesOnVacation.add(username); }
+    public void addUsernamesOnVacation(String username) {
+        usernamesOnVacation.add(username);
+    }
 
     /**
      * Clears the list of usernames that are on vacation.
@@ -425,14 +428,16 @@ public class UserManager extends Manager implements Serializable {
 
     /**
      * Returns usernames of all account that are on vacation.
+     *
      * @return usernamesOnVacation
      */
-    public List<String> getUsernamesOnVacation(){
+    public List<String> getUsernamesOnVacation() {
         return usernamesOnVacation;
     }
 
     /**
      * Setter for the HomeCity of the NormalUser with the given username
+     *
      * @param username the username
      * @param homeCity the homecity
      */
@@ -442,22 +447,29 @@ public class UserManager extends Manager implements Serializable {
 
     /**
      * Getter for the HomeCity of the NormalUser with the given Username
+     *
      * @param username the username
      * @return that user's homeCity
      */
-    public String getNormalUserHomeCity(String username) {return getNormalByUsername(username).getHomeCity();}
+    public String getNormalUserHomeCity(String username) {
+        return getNormalByUsername(username).getHomeCity();
+    }
 
     /**
      * Getter for a Normal User's number of times borrowed
+     *
      * @param username the username of the Normal User
      * @return the number of times they borrowed
      */
-    public int getNormalUserTimesBorrowed(String username) {return getNormalByUsername(username).getTimesBorrowed();}
+    public int getNormalUserTimesBorrowed(String username) {
+        return getNormalByUsername(username).getTimesBorrowed();
+    }
 
     /**
      * Getter for if a normal user is requested in trade based on the item's id and the user's username
+     *
      * @param username the Normal User's username
-     * @param id the item id
+     * @param id       the item id
      * @return true iff the item is requested in trade
      */
     public boolean isRequestedInTrade(String username, long id) {
@@ -502,6 +514,6 @@ public class UserManager extends Manager implements Serializable {
 //     */
 //    public int getNumNotOnVacationRequest() {
 //        return notOnVacationRequests.size();
-    }
+}
 
 
