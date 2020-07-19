@@ -11,7 +11,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-12
+ * last modified 2020-07-19
  */
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
@@ -973,6 +973,17 @@ public class SystemPresenter {
         if (usernames.isEmpty()) {
             emptyListMessage();
         }
+    }
+
+    /**
+     * Presents the demo dashboard.
+     */
+    public void demoDashboard(){
+        System.out.println(("\nWhat would you like to do:" +
+                "\n 1 - see all items available for trade" +
+                "\n 2 - create an account" +
+                "\n 0 - exit") + choicePrompt);
+
     }
 //
 //    /**
