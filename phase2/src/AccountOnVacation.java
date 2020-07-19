@@ -55,7 +55,7 @@ public class AccountOnVacation {
                     for (NormalUser u : users) {
                         u.onVacation();
                     }
-                    um.clearUsernamesToFreeze();
+                    um.clearUsernamesOnVacation();
                 }
             }
             catch (IOException e) {

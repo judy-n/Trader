@@ -34,8 +34,17 @@ public class AccountNotOnVacation {
         tradeManager = tm;
 
         sp = new SystemPresenter();
-        // requestNotOnVacation((NormalUser) currentUser);
         closeNormal();
+    }
+
+    // closes normally as done by non admin
+    private void closeNormal() {
+        new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
+    }
+
+    // closed by an admin
+    private void closeAdmin() {
+        new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
     }
 
     // Sends a request to be not on Vacation.
@@ -47,14 +56,4 @@ public class AccountNotOnVacation {
 //            sp.requestNotOnVacation(2);
 //        }
 //    }
-
-    // closes normally as done by non admin
-    private void closeNormal() {
-        new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
-    }
-
-    // closed by an admin
-    private void closeAdmin() {
-        new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
-    }
 }
