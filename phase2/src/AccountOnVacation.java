@@ -54,7 +54,7 @@ public class AccountOnVacation {
 
                 if (input.equalsIgnoreCase("y")) {
                     for (NormalUser u : users) {
-                        u.freeze();
+                        u.onVacation();
                     }
                     um.clearUsernamesToFreeze();
                 }
