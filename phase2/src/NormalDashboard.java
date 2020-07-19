@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
  * @author Ning Zhang
  * @author Judy Naamani
  * @author Yingjia Liu
+ * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-06-26
  * last modified 2020-07-19
