@@ -70,6 +70,6 @@ public class AccountNotOnVacation {
 
     // closes normally as done by non-admin
     private void close() {
-        new NormalDashboard((NormalUser) currentUser, im, um, tm);
+        new NormalDashboard(currentUser, im, um, tm);
     }
 }
