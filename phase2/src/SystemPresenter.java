@@ -985,6 +985,19 @@ public class SystemPresenter {
                 "\n 0 - exit") + choicePrompt);
 
     }
+
+    public void demoCatalogViewer(int input){
+        switch (input) {
+            case 1:
+                System.out.print("\nIs there an item you would like to trade for or add to your wishlist?" +
+                        "\nPlease enter your choice here (0 to quit): ");
+                break;
+            case 2:
+                System.out.println("Trading is unavailable to non-registered users. Would you like to sign up? " +
+                        "The selected item will be added to your wish list (Y/N).");
+                break;
+        }
+    }
 //
 //    /**
 //     * Presents output for requesting not on vacation status
