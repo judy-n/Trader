@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
  * last modified 2020-07-19
  */
 public class AccountOnVacation {
-    private NormalUser currentAdmin;
+    private NormalUser currentUser;
     private ItemManager im;
     private UserManager um;
     private TradeManager tm;
@@ -28,7 +28,7 @@ public class AccountOnVacation {
      * @param tm   the system's trade manager
      */
     public AccountOnVacation(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
-        currentAdmin = user;
+        currentUser = user;
         this.im = im;
         this.um = um;
         this.tm = tm;
@@ -69,6 +69,6 @@ public class AccountOnVacation {
     }
 
     private void close() {
-        new AdminDashboard(currentAdmin, im, um);
+        new NormalDashboard(currentUser, im, um, tm);
     }
 }
