@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Displays a list of usernames that need to be put on
- * vacation status and lets admin user do so
+ * Displays a list of usernames that are on vacation.
  *
  * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-07-17
- * last modified 2020-07-17
+ * last modified 2020-07-19
  */
 public class AccountOnVacation {
     private AdminUser currentAdmin;

@@ -17,8 +17,7 @@ public class UserManager extends Manager implements Serializable {
     private List<AdminUser> allAdmins;
     private List<String> usernamesToFreeze;
     private List<String> unfreezeRequests;
-    private List<String> notOnVacationRequests;
-    private List<String> usernamesToGoOnVacation;
+    private List<String> usernamesOnVacation;
 
     /**
      * Creates a <UserManager></UserManager>, setting all lists to empty by default.
@@ -28,6 +27,7 @@ public class UserManager extends Manager implements Serializable {
         allAdmins = new ArrayList<>();
         usernamesToFreeze = new ArrayList<>();
         unfreezeRequests = new ArrayList<>();
+        usernamesOnVacation = new ArrayList<>();
     }
 
     /**
@@ -408,13 +408,26 @@ public class UserManager extends Manager implements Serializable {
         } else return getAdminByUsername(username);
     }
 
+    /**
+     * Adds the given username to the list of usernames on vacation.
+     *
+     * @param username the username of a user on vacation
+     */
+    public void addUsernamesOnVacation(String username) { usernamesOnVacation.add(username); }
 
     /**
-     * Returns usernames of all account that need to be put on vacation status
-     * @return getUsernamesOnVacation
+     * Clears the list of usernames that are on vacation.
+     */
+    public void clearUsernamesOnVacation() {
+        usernamesOnVacation.clear();
+    }
+
+    /**
+     * Returns usernames of all account that are on vacation.
+     * @return usernamesOnVacation
      */
     public List<String> getUsernamesOnVacation(){
-        return usernamesToGoOnVacation;
+        return usernamesOnVacation;
     }
 
     /**
