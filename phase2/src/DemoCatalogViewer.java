@@ -51,5 +51,8 @@ public class DemoCatalogViewer {
         } catch (IOException e) {
             systemPresenter.exceptionMessage();
         }
+        close();
     }
+    private void close() { new DemoDashboard(currentUser, itemManager, userManager, tradeManager); }
+
 }
