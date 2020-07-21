@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-19
- * last modified 2020-07-19
+ * last modified 2020-07-20
  */
 public class DemoCatalogViewer {
     private DemoUser currentUser;
@@ -29,25 +29,18 @@ public class DemoCatalogViewer {
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         systemPresenter.catalogViewer(itemManager.getApprovedItems());
-        systemPresenter.demoCatalogViewer(1);
-
-        int maxIndex = itemManager.getNumApprovedItems();
+        systemPresenter.demoCatalogViewer();
 
         try {
             String temp = bufferedReader.readLine();
-            while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > maxIndex) {
+            while (!temp.matches("[0-1]")){
                 systemPresenter.invalidInput();
                 temp = bufferedReader.readLine();
             }
             int input = Integer.parseInt(temp);
-            if (input != 0) {
-                Item selectedItem = itemManager.getApprovedItem(input - 1);
-
-                assert selectedItem != null;
-                long itemID = selectedItem.getID();
+            if (input == 1) {
+                new SystemController();
             }
-
-
         } catch (IOException e) {
             systemPresenter.exceptionMessage();
         }
