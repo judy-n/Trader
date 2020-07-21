@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
@@ -7,7 +8,7 @@ import java.io.InputStreamReader;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-19
- * last modified 2020-07-19
+ * last modified 2020-07-20
  */
 
 public class DemoDashboard {
@@ -37,14 +38,27 @@ public class DemoDashboard {
 
         sp.demoDashboard();
 
+        try {
+            String temp;
+            temp = br.readLine();
+            while (!temp.matches("[0-2]")) {
+                sp.invalidInput();
+                temp = br.readLine();
+            }
+            input = Integer.parseInt(temp);
+        } catch (IOException e) {
+            sp.exceptionMessage();
+        }
+
         switch (input) {
             case 0:
                 sp.exitProgram();
-                break;
+                System.exit(0);
             case 1:
-                sp.catalogViewer(itemManager.getApprovedItems());
-
-
+                new DemoCatalogViewer(currentUser, im, um, tm);
+                break;
+            case 2:
+                new SystemController();
         }
     }
 }
