@@ -11,7 +11,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-19
+ * last modified 2020-07-20
  */
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
@@ -24,7 +24,7 @@ public class SystemPresenter {
     public void startMenu(int input) {
         switch (input) {
             case 1:
-                System.out.print("\n----- WELCOME -----\n 1) Sign up \n 2) Log in \n 3) Exit the program" + choicePrompt);
+                System.out.print("\n----- WELCOME -----\n 1) Sign up \n 2) Log in \n 3) Sign in as guest \n 0) Exit the program" + choicePrompt);
                 break;
             case 2:
                 System.out.println("Exiting the program. Hope to see you again soon!");
@@ -986,18 +986,10 @@ public class SystemPresenter {
 
     }
 
-    public void demoCatalogViewer(int input){
-        switch (input) {
-            case 1:
-                System.out.print("\nIs there an item you would like to trade for or add to your wishlist?" +
-                        "\nPlease enter your choice here (0 to quit): ");
-                break;
-            case 2:
-                System.out.println("Trading is unavailable to non-registered users. Would you like to sign up? " +
-                        "The selected item will be added to your wish list (Y/N).");
-                break;
+    public void demoCatalogViewer(){
+        System.out.print("\nTrading is unavailable for non-registered users. Enter 1 to sign up, or 0 to quit.");
         }
-    }
+
 //
 //    /**
 //     * Presents output for requesting not on vacation status
