@@ -7,9 +7,10 @@ import java.io.InputStreamReader;
  *
  * @author Ning Zhang
  * @author Yingjia Liu
+ * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-12
+ * last modified 2020-07-20
  */
 public class StartMenu {
     private int userInput;
@@ -25,7 +26,7 @@ public class StartMenu {
         sp.startMenu(1);
         try {
             String temp = br.readLine();
-            while (!temp.matches("[1-3]")) {
+            while (!temp.matches("[0-3]")) {
                 sp.invalidInput();
                 temp = br.readLine();
             }
@@ -34,7 +35,7 @@ public class StartMenu {
             sp.exceptionMessage();
         }
 
-        if (userInput == 3) {
+        if (userInput == 0) {
             try {
                 br.close();
             } catch (IOException e) {
