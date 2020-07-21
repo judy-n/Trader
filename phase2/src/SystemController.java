@@ -5,9 +5,10 @@ import java.util.List;
  * The master controller.
  *
  * @author Ning Zhang
+ * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-17
+ * last modified 2020-07-20
  */
 public class SystemController {
     private UserManager userManager;
@@ -53,7 +54,7 @@ public class SystemController {
         }
         StartMenu sm = new StartMenu();
         int choice = sm.getUserInput();
-        while(choice != 3) {
+        while(choice != 0) {
             if (choice == 1) {
                 NormalUser newUser = new SignUpSystem(userManager).createNewNormal();
                 new NormalDashboard(newUser, itemManager, userManager, tradeManager);
@@ -65,6 +66,10 @@ public class SystemController {
                 } else {
                     new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
                 }
+
+            } else if (choice == 3){
+                DemoUser currentUser = new DemoUser();
+                new DemoDashboard(currentUser, itemManager, userManager, tradeManager);
             }
             tryWrite();
             sm = new StartMenu();
