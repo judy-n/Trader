@@ -158,33 +158,6 @@ public class UserManager extends Manager implements Serializable {
         return allAdmins;
     }
 
-    /**
-     * Takes the given username and returns the associated admin account password.
-     *
-     * @param username the username of the <AdminUser></AdminUser> whose password is being retrieved
-     * @return the account password associated with the given admin username
-     */
-    public String adminUsernamePassword(String username) {
-        for (User u : getAllAdmins()) {
-            if (u.getUsername().equals(username))
-                return u.getPassword();
-        }
-        return null;
-    }
-
-    /**
-     * Takes the given username and returns the associated normal account password.
-     *
-     * @param username the username of the <NormalUser></NormalUser> whose password is being retrieved
-     * @return the account password associated with the given username
-     */
-    public String normalUsernamePassword(String username) {
-        for (User u : getAllNormals()) {
-            if (u.getUsername().equals(username))
-                return u.getPassword();
-        }
-        return null;
-    }
 
     /**
      * Takes the given username for any type of user and returns the associated account password.
@@ -193,7 +166,7 @@ public class UserManager extends Manager implements Serializable {
      * @return the account password associated with the given username
      */
     public String usernamePassword(String username) {
-        for (User u : getAllNormals()) {
+        for (User u : getAllUsers()) {
             if (u.getUsername().equals(username))
                 return u.getPassword();
         }
@@ -208,34 +181,6 @@ public class UserManager extends Manager implements Serializable {
      */
     public String emailPassword(String email) {
         for (User u : getAllUsers()) {
-            if (u.getEmail().equals(email))
-                return u.getPassword();
-        }
-        return null;
-    }
-
-    /**
-     * Takes the given email and returns the associated admin account password.
-     *
-     * @param email the email of the <AdminUser></AdminUser> whose password is being retrieved
-     * @return the account password associated with the given email
-     */
-    public String adminEmailPassword(String email) {
-        for (User u : getAllAdmins()) {
-            if (u.getEmail().equals(email))
-                return u.getPassword();
-        }
-        return null;
-    }
-
-    /**
-     * Takes the given email and returns the associated normal account password.
-     *
-     * @param email the email of the <NormalUser></NormalUser> whose password is being retrieved
-     * @return the account password associated with the given email
-     */
-    public String normalEmailPassword(String email) {
-        for (User u : getAllNormals()) {
             if (u.getEmail().equals(email))
                 return u.getPassword();
         }
@@ -275,56 +220,19 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Checks if a user with the given email already exists in the user database.
-     * Searches separately in normal or admin database depending on given boolean <isAdmin></isAdmin>.
+     * Checks if a normal user with the given username already exists in the user database.
      *
-     * @param email   the email being checked for whether it's already taken or not
-     * @param isAdmin true if the user is an admin, false otherwise
-     * @return true if user with the given email exists in the correct database, false otherwise
+     * @param username the username being checked for whether it's already taken or not
+     * @return true if user with given username exists, false otherwise
      */
-    public boolean emailExists(String email, boolean isAdmin) {
-        if (isAdmin) {
-            for (AdminUser u : allAdmins) {
-                if (u.getEmail().equals(email))
-                    return true;
-            }
-        } else {
-            for (NormalUser u : allNormals) {
-                if (u.getEmail().equals(email))
-                    return true;
+    public boolean normalUsernameExists(String username) {
+        for (User u : allNormals) {
+            if (u.getUsername().equals(username)) {
+                return true;
             }
         }
         return false;
     }
-
-    /*
-     * Made the method below the inverse of the original usernameExists function
-     * cuz Intellij will give a warning otherwise :(
-     */
-
-    /**
-     * Checks if a user with the given username does NOT exist in the user database.
-     * Searches separately in normal or admin database depending on given boolean isAdmin.
-     *
-     * @param username the username being checked for whether it's already taken or not
-     * @param isAdmin  true if the user is an admin, false otherwise
-     * @return true if the given username does NOT exist in the correct database, false otherwise
-     */
-    public boolean usernameNotExists(String username, boolean isAdmin) {
-        if (isAdmin) {
-            for (AdminUser u : allAdmins) {
-                if (u.getUsername().equals(username))
-                    return false;
-            }
-        } else {
-            for (NormalUser u : allNormals) {
-                if (u.getUsername().equals(username))
-                    return false;
-            }
-        }
-        return true;
-    }
-
 
     /**
      * Return usernames of all accounts that needs to be frozen.
@@ -399,15 +307,33 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Gets a user by a username (could be an admin user, or a user)
+     * Gets a user by the given username (regardless of type of user).
      *
      * @param username the user's username
-     * @return the User
+     * @return the user with the given username
      */
     public User getUserByUsername(String username) {
-        if (getNormalByUsername(username) != null) {
-            return getNormalByUsername(username);
-        } else return getAdminByUsername(username);
+        for (User u : getAllUsers()) {
+            if (u.getUsername().equals(username)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets a user by the given email (regardless of type of user).
+     *
+     * @param email the user's email
+     * @return the user with the given email
+     */
+    public User getUserByEmail(String email) {
+        for (User u : getAllUsers()) {
+            if (u.getEmail().equals(email)) {
+                return u;
+            }
+        }
+        return null;
     }
 
     /**

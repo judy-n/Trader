@@ -11,7 +11,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-20
+ * last modified 2020-07-22
  */
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
@@ -79,7 +79,7 @@ public class SystemPresenter {
                 System.out.println("\n--- New Admin ---");
                 break;
             case 13:
-                System.out.println("\nPlease enter a Home City: ");
+                System.out.print("\nPlease enter a home city: ");
                 break;
         }
     }
@@ -94,31 +94,19 @@ public class SystemPresenter {
         switch (input) {
             case 1:
                 System.out.println("\n--- Login ---");
-                System.out.print("\nAre you an admin? (Y/N): ");
+                System.out.print("\nPlease enter your username or email: ");
                 break;
             case 2:
-                System.out.print("\nPlease enter your username: ");
+                System.out.print("\nUsername/email does not exist in our database! Please try again: ");
                 break;
             case 3:
-                System.out.print("\nUsername does not exist in our database! Please try again: ");
-                break;
-            case 4:
-                System.out.print("\nPlease enter your email: ");
-                break;
-            case 5:
-                System.out.print("\nEmail does not exist in our database! Please try again: ");
-                break;
-            case 6:
                 System.out.print("\nPlease enter your password: ");
                 break;
-            case 7:
-                System.out.print("\nPassword does not match email/username! Please try again: ");
+            case 4:
+                System.out.print("\nPassword does not match username/email! Please try again: ");
                 break;
-            case 8:
+            case 5:
                 System.out.println("\n Logged in!");
-                break;
-            case 9:
-                System.out.print("\nWould you like to login with 1) username or 2) email?: ");
                 break;
         }
     }

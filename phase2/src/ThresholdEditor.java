@@ -41,7 +41,7 @@ public class ThresholdEditor {
         sp.thresholdEditor(1);
         try {
             usernameInput = br.readLine();
-            while (userManager.usernameNotExists(usernameInput, false) && !usernameInput.equals("0")) {
+            while (!usernameInput.equals("0") && userManager.normalUsernameExists(usernameInput)) {
                 sp.invalidInput();
                 usernameInput = br.readLine();
             }

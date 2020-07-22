@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-12
+ * last modified 2020-07-22
  */
 public class SignUpSystem {
     private String username;
@@ -32,7 +32,7 @@ public class SignUpSystem {
     /*
      * Allows a new user to be created through user input.
      * Runs checks to ensure that usernames and emails are unique, and that login credentials
-     * follow certain rules (e.g. no systemPresenteraces, at least x characters long, etc).
+     * follow certain rules (e.g. no spaces, at least x characters long, etc).
      */
     private void inputProcess() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -67,7 +67,8 @@ public class SignUpSystem {
                     invalidInput = true;
                     systemPresenter.signUpSystem(5);
                     usernameInput = br.readLine();
-                } else if (usernameInput.isEmpty() || usernameInput.contains(" ") || usernameInput.length() < 3) {
+                } else if (usernameInput.isEmpty() || usernameInput.contains(" ") ||
+                        usernameInput.length() < 3 || usernameInput.contains("@")) {
                     invalidInput = true;
                     systemPresenter.signUpSystem(6);
                     usernameInput = br.readLine();

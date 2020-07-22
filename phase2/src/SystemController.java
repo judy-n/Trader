@@ -8,7 +8,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-20
+ * last modified 2020-07-22
  */
 public class SystemController {
     private UserManager userManager;
@@ -21,7 +21,7 @@ public class SystemController {
     private String itemManagerPath = "src/itemmanager.ser";
     private String tradeManagerPath = "src/trademanager.ser";
 
-    private SystemPresenter sp;
+    private SystemPresenter systemPresenter;
 
     /**
      * Creates a <SystemController></SystemController>.
@@ -30,10 +30,10 @@ public class SystemController {
      */
     public SystemController() {
 
-        sp = new SystemPresenter();
+        systemPresenter = new SystemPresenter();
 
         readWriter = new ReadWriter();
-        tryRead();
+        tryReadManagers();
 
         tradeManager.cancelAllUnconfirmedTrades();
         List<String> cancelledUsers = tradeManager.getCancelledUsers();
@@ -50,11 +50,12 @@ public class SystemController {
         tradeManager.clearCancelledUsers();
 
         if (userManager.getAllUsers().isEmpty()) {
-            userManager.createAdminUser("Hello_World", "admin01@email.com", "pa55word");
+            tryReadAdmin();
         }
+
         StartMenu sm = new StartMenu();
         int choice = sm.getUserInput();
-        while(choice != 0) {
+        while (choice != 0) {
             if (choice == 1) {
                 NormalUser newUser = new SignUpSystem(userManager).createNewNormal();
                 new NormalDashboard(newUser, itemManager, userManager, tradeManager);
@@ -67,61 +68,72 @@ public class SystemController {
                     new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
                 }
 
-            } else if (choice == 3){
+            } else if (choice == 3) {
                 DemoUser currentUser = new DemoUser();
                 new DemoDashboard(currentUser, itemManager, userManager, tradeManager);
             }
-            tryWrite();
+            tryWriteManagers();
             sm = new StartMenu();
             choice = sm.getUserInput();
         }
-        sp.exitProgram();
+        systemPresenter.exitProgram();
         System.exit(0);
     }
 
-    private void tryRead() {
+    private void tryReadManagers() {
         try {
-            userManager = (UserManager)readWriter.readFromFile(userManagerPath, 1);
+            userManager = (UserManager) readWriter.readFromFile(userManagerPath, 1);
         } catch (IOException e) {
-            sp.exceptionMessage(1, "Reading", "UserManager");
+            systemPresenter.exceptionMessage(1, "Reading", "UserManager");
         } catch (ClassNotFoundException e) {
-            sp.exceptionMessage(2, "Reading", "UserManager");
+            systemPresenter.exceptionMessage(2, "Reading", "UserManager");
         }
 
         try {
             itemManager = (ItemManager) readWriter.readFromFile(itemManagerPath, 2);
         } catch (IOException e) {
-            sp.exceptionMessage(1, "Reading", "ItemManager");
+            systemPresenter.exceptionMessage(1, "Reading", "ItemManager");
         } catch (ClassNotFoundException e) {
-            sp.exceptionMessage(2, "Reading", "ItemManager");
+            systemPresenter.exceptionMessage(2, "Reading", "ItemManager");
         }
 
         try {
             tradeManager = (TradeManager) readWriter.readFromFile(tradeManagerPath, 3);
         } catch (IOException e) {
-            sp.exceptionMessage(1, "Reading", "TradeManager");
+            systemPresenter.exceptionMessage(1, "Reading", "TradeManager");
         } catch (ClassNotFoundException e) {
-            sp.exceptionMessage(2, "Reading", "TradeManager");
+            systemPresenter.exceptionMessage(2, "Reading", "TradeManager");
         }
     }
 
-    private void tryWrite() {
+    private void tryWriteManagers() {
         try {
             readWriter.saveToFile(userManagerPath, userManager);
         } catch (IOException e) {
-            sp.exceptionMessage(1, "Writing", "UserManager");
+            systemPresenter.exceptionMessage(1, "Writing", "UserManager");
         }
 
         try {
             readWriter.saveToFile(itemManagerPath, itemManager);
         } catch (IOException e) {
-            sp.exceptionMessage(1, "Writing", "ItemManager");
+            systemPresenter.exceptionMessage(1, "Writing", "ItemManager");
         }
 
         try {
             readWriter.saveToFile(tradeManagerPath, tradeManager);
         } catch (IOException e) {
-            sp.exceptionMessage(1, "Writing", "TradeManager");
+            systemPresenter.exceptionMessage(1, "Writing", "TradeManager");
+        }
+    }
+
+    private void tryReadAdmin() {
+        String initAdminPath = "src/init_admin_login.txt";
+        try {
+            String[] adminCredentials = readWriter.readAdminFromFile(initAdminPath);
+            userManager.createAdminUser(adminCredentials[0], adminCredentials[1], adminCredentials[2]);
+        } catch (IOException e) {
+            systemPresenter.exceptionMessage(1, "Reading", "initial admin credentials");
+            e.printStackTrace();
         }
     }
 }
