@@ -805,7 +805,9 @@ public class SystemPresenter {
      * @param input the input
      */
     public void normalDashboard(int input) {
-        String frozenWarning = "\n-- Your account is currently frozen due to you reaching the limit on incomplete trades --";
+        String frozenWarning = "\n-- Your account is currently frozen due to you reaching the " +
+                "limit on incomplete trades --";
+        String vacationWarning = "\n-- Your account status is currently On Vacation.";
         String menuUnfrozen = "\nWhat would you like to do:" +
                 "\n 1 - see all items available for trade" +
                 "\n 2 - edit inventory" +
@@ -815,17 +817,26 @@ public class SystemPresenter {
                 "\n 6 - view most recent 3 trades" +
                 "\n 7 - view top 3 trade partners";
         String menuFrozen = "\n 8 - request to unfreeze account";
+        String menuVacation = "\n 9 - set status to on vacation" +
+                "\n 10 - change vacation status";
         String logoutOption = "\n 0 - log out";
 
         switch (input) {
             case 1:
-                System.out.print(menuUnfrozen + logoutOption + choicePrompt);
+                System.out.print(menuUnfrozen + menuVacation + logoutOption + choicePrompt);
                 break;
             case 2:
-                System.out.println(frozenWarning + menuUnfrozen + menuFrozen + logoutOption + choicePrompt);
+                System.out.println(frozenWarning + vacationWarning + menuUnfrozen + menuFrozen +
+                        menuVacation + logoutOption + choicePrompt);
                 break;
             case 3:
                 System.out.println("\nLogging out of the program now. See ya!");
+                break;
+            case 9:
+                System.out.println("\nStatus of account has been set to on vacation.");
+                break;
+            case 10:
+                System.out.println("\nStatus of account has been set to Not on vacation.");
                 break;
         }
     }

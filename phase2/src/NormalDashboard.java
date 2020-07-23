@@ -97,6 +97,16 @@ public class NormalDashboard {
                  */
                 new AccountUnfreezer(currentUser, itemManager, userManager, tradeManager);
                 break;
+
+            case 9:
+                // set on vacation status.
+                new AccountOnVacation(currentUser, itemManager, userManager, tradeManager);
+                break;
+
+            case 10:
+                // set not on vacation status.
+                new AccountNotOnVacation(currentUser, itemManager, userManager, tradeManager);
+                break;
         }
     }
 }
