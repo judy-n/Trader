@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Statement;
 
 /**
  * Starting point of the program.
@@ -14,20 +15,24 @@ public class Launcher extends JFrame{
      * Main method.
      * Starts the program by creating a <SystemController></SystemController>.
      */
+    public JFrame programWindow;
+    public StartMenu startMenu;
     public Launcher(){
-        super("CSC207 | Group 0043");
-        this.setSize(new Dimension(1024, 720));
-        this.setResizable(false);
-        this.setUndecorated(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        programWindow = new JFrame("CSC207 | Group 0043");
+        programWindow.setSize(820, 576);
+        programWindow.setResizable(false);
+        programWindow.setUndecorated(false);
+        programWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //make new start panel
         SystemController systemController = new SystemController();
-        StartMenu startMenu = new StartMenu(systemController);
-        this.add(startMenu);
-        this.setVisible(true);
+        startMenu = new StartMenu(systemController);
+        programWindow.add(startMenu);
+        //programWindow.pack();
+        programWindow.setVisible(true);
 
     }
 
     public static void main(String[] args) {
-        new SystemController();
+        new Launcher();
     }
 }

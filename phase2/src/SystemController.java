@@ -124,7 +124,7 @@ public class SystemController {
         }
     }
 
-    private void tryWriteManagers() {
+    public void tryWriteManagers() {
         try {
             readWriter.saveToFile(userManagerPath, userManager);
         } catch (IOException e) {
