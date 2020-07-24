@@ -12,10 +12,10 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-12
+ * last modified 2020-07-24
  */
 
-public class InventoryEditor {
+public class InventoryEditor extends MenuItem {
     private NormalUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
@@ -140,5 +140,10 @@ public class InventoryEditor {
 
     private void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
+    }
+
+    @Override
+    String getTitle() {
+        return "Inventory Editor";
     }
 }

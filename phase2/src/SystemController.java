@@ -53,32 +53,50 @@ public class SystemController {
             tryReadAdmin();
         }
 
-        StartMenu sm = new StartMenu();
-        int choice = sm.getUserInput();
-        while (choice != 0) {
-            if (choice == 1) {
-                NormalUser newUser = new SignUpSystem(userManager).createNewNormal();
-                new NormalDashboard(newUser, itemManager, userManager, tradeManager);
-
-            } else if (choice == 2) {
-                User currentUser = new LoginSystem(userManager).getUser();
-                if (currentUser instanceof AdminUser) {
-                    new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
-                } else {
-                    new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
-                }
-
-            } else if (choice == 3) {
-                DemoUser currentUser = new DemoUser();
-                new DemoDashboard(currentUser, itemManager, userManager, tradeManager);
-            }
-            tryWriteManagers();
-            sm = new StartMenu();
-            choice = sm.getUserInput();
-        }
-        systemPresenter.exitProgram();
-        System.exit(0);
+//        while (choice != 0) {
+//            if (choice == 1) {
+//                NormalUser newUser = new SignUpSystem(userManager).createNewNormal();
+//                new NormalDashboard(newUser, itemManager, userManager, tradeManager);
+//
+//            } else if (choice == 2) {
+//                User currentUser = new LoginSystem(userManager).getUser();
+//                if (currentUser instanceof AdminUser) {
+//                    new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
+//                } else {
+//                    new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
+//                }
+//
+//            } else if (choice == 3) {
+//                DemoUser currentUser = new DemoUser();
+//                new DemoDashboard(currentUser, itemManager, userManager, tradeManager);
+//            }
+//            tryWriteManagers();
+//            sm = new StartMenu();
+//            choice = sm.getUserInput();
+//        }
+//        systemPresenter.exitProgram();
+//        System.exit(0);
     }
+
+    public void normalUserSignUp(){
+        NormalUser newUser = new SignUpSystem(userManager).createNewNormal();
+        new NormalDashboard(newUser, itemManager, userManager, tradeManager);
+    }
+
+    public void userLogin(){
+        User currentUser = new LoginSystem(userManager).getUser();
+        if(currentUser instanceof AdminUser){
+            new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
+        } else {
+            new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
+        }
+    }
+
+    public void demoUser(){
+        DemoUser currentUser = new DemoUser();
+        new DemoDashboard(currentUser, itemManager, userManager, tradeManager);
+    }
+
 
     private void tryReadManagers() {
         try {

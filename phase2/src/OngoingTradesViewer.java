@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,9 +15,9 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-12
+ * last modified 2020-07-24
  */
-public class OngoingTradesViewer {
+public class OngoingTradesViewer extends MenuItem {
     private NormalUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
@@ -264,5 +265,10 @@ public class OngoingTradesViewer {
 
     private void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
+    }
+
+    @Override
+    String getTitle() {
+        return "Ongoing Trades Viewer";
     }
 }

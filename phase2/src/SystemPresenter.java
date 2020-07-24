@@ -20,15 +20,16 @@ public class SystemPresenter {
      * Opens menus for logging in, singing up, or closing the program based on user input
      *
      * @param input The input either 1, 2, or 3.
+     * @return the string to display
      */
-    public void startMenu(int input) {
+    public String startMenu(int input) {
         switch (input) {
             case 1:
-                System.out.print("\n----- WELCOME -----\n 1) Sign up \n 2) Log in \n 3) Sign in as guest \n 0) Exit the program" + choicePrompt);
-                break;
+                return ("----- WELCOME -----");
             case 2:
-                System.out.println("Exiting the program. Hope to see you again soon!");
-                break;
+                return ("Exiting the program. Hope to see you again soon!");
+            default:
+                return null;
         }
     }
 

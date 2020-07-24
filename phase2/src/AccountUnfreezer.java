@@ -10,9 +10,9 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-12
+ * last modified 2020-07-24
  */
-public class AccountUnfreezer {
+public class AccountUnfreezer extends MenuItem {
     private User currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
@@ -122,5 +122,10 @@ public class AccountUnfreezer {
 
     private void closeAdmin() {
         new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
+    }
+
+    @Override
+    String getTitle() {
+        return "Send Unfreeze Request";
     }
 }

@@ -13,9 +13,9 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-23
+ * last modified 2020-07-24
  */
-public class CatalogViewer {
+public class CatalogViewer extends MenuItem{
     private NormalUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
@@ -155,5 +155,10 @@ public class CatalogViewer {
 
     private void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
+    }
+
+    @Override
+    String getTitle() {
+        return "Catalog Viewer";
     }
 }

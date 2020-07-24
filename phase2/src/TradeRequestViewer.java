@@ -14,9 +14,9 @@ import java.util.ArrayList;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-29
- * last modified 2020-07-12
+ * last modified 2020-07-24
  */
-public class TradeRequestViewer {
+public class TradeRequestViewer extends MenuItem{
     private LinkedHashMap<String[], long[]> initiatedTrades;
     private LinkedHashMap<String[], long[]> receivedTrades;
 
@@ -274,5 +274,9 @@ public class TradeRequestViewer {
         return keyToRemove;
     }
 
+    @Override
+    String getTitle() {
+        return "Trade Request Viewer";
+    }
 }
 

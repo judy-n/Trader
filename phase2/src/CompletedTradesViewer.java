@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -10,9 +11,9 @@ import java.time.format.DateTimeFormatter;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-12
+ * last modified 2020-07-24
  */
-public class CompletedTradesViewer {
+public class CompletedTradesViewer extends MenuItem {
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
@@ -103,5 +104,10 @@ public class CompletedTradesViewer {
 
     private void close() {
         new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
+    }
+
+    @Override
+    String getTitle() {
+        return "Completed Trades Viewer";
     }
 }
