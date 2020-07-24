@@ -46,7 +46,7 @@ public class SignUpSystem {
                     invalidInput = true;
                     systemPresenter.signUpSystem(2);
                     emailInput = br.readLine();
-                } else if (!(emailInput.contains("@") && emailInput.contains(".")) || emailInput.contains(" ")) {
+                } else if (!emailInput.matches("[\\w]+(\\.[\\w]+)*@([a-zA-Z]+\\.)+[a-z]{2,}")) {
                     invalidInput = true;
                     systemPresenter.signUpSystem(3);
                     emailInput = br.readLine();
@@ -67,8 +67,7 @@ public class SignUpSystem {
                     invalidInput = true;
                     systemPresenter.signUpSystem(5);
                     usernameInput = br.readLine();
-                } else if (usernameInput.isEmpty() || usernameInput.contains(" ") ||
-                        usernameInput.length() < 3 || usernameInput.contains("@")) {
+                } else if (!usernameInput.matches("[a-zA-Z0-9]+([_.][a-zA-Z0-9]+)*") || usernameInput.length() < 3) {
                     invalidInput = true;
                     systemPresenter.signUpSystem(6);
                     usernameInput = br.readLine();
@@ -82,8 +81,7 @@ public class SignUpSystem {
         systemPresenter.signUpSystem(7);
         try {
             String pwInput1 = br.readLine();
-            while (pwInput1.isEmpty() || pwInput1.contains(" ") ||
-                    pwInput1.length() < 6 || pwInput1.length() > 20) {
+            while (!pwInput1.matches("[\\S]{6,20}")) {
                 systemPresenter.signUpSystem(8);
                 pwInput1 = br.readLine();
             }

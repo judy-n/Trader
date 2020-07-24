@@ -52,7 +52,8 @@ public class SystemPresenter {
                 System.out.print("\nThat's not an email address! Please enter a valid email: ");
                 break;
             case 4:
-                System.out.print("\nPlease enter an username (at least 3 characters): ");
+                System.out.print("\nPlease enter an username" +
+                        "\n(at least 3 characters, only numbers/letters or an underscore/period between them): ");
                 break;
             case 5:
                 System.out.print("\nUsername already exists! Please enter a different username: ");
