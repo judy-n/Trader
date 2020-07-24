@@ -12,7 +12,7 @@ import java.util.List;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-13
+ * last modified 2020-07-23
  */
 public class ItemManager extends Manager implements Serializable {
     private List<Item> approvedItems;
@@ -105,18 +105,6 @@ public class ItemManager extends Manager implements Serializable {
     }
 
     /**
-     * Returns the number of approved items in the system that don't belong to the given user
-     * and haven't been removed from inventory.
-     *
-     * @param username the username of the user whose approved items aren't being counted
-     * @return the number of approved items that don't belong to the given user and haven't been removed from inventory
-     */
-    public int getNumApprovedItems(String username) {
-        return getApprovedItems(username).size();
-    }
-
-
-    /**
      * Returns the total number of pending items in the system.
      *
      * @return the total number of pending items in the system
@@ -143,19 +131,6 @@ public class ItemManager extends Manager implements Serializable {
      */
     public Item getApprovedItem(int index) {
         return approvedItems.get(index - 1);
-    }
-
-    /**
-     * Returns the approved item found at the given index in the list of all
-     * approved items that haven't been removed from inventory, excluding the given user's.
-     *
-     * @param username the username of the user whose items are being excluded from the list
-     * @param index    the index of an item in the list of approved items
-     *                 that haven't been removed from inventory, excluding the given user's
-     * @return the item at the given index
-     */
-    public Item getApprovedItem(String username, int index) {
-        return getApprovedItems(username).get(index);
     }
 
     /**

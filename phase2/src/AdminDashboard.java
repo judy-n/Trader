@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-12
+ * last modified 2020-07-23
  */
 
 public class AdminDashboard {
@@ -55,7 +55,7 @@ public class AdminDashboard {
 
         switch (input) {
             case 0:
-                sp.normalDashboard(3);
+                sp.logoutMessage();
                 break;
             case 1:
                 new CatalogEditor(currentAdmin, itemManager, userManager);

@@ -1,8 +1,8 @@
-import com.sun.org.apache.xml.internal.resolver.Catalog;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Shows all items available for trade from all users' inventories except for the user who's currently logged in.
@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-13
+ * last modified 2020-07-23
  */
 public class CatalogViewer {
     private NormalUser currentUser;
@@ -37,14 +37,15 @@ public class CatalogViewer {
         itemManager = im;
         userManager = um;
         tradeManager = tm;
-        username = user.getUsername();
+        username = currentUser.getUsername();
 
         systemPresenter = new SystemPresenter();
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        int maxIndex = itemManager.getNumApprovedItems(username);
+        List<Item> itemsSameCity = filterItemsHomeCity();
+        int maxIndex = itemsSameCity.size();
 
-        systemPresenter.catalogViewer(itemManager.getApprovedItems(username), userManager);
+        systemPresenter.catalogViewer(itemsSameCity);
 
         int timesBorrowed = userManager.getNormalUserTimesBorrowed(username) + tradeManager.getTimesBorrowed(username);
         int timesLent = tradeManager.getTimesLent(username);
@@ -58,9 +59,7 @@ public class CatalogViewer {
             }
             int input = Integer.parseInt(temp);
             if (input != 0) {
-                Item selectedItem = itemManager.getApprovedItem(username, input - 1);
-
-                assert selectedItem != null;
+                Item selectedItem = itemsSameCity.get(input - 1);
                 long itemID = selectedItem.getID();
 
                 systemPresenter.catalogViewer(selectedItem, 1);
@@ -139,15 +138,19 @@ public class CatalogViewer {
         }
     }
 
-    /**
-     * Creates a catalog viewer for the given username's associated user
-     * @param username the username
-     * @param im the item manager
-     * @param um the user manager
-     * @param tm the trade manager
+    /*
+     * Returns a list of items that are owned by users with the same home city as the current user.
      */
-    public CatalogViewer(String username, ItemManager im, UserManager um, TradeManager tm) {
-        new CatalogViewer(um.getNormalByUsername(username), im, um, tm);
+    private List<Item> filterItemsHomeCity() {
+        List<Item> items = itemManager.getApprovedItems(username);
+        List<Item> itemsSameCity = new ArrayList<>();
+
+        for (Item i : items) {
+            if (userManager.getNormalUserHomeCity(i.getOwnerUsername()).equals(userManager.getNormalUserHomeCity(username))) {
+                itemsSameCity.add(i);
+            }
+        }
+        return itemsSameCity;
     }
 
     private void close() {

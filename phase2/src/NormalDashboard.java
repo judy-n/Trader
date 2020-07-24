@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
  * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-19
+ * last modified 2020-07-23
  */
 public class NormalDashboard {
     private NormalUser currentUser;
@@ -58,7 +58,7 @@ public class NormalDashboard {
 
         switch (input) {
             case 0:
-                sp.normalDashboard(3);
+                sp.logoutMessage();
                 break;
             case 1:
                 new CatalogViewer(currentUser, itemManager, userManager, tradeManager);

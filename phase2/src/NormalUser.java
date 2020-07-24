@@ -15,7 +15,7 @@ import java.util.Map;
  * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-19
+ * last modified 2020-07-23
  */
 public class NormalUser extends User implements Serializable {
     private List<Long> inventory;
@@ -330,7 +330,7 @@ public class NormalUser extends User implements Serializable {
      */
     public boolean isRequestedInTrade(long itemID) {
         for (Map.Entry<String[], long[]> entry : tradeRequests.entrySet()) {
-            if (entry.getValue()[1] == itemID) {
+            if (entry.getValue()[0] == itemID || entry.getValue()[1] == itemID) {
                 return true;
             }
         }

@@ -11,7 +11,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-22
+ * last modified 2020-07-23
  */
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
@@ -293,16 +293,6 @@ public class SystemPresenter {
     }
 
     /**
-     * Prints the available approved items that can be borrowed from the marketplace
-     *
-     * @param approvedItems the approved items
-     */
-    public void catalogViewer(List<Item> approvedItems, UserManager userManager) {
-        System.out.println("\nThese are all the items available for trade:");
-        presenterAllItems(approvedItems, userManager);
-    }
-
-    /**
      * Tells a user that they are borrowing more than their threshold
      *
      * @param user the user to be notified
@@ -354,10 +344,10 @@ public class SystemPresenter {
                 System.out.print("\nYou have chosen: [" + item + "]\n Would you like to 1) trade or 2) wishlist this item? (0 to cancel): ");
                 break;
             case 2:
-                System.out.print("\nAre you sure you want to trade for this item with user < " + item.getOwnerUsername() + " >? (Y/N): ");
+                System.out.print("\nAre you sure you want to trade for this item with user < " + item.getOwnerUsername() + "? (Y/N): ");
                 break;
             case 3:
-                System.out.println("\nYour request to borrow [" + item + "] has been sent to < " + item.getOwnerUsername() + " >" +
+                System.out.println("\nYour request to borrow [" + item + "] has been sent to < " + item.getOwnerUsername() +
                         "\nIf this item was not already in your wishlist, it has automatically been added.");
                 break;
         }
@@ -414,21 +404,6 @@ public class SystemPresenter {
             }
         }
     }
-
-    private void presenterAllItems(List<Item> items, UserManager userManager) {
-        if (items.isEmpty()) {
-            emptyListMessage();
-        } else {
-            int index = 1;
-            for (Item i : items) {
-                String ownerUsername = i.getOwnerUsername();
-                String homeCity = userManager.getNormalUserHomeCity(ownerUsername);
-                System.out.println(index + ". " + i + " by " + ownerUsername + ' ' + homeCity);
-                index++;
-            }
-        }
-    }
-
 
     /**
      * Presents all the usernames of all NormalUsers which can be frozen to the user
@@ -563,16 +538,16 @@ public class SystemPresenter {
     public void tradeRequestViewer(int input, String owner, String itemName) {
         switch (input) {
             case 1:
-                System.out.print("\nAre you sure you want to lend [" + itemName + "] to < " + owner + " > in a one-way or two-way trade? (Y/N): ");
+                System.out.print("\nAre you sure you want to lend [" + itemName + "] to " + owner + " in a one-way or two-way trade? (Y/N): ");
                 break;
             case 2:
-                System.out.println("\nInitiating trade with < " + owner + " >");
+                System.out.println("\nInitiating trade with " + owner);
                 break;
             case 3:
-                System.out.print("\nWould you like to 1) accept, or 2) reject < " + owner + " >'s request?: ");
+                System.out.print("\nWould you like to 1) accept, or 2) reject " + owner + "'s request?: ");
                 break;
             case 4:
-                System.out.print("\nAre you sure you want to reject < " + owner + " >'s request? (Y/N): ");
+                System.out.print("\nAre you sure you want to reject " + owner + "'s request? (Y/N): ");
                 break;
         }
 
@@ -607,9 +582,9 @@ public class SystemPresenter {
         int index = 1;
         for (Item i : items) {
             if (i.getAvailability()) {
-                System.out.println(index + ". Trade for [" + i.getName() + "] sent to < " + users.get(index - 1) + " >");
+                System.out.println(index + ". Trade for [" + i.getName() + "] sent to " + users.get(index - 1));
             } else {
-                System.out.println(index + ". Trade for [" + i.getName() + "] sent to < " + users.get(index - 1) + " >" +
+                System.out.println(index + ". Trade for [" + i.getName() + "] sent to " + users.get(index - 1) +
                         "\n    (their item is currently lent out to someone else)");
             }
             index++;
@@ -628,9 +603,9 @@ public class SystemPresenter {
         int index = 1;
         for (Item i : items) {
             if (i.getAvailability()) {
-                System.out.println(index + ". Trade for [" + i.getName() + "] from < " + users.get(index - 1) + " >");
+                System.out.println(index + ". Trade for [" + i.getName() + "] from " + users.get(index - 1));
             } else {
-                System.out.println(index + ". Trade for [" + i.getName() + "] from < " + users.get(index - 1) + " >" +
+                System.out.println(index + ". Trade for [" + i.getName() + "] from " + users.get(index - 1) +
                         "\n    (your item is currently lent out to someone else)");
             }
             index++;
@@ -829,9 +804,6 @@ public class SystemPresenter {
             case 2:
                 System.out.println(frozenWarning + vacationWarning + menuUnfrozen + menuFrozen +
                         menuVacation + logoutOption + choicePrompt);
-                break;
-            case 3:
-                System.out.println("\nLogging out of the program now. See ya!");
                 break;
             case 9:
                 System.out.println("\nStatus of account has been set to on vacation.");
@@ -1095,6 +1067,13 @@ public class SystemPresenter {
      */
     private void emptyListMessage() {
         System.out.println("nothing here yet!");
+    }
+
+    /**
+     * Presents a logout message when a user logs out of their account.
+     */
+    public void logoutMessage() {
+        System.out.println("\nLogging out of your account now. See ya!");
     }
 
     /**

@@ -11,7 +11,7 @@ import java.util.List;
  * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-19
+ * last modified 2020-07-23
  */
 public class UserManager extends Manager implements Serializable {
     private List<NormalUser> allNormals;
@@ -29,18 +29,6 @@ public class UserManager extends Manager implements Serializable {
         usernamesToFreeze = new ArrayList<>();
         unfreezeRequests = new ArrayList<>();
         usernamesOnVacation = new ArrayList<>();
-    }
-
-    /**
-     * Creates a new <NormalUser></NormalUser> with given username, email, and password,
-     * then adds it to the list of all normal users.
-     *
-     * @param username the new user's username
-     * @param email    the new user's email
-     * @param password the new user's password
-     */
-    public void createNormalUser(String username, String email, String password) {
-        allNormals.add(new NormalUser(username, email, password));
     }
 
     /**
@@ -362,39 +350,39 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Setter for the HomeCity of the NormalUser with the given username
+     * Setter for the home city of the normal user with the given username.
      *
      * @param username the username
-     * @param homeCity the homecity
+     * @param homeCity the home city
      */
     public void setNormalUserHomeCity(String username, String homeCity) {
         getNormalByUsername(username).setHomeCity(homeCity);
     }
 
     /**
-     * Getter for the HomeCity of the NormalUser with the given Username
+     * Getter for the home city of the normal user with the given username.
      *
      * @param username the username
-     * @return that user's homeCity
+     * @return that user's home city
      */
     public String getNormalUserHomeCity(String username) {
         return getNormalByUsername(username).getHomeCity();
     }
 
     /**
-     * Getter for a Normal User's number of times borrowed
+     * Getter for a normal user's number of times borrowed.
      *
-     * @param username the username of the Normal User
-     * @return the number of times they borrowed
+     * @param username the username of the normal user
+     * @return the number of times they've borrowed
      */
     public int getNormalUserTimesBorrowed(String username) {
         return getNormalByUsername(username).getTimesBorrowed();
     }
 
     /**
-     * Getter for if a normal user is requested in trade based on the item's id and the user's username
+     * Getter for if a normal user is requested in trade based on the item's id and the user's username.
      *
-     * @param username the Normal User's username
+     * @param username the normal user's username
      * @param id       the item id
      * @return true iff the item is requested in trade
      */
