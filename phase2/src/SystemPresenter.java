@@ -46,24 +46,24 @@ public class SystemPresenter {
             case 1:
                 return("\nPlease enter an email: ");
             case 2:
-                return ("\nEmail is already associated with an account! Please enter a different email: ");
+                return ("\nEmail is already associated with an account! Please enter a different email.");
             case 3:
-                return("\nThat's not an email address! Please enter a valid email: ");
+                return("\nThat's not an email address! Please enter a valid email.");
             case 4:
                 return("\nPlease enter an username" +
                         "\n(at least 3 characters, only numbers/letters or an underscore/period between them): ");
             case 5:
-                return("\nUsername already exists! Please enter a different username: ");
+                return("\nUsername already exists! Please enter a different username.");
             case 6:
-                return("\nInvalid username. Please try again: ");
+                return("\nInvalid username. Please try again.");
             case 7:
                 return("\nPlease enter a password (6-20 characters): ");
             case 8:
-                return("\nInvalid password. Please try again: ");
+                return("\nInvalid password. Please try again.");
             case 9:
-                return("\nPlease verify your password: ");
+                return("\nPlease verify your password.");
             case 10:
-                return("\nPasswords do not match. Please try again: ");
+                return("\nPasswords do not match. Please try again.");
             case 11:
                 return("\n Thank you for signing up! \n You are now logged in.");
             case 12:

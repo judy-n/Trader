@@ -186,11 +186,12 @@ public class StartMenu extends JPanel {
             emailInput.setBounds(330,160,120,25);
             validatePasswordInput.setBounds(330, 260, 120, 25);
 
+            JButton SignUpButton = new JButton("Sign Up");
+            initializeButton(SignUpButton, 100, 30, 450, 350);
 
-            JButton SignUp = new JButton("Sign Up");
-            initializeButton(SignUp, 100, 30, 450, 350);
             AtomicInteger typeInvalidInput = new AtomicInteger();
-            SignUp.addActionListener(e -> {
+            JLabel invalid = new JLabel();
+            SignUpButton.addActionListener(e -> {
                 inputtedEmail = emailInput.getText();
                 inputtedUsername = usernameInput.getText();
                 inputtedPassword = String.valueOf(passwordInput.getPassword());
@@ -198,11 +199,17 @@ public class StartMenu extends JPanel {
 
                 typeInvalidInput.set(systemController.normalUserSignUp(inputtedUsername,
                         inputtedEmail, inputtedPassword, validateInputtedPassword));
+
+                invalid.setText(systemPresenter.signUpSystem(typeInvalidInput.intValue()));
+                invalid.setSize(800,30);
+
+                invalid.setForeground(Color.red);
+                this.add(invalid);
+
+                invalid.setLocation(130, 400);
             });
-            JLabel invalid = new JLabel(systemPresenter.signUpSystem(typeInvalidInput.intValue()));
-            invalid.setForeground(Color.red);
-            this.add(invalid);
-            invalid.setLocation(330, 500);
+
+
 
         }
 

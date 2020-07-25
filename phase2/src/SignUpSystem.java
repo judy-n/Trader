@@ -33,20 +33,20 @@ public class SignUpSystem {
     public int validateInput(String username, String email, String password, String validatePassword){
         int invalidInput = 0;
         if (userManager.emailExists(email)) {
-            invalidInput = 1;
-        } else if (!email.matches("[\\w]+(\\.[\\w]+)*@([a-zA-Z]+\\.)+[a-z]{2,}")) {
             invalidInput = 2;
+        } else if (!email.matches("[\\w]+(\\.[\\w]+)*@([a-zA-Z]+\\.)+[a-z]{2,}")) {
+            invalidInput = 3;
         }
         if (userManager.usernameExists(username)) {
-            invalidInput = 3;
+            invalidInput = 5;
         } else if (!username.matches("[a-zA-Z0-9]+([_.][a-zA-Z0-9]+)*") || username.length() < 3) {
-            invalidInput = 4;
+            invalidInput = 6;
         }
         if (!password.matches("[\\S]{6,20}")){
-            invalidInput = 5;
+            invalidInput = 8;
         }
         if(!validatePassword.equals(password)){
-            invalidInput = 6;
+            invalidInput = 10;
         }
 
         return invalidInput;
