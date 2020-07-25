@@ -37,52 +37,41 @@ public class SystemPresenter {
      * Prompt based system for signing up a user based on the user's input
      *
      * @param input the user's input
+     * @return invalid input type
      */
-    public void signUpSystem(int input) {
+    public String signUpSystem(int input) {
         switch (input) {
             case 0:
-                System.out.println("\n--- Sign-up ---");
-                break;
+                return ("\n--- Sign-up ---");
             case 1:
-                System.out.print("\nPlease enter an email: ");
-                break;
+                return("\nPlease enter an email: ");
             case 2:
-                System.out.print("\nEmail is already associated with an account! Please enter a different email: ");
-                break;
+                return ("\nEmail is already associated with an account! Please enter a different email: ");
             case 3:
-                System.out.print("\nThat's not an email address! Please enter a valid email: ");
-                break;
+                return("\nThat's not an email address! Please enter a valid email: ");
             case 4:
-                System.out.print("\nPlease enter an username" +
+                return("\nPlease enter an username" +
                         "\n(at least 3 characters, only numbers/letters or an underscore/period between them): ");
-                break;
             case 5:
-                System.out.print("\nUsername already exists! Please enter a different username: ");
-                break;
+                return("\nUsername already exists! Please enter a different username: ");
             case 6:
-                System.out.print("\nInvalid username. Please try again: ");
-                break;
+                return("\nInvalid username. Please try again: ");
             case 7:
-                System.out.print("\nPlease enter a password (6-20 characters): ");
-                break;
+                return("\nPlease enter a password (6-20 characters): ");
             case 8:
-                System.out.print("\nInvalid password. Please try again: ");
-                break;
+                return("\nInvalid password. Please try again: ");
             case 9:
-                System.out.print("\nPlease verify your password: ");
-                break;
+                return("\nPlease verify your password: ");
             case 10:
-                System.out.print("\nPasswords do not match. Please try again: ");
-                break;
+                return("\nPasswords do not match. Please try again: ");
             case 11:
-                System.out.println("\n Thank you for signing up! \n You are now logged in.");
-                break;
+                return("\n Thank you for signing up! \n You are now logged in.");
             case 12:
-                System.out.println("\n--- New Admin ---");
-                break;
+                return("\n--- New Admin ---");
             case 13:
-                System.out.print("\nPlease enter a home city: ");
-                break;
+                return("\nPlease enter a home city: ");
+            default:
+                return null;
         }
     }
 

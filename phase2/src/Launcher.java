@@ -17,17 +17,16 @@ public class Launcher extends JFrame{
      */
     public JFrame programWindow;
     public StartMenu startMenu;
+
     public Launcher(){
         programWindow = new JFrame("CSC207 | Group 0043");
         programWindow.setSize(820, 576);
         programWindow.setResizable(false);
         programWindow.setUndecorated(false);
         programWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //make new start panel
         SystemController systemController = new SystemController();
         startMenu = new StartMenu(systemController);
         programWindow.add(startMenu);
-        //programWindow.pack();
         programWindow.setVisible(true);
 
     }

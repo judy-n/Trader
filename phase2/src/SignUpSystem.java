@@ -29,6 +29,31 @@ public class SignUpSystem {
         systemPresenter = new SystemPresenter();
     }
 
+
+    public int validateInput(String username, String email, String password, String validatePassword){
+        int invalidInput = 0;
+        if (userManager.emailExists(email)) {
+            invalidInput = 1;
+        } else if (!email.matches("[\\w]+(\\.[\\w]+)*@([a-zA-Z]+\\.)+[a-z]{2,}")) {
+            invalidInput = 2;
+        }
+        if (userManager.usernameExists(username)) {
+            invalidInput = 3;
+        } else if (!username.matches("[a-zA-Z0-9]+([_.][a-zA-Z0-9]+)*") || username.length() < 3) {
+            invalidInput = 4;
+        }
+        if (!password.matches("[\\S]{6,20}")){
+            invalidInput = 5;
+        }
+        if(!validatePassword.equals(password)){
+            invalidInput = 6;
+        }
+
+        return invalidInput;
+    }
+
+
+
     /*
      * Allows a new user to be created through user input.
      * Runs checks to ensure that usernames and emails are unique, and that login credentials

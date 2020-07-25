@@ -78,19 +78,25 @@ public class SystemController {
 //        System.exit(0);
     }
 
-    public void normalUserSignUp(){
-        NormalUser newUser = new SignUpSystem(userManager).createNewNormal();
-        new NormalDashboard(newUser, itemManager, userManager, tradeManager);
+    public int normalUserSignUp(String username, String email, String password, String validatePassword){
+        SignUpSystem signUpSystem = new SignUpSystem(userManager);
+        int invalidInput = signUpSystem.validateInput(username, email, password, validatePassword);
+        if(invalidInput==0){
+            NormalUser newUser = new SignUpSystem(userManager).createNewNormal();
+            new NormalDashboard(newUser, itemManager, userManager, tradeManager);
+        }
+        return invalidInput;
     }
 
-    public void userLogin(){
-        User currentUser = new LoginSystem(userManager).getUser();
-        if(currentUser instanceof AdminUser){
-            new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
-        } else {
-            new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
-        }
-    }
+//    public boolean userLogin(){
+//        User currentUser = new LoginSystem(userManager).getUser();
+//
+//        if(currentUser instanceof AdminUser){
+//            new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
+//        } else {
+//            new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
+//        }
+//    }
 
     public void demoUser(){
         DemoUser currentUser = new DemoUser();

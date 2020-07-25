@@ -1,8 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Lets the user choose to sign up, log in, or exit the program.
@@ -16,86 +18,198 @@ import java.io.InputStreamReader;
  */
 public class StartMenu extends JPanel {
     private SystemController systemController;
-    private JLabel background;
+    private Font font = new Font("SansSerif", Font.PLAIN, 20);
+    private String emailOrUsername;
+    private String inputtedUsername;
+    private String inputtedEmail;
+    private String inputtedPassword;
+    private String validateInputtedPassword;
+    private SystemPresenter systemPresenter;
+
     /**
      * Creates a <StartMenu></StartMenu> that lets the user choose their next course of action through user input.
      */
     public StartMenu(SystemController systemController) {
         this.systemController = systemController;
-        SystemPresenter sp = new SystemPresenter();
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        Font font = new Font("SansSerif", Font.PLAIN, 14);
+        systemPresenter = new SystemPresenter();
 
         this.setPreferredSize(new Dimension(820, 576));
-        background = new JLabel();
-        background.setBackground(Color.GRAY);
+        this.setLayout(null);
+        mainMenu();
+    }
 
-        background.setLayout(null);
+    private void mainMenu(){
         JButton login = new JButton("Log In");
         JButton signUp = new JButton("Sign Up");
         JButton demo = new JButton("Demo the Program");
         JButton endProgram = new JButton("Exit the Program");
 
-        // test
-        JButton test = new JButton("AHHHH");
 
-        initializeButton(login, 200, 40, 325, 300);
-        initializeButton(signUp, 200, 40, 675, 300);
-        initializeButton(demo, 200, 40, 512, 375);
-        initializeButton(endProgram, 200, 40, 512, 450);
+        initializeButton(login, 200, 40, 160, 190);
+        initializeButton(signUp, 200, 40, 440, 190);
+        initializeButton(demo, 200, 40, 310, 250);
+        initializeButton(endProgram, 200, 40, 310, 310);
 
-        //
-        test.setBackground(Color.BLACK);
-        test.setForeground(Color.WHITE);
-        test.setFont(font);
-        test.setSize(new Dimension(200,40));
-        test.setFocusPainted(false);
-        background.add(test);
-        test.setLocation(100, 100);
 
-        JLabel welcomeText = new JLabel();
+        JLabel welcomeText = new JLabel(systemPresenter.startMenu(1));
 
 
         welcomeText.setFont(font);
         welcomeText.setSize(new Dimension(300,40));
 
-        welcomeText.setLocation(512, 50);
-        welcomeText.setText(sp.startMenu(1));
+        welcomeText.setForeground(Color.BLACK);
 
+        this.add(welcomeText);
+        welcomeText.setLocation(310, 50);
 
-
-
-
-
-
-
-        //login.addActionListener(e -> systemController.userLogin());
-
-        //signUp.addActionListener(e -> systemController.normalUserSignUp());
-
-       //demo.addActionListener(e -> systemController.demoUser());
-
-        endProgram.addActionListener(e -> {
-            try{
-                br.close();
-                systemController.tryWriteManagers();
-                System.exit(0);
-            } catch (IOException ex){
-                sp.exceptionMessage();
-            }
+        login.addActionListener(e ->
+        {
+            this.removeAll();
+            this.revalidate();
+            getUserInfo("Login");
+            this.repaint();
         });
 
-        this.add(background);
+        signUp.addActionListener(e -> {
+            this.removeAll();
+            this.revalidate();
+            getUserInfo("Sign Up");
+            this.repaint();
+        });
+        demo.addActionListener(e -> systemController.demoUser());
+        endProgram.addActionListener(e -> {
+            systemController.tryWriteManagers();
+            System.exit(0);
+            systemPresenter.exceptionMessage();
+        });
         this.validate();
         this.repaint();
     }
+
+
 
     private void initializeButton(JButton button, int width, int height, int xPos, int yPos){
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
         button.setSize(new Dimension(width, height));
         button.setFocusPainted(false);
-        background.add(button);
+        this.add(button);
         button.setLocation(xPos, yPos);
     }
+
+    private void getUserInfo (String title){
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.setFont(font);
+        titleLabel.setSize(new Dimension(300,40));
+        titleLabel.setForeground(Color.BLACK);
+        this.add(titleLabel);
+        titleLabel.setLocation(100,50);
+
+        JButton exit = new JButton("Back");
+        initializeButton(exit, 65, 25, 20, 10);
+        exit.addActionListener(e -> {
+            this.removeAll();
+            this.revalidate();
+            mainMenu();
+            this.repaint();
+        });
+
+
+        JLabel password = new JLabel("Enter password: ");
+        JPasswordField passwordInput = new JPasswordField(50);
+        JCheckBox showPassword = new JCheckBox("Show password");
+
+        password.setSize(new Dimension(200,40));
+        showPassword.setSize(showPassword.getPreferredSize());
+
+        password.setForeground(Color.BLACK);
+        this.add(password);
+        this.add(passwordInput);
+        this.add(showPassword);
+        password.setLocation(160, 200);
+        showPassword.setLocation(460,210);
+        passwordInput.setBounds(330, 210, 120, 25);
+
+        passwordInput.addActionListener(e -> inputtedPassword = String.valueOf(passwordInput.getPassword()));
+        showPassword.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                passwordInput.setEchoChar((char) 0);
+            }else{
+                passwordInput.setEchoChar('\u2022');
+            }
+        });
+
+        if(title.equals("Login")){
+            JLabel usernameOrEmail = new JLabel("Enter username or email: ");
+            JTextField usernameEmailInput = new JTextField(50);
+            usernameOrEmail.setSize(new Dimension(200,40));
+            usernameOrEmail.setForeground(Color.BLACK);
+            this.add(usernameOrEmail);
+            this.add(usernameEmailInput);
+            usernameOrEmail.setLocation(160, 100);
+            usernameEmailInput.setBounds(330,110,120,25);
+
+            JButton login = new JButton("Login");
+            initializeButton(login, 100, 30, 450, 350);
+            login.addActionListener(e -> {
+                emailOrUsername = usernameEmailInput.getText();
+                //more methods goes here
+            });
+        }else{
+            JLabel username = new JLabel("Enter a username: ");
+            JLabel email = new JLabel("Enter an email");
+            JLabel validatePassword = new JLabel("Re-Enter password: ");
+            JTextField usernameInput = new JTextField(50);
+            JTextField emailInput = new JTextField(50);
+            JPasswordField validatePasswordInput = new JPasswordField(50);
+
+            username.setSize(new Dimension(200,40));
+            email.setSize(new Dimension(200,40));
+            validatePassword.setSize(new Dimension(200,40));
+            username.setForeground(Color.BLACK);
+            email.setForeground(Color.BLACK);
+            validatePassword.setForeground(Color.BLACK);
+
+            this.add(username);
+            this.add(email);
+            this.add(validatePassword);
+
+            this.add(usernameInput);
+            this.add(emailInput);
+            this.add(validatePasswordInput);
+
+            username.setLocation(160,100);
+            email.setLocation(160,150);
+            validatePassword.setLocation(160, 250);
+
+            usernameInput.setBounds(330,110,120,25);
+            emailInput.setBounds(330,160,120,25);
+            validatePasswordInput.setBounds(330, 260, 120, 25);
+
+
+            JButton SignUp = new JButton("Sign Up");
+            initializeButton(SignUp, 100, 30, 450, 350);
+            AtomicInteger typeInvalidInput = new AtomicInteger();
+            SignUp.addActionListener(e -> {
+                inputtedEmail = emailInput.getText();
+                inputtedUsername = usernameInput.getText();
+                inputtedPassword = String.valueOf(passwordInput.getPassword());
+                validateInputtedPassword = String.valueOf(validatePasswordInput.getPassword());
+
+                typeInvalidInput.set(systemController.normalUserSignUp(inputtedUsername,
+                        inputtedEmail, inputtedPassword, validateInputtedPassword));
+            });
+            JLabel invalid = new JLabel(systemPresenter.signUpSystem(typeInvalidInput.intValue()));
+            invalid.setForeground(Color.red);
+            this.add(invalid);
+            invalid.setLocation(330, 500);
+
+        }
+
+
+
+
+    }
+
+
 }
