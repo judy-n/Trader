@@ -52,7 +52,7 @@ public class NormalDashboard {
 
         // --------------------------- Is the Regex correct below?? ----------------------------------
         else if (!(currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
-            regex = "[0-9]";
+            regex = "[0-10]";
             sp.normalDashboard(4);
         }
 
@@ -115,13 +115,13 @@ public class NormalDashboard {
                 break;
 
             case 9:
-                // set on vacation status.
-                new AccountOnVacation(currentUser, itemManager, userManager, tradeManager);
+                // set On vacation status.
+                currentUser.onVacation();
                 break;
 
             case 10:
                 // set not on vacation status.
-                new AccountNotOnVacation(currentUser, itemManager, userManager, tradeManager);
+                currentUser.notOnVacation();
                 break;
         }
     }
