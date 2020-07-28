@@ -7,11 +7,5 @@
  * last modified 2020-07-19
  */
 
-public class DemoUser extends User {
-
-    public DemoUser(){
-        super("demo", "demo@demo.com", "123");
-
-    }
-
+public class DemoUser {
 }
