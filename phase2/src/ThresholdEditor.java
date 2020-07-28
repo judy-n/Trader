@@ -1,6 +1,7 @@
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -113,36 +114,64 @@ public class ThresholdEditor {
                     case 0:
                         break;
                     case 1:
+                        // Edits the threshold values for all future users that will be created.
                         String line1 = Files.readAllLines(Paths.get("src/thresholds.txt")).get(0);
                         String[] splitLine = line1.split(":");
                         int oldWeeklyTradeMax = Integer.parseInt(splitLine[1]);
                         sp.thresholdEditor(1, oldWeeklyTradeMax);
                         newThreshold = thresholdInputCheck();
                         editThreshold("weeklyTradeMax :", oldWeeklyTradeMax, newThreshold);
+
+                        // Edits the threshold values for all current registered users.
+                        List<NormalUser> allNormals = um.getAllNormals();
+                        for (NormalUser u: allNormals){
+                            u.setWeeklyTradeMax(newThreshold);
+                        }
                         break;
                     case 2:
+                        // Edits the threshold values for all future users that will be created.
                         String line2 = Files.readAllLines(Paths.get("src/thresholds.txt")).get(1);
                         String[] splitLine1 = line2.split(":");
                         int oldMeetingEditMax = Integer.parseInt(splitLine1[1]);
                         sp.thresholdEditor(2, oldMeetingEditMax);
                         newThreshold = thresholdInputCheck();
                         editThreshold("meetingEditMax :", oldMeetingEditMax, newThreshold);
+
+                        // Edits the threshold values for all current registered users.
+                        allNormals = um.getAllNormals();
+                        for (NormalUser u: allNormals){
+                            u.setMeetingEditMax(newThreshold);
+                        }
                         break;
                     case 3:
+                        // Edits the threshold values for all future users that will be created.
                         String line3 = Files.readAllLines(Paths.get("src/thresholds.txt")).get(2);
                         String[] splitLine2 = line3.split(":");
                         int oldLendMinimum = Integer.parseInt(splitLine2[1]);
                         sp.thresholdEditor(3, oldLendMinimum);
                         newThreshold = thresholdInputCheck();
                         editThreshold("lendMinimum :", oldLendMinimum, newThreshold);
+
+                        // Edits the threshold values for all current registered users.
+                        allNormals = um.getAllNormals();
+                        for (NormalUser u: allNormals){
+                            u.setLendMinimum(newThreshold);
+                        }
                         break;
                     case 4:
+                        // Edits the threshold values for all future users that will be created.
                         String line = Files.readAllLines(Paths.get("src/thresholds.txt")).get(3);
                         String[] splitLine3 = line.split(":");
                         int oldIncompleteMax = Integer.parseInt(splitLine3[1]);
                         sp.thresholdEditor(4, oldIncompleteMax);
                         newThreshold = thresholdInputCheck();
                         editThreshold("incompleteMax :", oldIncompleteMax, newThreshold);
+
+                        // Edits the threshold values for all current registered users.
+                        allNormals = um.getAllNormals();
+                        for (NormalUser u: allNormals){
+                            u.setIncompleteMax(newThreshold);
+                        }
                         break;
                 }
             }
