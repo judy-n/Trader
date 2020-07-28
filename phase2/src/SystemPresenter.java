@@ -822,6 +822,11 @@ public class SystemPresenter {
      */
     public void thresholdEditor(int input) {
         switch (input) {
+            case 0:
+                System.out.println("\nChoose one of the options: (0 to quit) " +
+                        "\n 1 - Edit the threshold of a specific user" +
+                        "\n 2 - Edit the threshold for all users" + choicePrompt);
+                break;
             case 1:
                 System.out.print("\nPlease enter the username of the user whose threshold you would like to change (0 to quit): ");
                 break;
@@ -885,7 +890,7 @@ public class SystemPresenter {
                 "\n 1 - view items awaiting approval" +
                 "\n 2 - view accounts to freeze" +
                 "\n 3 - view requests to unfreeze account" +
-                "\n 4 - edit a user's threshold values";
+                "\n 4 - edit threshold values";
         String menuInitAdmin = "\n 5 - add new admin to the system";
         String logoutOption = "\n 0 - log out";
 
