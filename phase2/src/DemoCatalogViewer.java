@@ -12,15 +12,13 @@ import java.io.InputStreamReader;
  * last modified 2020-07-20
  */
 public class DemoCatalogViewer {
-    private DemoUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
     private SystemPresenter systemPresenter;
     private BufferedReader bufferedReader;
 
-    public DemoCatalogViewer(DemoUser user, ItemManager im, UserManager um, TradeManager tm) {
-        currentUser = user;
+    public DemoCatalogViewer(ItemManager im, UserManager um, TradeManager tm) {
         itemManager = im;
         userManager = um;
         tradeManager = tm;
@@ -46,6 +44,6 @@ public class DemoCatalogViewer {
         }
         close();
     }
-    private void close() { new DemoDashboard(currentUser, itemManager, userManager, tradeManager); }
+    private void close() { new DemoDashboard(itemManager, userManager, tradeManager); }
 
 }

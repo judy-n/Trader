@@ -99,8 +99,7 @@ public class SystemController {
 //    }
 
     public void demoUser(){
-        DemoUser currentUser = new DemoUser();
-        new DemoDashboard(currentUser, itemManager, userManager, tradeManager);
+        new DemoDashboard(itemManager, userManager, tradeManager);
     }
 
 

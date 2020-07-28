@@ -13,7 +13,6 @@ import java.io.InputStreamReader;
 
 public class DemoDashboard {
 
-    private DemoUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
@@ -22,13 +21,11 @@ public class DemoDashboard {
     /**
      * Creates a <DemoDashboard></DemoDashboard> with the given demo user and item/user/trade managers.
      *
-     * @param user the demo user who's currently logged in
      * @param im   the system's item manager
      * @param um   the system's user manager
      * @param tm   the system's trade manager
      */
-    public DemoDashboard(DemoUser user, ItemManager im, UserManager um, TradeManager tm){
-        currentUser = user;
+    public DemoDashboard(ItemManager im, UserManager um, TradeManager tm){
         itemManager = im;
         userManager = um;
         tradeManager = tm;
@@ -55,7 +52,7 @@ public class DemoDashboard {
                 sp.exitProgram();
                 System.exit(0);
             case 1:
-                new DemoCatalogViewer(currentUser, im, um, tm);
+                new DemoCatalogViewer(im, um, tm);
                 break;
             case 2:
                 new SystemController();
