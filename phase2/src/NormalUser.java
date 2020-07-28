@@ -27,6 +27,9 @@ public class NormalUser extends User implements Serializable {
     /*status on if the user is frozen*/
     private boolean isFrozen;
 
+    /*status on if the user is on vacation */
+    private boolean isOnVacation;
+
     /*number of incomplete trades the user has*/
     private int numIncomplete;
 
@@ -41,9 +44,6 @@ public class NormalUser extends User implements Serializable {
 
     /* the maximum number of incomplete trades this user can have before their account is at risk of being frozen */
     private int incompleteMax = 5;
-
-    /*status on if the user is on vacation*/
-    private boolean isOnVacation;
 
     /**
      * Creates a <NormalUser></NormalUser> with the given username, email, and password.
@@ -371,7 +371,6 @@ public class NormalUser extends User implements Serializable {
      * @param homeCity the home city
      */
     public void setHomeCity(String homeCity) {this.homeCity = homeCity;}
-
 
 }
 
