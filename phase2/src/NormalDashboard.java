@@ -41,7 +41,7 @@ public class NormalDashboard {
 
         // user frozen and on vacation
         if ((currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
-            regex = "[0-8]";
+            regex = "[0-8]+[[10]]";
             sp.normalDashboard(2);
         }
         // --------------------------- Is the Regex correct below? ----------------------------------
@@ -52,7 +52,7 @@ public class NormalDashboard {
 
         // --------------------------- Is the Regex correct below?? ----------------------------------
         else if (!(currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
-            regex = "[0-10]";
+            regex = "[0-7]+[10]";
             sp.normalDashboard(4);
         }
 
