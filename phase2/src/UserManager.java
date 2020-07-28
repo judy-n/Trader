@@ -334,6 +334,15 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
+     * Removes the given username from the list of usernames on vacation.
+     *
+     * @param username the username of a user not on vacation
+     */
+    public void removeUsernamesOnVacation(String username) {
+        usernamesOnVacation.remove(username);
+    }
+
+    /**
      * Clears the list of usernames that are on vacation.
      */
     public void clearUsernamesOnVacation() {
