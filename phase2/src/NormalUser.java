@@ -1,4 +1,7 @@
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.Map;
  * @author Liam Huff
  * @author Yingjia Liu
  * @author Kushagra Mehta
+ * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
  * last modified 2020-07-28
@@ -34,16 +38,57 @@ public class NormalUser extends User implements Serializable {
     private int numIncomplete;
 
     /* the maximum number of transactions this user can schedule in a week */
-    private int weeklyTradeMax = 3;
+    private int weeklyTradeMax;
+
+    {
+        try {
+            String line = Files.readAllLines(Paths.get("src/thresholds.txt")).get(0);
+            String[] splitLine = line.split(":");
+            weeklyTradeMax = Integer.parseInt(splitLine[1]);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /* the maximum number of times this user may edit any of their trade's meeting details */
-    private int meetingEditMax = 3;
+    private int meetingEditMax;
 
+    {
+        try {
+            String line = Files.readAllLines(Paths.get("src/thresholds.txt")).get(1);
+            String[] splitLine = line.split(":");
+            meetingEditMax = Integer.parseInt(splitLine[1]);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /* to request a trade, this user must have lent at least lendMinimum item(s) more than they have borrowed */
-    private int lendMinimum = 1;
+    private int lendMinimum;
+    {
+        try {
+            String line = Files.readAllLines(Paths.get("src/thresholds.txt")).get(2);
+            String[] splitLine = line.split(":");
+            lendMinimum = Integer.parseInt(splitLine[1]);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /* the maximum number of incomplete trades this user can have before their account is at risk of being frozen */
-    private int incompleteMax = 5;
+    private int incompleteMax;
+    {
+        try {
+            String line = Files.readAllLines(Paths.get("src/thresholds.txt")).get(3);
+            String[] splitLine = line.split(":");
+            incompleteMax = Integer.parseInt(splitLine[1]);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Creates a <NormalUser></NormalUser> with the given username, email, and password.
