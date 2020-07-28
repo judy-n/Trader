@@ -1,0 +1,4 @@
+weeklyTradeMax :3
+meetingEditMax :3
+lendMinimum :1
+incompleteMax :5
