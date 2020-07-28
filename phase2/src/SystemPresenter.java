@@ -783,8 +783,7 @@ public class SystemPresenter {
                 "\n 6 - view most recent 3 trades" +
                 "\n 7 - view top 3 trade partners";
         String menuFrozen = "\n 8 - request to unfreeze account";
-        String menuVacation = "\n 9 - set status to on vacation" +
-                "\n 10 - change vacation status";
+        String menuVacation = "\n 9 - change vacation status";
         String logoutOption = "\n 0 - log out";
 
         switch (input) {
@@ -796,10 +795,7 @@ public class SystemPresenter {
                         menuVacation + logoutOption + choicePrompt);
                 break;
             case 9:
-                System.out.println("\nStatus of account has been set to on vacation.");
-                break;
-            case 10:
-                System.out.println("\nStatus of account has been set to Not on vacation.");
+                System.out.println("\nVacation status of account has been changed.");
                 break;
         }
     }
@@ -945,63 +941,11 @@ public class SystemPresenter {
                 "\n 1 - see all items available for trade" +
                 "\n 2 - create an account" +
                 "\n 0 - exit") + choicePrompt);
-
     }
 
     public void demoCatalogViewer(){
         System.out.print("\nTrading is unavailable for non-registered users. Enter 1 to sign up, or 0 to quit.");
         }
-
-//
-//    /**
-//     * Presents output for requesting not on vacation status
-//     * @param input int representing presenter situation
-//     */
-//    public void requestNotOnVacation(int input) {
-//        switch (input) {
-//            case 1:
-//                System.out.println("\nYou already sent an not on vacation request, please wait for it to be reviewed.");
-//                break;
-//            case 2:
-//                System.out.println("\nYour request has been sent in! Please allow some time to review it.");
-//                break;
-//        }
-//    }
-//
-//    /**
-//     * Presents output for when admin puts users not on vacation
-//     * @param notOnVacationRequests list of users requesting not on vacation
-//     */
-//    public void adminNotOnVacationRequests(List<NormalUser> notOnVacationRequests) {
-//        System.out.println("\nHere are the users that requested to put on not on vacation status:");
-//        int index = 1;
-//        for (User u : notOnVacationRequests) {
-//            System.out.println(index + ". " + u.getUsername());
-//            index++;
-//        }
-//        if (notOnVacationRequests.isEmpty()) {
-//            emptyListMessage();
-//        } else {
-//            System.out.print("\nWould you like to put any of the accounts on not on vacation status? (Y/N): ");
-//        }
-//    }
-//
-//    /**
-//     * Presents output for when admin puts users not on vacation
-//     */
-//    public void adminNotOnVacationRequests(int input) {
-//        switch (input) {
-//            case 1:
-//                System.out.print("\nEnter the index of user you would like to put on not on Vacation (0 to quit): ");
-//                break;
-//            case 2:
-//                System.out.println("\nThe user is not on vacation now!");
-//                break;
-//            case 3:
-//                System.out.println("\nFinished!");
-//                break;
-//        }
-//    }
 
     /**
      * Presents that a trade has been cancelled
