@@ -11,7 +11,7 @@ import java.util.List;
  * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-23
+ * last modified 2020-07-28
  */
 public class UserManager extends Manager implements Serializable {
     private List<NormalUser> allNormals;
