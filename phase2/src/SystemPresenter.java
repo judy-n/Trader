@@ -783,7 +783,8 @@ public class SystemPresenter {
                 "\n 6 - view most recent 3 trades" +
                 "\n 7 - view top 3 trade partners";
         String menuFrozen = "\n 8 - request to unfreeze account";
-        String menuVacation = "\n 9 - change vacation status";
+        String menuVacation = "\n 9 - set status to On vacation" +
+                "\n 10 - set status to Not On vacation";
         String logoutOption = "\n 0 - log out";
 
         switch (input) {
@@ -795,7 +796,10 @@ public class SystemPresenter {
                         menuVacation + logoutOption + choicePrompt);
                 break;
             case 9:
-                System.out.println("\nVacation status of account has been changed.");
+                System.out.println("\nStatus set to On vacation.");
+                break;
+            case 10:
+                System.out.println("\nStatus set to Not On vacation.");
                 break;
         }
     }
