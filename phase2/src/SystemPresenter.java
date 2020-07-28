@@ -783,17 +783,29 @@ public class SystemPresenter {
                 "\n 6 - view most recent 3 trades" +
                 "\n 7 - view top 3 trade partners";
         String menuFrozen = "\n 8 - request to unfreeze account";
-        String menuVacation = "\n 9 - set status to On vacation" +
-                "\n 10 - set status to Not On vacation";
+        String menuOnVacation = "\n 9 - set status to On vacation";
+        String menuNotOnVacation = "\n 10 - set status to Not On vacation";
         String logoutOption = "\n 0 - log out";
 
         switch (input) {
+            // for a user that is not frozen and not on vacation
             case 1:
-                System.out.print(menuUnfrozen + menuVacation + logoutOption + choicePrompt);
+                System.out.print(menuUnfrozen + menuOnVacation + logoutOption + choicePrompt);
                 break;
+            // for a user that is frozen and on vacation
             case 2:
                 System.out.println(frozenWarning + vacationWarning + menuUnfrozen + menuFrozen +
-                        menuVacation + logoutOption + choicePrompt);
+                        menuNotOnVacation + logoutOption + choicePrompt);
+                break;
+            // for a user that is frozen and not on vacation
+            case 3:
+                System.out.println(frozenWarning + menuUnfrozen + menuFrozen + menuOnVacation +
+                        logoutOption + choicePrompt);
+                break;
+            // for a user that is not frozen and on vacation
+            case 4:
+                System.out.println(vacationWarning + menuUnfrozen + menuFrozen +
+                        menuNotOnVacation + logoutOption + choicePrompt);
                 break;
             case 9:
                 System.out.println("\nStatus set to On vacation.");

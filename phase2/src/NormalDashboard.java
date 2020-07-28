@@ -39,12 +39,28 @@ public class NormalDashboard {
 
         String regex = "[0-7]";
 
-        if (currentUser.getIsFrozen()) {
+        // user frozen and on vacation
+        if ((currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
             regex = "[0-8]";
             sp.normalDashboard(2);
-        } else {
+        }
+        // --------------------------- Is the Regex correct below? ----------------------------------
+        else if ((currentUser.getIsFrozen()) && !(currentUser.getIsOnVacation())) {
+            regex = "[0-9]";
+            sp.normalDashboard(3);
+        }
+
+        // --------------------------- Is the Regex correct below?? ----------------------------------
+        else if (!(currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
+            regex = "[0-9]";
+            sp.normalDashboard(4);
+        }
+
+        // not frozen and not on vacation
+        else {
             sp.normalDashboard(1);
         }
+
         try {
             String temp = br.readLine();
             while (!temp.matches(regex)) {
