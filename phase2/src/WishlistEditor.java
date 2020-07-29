@@ -10,7 +10,7 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-24
+ * last modified 2020-07-28
  */
 public class WishlistEditor extends MenuItem{
     private NormalUser currentUser;
@@ -36,49 +36,49 @@ public class WishlistEditor extends MenuItem{
         itemManager = im;
         tradeManager = tm;
 
-        SystemPresenter sp = new SystemPresenter();
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        SystemPresenter systemPresenter = new SystemPresenter();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         List<Item> itemWishlist = itemManager.getApprovedItemsByIDs(currentUser.getWishlist());
-        sp.wishlistEditor(itemWishlist);
+        systemPresenter.wishlistEditor(itemWishlist);
         try {
-            String temp = br.readLine();
+            String temp = bufferedReader.readLine();
             while (!temp.matches("[1-2]")) {
-                sp.invalidInput();
-                temp = br.readLine();
+                systemPresenter.invalidInput();
+                temp = bufferedReader.readLine();
             }
             int input = Integer.parseInt(temp);
             if (input == 1) {
                 if (currentUser.getWishlist().isEmpty()) {
-                    sp.wishlistRemoveItem(1);
+                    systemPresenter.wishlistRemoveItem(1);
                 } else {
-                    sp.wishlistRemoveItem(2);
-                    String temp2 = br.readLine();
+                    systemPresenter.wishlistRemoveItem(2);
+                    String temp2 = bufferedReader.readLine();
                     while (!temp2.matches("[0-9]+") ||
                             Integer.parseInt(temp2) > itemWishlist.size() || Integer.parseInt(temp2) < 1) {
-                        sp.invalidInput();
-                        temp2 = br.readLine();
+                        systemPresenter.invalidInput();
+                        temp2 = bufferedReader.readLine();
                     }
                     int indexInput = Integer.parseInt(temp2);
                     Item selected = itemWishlist.get(indexInput - 1);
-                    sp.wishlistRemoveItem(selected.getName(), 1);
+                    systemPresenter.wishlistRemoveItem(selected.getName(), 1);
 
-                    String confirmInput = br.readLine();
+                    String confirmInput = bufferedReader.readLine();
                     while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
-                        sp.invalidInput();
-                        confirmInput = br.readLine();
+                        systemPresenter.invalidInput();
+                        confirmInput = bufferedReader.readLine();
                     }
                     if (confirmInput.equalsIgnoreCase("y")) {
                         currentUser.removeWishlist(selected.getID());
-                        sp.wishlistRemoveItem(selected.getName(), 2);
+                        systemPresenter.wishlistRemoveItem(selected.getName(), 2);
                     } else {
-                        sp.cancelled();
+                        systemPresenter.cancelled();
                     }
                 }
             }
             close();
         } catch (IOException e) {
-            sp.exceptionMessage();
+            systemPresenter.exceptionMessage();
             System.exit(-1);
         }
     }

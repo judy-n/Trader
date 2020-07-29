@@ -358,6 +358,10 @@ public class UserManager extends Manager implements Serializable {
         return usernamesOnVacation;
     }
 
+
+    // below this are basically just calls of methods in NormalUser by taking in a username
+    // trying to decrease dependency of controllers on NormalUser (?)
+
     /**
      * Setter for the home city of the normal user with the given username.
      *
@@ -397,6 +401,50 @@ public class UserManager extends Manager implements Serializable {
      */
     public boolean isRequestedInTrade(String username, long id) {
         return getNormalByUsername(username).isRequestedInTrade(id);
+    }
+
+    /**
+     * Makes a trade request using the details given and adds it to the list of trade requests
+     * for both the involved users.
+     *
+     * @param usernames the usernames of the two traders
+     * @param itemIDs the item IDs involved in the trade request
+     */
+    public void addTradeRequestBothUsers(String[] usernames, long[] itemIDs) {
+        NormalUser initiator = getNormalByUsername(usernames[0]);
+        NormalUser recipient = getNormalByUsername(usernames[1]);
+        initiator.addTradeRequest(usernames, itemIDs);
+        recipient.addTradeRequest(usernames, itemIDs);
+    }
+
+    /**
+     * Getter for the inventory of the user associated with the given username.
+     *
+     * @param username the username of the user whose inventory is being retrieved
+     * @return the given user's inventory
+     */
+    public List<Long> getNormalUserInventory(String username) {
+        return getNormalByUsername(username).getInventory();
+    }
+
+    /**
+     * Getter for the wishlist of the user associated with the given username.
+     *
+     * @param username the username of the user whose wishlist is being retrieved
+     * @return the given user's wishlist
+     */
+    public List<Long> getNormalUserWishlist(String username) {
+        return getNormalByUsername(username).getWishlist();
+    }
+
+    /**
+     * Adds the given item ID to the wishlist of the user associated with the given username.
+     *
+     * @param itemIDToAdd the item ID being added to wishlist
+     * @param username the username of the user whose wishlist is being modified
+     */
+    public void addNormalUserWishlist(long itemIDToAdd, String username) {
+        getNormalByUsername(username).addWishlist(itemIDToAdd);
     }
 }
 

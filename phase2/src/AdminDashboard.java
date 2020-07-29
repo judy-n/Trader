@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-23
+ * last modified 2020-07-28
  */
 
 public class AdminDashboard {
@@ -29,33 +29,33 @@ public class AdminDashboard {
         itemManager = im;
         userManager = um;
 
-        SystemPresenter sp = new SystemPresenter();
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        SystemPresenter systemPresenter = new SystemPresenter();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         String regex = "[0-4]";
 
-        sp.showAdminID(currentAdmin);
+        systemPresenter.showAdminID(currentAdmin);
         if (currentAdmin.getAdminID() != 1) {
-            sp.adminDashboard(1);
+            systemPresenter.adminDashboard(1);
         } else {
             regex = "[0-5]";
-            sp.adminDashboard(2);
+            systemPresenter.adminDashboard(2);
         }
         try {
             String temp;
-            temp = br.readLine();
+            temp = bufferedReader.readLine();
             while (!temp.matches(regex)) {
-                sp.invalidInput();
-                temp = br.readLine();
+                systemPresenter.invalidInput();
+                temp = bufferedReader.readLine();
             }
             input = Integer.parseInt(temp);
         } catch (IOException e) {
-            sp.exceptionMessage();
+            systemPresenter.exceptionMessage();
         }
 
         switch (input) {
             case 0:
-                sp.logoutMessage();
+                systemPresenter.logoutMessage();
                 break;
             case 1:
                 new CatalogEditor(currentAdmin, itemManager, userManager);

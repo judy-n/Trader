@@ -5,12 +5,12 @@
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-12
+ * last modified 2020-07-28
  */
 public class AdminCreator {
     private AdminUser currentAdmin;
-    private ItemManager im;
-    private UserManager um;
+    private ItemManager itemManager;
+    private UserManager userManager;
 
     /**
      * Creates an <AdminCreator></AdminCreator> with the given admin and item/user managers.
@@ -22,16 +22,16 @@ public class AdminCreator {
      */
     public AdminCreator(AdminUser user, ItemManager im, UserManager um) {
         currentAdmin = user;
-        this.im = im;
-        this.um = um;
+        itemManager = im;
+        userManager = um;
 
-        SystemPresenter sp = new SystemPresenter();
-        new SignUpSystem(um).createNewAdmin();
-        sp.adminCreator();
+        SystemPresenter systemPresenter = new SystemPresenter();
+        new SignUpSystem(userManager).createNewAdmin();
+        systemPresenter.adminCreator();
         close();
     }
 
     private void close() {
-        new AdminDashboard(currentAdmin, im, um);
+        new AdminDashboard(currentAdmin, itemManager, userManager);
     }
 }

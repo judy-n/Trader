@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-12
+ * last modified 2020-07-28
  */
 public class CatalogEditor {
     private AdminUser currentAdmin;
@@ -28,8 +28,8 @@ public class CatalogEditor {
         itemManager = im;
         userManager = um;
 
-        SystemPresenter sp = new SystemPresenter();
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        SystemPresenter systemPresenter = new SystemPresenter();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         int input;
         try {
@@ -37,27 +37,27 @@ public class CatalogEditor {
                 int max = itemManager.getNumPendingItems();
 
                 if (itemManager.getPendingItems().isEmpty()) {
-                    sp.catalogEditor(1);
+                    systemPresenter.catalogEditor(1);
                     break;
                 } else {
-                    sp.catalogEditor(itemManager.getPendingItems());
+                    systemPresenter.catalogEditor(itemManager.getPendingItems());
                 }
-                sp.catalogEditor(2);
-                String temp = br.readLine();
+                systemPresenter.catalogEditor(2);
+                String temp = bufferedReader.readLine();
                 while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > max) {
-                    sp.invalidInput();
-                    temp = br.readLine();
+                    systemPresenter.invalidInput();
+                    temp = bufferedReader.readLine();
                 }
                 input = Integer.parseInt(temp);
 
                 if (input != 0) {
                     Item i = itemManager.getPendingItem(input);
                     NormalUser itemOwner = userManager.getNormalByUsername(i.getOwnerUsername());
-                    sp.catalogEditor(i);
-                    String temp2 = br.readLine();
+                    systemPresenter.catalogEditor(i);
+                    String temp2 = bufferedReader.readLine();
                     while (!temp2.matches("[0-2]")) {
-                        sp.invalidInput();
-                        temp2 = br.readLine();
+                        systemPresenter.invalidInput();
+                        temp2 = bufferedReader.readLine();
                     }
                     int actionInput = Integer.parseInt(temp2);
                     if (actionInput == 1) {
@@ -74,7 +74,7 @@ public class CatalogEditor {
             close();
 
         } catch (IOException e) {
-            sp.exceptionMessage();
+            systemPresenter.exceptionMessage();
         }
     }
 

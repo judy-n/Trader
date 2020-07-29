@@ -93,7 +93,7 @@ public class CatalogViewer extends MenuItem{
                     } else if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < currentUser.getLendMinimum())) {
                         systemPresenter.catalogViewer(currentUser);
                     } else {
-                        startTradeAttempt(selectedItem);
+                        new TradeRequestSetup(username, userManager, itemManager, systemPresenter, bufferedReader).makeTradeRequest(selectedItem);
                     }
                 }
 
@@ -108,34 +108,6 @@ public class CatalogViewer extends MenuItem{
             systemPresenter.exceptionMessage();
         }
         close();
-    }
-
-    private void startTradeAttempt(Item selectedItem) throws IOException {
-
-        systemPresenter.catalogViewer(selectedItem, 2);
-
-        String inputConfirm = bufferedReader.readLine();
-        while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-            systemPresenter.invalidInput();
-            inputConfirm = bufferedReader.readLine();
-        }
-        if (inputConfirm.equalsIgnoreCase("Y")) {
-
-            NormalUser trader = userManager.getNormalByUsername(selectedItem.getOwnerUsername());
-            assert trader != null;
-            String[] traders = {username, trader.getUsername()};
-            long[] items = {0, selectedItem.getID()};
-            trader.addTradeRequest(traders, items);
-            currentUser.addTradeRequest(traders, items);
-            if (!currentUser.getWishlist().contains(selectedItem.getID())) {
-                currentUser.addWishlist(selectedItem.getID());
-            }
-
-            systemPresenter.catalogViewer(selectedItem, 3);
-
-        } else {
-            systemPresenter.cancelled();
-        }
     }
 
     /*

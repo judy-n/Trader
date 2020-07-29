@@ -12,7 +12,7 @@ import java.util.List;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-23
+ * last modified 2020-07-28
  */
 public class ItemManager extends Manager implements Serializable {
     private List<Item> approvedItems;
@@ -190,8 +190,8 @@ public class ItemManager extends Manager implements Serializable {
      */
     public List<Item> getApprovedItemsByIDs(List<Long> itemIDs) {
         List<Item> items = new ArrayList<>();
-        for (long l : itemIDs) {
-            items.add(getApprovedItem(l));
+        for (long id : itemIDs) {
+            items.add(getApprovedItem(id));
         }
         return items;
     }
@@ -204,8 +204,8 @@ public class ItemManager extends Manager implements Serializable {
      */
     public List<Item> getPendingItemsByIDs(List<Long> itemIDs) {
         List<Item> items = new ArrayList<>();
-        for (long l : itemIDs) {
-            items.add(getPendingItem(l));
+        for (long id : itemIDs) {
+            items.add(getPendingItem(id));
         }
         return items;
     }

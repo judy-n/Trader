@@ -12,7 +12,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-24
+ * last modified 2020-07-28
  */
 
 public class InventoryEditor extends MenuItem {
@@ -36,18 +36,18 @@ public class InventoryEditor extends MenuItem {
         userManager = um;
         tradeManager = tm;
 
-        SystemPresenter sp = new SystemPresenter();
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        SystemPresenter systemPresenter = new SystemPresenter();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         List<Item> itemInventory = itemManager.getApprovedItemsByIDs(currentUser.getInventory());
         List<Item> pendingItems = itemManager.getPendingItemsByIDs(currentUser.getPendingInventory());
 
-        sp.inventoryEditor(itemInventory, pendingItems);
+        systemPresenter.inventoryEditor(itemInventory, pendingItems);
         try {
-            String temp = br.readLine();
+            String temp = bufferedReader.readLine();
             while (!temp.matches("[1-3]")) {
-                sp.invalidInput();
-                temp = br.readLine();
+                systemPresenter.invalidInput();
+                temp = bufferedReader.readLine();
             }
             int input = Integer.parseInt(temp);
 
@@ -55,48 +55,48 @@ public class InventoryEditor extends MenuItem {
                 String itemNameInput;
                 String itemDescriptionInput;
 
-                sp.inventoryAddItem(1);
-                itemNameInput = br.readLine().trim();
+                systemPresenter.inventoryAddItem(1);
+                itemNameInput = bufferedReader.readLine().trim();
                 while (itemNameInput.length() < 3) {
-                    sp.invalidInput();
-                    itemNameInput = br.readLine().trim();
+                    systemPresenter.invalidInput();
+                    itemNameInput = bufferedReader.readLine().trim();
                 }   // item name at least 3 char long
 
-                sp.inventoryAddItem(2);
-                itemDescriptionInput = br.readLine().trim();
+                systemPresenter.inventoryAddItem(2);
+                itemDescriptionInput = bufferedReader.readLine().trim();
                 while (!itemDescriptionInput.contains(" ")) {
-                    sp.invalidInput();
-                    itemDescriptionInput = br.readLine().trim();
+                    systemPresenter.invalidInput();
+                    itemDescriptionInput = bufferedReader.readLine().trim();
                 }   // item description at least two words
 
-                sp.inventoryAddItem(3);
-                sp.inventoryAddItem(itemNameInput, itemDescriptionInput);
+                systemPresenter.inventoryAddItem(3);
+                systemPresenter.inventoryAddItem(itemNameInput, itemDescriptionInput);
 
-                String confirmInput = br.readLine();
+                String confirmInput = bufferedReader.readLine();
                 while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
-                    sp.invalidInput();
-                    confirmInput = br.readLine();
+                    systemPresenter.invalidInput();
+                    confirmInput = bufferedReader.readLine();
                 }
                 if (confirmInput.equalsIgnoreCase("Y")) {
                     long newItemID = itemManager.createItem(itemNameInput, itemDescriptionInput, currentUser.getUsername());
                     currentUser.addPendingInventory(newItemID);
 
-                    sp.inventoryAddItem(4);
+                    systemPresenter.inventoryAddItem(4);
                 } else {
-                    sp.cancelled();
+                    systemPresenter.cancelled();
                 }
             } else if (input == 2) {    /* remove item */
                 if (itemInventory.isEmpty()) {
-                    sp.inventoryRemoveItem(1);
+                    systemPresenter.inventoryRemoveItem(1);
                 } else {
-                    sp.inventoryRemoveItem(2);
-                    String temp2 = br.readLine();
+                    systemPresenter.inventoryRemoveItem(2);
+                    String temp2 = bufferedReader.readLine();
 
                     /* no (0 to quit) option */
                     while (!temp2.matches("[0-9]+") ||
                             Integer.parseInt(temp2) > itemInventory.size() || Integer.parseInt(temp2) < 1) {
-                        sp.invalidInput();
-                        temp2 = br.readLine();
+                        systemPresenter.invalidInput();
+                        temp2 = bufferedReader.readLine();
                     }
                     int indexInput = Integer.parseInt(temp2);
                     Item selectedItem = itemInventory.get(indexInput - 1);
@@ -106,15 +106,15 @@ public class InventoryEditor extends MenuItem {
                      * OR if item is in a trade that's been cancelled due to users failing to confirm the transaction
                      */
                     if (currentUser.isRequestedInTrade(selectedItem.getID())) {
-                        sp.inventoryRemoveItem(4);
+                        systemPresenter.inventoryRemoveItem(4);
                     } else if (selectedItem.getAvailability() ||
                             (!selectedItem.getAvailability() && tradeManager.getItemInCancelledTrade(selectedItem))) {
-                        sp.inventoryRemoveItem(selectedItem.getName(), indexInput, 1);
+                        systemPresenter.inventoryRemoveItem(selectedItem.getName(), indexInput, 1);
 
-                        String confirmInput = br.readLine();
+                        String confirmInput = bufferedReader.readLine();
                         while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
-                            sp.invalidInput();
-                            confirmInput = br.readLine();
+                            systemPresenter.invalidInput();
+                            confirmInput = bufferedReader.readLine();
                         }
                         if (confirmInput.equalsIgnoreCase("Y")) {
 
@@ -122,19 +122,19 @@ public class InventoryEditor extends MenuItem {
                             itemManager.getApprovedItem(selectedItem.getID()).setIsRemoved(true);
                             //don't remove from ItemManager
 
-                            sp.inventoryRemoveItem(selectedItem.getName(), 0, 2);
+                            systemPresenter.inventoryRemoveItem(selectedItem.getName(), 0, 2);
                         } else {
-                            sp.cancelled();
+                            systemPresenter.cancelled();
                         }
                     } else {
-                        sp.inventoryRemoveItem(3);
+                        systemPresenter.inventoryRemoveItem(3);
                     }
                 }
             }
             close();
 
         } catch (IOException e) {
-            sp.exceptionMessage();
+            systemPresenter.exceptionMessage();
         }
     }
 

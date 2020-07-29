@@ -34,47 +34,50 @@ public class NormalDashboard {
         userManager = um;
         tradeManager = tm;
 
-        SystemPresenter sp = new SystemPresenter();
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        SystemPresenter systemPresenter = new SystemPresenter();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         String regex = "[0-7]";
 
         // user frozen and on vacation
         if ((currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
             regex = "[0-8]+[[10]]";
-            sp.normalDashboard(2);
+            systemPresenter.normalDashboard(2);
         }
         // --------------------------- Is the Regex correct below? ----------------------------------
         else if ((currentUser.getIsFrozen()) && !(currentUser.getIsOnVacation())) {
             regex = "[0-9]";
-            sp.normalDashboard(3);
+            systemPresenter.normalDashboard(3);
         }
 
         // --------------------------- Is the Regex correct below?? ----------------------------------
+
+        // no...
+
         else if (!(currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
             regex = "[0-7]+[10]";
-            sp.normalDashboard(4);
+            systemPresenter.normalDashboard(4);
         }
 
         // not frozen and not on vacation
         else {
-            sp.normalDashboard(1);
+            systemPresenter.normalDashboard(1);
         }
 
         try {
-            String temp = br.readLine();
+            String temp = bufferedReader.readLine();
             while (!temp.matches(regex)) {
-                sp.invalidInput();
-                temp = br.readLine();
+                systemPresenter.invalidInput();
+                temp = bufferedReader.readLine();
             }
             input = Integer.parseInt(temp);
         } catch (IOException e) {
-            sp.exceptionMessage();
+            systemPresenter.exceptionMessage();
         }
 
         switch (input) {
             case 0:
-                sp.logoutMessage();
+                systemPresenter.logoutMessage();
                 break;
             case 1:
                 new CatalogViewer(currentUser, itemManager, userManager, tradeManager);
@@ -115,7 +118,7 @@ public class NormalDashboard {
                 break;
 
             case 9:
-                // set On vacation status.
+                // set on vacation status.
                 currentUser.onVacation();
                 break;
 

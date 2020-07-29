@@ -10,14 +10,14 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-24
+ * last modified 2020-07-28
  */
 public class AccountUnfreezer extends MenuItem {
     private User currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
-    private SystemPresenter sp;
+    private SystemPresenter systemPresenter;
 
     /**
      * Creates an <AccountUnfreezer></AccountUnfreezer> with the given normal user and item/user/trade managers.
@@ -34,7 +34,7 @@ public class AccountUnfreezer extends MenuItem {
         itemManager = im;
         userManager = um;
         tradeManager = tm;
-        sp = new SystemPresenter();
+        systemPresenter = new SystemPresenter();
 
         requestUnfreeze((NormalUser) currentUser);
         closeNormal();
@@ -52,7 +52,7 @@ public class AccountUnfreezer extends MenuItem {
         currentUser = user;
         itemManager = im;
         userManager = um;
-        sp = new SystemPresenter();
+        systemPresenter = new SystemPresenter();
 
         reviewUnfreezeRequests();
         closeAdmin();
@@ -61,10 +61,10 @@ public class AccountUnfreezer extends MenuItem {
     /* Sends a request to be unfrozen. */
     private void requestUnfreeze(NormalUser currentUser) {
         if (userManager.getUnfreezeRequests().contains(currentUser.getUsername())) {
-            sp.requestUnfreeze(1);
+            systemPresenter.requestUnfreeze(1);
         } else {
             userManager.addUnfreezeRequest(currentUser.getUsername());
-            sp.requestUnfreeze(2);
+            systemPresenter.requestUnfreeze(2);
         }
     }
 
@@ -73,45 +73,45 @@ public class AccountUnfreezer extends MenuItem {
      * and the admin can choose which ones to unfreeze (or none).
      */
     private void reviewUnfreezeRequests() {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         int indexInput;
         List<String> usernames = userManager.getUnfreezeRequests();
 
-        sp.adminGetUnfreezeRequests(usernames);
+        systemPresenter.adminGetUnfreezeRequests(usernames);
 
         if (!usernames.isEmpty()) {
             try {
-                String input = br.readLine();
+                String input = bufferedReader.readLine();
                 while (!input.equalsIgnoreCase("y") && !input.equalsIgnoreCase("n")) {
-                    sp.invalidInput();
-                    input = br.readLine();
+                    systemPresenter.invalidInput();
+                    input = bufferedReader.readLine();
                 }
                 if (input.equalsIgnoreCase("y")) {
                     do {
 
-                        sp.adminGetUnfreezeRequests(1);
+                        systemPresenter.adminGetUnfreezeRequests(1);
 
                         int max = userManager.getNumUnfreezeRequest();
-                        String temp = br.readLine();
+                        String temp = bufferedReader.readLine();
                         while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > max) {
-                            sp.invalidInput();
-                            temp = br.readLine();
+                            systemPresenter.invalidInput();
+                            temp = bufferedReader.readLine();
                         }
                         indexInput = Integer.parseInt(temp);
 
                         if (indexInput != 0) {
                             userManager.removeUnfreezeRequest(indexInput);
 
-                            sp.adminGetUnfreezeRequests(2);
+                            systemPresenter.adminGetUnfreezeRequests(2);
 
                             usernames = userManager.getUnfreezeRequests(); // update list
-                            sp.adminGetUnfreezeRequests(usernames); // reprint the list to update indexes
+                            systemPresenter.adminGetUnfreezeRequests(usernames); // reprint the list to update indexes
                         }
                     } while (indexInput != 0);
                 }
-                sp.adminGetUnfreezeRequests(3);
+                systemPresenter.adminGetUnfreezeRequests(3);
             } catch (IOException e) {
-                sp.exceptionMessage();
+                systemPresenter.exceptionMessage();
             }
         }
     }

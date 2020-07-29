@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-22
+ * last modified 2020-07-28
  */
 public class SignUpSystem {
     private String username;
@@ -32,27 +32,24 @@ public class SignUpSystem {
 
     public int validateInput(String username, String email, String password, String validatePassword){
         int invalidInput = 0;
-        if (userManager.emailExists(email)) {
-            invalidInput = 2;
-        } else if (!email.matches("[\\w]+(\\.[\\w]+)*@([a-zA-Z]+\\.)+[a-z]{2,}")) {
-            invalidInput = 3;
+        if(!validatePassword.equals(password)){
+            invalidInput = 10;
+        }
+        if (!password.matches("[\\S]{6,20}")){
+            invalidInput = 8;
         }
         if (userManager.usernameExists(username)) {
             invalidInput = 5;
         } else if (!username.matches("[a-zA-Z0-9]+([_.][a-zA-Z0-9]+)*") || username.length() < 3) {
             invalidInput = 6;
         }
-        if (!password.matches("[\\S]{6,20}")){
-            invalidInput = 8;
+        if (userManager.emailExists(email)) {
+            invalidInput = 2;
+        } else if (!email.matches("[\\w]+(\\.[\\w]+)*@([a-zA-Z]+\\.)+[a-z]{2,}")) {
+            invalidInput = 3;
         }
-        if(!validatePassword.equals(password)){
-            invalidInput = 10;
-        }
-
         return invalidInput;
     }
-
-
 
     /*
      * Allows a new user to be created through user input.
@@ -60,21 +57,23 @@ public class SignUpSystem {
      * follow certain rules (e.g. no spaces, at least x characters long, etc).
      */
     private void inputProcess() {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+        // email
         systemPresenter.signUpSystem(1);
         try {
-            String emailInput = br.readLine();
+            String emailInput = bufferedReader.readLine();
             boolean invalidInput;
             do {
                 invalidInput = false;
                 if (userManager.emailExists(emailInput)) {
                     invalidInput = true;
                     systemPresenter.signUpSystem(2);
-                    emailInput = br.readLine();
+                    emailInput = bufferedReader.readLine();
                 } else if (!emailInput.matches("[\\w]+(\\.[\\w]+)*@([a-zA-Z]+\\.)+[a-z]{2,}")) {
                     invalidInput = true;
                     systemPresenter.signUpSystem(3);
-                    emailInput = br.readLine();
+                    emailInput = bufferedReader.readLine();
                 }
             } while (invalidInput);
             email = emailInput;
@@ -82,20 +81,21 @@ public class SignUpSystem {
             systemPresenter.exceptionMessage();
         }
 
+        // username
         systemPresenter.signUpSystem(4);
         try {
-            String usernameInput = br.readLine();
+            String usernameInput = bufferedReader.readLine();
             boolean invalidInput;
             do {
                 invalidInput = false;
                 if (userManager.usernameExists(usernameInput)) {
                     invalidInput = true;
                     systemPresenter.signUpSystem(5);
-                    usernameInput = br.readLine();
+                    usernameInput = bufferedReader.readLine();
                 } else if (!usernameInput.matches("[a-zA-Z0-9]+([_.][a-zA-Z0-9]+)*") || usernameInput.length() < 3) {
                     invalidInput = true;
                     systemPresenter.signUpSystem(6);
-                    usernameInput = br.readLine();
+                    usernameInput = bufferedReader.readLine();
                 }
             } while (invalidInput);
             username = usernameInput;
@@ -103,24 +103,32 @@ public class SignUpSystem {
             systemPresenter.exceptionMessage();
         }
 
+        // password + password confirmation
         systemPresenter.signUpSystem(7);
         try {
-            String pwInput1 = br.readLine();
+            String pwInput1 = bufferedReader.readLine();
             while (!pwInput1.matches("[\\S]{6,20}")) {
                 systemPresenter.signUpSystem(8);
-                pwInput1 = br.readLine();
+                pwInput1 = bufferedReader.readLine();
             }
             systemPresenter.signUpSystem(9);
-            String pwInput2 = br.readLine();
+            String pwInput2 = bufferedReader.readLine();
             while (!pwInput2.equals(pwInput1)) {
                 systemPresenter.signUpSystem(10);
-                pwInput2 = br.readLine();
+                pwInput2 = bufferedReader.readLine();
             }
             password = pwInput1;
         } catch (IOException e) {
             systemPresenter.exceptionMessage();
         }
-        homeCityInputProcess(br);
+
+        // home city
+        systemPresenter.signUpSystem(13);
+        try {
+            this.homeCity = bufferedReader.readLine();
+        } catch (IOException e) {
+            systemPresenter.exceptionMessage();
+        }
     }
 
     /**
@@ -144,14 +152,4 @@ public class SignUpSystem {
         inputProcess();
         userManager.createAdminUser(username, email, password);
     }
-
-    private void homeCityInputProcess(BufferedReader bufferedReader) {
-        systemPresenter.signUpSystem(13);
-        try {
-             this.homeCity = bufferedReader.readLine();
-        } catch (IOException e) {
-            systemPresenter.exceptionMessage();
-        }
-    }
-
 }

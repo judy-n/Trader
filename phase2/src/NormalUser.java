@@ -28,13 +28,13 @@ public class NormalUser extends User implements Serializable {
     private Map<String[], long[]> tradeRequests;
     private String homeCity;
 
-    /*status on if the user is frozen*/
+    /* status true if the user is frozen */
     private boolean isFrozen;
 
-    /*status on if the user is on vacation */
+    /* status true if the user is on vacation */
     private boolean isOnVacation;
 
-    /*number of incomplete trades the user has*/
+    /* number of incomplete trades the user has */
     private int numIncomplete;
 
     /* the maximum number of transactions this user can schedule in a week */
@@ -279,8 +279,8 @@ public class NormalUser extends User implements Serializable {
     /**
      * Adds to this user's list of trade requests.
      *
-     * @param usernames an array containing the usernames of the two traders
-     * @param itemIDs   an array containing the item IDs involved in the trade request
+     * @param usernames the usernames of the two traders
+     * @param itemIDs   the item IDs involved in the trade request
      */
     public void addTradeRequest(String[] usernames, long[] itemIDs) {
         tradeRequests.put(usernames, itemIDs);
@@ -409,13 +409,17 @@ public class NormalUser extends User implements Serializable {
      * Getter for this user's homecity
      * @return this user's homecity
      */
-    public String getHomeCity() {return homeCity;}
+    public String getHomeCity() {
+        return homeCity;
+    }
 
     /**
      * Setter for the homecity of NormalUser
      * @param homeCity the home city
      */
-    public void setHomeCity(String homeCity) {this.homeCity = homeCity;}
+    public void setHomeCity(String homeCity) {
+        this.homeCity = homeCity;
+    }
 
 }
 

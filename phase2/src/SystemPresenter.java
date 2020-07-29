@@ -11,22 +11,30 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-28
+ * last modified 2020-07-29
  */
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
 
     /**
-     * Opens menus for logging in, singing up, or closing the program based on user input
+     * Returns labels for elements on the very first page seen by the user when the program is run.
      *
-     * @param input The input either 1, 2, or 3.
+     * @param input the case corresponding to the string being retrieved
      * @return the string to display
      */
     public String startMenu(int input) {
         switch (input) {
             case 1:
-                return ("----- WELCOME -----");
+                return ("WELCOME");
             case 2:
+                return ("Log in");
+            case 3:
+                return ("Sign up");
+            case 4:
+                return ("Demo our program");
+            case 5:
+                return ("Exit the program");
+            case 6:
                 return ("Exiting the program. Hope to see you again soon!");
             default:
                 return null;
@@ -34,42 +42,42 @@ public class SystemPresenter {
     }
 
     /**
-     * Prompt based system for signing up a user based on the user's input
+     * Returns labels for elements on the sign-up page.
      *
-     * @param input the user's input
-     * @return invalid input type
+     * @param input the case associated with the string being retrieved
+     * @return the string to display
      */
     public String signUpSystem(int input) {
         switch (input) {
             case 0:
                 return ("\n--- Sign-up ---");
             case 1:
-                return("\nPlease enter an email: ");
+                return ("\nPlease enter an email: ");
             case 2:
                 return ("\nEmail is already associated with an account! Please enter a different email.");
             case 3:
-                return("\nThat's not an email address! Please enter a valid email.");
+                return ("\nThat's not an email address! Please enter a valid email.");
             case 4:
-                return("\nPlease enter an username" +
+                return ("\nPlease enter an username" +
                         "\n(at least 3 characters, only numbers/letters or an underscore/period between them): ");
             case 5:
-                return("\nUsername already exists! Please enter a different username.");
+                return ("\nUsername already exists! Please enter a different username.");
             case 6:
-                return("\nInvalid username. Please try again.");
+                return ("\nInvalid username. Please try again.");
             case 7:
-                return("\nPlease enter a password (6-20 characters): ");
+                return ("\nEnter a password (6-20 characters):");
             case 8:
-                return("\nInvalid password. Please try again.");
+                return ("\nInvalid password. Please try again.");
             case 9:
-                return("\nPlease verify your password.");
+                return ("\nConfirm your password:");
             case 10:
-                return("\nPasswords do not match. Please try again.");
+                return ("\nPasswords do not match. Please try again.");
             case 11:
-                return("\n Thank you for signing up! \n You are now logged in.");
+                return ("\n Thank you for signing up! \n You are now logged in.");
             case 12:
-                return("\n--- New Admin ---");
+                return ("\n--- New Admin ---");
             case 13:
-                return("\nPlease enter a home city: ");
+                return ("\nPlease enter a home city: ");
             default:
                 return null;
         }
@@ -102,42 +110,6 @@ public class SystemPresenter {
         }
     }
 
-    //helper method that prints inventory + pending
-    private void presentInventory(List<Item> itemInventory, List<Item> pendingItems) {
-        System.out.println("\n-- Your inventory --");
-        if (itemInventory.isEmpty()) {
-            emptyListMessage();
-        }
-        for (Item i : itemInventory) {
-            System.out.println((itemInventory.indexOf(i) + 1) + ". " + i);
-        }
-
-        System.out.println("\n-- Items awaiting approval --");
-        if (pendingItems.isEmpty()) {
-            emptyListMessage();
-        }
-        for (Item i : pendingItems) {
-            System.out.println("- " + i);
-        }
-    }
-
-    //helper method that prints wishlist
-    private void presentWishlist(List<Item> itemWishlist) {
-        System.out.println("\n-- Your wishlist --");
-        if (itemWishlist.isEmpty()) {
-            emptyListMessage();
-        }
-        int index = 1;
-        for (Item i : itemWishlist) {
-            if (i.isInInventory()) {
-                System.out.println(index + ". " + i);
-            } else {
-                System.out.println(index + ". " + i + " (item has been removed from its owner's inventory)");
-            }
-            index++;
-        }
-    }
-
     /**
      * Prompts for if a user would like to edit their inventory
      *
@@ -145,7 +117,10 @@ public class SystemPresenter {
      * @param pendingItems  THe pending inventory of the user
      */
     public void inventoryEditor(List<Item> itemInventory, List<Item> pendingItems) {
-        presentInventory(itemInventory, pendingItems);
+        System.out.println("\n-- Your inventory --");
+        presentAllItems(itemInventory, false);
+        System.out.println("\n-- Items awaiting approval --");
+        presentAllItems(pendingItems, false);
         System.out.println("\n   Choose one of the options: " +
                 "\n   1 - Add an item to inventory" +
                 "\n   2 - Remove item from inventory" +
@@ -205,8 +180,8 @@ public class SystemPresenter {
                 System.out.println("\nYou may not remove this item as it is currently involved in a trade.");
                 break;
             case 4:
-                System.out.println("\nYou may not remove this item as it has been requested by one or more other users." +
-                        "\nPlease reject their requests before attempting to remove this item again.");
+                System.out.println("\nYou may not remove this item as it is involved in one or more trade requests." +
+                        "\nPlease make sure these requests have been rejected before attempting to remove this item again.");
                 break;
         }
     }
@@ -232,7 +207,8 @@ public class SystemPresenter {
      * @param itemWishlist the user's wishlist
      */
     public void wishlistEditor(List<Item> itemWishlist) {
-        presentWishlist(itemWishlist);
+        System.out.println("\n-- Your wishlist --");
+        presentAllItems(itemWishlist, true);
         System.out.println("\n   Choose one of the options:" +
                 "\n   1 - Remove item from wishlist" +
                 "\n   2 - Cancel ");
@@ -279,7 +255,7 @@ public class SystemPresenter {
      */
     public void catalogViewer(List<Item> approvedItems) {
         System.out.println("\nThese are all the items available for trade:");
-        presenterAllItems(approvedItems);
+        presentAllItems(approvedItems, true);
     }
 
     /**
@@ -334,11 +310,7 @@ public class SystemPresenter {
                 System.out.print("\nYou have chosen: [" + item + "]\n Would you like to 1) trade or 2) wishlist this item? (0 to cancel): ");
                 break;
             case 2:
-                System.out.print("\nAre you sure you want to trade for this item with user < " + item.getOwnerUsername() + "? (Y/N): ");
-                break;
-            case 3:
-                System.out.println("\nYour request to borrow [" + item + "] has been sent to < " + item.getOwnerUsername() +
-                        "\nIf this item was not already in your wishlist, it has automatically been added.");
+                System.out.print("\nAre you sure you want to trade for this item with user " + item.getOwnerUsername() + "? (Y/N): ");
                 break;
         }
     }
@@ -350,7 +322,7 @@ public class SystemPresenter {
      */
     public void catalogEditor(List<Item> pendingItems) {
         System.out.println("\nThese are all the items waiting for approval:");
-        presenterAllItems(pendingItems);
+        presentAllItems(pendingItems, true);
     }
 
     /**
@@ -379,17 +351,20 @@ public class SystemPresenter {
         System.out.print("Would you like to 1) approve or 2) reject this item? (0 to quit): ");
     }
 
-    /**
-     * Presents all items in a list of items to the user
-     * @param items a list of items
+    /*
+     * Presents all given items in a numbered list.
+     * Also presents all items with their owner's username iff withOwner is true.
      */
-    private void presenterAllItems(List<Item> items) {
+    private void presentAllItems(List<Item> items, boolean withOwner) {
         if (items.isEmpty()) {
             emptyListMessage();
         } else {
             int index = 1;
             for (Item i : items) {
-                System.out.println(index + ". " + i + " by " + i.getOwnerUsername());
+                System.out.println(index + ". " + i);
+                if (withOwner) {
+                    System.out.println("     added by " + i.getOwnerUsername());
+                }
                 index++;
             }
         }
@@ -397,6 +372,7 @@ public class SystemPresenter {
 
     /**
      * Presents all the usernames of all NormalUsers which can be frozen to the user
+     *
      * @param usernames the usernames of the NormalUsers
      */
     public void accountFreezer(List<String> usernames) {
@@ -422,6 +398,7 @@ public class SystemPresenter {
 
     /**
      * Presents whether or not a request to unfreeze their account has been confirmed, based off an input
+     *
      * @param input the input
      */
     public void requestUnfreeze(int input) {
@@ -456,6 +433,7 @@ public class SystemPresenter {
 
     /**
      * Presents admin with information about unfreeze requests based on an input
+     *
      * @param input the input
      */
     public void adminGetUnfreezeRequests(int input) {
@@ -474,6 +452,7 @@ public class SystemPresenter {
 
     /**
      * Presents user with trade request related text based off an input
+     *
      * @param input the input
      */
     public void tradeRequestViewer(int input) {
@@ -490,17 +469,11 @@ public class SystemPresenter {
             case 4:
                 System.out.print("\nPlease suggest a date and time using the given format (YYYY/MM/DD-hh:mm): ");
                 break;
-            case 5:
-                System.out.print("Would you like any item in their inventory? Enter the item's index (0 if not): ");
-                break;
             case 6:
-                System.out.print("\nWould you like to make a 1) permanent or 2) temporary trade?: ");
-                break;
-            case 7:
-                System.out.println("\nThe other user currently has no items available for trade, so you cannot borrow anything from them.");
+                System.out.print("\nWould you like to make this a 1) permanent or 2) temporary trade?: ");
                 break;
             case 8:
-                System.out.println("\nThe item that this user wants to borrow is currently being lent to someone else!");
+                System.out.println("\nOne of the items involved in this request is currently being lent to someone else!");
                 break;
             case 9:
                 System.out.println("\nTrade request has been rejected.");
@@ -509,35 +482,32 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents an inventory of items from the trade initiator to the user
-     * @param items the inventory of items
-     */
-    public void tradeRequestViewer(List<Item> items) {
-        //for viewing initiator's inventory
-        System.out.println("\nTheir inventory:");
-        presenterAllItems(items);
-    }
-
-    /**
      * Presents text based on input relating to specifics about trades
      *
-     * @param input the input
-     * @param owner the user who owns the item to be traded
-     * @param itemName the name of the item to be traded
+     * @param input    the input
+     * @param sender    the user who sent the trade request
+     * @param itemNames the name of the items to be traded;
+     *                  index 0 - item owned by the sender, index 1 - item owned by the recipient
      */
-    public void tradeRequestViewer(int input, String owner, String itemName) {
+    public void tradeRequestViewer(int input, String sender, String[] itemNames) {
         switch (input) {
             case 1:
-                System.out.print("\nAre you sure you want to lend [" + itemName + "] to " + owner + " in a one-way or two-way trade? (Y/N): ");
+                if (itemNames[0].equals("")) {
+                    System.out.print("\nAre you sure you want to lend [" + itemNames[1] + "] to " + sender +
+                            " in a one-way trade? (Y/N): ");
+                } else {
+                    System.out.print("\nAre you sure you want to trade [" + itemNames[1] + "] for [" +
+                            itemNames[0] + "] with" + sender + " in a two-way? (Y/N): ");
+                }
                 break;
             case 2:
-                System.out.println("\nInitiating trade with " + owner);
+                System.out.println("\nInitiating trade with " + sender + "...");
                 break;
             case 3:
-                System.out.print("\nWould you like to 1) accept, or 2) reject " + owner + "'s request?: ");
+                System.out.print("\nWould you like to 1) accept, or 2) reject " + sender + "'s request?: ");
                 break;
             case 4:
-                System.out.print("\nAre you sure you want to reject " + owner + "'s request? (Y/N): ");
+                System.out.print("\nAre you sure you want to reject " + sender + "'s request? (Y/N): ");
                 break;
         }
 
@@ -545,63 +515,65 @@ public class SystemPresenter {
 
     /**
      * Presents requested and received trades to a user, based off an input
-     * @param input the input
-     * @param items the items in the request
-     * @param owners the owners of the items in the request
+     *
+     * @param input  the input
+     * @param itemNames  the names of items in the requests
+     * @param users the senders or recipients of the requests
      */
-    public void tradeRequestViewer(int input, List<Item> items, List<String> owners) {
+    public void tradeRequestViewer(int input, List<String[]> itemNames, List<String> users) {
         switch (input) {
             case 1:
                 System.out.println("\nHere are all the trade requests you sent:");
-                presentInitiatedTradeRequests(items, owners);
+                presentInitiatedTradeRequests(itemNames, users);
                 break;
             case 2:
                 System.out.println("\nHere are all the trade requests you received:");
-                presentReceivedTradeRequests(items, owners);
-
+                presentReceivedTradeRequests(itemNames, users);
                 break;
         }
     }
 
     /**
      * Presents trade requests user has initiated
-     * @param items the items in the initiated trade requests
-     * @param users the users in the initiated trade requests
+     *
+     * @param itemNames the names of the items in the initiated trade requests
+     * @param recipients the recipients of the initiated trade requests
      */
-    private void presentInitiatedTradeRequests(List<Item> items, List<String> users) {
+    private void presentInitiatedTradeRequests(List<String[]> itemNames, List<String> recipients) {
         int index = 1;
-        for (Item i : items) {
-            if (i.getAvailability()) {
-                System.out.println(index + ". Trade for [" + i.getName() + "] sent to " + users.get(index - 1));
+        for (String[] i : itemNames) {
+            if (i[0].equals("")) {
+                System.out.println(index + ". One-way trade for [" + i[1] + "] sent to " + recipients.get(index - 1));
             } else {
-                System.out.println(index + ". Trade for [" + i.getName() + "] sent to " + users.get(index - 1) +
-                        "\n    (their item is currently lent out to someone else)");
+                System.out.println(index + ". Two-way trade lending [" + i[0] +
+                        "] for [" + i[1] + "] sent to " + recipients.get(index - 1));
             }
             index++;
         }
-        if (items.isEmpty()) {
+        if (itemNames.isEmpty()) {
             System.out.println("You don't have any sent trade requests waiting for approval.");
         }
     }
 
     /**
      * Presents trade requests user has received
-     * @param items the items in the received trade requests
-     * @param users the users in the received trade requests
+     *
+     * @param itemNames the names of the items in the received trade requests
+     * @param senders the senders the received trade requests
      */
-    private void presentReceivedTradeRequests(List<Item> items, List<String> users) {
+    private void presentReceivedTradeRequests(List<String[]> itemNames, List<String> senders) {
         int index = 1;
-        for (Item i : items) {
-            if (i.getAvailability()) {
-                System.out.println(index + ". Trade for [" + i.getName() + "] from " + users.get(index - 1));
+        for (String[] i : itemNames) {
+            if (i[0].equals("")) {
+                System.out.println(index + ". One-way trade asking for [" + i[1] + "] sent from " + senders.get(index - 1));
             } else {
-                System.out.println(index + ". Trade for [" + i.getName() + "] from " + users.get(index - 1) +
-                        "\n    (your item is currently lent out to someone else)");
+                System.out.println(index + ". Two-way trade asking for [" + i[1] +
+                        "] in return for [" + i[0] + "] sent from " + senders.get(index - 1));
             }
             index++;
         }
-        if (items.isEmpty()) {
-            System.out.println("You haven't received any trade requests yet.");
+        if (itemNames.isEmpty()) {
+            System.out.println("You haven't received any trade requests yet");
         } else {
             System.out.print("\nWould you like to accept/reject any of these requests? Enter the request's index (0 to quit): ");
         }
@@ -609,6 +581,7 @@ public class SystemPresenter {
 
     /**
      * Presents information relating to a user's ongoing trades, based off an input
+     *
      * @param input the input
      */
     public void ongoingTrades(int input) {
@@ -685,9 +658,10 @@ public class SystemPresenter {
 
     /**
      * Presents information regarding an ongoing trade to a user, based off a situation
+     *
      * @param situation the input situation
-     * @param meeting the meeting time of the trade
-     * @param trade the trade
+     * @param meeting   the meeting time of the trade
+     * @param trade     the trade
      */
     public void ongoingTrades(int situation, LocalDateTime meeting, Trade trade) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -718,7 +692,8 @@ public class SystemPresenter {
 
     /**
      * Presents the number of edits a user has made, and if they are on their final edit
-     * @param numEdits the number of edits the user has made
+     *
+     * @param numEdits    the number of edits the user has made
      * @param isFinalEdit true iff this is the user's final edit
      */
     public void ongoingTrades(int numEdits, boolean isFinalEdit) {
@@ -730,9 +705,10 @@ public class SystemPresenter {
 
     /**
      * Presents all ongoing trades to a user
+     *
      * @param ongoingTrades the list of ongoing trades
-     * @param tradeItems the items involved the trades
-     * @param username the username of the user
+     * @param tradeItems    the items involved the trades
+     * @param username      the username of the user
      */
     public void ongoingTrades(List<Trade> ongoingTrades, List<Item[]> tradeItems, String username) {
         System.out.println("\nHere are all your ongoing trades:");
@@ -768,6 +744,7 @@ public class SystemPresenter {
 
     /**
      * Presents a dashboard to a user, and prints information based on an input
+     *
      * @param input the input
      */
     public void normalDashboard(int input) {
@@ -818,6 +795,7 @@ public class SystemPresenter {
 
     /**
      * Presents a threshold editor to the AdminUser, based on an input
+     *
      * @param input the input
      */
     public void thresholdEditor(int input) {
@@ -842,7 +820,8 @@ public class SystemPresenter {
 
     /**
      * Presents information about a user's threshold data to an admin user, based on an input
-     * @param input the input
+     *
+     * @param input        the input
      * @param oldThreshold the threshold of a user (before edits)
      */
     public void thresholdEditor(int input, int oldThreshold) {
@@ -875,6 +854,7 @@ public class SystemPresenter {
 
     /**
      * Presents an admin user's ID
+     *
      * @param user The AdminUser
      */
     public void showAdminID(AdminUser user) {
@@ -883,6 +863,7 @@ public class SystemPresenter {
 
     /**
      * Presents the AdminDashboard, based off an input
+     *
      * @param input the input
      */
     public void adminDashboard(int input) {
@@ -907,12 +888,13 @@ public class SystemPresenter {
     /**
      * presents string for when all users in list are on vacation
      */
-    public void accountsOnVacation(){
+    public void accountsOnVacation() {
         System.out.println("All accounts on vacation!");
     }
 
     /**
      * Presents vacation accounts' command options
+     *
      * @param usernames usernames of users on vacation
      */
     public void accountsOnVacation(List<String> usernames) {
@@ -932,12 +914,13 @@ public class SystemPresenter {
     /**
      * presents string for when all users in list are not on vacation
      */
-    public void accountsNotOnVacation(){
+    public void accountsNotOnVacation() {
         System.out.println("All accounts not on vacation!");
     }
 
     /**
      * Presents vacation accounts' command options
+     *
      * @param usernames usernames of users not on vacation
      */
     public void accountsNotOnVacation(List<String> usernames) {
@@ -957,16 +940,62 @@ public class SystemPresenter {
     /**
      * Presents the demo dashboard.
      */
-    public void demoDashboard(){
+    public void demoDashboard() {
         System.out.println(("\nWhat would you like to do:" +
                 "\n 1 - see all items available for trade" +
                 "\n 2 - create an account" +
                 "\n 0 - exit") + choicePrompt);
     }
 
-    public void demoCatalogViewer(){
-        System.out.print("\nTrading is unavailable for non-registered users. Enter 1 to sign up, or 0 to quit.");
+    public void demoCatalogViewer() {
+        System.out.print("\nTrading is unavailable for non-registered users. Enter 1 to sign up, or 0 to return to dashboard:");
+    }
+
+    /**
+     * Presents prompts and other info for <TradeRequestSetup></TradeRequestSetup>.
+     *
+     * @param input the case associated with the string to display
+     */
+    public void tradeRequestSetup(int input) {
+        switch (input) {
+            case 1:
+                System.out.print("Would you like us to suggest items to lend to the other user? (Y/N): ");
+                break;
+            case 2:
+                System.out.println("\nUh oh! We couldn't find any items that the other user might want to borrow from you." +
+                        "\nInstead, choose any item from your inventory or make it a one-way trade below.");
+                break;
         }
+    }
+
+    /**
+     * Presents the given list of items when making a trade request.
+     *
+     * @param itemList the list of items to be displayed
+     * @param input the case associated with which list to display
+     */
+    public void tradeRequestSetup(List<Item> itemList, int input) {
+        switch(input) {
+            case 1:
+                System.out.println("These are all the items you can currently lend out that the other user might want to borrow:");
+                break;
+            case 2:
+                System.out.println("Here are all your items currently available for trade:");
+                break;
+        }
+        presentAllItems(itemList, false);
+        System.out.print("Enter the index of the item you'd like to lend (0 to not lend anything): ");
+    }
+
+    /**
+     * Presents a message that lets the user know their trade request was successfully created and sent out.
+     *
+     * @param username the username of recipient of the trade request
+     */
+    public void tradeRequestSetup(String username) {
+        System.out.println("\nYour request to trade has been sent to " + username + "!" +
+                "\nIf this item was not already in your wishlist, it has automatically been added.");
+    }
 
     /**
      * Presents that a trade has been cancelled
@@ -985,9 +1014,10 @@ public class SystemPresenter {
 
     /**
      * Presents errors based on a type and a process, based off an input
-     * @param input the input
+     *
+     * @param input   the input
      * @param process the process
-     * @param type the type of error
+     * @param type    the type of error
      */
     public void exceptionMessage(int input, String process, String type) {
         switch (input) {
@@ -1034,7 +1064,7 @@ public class SystemPresenter {
     /**
      * Presents an exit message when user exits the program
      */
-    public void exitProgram(){
+    public void exitProgram() {
         System.out.println("\nExiting... Thank you for using our program!");
     }
 

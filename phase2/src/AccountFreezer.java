@@ -10,7 +10,7 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-13
+ * last modified 2020-07-28
  */
 public class AccountFreezer {
     private AdminUser currentAdmin;
@@ -30,25 +30,25 @@ public class AccountFreezer {
         itemManager = im;
         userManager = um;
 
-        SystemPresenter sp = new SystemPresenter();
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        SystemPresenter systemPresenter = new SystemPresenter();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         String input;
         List<String> usernames = userManager.getUsernamesToFreeze();
         List<NormalUser> users = new ArrayList<>();
 
-        sp.accountFreezer(usernames);
+        systemPresenter.accountFreezer(usernames);
         for (String username : usernames) {
             users.add(userManager.getNormalByUsername(username));
         }
 
         if (!usernames.isEmpty()) {
             try {
-                input = br.readLine();
+                input = bufferedReader.readLine();
                 while (!input.equalsIgnoreCase("y") && !input.equalsIgnoreCase("n")) {
-                    sp.invalidInput();
-                    input = br.readLine();
-                    sp.accountFreezer();
+                    systemPresenter.invalidInput();
+                    input = bufferedReader.readLine();
+                    systemPresenter.accountFreezer();
                 }
                 if (input.equalsIgnoreCase("y")) {
                     for (NormalUser u : users) {
@@ -57,7 +57,7 @@ public class AccountFreezer {
                     userManager.clearUsernamesToFreeze();
                 }
             } catch (IOException e) {
-                sp.exceptionMessage();
+                systemPresenter.exceptionMessage();
             }
         }
         close();

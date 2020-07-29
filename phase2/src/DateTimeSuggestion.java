@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-08
- * last modified 2020-07-12
+ * last modified 2020-07-28
  */
 public class DateTimeSuggestion {
     private NormalUser currentUser;
     private TradeManager tradeManager;
-    private SystemPresenter sp;
+    private SystemPresenter systemPresenter;
     private final String dateFormat = "yyyy/MM/dd";
     private String[] dateTime;
     private String[] date;
@@ -34,7 +34,7 @@ public class DateTimeSuggestion {
     public DateTimeSuggestion(NormalUser user, TradeManager tm) {
         currentUser = user;
         tradeManager = tm;
-        sp = new SystemPresenter();
+        systemPresenter = new SystemPresenter();
     }
 
     /**
@@ -46,22 +46,22 @@ public class DateTimeSuggestion {
      * @throws IOException when an IO error occurs while user input is being read
      */
     public LocalDateTime suggestDateTime() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         LocalDateTime time;
         int tradesInWeek;
         do {
-            String timeSuggestion = br.readLine().trim();
+            String timeSuggestion = bufferedReader.readLine().trim();
             boolean isValid = checkDateTime(timeSuggestion);
             while (!isValid) {
-                sp.invalidInput();
-                timeSuggestion = br.readLine().trim();
+                systemPresenter.invalidInput();
+                timeSuggestion = bufferedReader.readLine().trim();
                 isValid = checkDateTime(timeSuggestion);
             }
             time = LocalDateTime.of(getYear(), getMonth(),
                     getDay(), getHour(), getMinute());
             tradesInWeek = tradeManager.getNumMeetingsThisWeek(currentUser.getUsername(), time.toLocalDate());
             if (tradesInWeek >= currentUser.getWeeklyTradeMax()) {
-                sp.failedSuggestion();
+                systemPresenter.failedSuggestion();
             }
         } while (tradesInWeek >= currentUser.getWeeklyTradeMax());
         return time;

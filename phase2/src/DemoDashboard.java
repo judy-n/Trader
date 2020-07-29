@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-19
- * last modified 2020-07-20
+ * last modified 2020-07-28
  */
 
 public class DemoDashboard {
@@ -30,26 +30,26 @@ public class DemoDashboard {
         userManager = um;
         tradeManager = tm;
 
-        SystemPresenter sp = new SystemPresenter();
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        SystemPresenter systemPresenter = new SystemPresenter();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        sp.demoDashboard();
+        systemPresenter.demoDashboard();
 
         try {
             String temp;
-            temp = br.readLine();
+            temp = bufferedReader.readLine();
             while (!temp.matches("[0-2]")) {
-                sp.invalidInput();
-                temp = br.readLine();
+                systemPresenter.invalidInput();
+                temp = bufferedReader.readLine();
             }
             input = Integer.parseInt(temp);
         } catch (IOException e) {
-            sp.exceptionMessage();
+            systemPresenter.exceptionMessage();
         }
 
         switch (input) {
             case 0:
-                sp.exitProgram();
+                systemPresenter.exitProgram();
                 System.exit(0);
             case 1:
                 new DemoCatalogViewer(im, um, tm);

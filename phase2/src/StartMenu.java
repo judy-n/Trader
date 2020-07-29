@@ -39,10 +39,10 @@ public class StartMenu extends JPanel {
     }
 
     private void mainMenu(){
-        JButton login = new JButton("Log In");
-        JButton signUp = new JButton("Sign Up");
-        JButton demo = new JButton("Demo the Program");
-        JButton endProgram = new JButton("Exit the Program");
+        JButton login = new JButton(systemPresenter.startMenu(2));
+        JButton signUp = new JButton(systemPresenter.startMenu(3));
+        JButton demo = new JButton(systemPresenter.startMenu(4));
+        JButton endProgram = new JButton(systemPresenter.startMenu(5));
 
 
         initializeButton(login, 200, 40, 160, 190);

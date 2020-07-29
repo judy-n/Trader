@@ -124,7 +124,7 @@ public class Item implements Serializable {
         if (isAvailable) {
             return name + ": " + description;
         } else {
-            return name + ": " + description + ("   (currently unavailable)");
+            return name + ": " + description + ("   (currently unavailable for trade)");
         }
     }
 }

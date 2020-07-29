@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,7 +14,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-24
+ * last modified 2020-07-28
  */
 public class OngoingTradesViewer extends MenuItem {
     private NormalUser currentUser;
@@ -38,8 +37,8 @@ public class OngoingTradesViewer extends MenuItem {
         userManager = um;
         tradeManager = tm;
 
-        SystemPresenter sp = new SystemPresenter();
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        SystemPresenter systemPresenter = new SystemPresenter();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         int indexInput;
         int choiceInput;
@@ -55,13 +54,13 @@ public class OngoingTradesViewer extends MenuItem {
             tradeItems.add(tempItems);
         }
 
-        sp.ongoingTrades(ongoingTrades, tradeItems, currUsername);
+        systemPresenter.ongoingTrades(ongoingTrades, tradeItems, currUsername);
 
         if (!ongoingTrades.isEmpty()) {
             try {
-                String temp = br.readLine();
+                String temp = bufferedReader.readLine();
                 while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > ongoingTrades.size()) {
-                    temp = br.readLine();
+                    temp = bufferedReader.readLine();
                 }
                 indexInput = Integer.parseInt(temp);
 
@@ -72,12 +71,12 @@ public class OngoingTradesViewer extends MenuItem {
                     if (!selected.getHasAgreedMeeting1()) {
 
                         /* print latest meeting suggestion */
-                        sp.ongoingTrades(1, selected.getMeetingDateTime1(), selected);
+                        systemPresenter.ongoingTrades(1, selected.getMeetingDateTime1(), selected);
 
                     } else {
 
                         /* print first meeting details */
-                        sp.ongoingTrades(2, selected.getMeetingDateTime1(), selected);
+                        systemPresenter.ongoingTrades(2, selected.getMeetingDateTime1(), selected);
 
                     }
                     if (selected instanceof TemporaryTrade) {
@@ -85,16 +84,16 @@ public class OngoingTradesViewer extends MenuItem {
                         if (tempSelected.hasSecondMeeting()) {
 
                             /* print second meeting details */
-                            sp.ongoingTrades(3, tempSelected.getMeetingDateTime2(), selected);
+                            systemPresenter.ongoingTrades(3, tempSelected.getMeetingDateTime2(), selected);
 
                         }
                     }
 
-                    sp.ongoingTrades(1);
+                    systemPresenter.ongoingTrades(1);
 
-                    String temp2 = br.readLine();
+                    String temp2 = bufferedReader.readLine();
                     while (!temp.matches("[1-5]")) {
-                        temp2 = br.readLine();
+                        temp2 = bufferedReader.readLine();
                     }
                     choiceInput = Integer.parseInt(temp2);
 
@@ -105,36 +104,36 @@ public class OngoingTradesViewer extends MenuItem {
 
                             /* can't edit if already agreed upon */
                             if (selected.getHasAgreedMeeting1()) {
-                                sp.ongoingTrades(12);
+                                systemPresenter.ongoingTrades(12);
                                 break;
                             }
 
                             /* can't edit if latest suggestion is yours */
                             if (selected.getLastEditor().equals(currUsername)) {
-                                sp.ongoingTrades(6);
+                                systemPresenter.ongoingTrades(6);
                                 break;
                             }
 
                             int editCount = selected.getUserEditCount1(currUsername);
                             int editMax = currentUser.getMeetingEditMax();
                             if (editCount < editMax) {
-                                sp.ongoingTrades(editCount, (editCount + 1 == editMax));
-                                sp.ongoingTrades(7);
+                                systemPresenter.ongoingTrades(editCount, (editCount + 1 == editMax));
+                                systemPresenter.ongoingTrades(7);
 
                                 LocalDateTime time = new DateTimeSuggestion(currentUser, tradeManager).suggestDateTime();
 
-                                sp.ongoingTrades(8);
-                                String placeSuggestion = br.readLine();
+                                systemPresenter.ongoingTrades(8);
+                                String placeSuggestion = bufferedReader.readLine();
                                 while (placeSuggestion.isEmpty()) {
-                                    sp.invalidInput();
-                                    placeSuggestion = br.readLine();
+                                    systemPresenter.invalidInput();
+                                    placeSuggestion = bufferedReader.readLine();
                                 }
                                 selected.setMeetingDateTime1(time);
                                 selected.setMeetingLocation1(placeSuggestion);
                                 selected.addUserEditCount1(currUsername);
-                                sp.ongoingTrades(11);
+                                systemPresenter.ongoingTrades(11);
                             } else {
-                                sp.ongoingTrades(9);
+                                systemPresenter.ongoingTrades(9);
                             }
                             break;
 
@@ -143,28 +142,28 @@ public class OngoingTradesViewer extends MenuItem {
 
                             /* can't confirm meeting if already agreed upon */
                             if (selected.getHasAgreedMeeting1()) {
-                                sp.ongoingTrades(5);
+                                systemPresenter.ongoingTrades(5);
                                 break;
                             }
 
                             /* can't confirm your own suggestion */
                             if (selected.getLastEditor().equals(currUsername)) {
-                                sp.ongoingTrades(6);
+                                systemPresenter.ongoingTrades(6);
                                 break;
                             }
 
                             /* can't confirm a meeting time that has already passed */
                             if (LocalDateTime.now().isAfter(selected.getMeetingDateTime1())) {
-                                sp.ongoingTrades(19);
+                                systemPresenter.ongoingTrades(19);
                                 break;
                             }
 
                             int weeklyTrade = tradeManager.getNumMeetingsThisWeek(currUsername, selected.getMeetingDateTime1().toLocalDate());
                             if (weeklyTrade > currentUser.getWeeklyTradeMax()) {
-                                sp.ongoingTrades(10);
+                                systemPresenter.ongoingTrades(10);
                             } else {
                                 selected.confirmAgreedMeeting1();
-                                sp.ongoingTrades(4);
+                                systemPresenter.ongoingTrades(4);
                             }
                             break;
 
@@ -173,17 +172,17 @@ public class OngoingTradesViewer extends MenuItem {
 
                             /* can't confirm transaction if no agreed meeting */
                             if (!selected.getHasAgreedMeeting1()) {
-                                sp.ongoingTrades(15);
+                                systemPresenter.ongoingTrades(15);
                                 break;
                             }
 
                             /* can't confirm more than once */
                             if (selected instanceof TemporaryTrade &&
                                     ((TemporaryTrade) selected).getUserTransactionConfirmation2(currUsername)) {
-                                sp.ongoingTrades(17);
+                                systemPresenter.ongoingTrades(17);
                                 break;
                             } else if (selected.getUserTransactionConfirmation1(currUsername)) {
-                                sp.ongoingTrades(17);
+                                systemPresenter.ongoingTrades(17);
                                 break;
                             }
 
@@ -193,30 +192,30 @@ public class OngoingTradesViewer extends MenuItem {
                                 new ConfirmAndCloseTempTrade().confirmAndCloseTempTransaction(currUsername,
                                         (TemporaryTrade) selected, itemManager);
                                 if (selected.getIsComplete()) {
-                                    sp.ongoingTrades(13);
+                                    systemPresenter.ongoingTrades(13);
                                 } else {
-                                    sp.ongoingTrades(3);
+                                    systemPresenter.ongoingTrades(3);
                                 }
                             } else if (selected instanceof TemporaryTrade && selected.getHasAgreedMeeting1() &&
                                     now.compareTo(selected.getMeetingDateTime1()) > 0) {
                                 selected.confirmTransaction1(currUsername);
                                 if (((TemporaryTrade) selected).hasSecondMeeting()) {
-                                    sp.ongoingTrades(14);
+                                    systemPresenter.ongoingTrades(14);
                                 } else {
-                                    sp.ongoingTrades(3);
+                                    systemPresenter.ongoingTrades(3);
                                 }
                             } else if (selected instanceof PermanentTrade && selected.getHasAgreedMeeting1() &&
                                     now.compareTo(selected.getMeetingDateTime1()) > 0) {
                                 new ConfirmAndClosePermTrade().confirmAndClosePermTransaction(currUsername,
                                         (PermanentTrade) selected, itemManager, userManager);
                                 if (selected.getIsComplete()) {
-                                    sp.ongoingTrades(13);
+                                    systemPresenter.ongoingTrades(13);
                                 } else {
-                                    sp.ongoingTrades(3);
+                                    systemPresenter.ongoingTrades(3);
                                 }
                             } else {
                                 /* can't confirm transaction before its scheduled time */
-                                sp.ongoingTrades(16);
+                                systemPresenter.ongoingTrades(16);
                             }
                             break;
 
@@ -225,7 +224,7 @@ public class OngoingTradesViewer extends MenuItem {
 
                             /* can't cancel if meeting already scheduled */
                             if (selected.getHasAgreedMeeting1()) {
-                                sp.ongoingTrades(18);
+                                systemPresenter.ongoingTrades(18);
                                 break;
                             }
 
@@ -239,14 +238,14 @@ public class OngoingTradesViewer extends MenuItem {
                                 Item tempItem2 = im.getApprovedItem(itemIDs[1]);
                                 tempItem2.setAvailability(true);
                             }
-                            sp.ongoingTrades(2);
+                            systemPresenter.ongoingTrades(2);
                             break;
                         case 5:
                             break;
                     }
                 }
             } catch (IOException e) {
-                sp.exceptionMessage();
+                systemPresenter.exceptionMessage();
             }
         }
         close();
