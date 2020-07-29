@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -78,10 +79,10 @@ public class SystemController {
 //        System.exit(0);
     }
 
-    public int normalUserSignUp(String username, String email, String password, String validatePassword){
+    public ArrayList<Integer> normalUserSignUp(String username, String email, String password, String validatePassword){
         SignUpSystem signUpSystem = new SignUpSystem(userManager);
-        int invalidInput = signUpSystem.validateInput(username, email, password, validatePassword);
-        if(invalidInput==0){
+        ArrayList<Integer> invalidInput = signUpSystem.validateInput(username, email, password, validatePassword);
+        if(invalidInput.isEmpty()){
             NormalUser newUser = new SignUpSystem(userManager).createNewNormal();
             new NormalDashboard(newUser, itemManager, userManager, tradeManager);
         }

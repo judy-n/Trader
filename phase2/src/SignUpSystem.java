@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Signs a new user up in the system.
@@ -30,23 +31,23 @@ public class SignUpSystem {
     }
 
 
-    public int validateInput(String username, String email, String password, String validatePassword){
-        int invalidInput = 0;
+    public ArrayList<Integer> validateInput(String username, String email, String password, String validatePassword){
+        ArrayList<Integer> invalidInput = new ArrayList<>();
         if(!validatePassword.equals(password)){
-            invalidInput = 10;
+            invalidInput.add(10);
         }
         if (!password.matches("[\\S]{6,20}")){
-            invalidInput = 8;
+            invalidInput.add(8);
         }
         if (userManager.usernameExists(username)) {
-            invalidInput = 5;
+            invalidInput.add(5);
         } else if (!username.matches("[a-zA-Z0-9]+([_.][a-zA-Z0-9]+)*") || username.length() < 3) {
-            invalidInput = 6;
+            invalidInput.add(6);
         }
         if (userManager.emailExists(email)) {
-            invalidInput = 2;
+            invalidInput.add(2);
         } else if (!email.matches("[\\w]+(\\.[\\w]+)*@([a-zA-Z]+\\.)+[a-z]{2,}")) {
-            invalidInput = 3;
+            invalidInput.add(3);
         }
         return invalidInput;
     }
@@ -60,7 +61,7 @@ public class SignUpSystem {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         // email
-        systemPresenter.signUpSystem(1);
+        //systemPresenter.signUpSystem(1);
         try {
             String emailInput = bufferedReader.readLine();
             boolean invalidInput;
@@ -68,11 +69,11 @@ public class SignUpSystem {
                 invalidInput = false;
                 if (userManager.emailExists(emailInput)) {
                     invalidInput = true;
-                    systemPresenter.signUpSystem(2);
+                    //systemPresenter.signUpSystem(2);
                     emailInput = bufferedReader.readLine();
                 } else if (!emailInput.matches("[\\w]+(\\.[\\w]+)*@([a-zA-Z]+\\.)+[a-z]{2,}")) {
                     invalidInput = true;
-                    systemPresenter.signUpSystem(3);
+                    //systemPresenter.signUpSystem(3);
                     emailInput = bufferedReader.readLine();
                 }
             } while (invalidInput);
@@ -82,7 +83,7 @@ public class SignUpSystem {
         }
 
         // username
-        systemPresenter.signUpSystem(4);
+        //systemPresenter.signUpSystem(4);
         try {
             String usernameInput = bufferedReader.readLine();
             boolean invalidInput;
@@ -90,11 +91,11 @@ public class SignUpSystem {
                 invalidInput = false;
                 if (userManager.usernameExists(usernameInput)) {
                     invalidInput = true;
-                    systemPresenter.signUpSystem(5);
+                    //systemPresenter.signUpSystem(5);
                     usernameInput = bufferedReader.readLine();
                 } else if (!usernameInput.matches("[a-zA-Z0-9]+([_.][a-zA-Z0-9]+)*") || usernameInput.length() < 3) {
                     invalidInput = true;
-                    systemPresenter.signUpSystem(6);
+                    //systemPresenter.signUpSystem(6);
                     usernameInput = bufferedReader.readLine();
                 }
             } while (invalidInput);
@@ -104,17 +105,17 @@ public class SignUpSystem {
         }
 
         // password + password confirmation
-        systemPresenter.signUpSystem(7);
+        //systemPresenter.signUpSystem(7);
         try {
             String pwInput1 = bufferedReader.readLine();
             while (!pwInput1.matches("[\\S]{6,20}")) {
-                systemPresenter.signUpSystem(8);
+                //systemPresenter.signUpSystem(8);
                 pwInput1 = bufferedReader.readLine();
             }
-            systemPresenter.signUpSystem(9);
+            //systemPresenter.signUpSystem(9);
             String pwInput2 = bufferedReader.readLine();
             while (!pwInput2.equals(pwInput1)) {
-                systemPresenter.signUpSystem(10);
+                //systemPresenter.signUpSystem(10);
                 pwInput2 = bufferedReader.readLine();
             }
             password = pwInput1;
@@ -123,7 +124,7 @@ public class SignUpSystem {
         }
 
         // home city
-        systemPresenter.signUpSystem(13);
+        //systemPresenter.signUpSystem(13);
         try {
             this.homeCity = bufferedReader.readLine();
         } catch (IOException e) {
@@ -137,10 +138,10 @@ public class SignUpSystem {
      * @return the normal user that was just created
      */
     public NormalUser createNewNormal() {
-        systemPresenter.signUpSystem(0);
+        //systemPresenter.signUpSystem(0);
         inputProcess();
         userManager.createNormalUser(username, email, password, homeCity);
-        systemPresenter.signUpSystem(11);
+        //systemPresenter.signUpSystem(11);
         return userManager.getNormalByUsername(username);
     }
 
@@ -148,7 +149,7 @@ public class SignUpSystem {
      * Creates a new <AdminUser></AdminUser> based on input from <inputProcess()></inputProcess()>.
      */
     public void createNewAdmin() {
-        systemPresenter.signUpSystem(12);
+        //systemPresenter.signUpSystem(12);
         inputProcess();
         userManager.createAdminUser(username, email, password);
     }

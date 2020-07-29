@@ -29,12 +29,12 @@ public class LoginSystem {
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        systemPresenter.loginSystem(1);
+        //systemPresenter.loginSystem(1);
         try {
             usernameOrEmail = bufferedReader.readLine();
 
             while (!userManager.usernameExists(usernameOrEmail) && !userManager.emailExists(usernameOrEmail)) {
-                systemPresenter.loginSystem(2);
+                //systemPresenter.loginSystem(2);
                 usernameOrEmail = bufferedReader.readLine();
             }
             if (usernameOrEmail.contains("@")) {
@@ -48,17 +48,17 @@ public class LoginSystem {
             systemPresenter.exceptionMessage();
         }
 
-        systemPresenter.loginSystem(3);
+        //systemPresenter.loginSystem(3);
         try {
             String password = bufferedReader.readLine();
             while (!password.equals(validPw)) {
-                systemPresenter.loginSystem(4);
+               // systemPresenter.loginSystem(4);
                 password = bufferedReader.readLine();
             }
         } catch (IOException e) {
             systemPresenter.exceptionMessage();
         }
-        systemPresenter.loginSystem(5);
+       // systemPresenter.loginSystem(5);
     }
 
     /**

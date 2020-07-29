@@ -16,97 +16,39 @@ import java.util.List;
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
 
-    /**
-     * Returns labels for elements on the very first page seen by the user when the program is run.
-     *
-     * @param input the case corresponding to the string being retrieved
-     * @return the string to display
-     */
-    public String startMenu(int input) {
-        switch (input) {
-            case 1:
-                return ("WELCOME");
-            case 2:
-                return ("Log in");
-            case 3:
-                return ("Sign up");
-            case 4:
-                return ("Demo our program");
-            case 5:
-                return ("Exit the program");
-            case 6:
-                return ("Exiting the program. Hope to see you again soon!");
-            default:
-                return null;
+    //helper method that prints inventory + pending
+    private void presentInventory(List<Item> itemInventory, List<Item> pendingItems) {
+        System.out.println("\n-- Your inventory --");
+        if (itemInventory.isEmpty()) {
+            emptyListMessage();
+        }
+        for (Item i : itemInventory) {
+            System.out.println((itemInventory.indexOf(i) + 1) + ". " + i);
+        }
+
+        System.out.println("\n-- Items awaiting approval --");
+        if (pendingItems.isEmpty()) {
+            emptyListMessage();
+        }
+        for (Item i : pendingItems) {
+            System.out.println("- " + i);
         }
     }
 
-    /**
-     * Returns labels for elements on the sign-up page.
-     *
-     * @param input the case associated with the string being retrieved
-     * @return the string to display
-     */
-    public String signUpSystem(int input) {
-        switch (input) {
-            case 0:
-                return ("\n--- Sign-up ---");
-            case 1:
-                return ("\nPlease enter an email: ");
-            case 2:
-                return ("\nEmail is already associated with an account! Please enter a different email.");
-            case 3:
-                return ("\nThat's not an email address! Please enter a valid email.");
-            case 4:
-                return ("\nPlease enter an username" +
-                        "\n(at least 3 characters, only numbers/letters or an underscore/period between them): ");
-            case 5:
-                return ("\nUsername already exists! Please enter a different username.");
-            case 6:
-                return ("\nInvalid username. Please try again.");
-            case 7:
-                return ("\nEnter a password (6-20 characters):");
-            case 8:
-                return ("\nInvalid password. Please try again.");
-            case 9:
-                return ("\nConfirm your password:");
-            case 10:
-                return ("\nPasswords do not match. Please try again.");
-            case 11:
-                return ("\n Thank you for signing up! \n You are now logged in.");
-            case 12:
-                return ("\n--- New Admin ---");
-            case 13:
-                return ("\nPlease enter a home city: ");
-            default:
-                return null;
+    //helper method that prints wishlist
+    private void presentWishlist(List<Item> itemWishlist) {
+        System.out.println("\n-- Your wishlist --");
+        if (itemWishlist.isEmpty()) {
+            emptyListMessage();
         }
-    }
-
-
-    /**
-     * Prompt based system for logging in an already existing user based on userinput
-     *
-     * @param input the user's input
-     */
-    public void loginSystem(int input) {
-        switch (input) {
-            case 1:
-                System.out.println("\n--- Login ---");
-                System.out.print("\nPlease enter your username or email: ");
-                break;
-            case 2:
-                System.out.print("\nUsername/email does not exist in our database! Please try again: ");
-                break;
-            case 3:
-                System.out.print("\nPlease enter your password: ");
-                break;
-            case 4:
-                System.out.print("\nPassword does not match username/email! Please try again: ");
-                break;
-            case 5:
-                System.out.println("\n Logged in!");
-                break;
+        int index = 1;
+        for (Item i : itemWishlist) {
+            if (i.isInInventory()) {
+                System.out.println(index + ". " + i);
+            } else {
+                System.out.println(index + ". " + i + " (item has been removed from its owner's inventory)");
+            }
+            index++;
         }
     }
 
