@@ -79,11 +79,12 @@ public class SystemController {
 //        System.exit(0);
     }
 
-    public ArrayList<Integer> normalUserSignUp(String username, String email, String password, String validatePassword){
+    public ArrayList<Integer> normalUserSignUp(String username, String email, String password,
+                                               String validatePassword, String homeCity){
         SignUpSystem signUpSystem = new SignUpSystem(userManager);
         ArrayList<Integer> invalidInput = signUpSystem.validateInput(username, email, password, validatePassword);
         if(invalidInput.isEmpty()){
-            NormalUser newUser = new SignUpSystem(userManager).createNewNormal();
+            NormalUser newUser = new SignUpSystem(userManager).createNewNormal(username, email, password, homeCity);
             new NormalDashboard(newUser, itemManager, userManager, tradeManager);
         }
         return invalidInput;

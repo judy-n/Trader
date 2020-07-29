@@ -13,10 +13,10 @@ import java.util.ArrayList;
  * last modified 2020-07-28
  */
 public class SignUpSystem {
-    private String username;
-    private String email;
-    private String password;
-    private String homeCity;
+    //private String username;
+    //private String email;
+    //private String password;
+    //private String homeCity;
     private UserManager userManager;
     private SystemPresenter systemPresenter;
 
@@ -77,7 +77,7 @@ public class SignUpSystem {
                     emailInput = bufferedReader.readLine();
                 }
             } while (invalidInput);
-            email = emailInput;
+            //email = emailInput;
         } catch (IOException e) {
             systemPresenter.exceptionMessage();
         }
@@ -99,7 +99,7 @@ public class SignUpSystem {
                     usernameInput = bufferedReader.readLine();
                 }
             } while (invalidInput);
-            username = usernameInput;
+            //username = usernameInput;
         } catch (IOException e) {
             systemPresenter.exceptionMessage();
         }
@@ -118,18 +118,18 @@ public class SignUpSystem {
                 //systemPresenter.signUpSystem(10);
                 pwInput2 = bufferedReader.readLine();
             }
-            password = pwInput1;
+            //password = pwInput1;
         } catch (IOException e) {
             systemPresenter.exceptionMessage();
         }
 
         // home city
         //systemPresenter.signUpSystem(13);
-        try {
-            this.homeCity = bufferedReader.readLine();
-        } catch (IOException e) {
-            systemPresenter.exceptionMessage();
-        }
+        //try {
+            //this.homeCity = bufferedReader.readLine();
+        //} catch (IOException e) {
+            //systemPresenter.exceptionMessage();
+        //}
     }
 
     /**
@@ -137,20 +137,17 @@ public class SignUpSystem {
      *
      * @return the normal user that was just created
      */
-    public NormalUser createNewNormal() {
-        //systemPresenter.signUpSystem(0);
-        inputProcess();
+    public NormalUser createNewNormal(String username, String email, String password, String homeCity) {
         userManager.createNormalUser(username, email, password, homeCity);
-        //systemPresenter.signUpSystem(11);
         return userManager.getNormalByUsername(username);
     }
 
     /**
      * Creates a new <AdminUser></AdminUser> based on input from <inputProcess()></inputProcess()>.
      */
-    public void createNewAdmin() {
+    public void createNewAdmin(String username, String email, String password) {
         //systemPresenter.signUpSystem(12);
-        inputProcess();
+        //inputProcess();
         userManager.createAdminUser(username, email, password);
     }
 }

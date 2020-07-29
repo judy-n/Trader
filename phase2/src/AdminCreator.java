@@ -24,9 +24,12 @@ public class AdminCreator {
         currentAdmin = user;
         itemManager = im;
         userManager = um;
+        String username = "";
+        String email = "";
+        String password = "";
 
         SystemPresenter systemPresenter = new SystemPresenter();
-        new SignUpSystem(userManager).createNewAdmin();
+        new SignUpSystem(userManager).createNewAdmin(username,email,password);
         systemPresenter.adminCreator();
         close();
     }
