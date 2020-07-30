@@ -207,9 +207,10 @@ public class StartMenu extends JPanel {
             final ArrayList<Integer>[] allTypeInvalidInput = new ArrayList[]{new ArrayList<>()};
 
             JLabel invalid = new JLabel();
-            StringBuilder warnings = new StringBuilder("<html>");
+
 
             SignUpButton.addActionListener(e -> {
+                StringBuilder warnings = new StringBuilder("<html>");
                 inputtedEmail = emailInput.getText();
                 inputtedUsername = usernameInput.getText();
                 inputtedPassword = String.valueOf(passwordInput.getPassword());
@@ -228,7 +229,7 @@ public class StartMenu extends JPanel {
             });
 
             this.add(invalid);
-            invalid.setLocation(130, 300);
+            invalid.setLocation(X_POS, 380);
 
         }
     }

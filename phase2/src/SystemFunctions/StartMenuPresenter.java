@@ -66,11 +66,17 @@ public class StartMenuPresenter {
             case 11:
                 return("Thank you for signing up! You are now logged in.");
             case 12:
-                return("--- New Admin ---");
+                return("Username can't be empty!");
             case 13:
                 return("Please enter a home city: ");
             case 14:
                 return("Show password");
+            case 15:
+                return("Email can't be empty!");
+            case 16:
+                return("Password can't be empty!");
+            case 17:
+                return("Please verify your password!");
             default:
                 return null;
         }
