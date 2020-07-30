@@ -95,15 +95,19 @@ public class SystemController {
         return invalidInput;
     }
 
-//    public boolean userLogin(){
-//        User currentUser = new LoginSystem(userManager).getUser();
-//
-//        if(currentUser instanceof AdminUser){
-//            new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
-//        } else {
-//            new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
-//        }
-//    }
+    public ArrayList<Integer> userLogin(String usernameOrEmail, String password){
+        LoginSystem newLoginSystem = new LoginSystem(userManager);
+        ArrayList<Integer> invalidInput = newLoginSystem.validateInput(usernameOrEmail, password);
+        if(invalidInput.isEmpty()) {
+            User currentUser = newLoginSystem.getUser();
+            if (currentUser instanceof AdminUser) {
+                new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
+            } else {
+                new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
+            }
+        }
+        return invalidInput;
+    }
 
     public void demoUser(){
         new DemoDashboard(itemManager, userManager, tradeManager);

@@ -29,6 +29,8 @@ public class StartMenu extends JPanel {
     private final int X_POS = 160;
     private final int Y_SPACE = 70;
     private final int X_SPACE = 200;
+    private JLabel invalid;
+    private final ArrayList<Integer>[] allTypeInvalidInput = new ArrayList[]{new ArrayList<>()};
 
     /**
      * Creates a <StartMenu></StartMenu> that lets the user choose their next course of action through user input.
@@ -36,7 +38,7 @@ public class StartMenu extends JPanel {
     public StartMenu(SystemController systemController) {
         this.systemController = systemController;
         startMenuPresenter = new StartMenuPresenter();
-
+        invalid = new JLabel();
         this.setPreferredSize(new Dimension(820, 576));
         this.setLayout(null);
         mainMenu();
@@ -48,12 +50,10 @@ public class StartMenu extends JPanel {
         JButton demo = new JButton(startMenuPresenter.startMenu(4));
         JButton endProgram = new JButton(startMenuPresenter.startMenu(5));
 
-
         initializeButton(login, 200, 40, 160, 190);
         initializeButton(signUp, 200, 40, 440, 190);
         initializeButton(demo, 200, 40, 310, 250);
         initializeButton(endProgram, 200, 40, 310, 310);
-
 
         JLabel welcomeText = new JLabel(startMenuPresenter.startMenu(1));
 
@@ -83,8 +83,6 @@ public class StartMenu extends JPanel {
         demo.addActionListener(e -> systemController.demoUser());
         endProgram.addActionListener(e -> {
             //this.removeAll();
-
-
             systemController.tryWriteManagers();
             System.exit(0);
         });
@@ -117,7 +115,6 @@ public class StartMenu extends JPanel {
             mainMenu();
             this.repaint();
         });
-
 
         JLabel password = new JLabel(startMenuPresenter.signUpSystem(7));
         JPasswordField passwordInput = new JPasswordField(50);
@@ -157,8 +154,14 @@ public class StartMenu extends JPanel {
             initializeButton(login, 100, 30, 450, 350);
 
             login.addActionListener(e -> {
+                StringBuilder warnings = new StringBuilder("<html>");
                 emailOrUsername = usernameEmailInput.getText();
-                //more methods goes here
+                inputtedPassword = String.valueOf(passwordInput.getPassword());
+                allTypeInvalidInput[0] = systemController.userLogin(emailOrUsername,inputtedPassword);
+                makeInvalidInputWarning(allTypeInvalidInput[0]);
+                if(allTypeInvalidInput[0].isEmpty()){
+                    loggedIn();
+                }
             });
         }else{
             JLabel username = new JLabel(startMenuPresenter.signUpSystem(4));
@@ -204,13 +207,7 @@ public class StartMenu extends JPanel {
             JButton SignUpButton = new JButton(startMenuPresenter.signUpSystem(0));
             initializeButton(SignUpButton, 100, 30, 450, FIRST_LINE_Y + Y_SPACE*5);
 
-            final ArrayList<Integer>[] allTypeInvalidInput = new ArrayList[]{new ArrayList<>()};
-
-            JLabel invalid = new JLabel();
-
-
             SignUpButton.addActionListener(e -> {
-                StringBuilder warnings = new StringBuilder("<html>");
                 inputtedEmail = emailInput.getText();
                 inputtedUsername = usernameInput.getText();
                 inputtedPassword = String.valueOf(passwordInput.getPassword());
@@ -218,19 +215,35 @@ public class StartMenu extends JPanel {
                 inputtedHomeCity = homeCity.getText();
                 allTypeInvalidInput[0] = systemController.normalUserSignUp(inputtedUsername,
                         inputtedEmail, inputtedPassword, validateInputtedPassword, inputtedHomeCity);
-                for(int type : allTypeInvalidInput[0])
-                    warnings.append("<br/>" + startMenuPresenter.signUpSystem(type));
-                warnings.append("<html>");
-                invalid.setText(warnings.toString());
-                invalid.setSize(800,200);
-                System.out.println(warnings.toString());
-                invalid.setForeground(Color.red);
-
+                makeInvalidInputWarning(allTypeInvalidInput[0]);
+                if(allTypeInvalidInput[0].isEmpty()){
+                    loggedIn();
+                }
             });
-
-            this.add(invalid);
-            invalid.setLocation(X_POS, 380);
-
         }
+
+    }
+
+    private void loggedIn(){
+        this.removeAll();
+        this.revalidate();
+        JLabel loggedInMsg = new JLabel(startMenuPresenter.loginSystem(5));
+        loggedInMsg.setLocation(X_POS, FIRST_LINE_Y);
+        loggedInMsg.setForeground(Color.BLACK);
+        loggedInMsg.setSize(200,40);
+        this.add(loggedInMsg);
+        this.repaint();
+    }
+
+    private void makeInvalidInputWarning(ArrayList<Integer> allTypeInvalidInput){
+        StringBuilder warnings = new StringBuilder("<html>");
+        for(int type : allTypeInvalidInput)
+            warnings.append(startMenuPresenter.signUpSystem(type) + "<br/>");
+        warnings.append("<html>");
+        invalid.setText(warnings.toString());
+        invalid.setSize(800,200);
+        invalid.setForeground(Color.red);
+        this.add(invalid);
+        invalid.setLocation(X_POS, 380);
     }
 }

@@ -1,9 +1,12 @@
 package SystemFunctions;
 import SystemManagers.*;
 import Entities.*;
+import com.sun.deploy.panel.AbstractRadioPropertyGroup;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Logs the user into the system.
@@ -17,7 +20,6 @@ import java.io.InputStreamReader;
  */
 
 public class LoginSystem {
-    private String usernameOrEmail;
     private String validPw;
     private User currentUser;
     private UserManager userManager;
@@ -26,42 +28,26 @@ public class LoginSystem {
      * Creates a <LoginSystem></LoginSystem> that lets the user log in through user input.
      * Checks if username/email and password match using <UserManager></UserManager>.
      */
-    public LoginSystem(UserManager um) {
-        userManager = um;
+    public LoginSystem(UserManager userManager) {
+        this.userManager = userManager;
+    }
 
-        SystemPresenter systemPresenter = new SystemPresenter();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
-        //systemPresenter.loginSystem(1);
-        try {
-            usernameOrEmail = bufferedReader.readLine();
-
-            while (!userManager.usernameExists(usernameOrEmail) && !userManager.emailExists(usernameOrEmail)) {
-                //systemPresenter.loginSystem(2);
-                usernameOrEmail = bufferedReader.readLine();
-            }
-            if (usernameOrEmail.contains("@")) {
-                validPw = userManager.emailPassword(usernameOrEmail);
-                currentUser = userManager.getUserByEmail(usernameOrEmail);
-            } else {
-                validPw = userManager.usernamePassword(usernameOrEmail);
-                currentUser = userManager.getUserByUsername(usernameOrEmail);
-            }
-        } catch (IOException e) {
-            systemPresenter.exceptionMessage();
+    public ArrayList<Integer> validateInput(String usernameOrEmail, String password){
+        ArrayList<Integer> invalidInput = new ArrayList<>();
+        if(!userManager.usernameExists(usernameOrEmail) && !userManager.emailExists(usernameOrEmail)){
+            invalidInput.add(2);
         }
-
-        //systemPresenter.loginSystem(3);
-        try {
-            String password = bufferedReader.readLine();
-            while (!password.equals(validPw)) {
-               // systemPresenter.loginSystem(4);
-                password = bufferedReader.readLine();
-            }
-        } catch (IOException e) {
-            systemPresenter.exceptionMessage();
+        if (usernameOrEmail.contains("@")) {
+            validPw = userManager.emailPassword(usernameOrEmail);
+            currentUser = userManager.getUserByEmail(usernameOrEmail);
+        } else {
+            validPw = userManager.usernamePassword(usernameOrEmail);
+            currentUser = userManager.getUserByUsername(usernameOrEmail);
         }
-       // systemPresenter.loginSystem(5);
+        if(!password.equals(validPw)){
+            invalidInput.add(4);
+        }
+        return invalidInput;
     }
 
     /**
