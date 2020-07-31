@@ -1,7 +1,12 @@
 package NormalUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
+
+import SystemManagers.UserManager;
+import SystemManagers.ItemManager;
+import SystemManagers.TradeManager;
+import Entities.NormalUser;
+import Entities.Item;
+import SystemFunctions.SystemPresenter;
+import SystemFunctions.MenuItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,7 +21,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-28
+ * last modified 2020-07-30
  */
 
 public class InventoryEditor extends MenuItem {
@@ -43,8 +48,8 @@ public class InventoryEditor extends MenuItem {
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        List<Item> itemInventory = itemManager.getApprovedItemsByIDs(currentUser.getInventory());
-        List<Item> pendingItems = itemManager.getPendingItemsByIDs(currentUser.getPendingInventory());
+        List<Item> itemInventory = itemManager.getItemsByIDs(currentUser.getInventory());
+        List<Item> pendingItems = itemManager.getItemsByIDs(currentUser.getPendingInventory());
 
         systemPresenter.inventoryEditor(itemInventory, pendingItems);
         try {
@@ -112,7 +117,7 @@ public class InventoryEditor extends MenuItem {
                     if (currentUser.isRequestedInTrade(selectedItem.getID())) {
                         systemPresenter.inventoryRemoveItem(4);
                     } else if (selectedItem.getAvailability() ||
-                            (!selectedItem.getAvailability() && tradeManager.getItemInCancelledTrade(selectedItem))) {
+                            (!selectedItem.getAvailability() && tradeManager.getItemInCancelledTrade(selectedItem.getID()))) {
                         systemPresenter.inventoryRemoveItem(selectedItem.getName(), indexInput, 1);
 
                         String confirmInput = bufferedReader.readLine();
@@ -123,7 +128,7 @@ public class InventoryEditor extends MenuItem {
                         if (confirmInput.equalsIgnoreCase("Y")) {
 
                             currentUser.removeInventory(selectedItem.getID());
-                            itemManager.getApprovedItem(selectedItem.getID()).setIsRemoved(true);
+                            itemManager.getItem(selectedItem.getID()).setIsRemoved(true);
                             //don't remove from ItemManager
 
                             systemPresenter.inventoryRemoveItem(selectedItem.getName(), 0, 2);

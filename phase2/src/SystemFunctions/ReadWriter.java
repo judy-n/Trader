@@ -1,5 +1,9 @@
-package SystemManagers;
+package SystemFunctions;
 
+import SystemManagers.ItemManager;
+import SystemManagers.Manager;
+import SystemManagers.TradeManager;
+import SystemManagers.UserManager;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.File;

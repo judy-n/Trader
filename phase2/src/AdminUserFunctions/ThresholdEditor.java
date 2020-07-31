@@ -6,7 +6,6 @@ import SystemFunctions.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Lets an admin change a certain threshold value for a certain user.

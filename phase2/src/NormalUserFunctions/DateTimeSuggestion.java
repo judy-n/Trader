@@ -1,7 +1,8 @@
 package NormalUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
+
+import SystemManagers.TradeManager;
+import Entities.NormalUser;
+import SystemFunctions.SystemPresenter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-08
- * last modified 2020-07-28
+ * last modified 2020-07-30
  */
 public class DateTimeSuggestion {
     private NormalUser currentUser;

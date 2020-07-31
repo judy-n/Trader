@@ -1,8 +1,14 @@
 package SystemFunctions;
-import SystemManagers.*;
-import Entities.*;
-import AdminUserFunctions.*;
-import NormalUserFunctions.*;
+
+import SystemManagers.UserManager;
+import SystemManagers.ItemManager;
+import SystemManagers.TradeManager;
+import Entities.User;
+import Entities.NormalUser;
+import Entities.AdminUser;
+import NormalUserFunctions.DemoDashboard;
+import NormalUserFunctions.NormalDashboard;
+import AdminUserFunctions.AdminDashboard;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +20,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-22
+ * last modified 2020-07-30
  */
 public class SystemController {
     private UserManager userManager;
@@ -110,7 +116,7 @@ public class SystemController {
     }
 
     public void demoUser(){
-        new DemoDashboard(itemManager, userManager, tradeManager);
+        new DemoDashboard(itemManager, userManager);
     }
 
 

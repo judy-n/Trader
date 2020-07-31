@@ -1,5 +1,8 @@
 package SystemManagers;
-import Entities.*;
+
+import Entities.Trade;
+import Entities.TemporaryTrade;
+import Entities.PermanentTrade;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,7 +22,7 @@ import java.util.Map;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-12
+ * last modified 2020-07-30
  */
 public class TradeManager extends Manager implements Serializable {
     private List<Trade> allTrades;
@@ -120,19 +123,19 @@ public class TradeManager extends Manager implements Serializable {
 
         LocalDateTime now = LocalDateTime.now();
         for (Trade t : getAllOngoingNotCancelledTrades()) {
-            if (t instanceof TemporaryTrade && t.getHasAgreedMeeting1()) {
+            if (t instanceof TemporaryTrade && t.getHasAgreedMeeting()) {
                 TemporaryTrade temp = (TemporaryTrade) t;
-                LocalDateTime meeting1 = temp.getMeetingDateTime1();
+                LocalDateTime meeting1 = temp.getFirstMeetingDateTime();
                 if (now.compareTo(meeting1.plusHours(TIME_LIMIT)) > 0 && !temp.hasSecondMeeting()) {
                     t.setIsCancelled();
                     addCancelledUsers(t.getInvolvedUsernames());
-                } else if (now.compareTo(((TemporaryTrade) t).getMeetingDateTime2().plusHours(TIME_LIMIT)) > 0
+                } else if (now.compareTo(((TemporaryTrade) t).getSecondMeetingDateTime().plusHours(TIME_LIMIT)) > 0
                         && !t.getIsComplete()) {
                     t.setIsCancelled();
                     addCancelledUsers(t.getInvolvedUsernames());
                 }
-            } else if (t instanceof PermanentTrade && t.getHasAgreedMeeting1()) {
-                if (now.compareTo(t.getMeetingDateTime1().plusHours(TIME_LIMIT)) > 0 && !t.getIsComplete()) {
+            } else if (t instanceof PermanentTrade && t.getHasAgreedMeeting()) {
+                if (now.compareTo(t.getFirstMeetingDateTime().plusHours(TIME_LIMIT)) > 0 && !t.getIsComplete()) {
                     t.setIsCancelled();
                     addCancelledUsers(t.getInvolvedUsernames());
                 }
@@ -167,14 +170,14 @@ public class TradeManager extends Manager implements Serializable {
     }
 
     /**
-     * Takes in an item and gets whether or not it's involved in a cancelled trade.
+     * Takes in an item ID and gets whether or not it's involved in a cancelled trade.
      *
-     * @param item the item to query
-     * @return true if the given item is involved in a cancelled trade, false otherwise
+     * @param itemID the ID of the item to query
+     * @return true if the given item ID is involved in a cancelled trade, false otherwise
      */
-    public boolean getItemInCancelledTrade(Item item) {
+    public boolean getItemInCancelledTrade(long itemID) {
         for (Trade t : allTrades) {
-            if ((t.getInvolvedItemIDs()[0] == item.getID() || t.getInvolvedItemIDs()[1] == item.getID()) &&
+            if ((t.getInvolvedItemIDs()[0] == itemID || t.getInvolvedItemIDs()[1] == itemID) &&
                     t.getIsCancelled()) {
                 return true;
             }
@@ -206,10 +209,9 @@ public class TradeManager extends Manager implements Serializable {
      * @param firstDateTime the first date and time suggested for the new trade's meeting
      * @param firstLocation the first location suggested for the new trade's meeting
      */
-    public TemporaryTrade createTempTrade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
+    public void createTempTrade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
         TemporaryTrade newTempTrade = new TemporaryTrade(usernames, itemIDs, firstDateTime, firstLocation);
         allTrades.add(newTempTrade);
-        return newTempTrade;
     }
 
     /**
@@ -221,10 +223,9 @@ public class TradeManager extends Manager implements Serializable {
      * @param firstDateTime the first date and time suggested for the new trade's meeting
      * @param firstLocation the first location suggested for the new trade's meeting
      */
-    public PermanentTrade createPermTrade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
+    public void createPermTrade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
         PermanentTrade newPermTrade = new PermanentTrade(usernames, itemIDs, firstDateTime, firstLocation);
         allTrades.add(newPermTrade);
-        return newPermTrade;
     }
 
     /**
@@ -322,14 +323,14 @@ public class TradeManager extends Manager implements Serializable {
 
         int count = 0;
         for (Trade t : allTradesThisUser) {
-            if (t.getHasAgreedMeeting1()) {
-                LocalDate meeting1 = t.getMeetingDateTime1().toLocalDate();
+            if (t.getHasAgreedMeeting()) {
+                LocalDate meeting1 = t.getFirstMeetingDateTime().toLocalDate();
                 if (meeting1.isAfter(dayBeforeWeek) && meeting1.isBefore(dayAfterWeek)) {
                     count++;
                 }
             }
             if (t instanceof TemporaryTrade && ((TemporaryTrade) t).hasSecondMeeting()) {
-                LocalDate meeting2 = ((TemporaryTrade) t).getMeetingDateTime2().toLocalDate();
+                LocalDate meeting2 = ((TemporaryTrade) t).getSecondMeetingDateTime().toLocalDate();
                 if (meeting2.isAfter(dayBeforeWeek) && meeting2.isBefore(dayAfterWeek)) {
                     count++;
                 }

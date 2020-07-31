@@ -1,14 +1,17 @@
 package NormalUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
+
+import SystemManagers.ItemManager;
+import Entities.TemporaryTrade;
+import Entities.Item;
+
+
 /**
  * Confirms and closes temporary trades.
  *
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-12
+ * last modified 2020-07-30
  */
 public class ConfirmAndCloseTempTrade {
 
@@ -23,17 +26,17 @@ public class ConfirmAndCloseTempTrade {
      */
     public void confirmAndCloseTempTransaction(String username, TemporaryTrade tempTrade, ItemManager im) {
 
-        tempTrade.confirmTransaction2(username);
+        tempTrade.confirmSecondTransaction(username);
 
         if (tempTrade.getIsComplete()) {
             long[] itemIDs = tempTrade.getInvolvedItemIDs();
 
             if (itemIDs[0] != 0) {
-                Item tempItem1 = im.getApprovedItem(itemIDs[0]);
+                Item tempItem1 = im.getItem(itemIDs[0]);
                 tempItem1.setAvailability(true);
             }
             if (itemIDs[1] != 0) {
-                Item tempItem2 = im.getApprovedItem(itemIDs[1]);
+                Item tempItem2 = im.getItem(itemIDs[1]);
                 tempItem2.setAvailability(true);
             }
         }

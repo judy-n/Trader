@@ -1,7 +1,12 @@
 package NormalUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
+
+import SystemManagers.UserManager;
+import SystemManagers.ItemManager;
+import SystemManagers.TradeManager;
+import Entities.NormalUser;
+import Entities.Item;
+import Entities.Trade;
+import SystemFunctions.MenuItem;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -14,7 +19,7 @@ import java.time.format.DateTimeFormatter;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-24
+ * last modified 2020-07-30
  */
 public class CompletedTradesViewer extends MenuItem {
     private ItemManager itemManager;
@@ -67,15 +72,15 @@ public class CompletedTradesViewer extends MenuItem {
                     long[] tempItemIDs = {trade.getLentItemID(currUsername), trade.getLentItemID(otherUsername)};
 
                     if (tempItemIDs[0] == 0) {
-                        Item itemBorrowed = itemManager.getApprovedItem(tempItemIDs[1]);
+                        Item itemBorrowed = itemManager.getItem(tempItemIDs[1]);
                         tradePrint = meeting.format(formatter) + "   " +
                                 trade.toString(currUsername) + "you borrowed [" + itemBorrowed.getName() + "]";
                     } else if (tempItemIDs[1] == 0) {
-                        Item itemLent = itemManager.getApprovedItem(tempItemIDs[0]);
+                        Item itemLent = itemManager.getItem(tempItemIDs[0]);
                         tradePrint = meeting.format(formatter) + "   " +
                                 trade.toString(currUsername) + "you lent [" + itemLent.getName() + "]";
                     } else {
-                        Item[] tempItems = {itemManager.getApprovedItem(tempItemIDs[0]), itemManager.getApprovedItem(tempItemIDs[1])};
+                        Item[] tempItems = {itemManager.getItem(tempItemIDs[0]), itemManager.getItem(tempItemIDs[1])};
                         tradePrint = meeting.format(formatter) + "   " +
                                 trade.toString(currUsername) + "you lent [" +
                                 tempItems[0].getName() + "] for [" + tempItems[1].getName() + "]";

@@ -1,7 +1,12 @@
 package NormalUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
+
+import SystemManagers.UserManager;
+import SystemManagers.ItemManager;
+import SystemManagers.TradeManager;
+import Entities.NormalUser;
+import Entities.Item;
+import SystemFunctions.SystemPresenter;
+import SystemFunctions.MenuItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,7 +23,7 @@ import java.util.ArrayList;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-29
- * last modified 2020-07-29
+ * last modified 2020-07-30
  */
 public class TradeRequestViewer extends MenuItem{
     private LinkedHashMap<String[], long[]> initiatedTrades;
@@ -88,10 +93,10 @@ public class TradeRequestViewer extends MenuItem{
             String itemToLendName = "";
 
             if (initiatedTrades.get(key)[0] != 0) {
-                Item itemToLend = itemManager.getApprovedItem(initiatedTrades.get(key)[0]);
+                Item itemToLend = itemManager.getItem(initiatedTrades.get(key)[0]);
                 itemToLendName = itemToLend.getName();
             }
-            Item itemToBorrow = itemManager.getApprovedItem(initiatedTrades.get(key)[1]);
+            Item itemToBorrow = itemManager.getItem(initiatedTrades.get(key)[1]);
             itemToBorrowName = itemToBorrow.getName();
 
             initiatedItemNames.add(new String[]{itemToLendName, itemToBorrowName});
@@ -109,10 +114,10 @@ public class TradeRequestViewer extends MenuItem{
             String itemToLendName;
 
             if (receivedTrades.get(key)[0] != 0) {
-                Item itemToBorrow = itemManager.getApprovedItem(receivedTrades.get(key)[0]);
+                Item itemToBorrow = itemManager.getItem(receivedTrades.get(key)[0]);
                 itemToBorrowName = itemToBorrow.getName();
             }
-            Item itemToLend = itemManager.getApprovedItem(receivedTrades.get(key)[1]);
+            Item itemToLend = itemManager.getItem(receivedTrades.get(key)[1]);
             itemToLendName = itemToLend.getName();
 
             receivedItemNames.add(new String[]{itemToBorrowName, itemToLendName});
@@ -177,8 +182,8 @@ public class TradeRequestViewer extends MenuItem{
                             systemPresenter.cancelled();
                         }
                     } else if (acceptReject == 1 &&
-                            itemManager.getApprovedItem(itemToLendID).getAvailability() &&
-                            itemManager.getApprovedItem(itemToBorrowID).getAvailability()) {
+                            itemManager.getItem(itemToLendID).getAvailability() &&
+                            itemManager.getItem(itemToBorrowID).getAvailability()) {
 
                         /*
                          * Accept request.
@@ -222,9 +227,9 @@ public class TradeRequestViewer extends MenuItem{
                             }
 
                             /* set item statuses to unavailable */
-                            itemManager.getApprovedItem(itemToLendID).setAvailability(false);
+                            itemManager.getItem(itemToLendID).setAvailability(false);
                             if (itemToBorrowID != 0) {
-                                itemManager.getApprovedItem(itemToBorrowID).setAvailability(false);
+                                itemManager.getItem(itemToBorrowID).setAvailability(false);
                             }
 
                             if (permOrTemp.equals("1")) {
@@ -265,12 +270,12 @@ public class TradeRequestViewer extends MenuItem{
         itemToBorrowID = itemIDs.get(index - 1)[0];
         itemToLendID = itemIDs.get(index - 1)[1];
 
-        Item itemToLend = itemManager.getApprovedItem(itemToLendID);
+        Item itemToLend = itemManager.getItem(itemToLendID);
         String itemToLendName = itemToLend.getName();
         String itemToBorrowName = "";
 
         if (itemToBorrowID != 0) {
-            Item itemToBorrow = itemManager.getApprovedItem(itemToBorrowID);
+            Item itemToBorrow = itemManager.getItem(itemToBorrowID);
             itemToBorrowName = itemToBorrow.getName();
         }
 

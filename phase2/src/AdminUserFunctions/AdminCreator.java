@@ -1,7 +1,11 @@
 package AdminUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
+
+import SystemManagers.UserManager;
+import SystemManagers.ItemManager;
+import Entities.AdminUser;
+import SystemFunctions.SystemPresenter;
+import SystemFunctions.SignUpSystem;
+
 /**
  * Lets the initial admin create and add a new admin to the system.
  *
@@ -9,7 +13,7 @@ import SystemFunctions.*;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-28
+ * last modified 2020-07-30
  */
 public class AdminCreator {
     private AdminUser currentAdmin;

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-12
+ * last modified 2020-07-30
  */
 
 public abstract class Trade implements Serializable, Comparable<Trade> {
@@ -24,12 +24,12 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
     private boolean isComplete;
     private boolean isCancelled;
 
-    private boolean hasAgreedMeeting1;
-    private int[] numEdits1 = {0, 0};
+    private boolean hasAgreedMeeting;
+    private int[] numEdits = {0, 0};
     private String lastEditor;
-    private LocalDateTime meetingDateTime1;
-    private String meetingLocation1;
-    private boolean[] transactionConfirmed1 = new boolean[2];
+    private LocalDateTime firstMeetingDateTime;
+    private String firstMeetingLocation;
+    private boolean[] firstTransactionConfirmed = new boolean[2];
 
     /**
      * Creates a <Trade></Trade> with given username array, item ID array,
@@ -46,8 +46,8 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
         involvedItemIDs[0] = itemIDs[0];
         involvedItemIDs[1] = itemIDs[1];
 
-        meetingDateTime1 = firstDateTime;
-        meetingLocation1 = firstLocation;
+        firstMeetingDateTime = firstDateTime;
+        firstMeetingLocation = firstLocation;
         lastEditor = involvedUsernames[0];
 
         isCancelled = false;
@@ -141,15 +141,15 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
      *
      * @return true if this trade has an agreed first meeting, false otherwise
      */
-    public boolean getHasAgreedMeeting1() {
-        return hasAgreedMeeting1;
+    public boolean getHasAgreedMeeting() {
+        return hasAgreedMeeting;
     }
 
     /**
      * Confirms that both traders have agreed on a first meeting time and place.
      */
-    public void confirmAgreedMeeting1() {
-        hasAgreedMeeting1 = true;
+    public void confirmAgreedMeeting() {
+        hasAgreedMeeting = true;
     }
 
     /**
@@ -157,8 +157,8 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
      *
      * @return a <LocalDateTime></LocalDateTime> object representing this trade's current first meeting date and time
      */
-    public LocalDateTime getMeetingDateTime1() {
-        return meetingDateTime1;
+    public LocalDateTime getFirstMeetingDateTime() {
+        return firstMeetingDateTime;
     }
 
     /**
@@ -166,8 +166,8 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
      *
      * @param dateTime the new date and time for the first meeting
      */
-    public void setMeetingDateTime1(LocalDateTime dateTime) {
-        meetingDateTime1 = dateTime;
+    public void setFirstMeetingDateTime(LocalDateTime dateTime) {
+        firstMeetingDateTime = dateTime;
     }
 
     /**
@@ -175,8 +175,8 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
      *
      * @return a String representing this trade's current first meeting location
      */
-    public String getMeetingLocation1() {
-        return meetingLocation1;
+    public String getFirstMeetingLocation() {
+        return firstMeetingLocation;
     }
 
     /**
@@ -184,8 +184,8 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
      *
      * @param location the new location for the first meeting
      */
-    public void setMeetingLocation1(String location) {
-        meetingLocation1 = location;
+    public void setFirstMeetingLocation(String location) {
+        firstMeetingLocation = location;
     }
 
     /**
@@ -203,11 +203,11 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
      * @param username the username of the user to query
      * @return true if the given user has confirmed the first transaction, false otherwise
      */
-    public boolean getUserTransactionConfirmation1(String username) {
+    public boolean getUserFirstTransactionConfirmation(String username) {
         if (username.equals(involvedUsernames[0])) {
-            return transactionConfirmed1[0];
+            return firstTransactionConfirmed[0];
         } else {
-            return transactionConfirmed1[1];
+            return firstTransactionConfirmed[1];
         }
     }
 
@@ -216,11 +216,11 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
      *
      * @param username the username of the user confirming the first transaction
      */
-    public void confirmTransaction1(String username) {
+    public void confirmFirstTransaction(String username) {
         if (username.equals(involvedUsernames[0])) {
-            transactionConfirmed1[0] = true;
+            firstTransactionConfirmed[0] = true;
         } else {
-            transactionConfirmed1[1] = true;
+            firstTransactionConfirmed[1] = true;
         }
     }
 
@@ -237,11 +237,11 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
      *
      * @param username the username of the user whose edit count is being incremented
      */
-    public void addUserEditCount1(String username) {
+    public void addUserEditCount(String username) {
         if (username.equals(involvedUsernames[0])) {
-            numEdits1[0]++;
+            numEdits[0]++;
         } else {
-            numEdits1[1]++;
+            numEdits[1]++;
         }
         lastEditor = username;
     }
@@ -252,11 +252,11 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
      * @param username the username of the user to query
      * @return the number of edits the given user has made
      */
-    public int getUserEditCount1(String username) {
+    public int getUserEditCount(String username) {
         if (username.equals(involvedUsernames[0])) {
-            return numEdits1[0];
+            return numEdits[0];
         } else {
-            return numEdits1[1];
+            return numEdits[1];
         }
     }
 

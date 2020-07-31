@@ -1,7 +1,9 @@
 package NormalUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
+
+import SystemManagers.UserManager;
+import SystemManagers.ItemManager;
+import Entities.Item;
+import SystemFunctions.SystemPresenter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-28
- * last modified 2020-07-29
+ * last modified 2020-07-30
  */
 public class TradeRequestSetup {
     String currUsername;
@@ -32,7 +34,7 @@ public class TradeRequestSetup {
 
     public void makeTradeRequest(Item selectedItem) throws IOException {
 
-        systemPresenter.catalogViewer(selectedItem, 2);
+        systemPresenter.catalogViewer(selectedItem.getName(), selectedItem.getOwnerUsername(), 2);
 
         String inputConfirm = bufferedReader.readLine();
         while (!inputConfirm.matches("[nNyY]")) {
@@ -52,11 +54,11 @@ public class TradeRequestSetup {
                 suggestionChoice = bufferedReader.readLine();
             }
 
-            List<Item> fullInventory = itemManager.getApprovedItemsByIDs(userManager.getNormalUserInventory(currUsername));
+            List<Item> fullInventory = itemManager.getItemsByIDs(userManager.getNormalUserInventory(currUsername));
             List<Item> availableInventory = itemManager.getAvailableItems(fullInventory);
 
             if (suggestionChoice.equalsIgnoreCase("Y")) {
-                List<Item> otherUserWishlist = itemManager.getApprovedItemsByIDs(userManager.getNormalUserWishlist(traderUsername));
+                List<Item> otherUserWishlist = itemManager.getItemsByIDs(userManager.getNormalUserWishlist(traderUsername));
                 List<Item> suggestedItems = new ArrayList<>();
 
                 // the questionable item suggestion algorithm

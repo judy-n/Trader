@@ -1,5 +1,8 @@
 package SystemManagers;
-import Entities.*;
+
+import Entities.User;
+import Entities.NormalUser;
+import Entities.AdminUser;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +16,7 @@ import java.util.List;
  * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-28
+ * last modified 2020-07-30
  */
 public class UserManager extends Manager implements Serializable {
     private List<NormalUser> allNormals;
@@ -430,6 +433,26 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
+     * Adds the given item ID to the inventory of the account associated with the given username.
+     *
+     * @param itemIDToAdd the item ID being added to inventory
+     * @param username the username of the account whose inventory is being modified
+     */
+    public void addNormalUserInventory(long itemIDToAdd, String username) {
+        getNormalByUsername(username).addInventory(itemIDToAdd);
+    }
+
+    /**
+     * Removes the given item ID from the pending inventory of the account associated with the given username.
+     *
+     * @param itemIDToRemove the item ID being removed from pending inventory
+     * @param username the username of the account whose pending inventory is being modified
+     */
+    public void removeNormalUserPending(long itemIDToRemove, String username) {
+        getNormalByUsername(username).removePendingInventory(itemIDToRemove);
+    }
+
+    /**
      * Getter for the wishlist of the user associated with the given username.
      *
      * @param username the username of the user whose wishlist is being retrieved
@@ -447,6 +470,15 @@ public class UserManager extends Manager implements Serializable {
      */
     public void addNormalUserWishlist(long itemIDToAdd, String username) {
         getNormalByUsername(username).addWishlist(itemIDToAdd);
+    }
+
+    /**
+     * Freezes the account associated with the given username.
+     *
+     * @param usernameToFreeze the username of the account being frozen
+     */
+    public void freezeNormalUser(String usernameToFreeze) {
+        getNormalByUsername(usernameToFreeze).freeze();
     }
 }
 

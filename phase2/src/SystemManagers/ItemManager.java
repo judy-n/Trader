@@ -1,5 +1,6 @@
 package SystemManagers;
-import Entities.*;
+
+import Entities.Item;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-28
+ * last modified 2020-07-30
  */
 public class ItemManager extends Manager implements Serializable {
     private List<Item> approvedItems;
@@ -121,7 +122,7 @@ public class ItemManager extends Manager implements Serializable {
      * @param itemID the ID of an approved item
      * @return the <Item></Item> associated with the given ID
      */
-    public Item getApprovedItem(long itemID) {
+    public Item getItem(long itemID) {
         return idGetItem(approvedItems, itemID);
     }
 
@@ -152,23 +153,13 @@ public class ItemManager extends Manager implements Serializable {
     }
 
     /**
-     * Takes in a pending item ID and returns the associated <Item></Item> object.
-     *
-     * @param itemID the ID of an item waiting for approval
-     * @return the pending <Item></Item> associated with the given ID
-     */
-    public Item getPendingItem(long itemID) {
-        return idGetItem(pendingItems, itemID);
-    }
-
-    /**
-     * Returns the pending item at the given index.
+     * Returns the ID of the pending item at the given index.
      *
      * @param index the index of an item in the list of pending items
-     * @return the pending item at the given index
+     * @return the ID of the pending item at the given index
      */
-    public Item getPendingItem(int index) {
-        return pendingItems.get(index - 1);
+    public long getPendingItem(int index) {
+        return pendingItems.get(index - 1).getID();
     }
 
     /*
@@ -185,29 +176,15 @@ public class ItemManager extends Manager implements Serializable {
     }
 
     /**
-     * Takes in a list of approved item IDs and returns a parallel list of the associated <Item></Item> objects.
+     * Takes in a list of item IDs and returns a parallel list of the associated <Item></Item> objects.
      *
-     * @param itemIDs a list of IDs belonging to approved items
+     * @param itemIDs a list of item IDs
      * @return the corresponding list of associated <Item></Item> objects
      */
-    public List<Item> getApprovedItemsByIDs(List<Long> itemIDs) {
+    public List<Item> getItemsByIDs(List<Long> itemIDs) {
         List<Item> items = new ArrayList<>();
         for (long id : itemIDs) {
-            items.add(getApprovedItem(id));
-        }
-        return items;
-    }
-
-    /**
-     * Takes in a list of pending item IDs and returns a parallel list of the associated <Item></Item> objects.
-     *
-     * @param itemIDs a list of IDs belonging to items waiting for approval
-     * @return the corresponding list of associated <Item></Item> objects
-     */
-    public List<Item> getPendingItemsByIDs(List<Long> itemIDs) {
-        List<Item> items = new ArrayList<>();
-        for (long id : itemIDs) {
-            items.add(getPendingItem(id));
+            items.add(getItem(id));
         }
         return items;
     }
@@ -215,19 +192,39 @@ public class ItemManager extends Manager implements Serializable {
     /**
      * Removes the given item from the list of pending items and adds it to the list of approved items.
      *
-     * @param itemToApprove the item being approved
+     * @param itemIDToApprove the ID of the item being approved
      */
-    public void approveItem(Item itemToApprove) {
-        pendingItems.remove(itemToApprove);
-        approvedItems.add(itemToApprove);
+    public void approveItem(long itemIDToApprove) {
+        pendingItems.remove(getItem(itemIDToApprove));
+        approvedItems.add(getItem(itemIDToApprove));
     }
 
     /**
      * Rejects the given item by removing it from the list of pending items.
      *
-     * @param itemToReject the item being rejected
+     * @param itemIDToReject the ID of the item being rejected
      */
-    public void rejectItem(Item itemToReject) {
-        pendingItems.remove(itemToReject);
+    public void rejectItem(long itemIDToReject) {
+        pendingItems.remove(getItem(itemIDToReject));
+    }
+
+    /**
+     * Takes in an item ID and returns the item's name.
+     *
+     * @param itemID the ID of the item whose name is being retrieved
+     * @return the name of the item
+     */
+    public String getItemName(long itemID) {
+        return getItem(itemID).getName();
+    }
+
+    /**
+     * Takes in an item ID and returns the item's owner username.
+     *
+     * @param itemID the ID of the item whose owner is being retrieved
+     * @return the username of the item's owner
+     */
+    public String getItemOwner(long itemID) {
+        return getItem(itemID).getOwnerUsername();
     }
 }

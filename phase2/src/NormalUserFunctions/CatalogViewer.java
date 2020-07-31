@@ -1,7 +1,12 @@
 package NormalUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
+
+import SystemManagers.UserManager;
+import SystemManagers.ItemManager;
+import SystemManagers.TradeManager;
+import Entities.NormalUser;
+import Entities.Item;
+import SystemFunctions.SystemPresenter;
+import SystemFunctions.MenuItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,9 +22,9 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-24
+ * last modified 2020-07-30
  */
-public class CatalogViewer extends MenuItem{
+public class CatalogViewer extends MenuItem {
     private NormalUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
@@ -27,6 +32,7 @@ public class CatalogViewer extends MenuItem{
     private SystemPresenter systemPresenter;
     private BufferedReader bufferedReader;
     private String username;
+
     /**
      * Creates an <CatalogViewer></CatalogViewer> with the given normal user and item/user/trade managers.
      * Displays all items available for trade (excluding the current user's items).
@@ -66,7 +72,7 @@ public class CatalogViewer extends MenuItem{
                 Item selectedItem = itemsSameCity.get(input - 1);
                 long itemID = selectedItem.getID();
 
-                systemPresenter.catalogViewer(selectedItem, 1);
+                systemPresenter.catalogViewer(selectedItem.getName(), selectedItem.getOwnerUsername(), 1);
 
                 String temp2 = bufferedReader.readLine();
                 while (!temp2.matches("[0-2]")) {
@@ -95,7 +101,7 @@ public class CatalogViewer extends MenuItem{
                     } else if (userManager.isRequestedInTrade(username, itemID)) {
                         systemPresenter.catalogViewer(6);
                     } else if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < currentUser.getLendMinimum())) {
-                        systemPresenter.catalogViewer(currentUser);
+                        systemPresenter.catalogViewerLend(currentUser.getLendMinimum());
                     } else {
                         new TradeRequestSetup(username, userManager, itemManager, systemPresenter, bufferedReader).makeTradeRequest(selectedItem);
                     }

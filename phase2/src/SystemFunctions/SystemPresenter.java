@@ -1,5 +1,8 @@
 package SystemFunctions;
-import Entities.*;
+
+import Entities.Item;
+import Entities.Trade;
+import Entities.TemporaryTrade;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -13,46 +16,10 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-29
+ * last modified 2020-07-30
  */
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
-
-    //helper method that prints inventory + pending
-    private void presentInventory(List<Item> itemInventory, List<Item> pendingItems) {
-        System.out.println("\n-- Your inventory --");
-        if (itemInventory.isEmpty()) {
-            emptyListMessage();
-        }
-        for (Item i : itemInventory) {
-            System.out.println((itemInventory.indexOf(i) + 1) + ". " + i);
-        }
-
-        System.out.println("\n-- Items awaiting approval --");
-        if (pendingItems.isEmpty()) {
-            emptyListMessage();
-        }
-        for (Item i : pendingItems) {
-            System.out.println("- " + i);
-        }
-    }
-
-    //helper method that prints wishlist
-    private void presentWishlist(List<Item> itemWishlist) {
-        System.out.println("\n-- Your wishlist --");
-        if (itemWishlist.isEmpty()) {
-            emptyListMessage();
-        }
-        int index = 1;
-        for (Item i : itemWishlist) {
-            if (i.isInInventory()) {
-                System.out.println(index + ". " + i);
-            } else {
-                System.out.println(index + ". " + i + " (item has been removed from its owner's inventory)");
-            }
-            index++;
-        }
-    }
 
     /**
      * Prompts for if a user would like to edit their inventory
@@ -203,16 +170,16 @@ public class SystemPresenter {
     }
 
     /**
-     * Tells a user that they are borrowing more than their threshold
+     * Tells a user that they are borrowing more than their threshold.
      *
-     * @param user the user to be notified
+     * @param lendMinimum the lending minimum of the current user
      */
-    public void catalogViewer(NormalUser user) {
-        System.out.println("\nYou're borrowing too much! You need to lend AT LEAST " + user.getLendMinimum() + " more item(s) than you've borrowed.");
+    public void catalogViewerLend(int lendMinimum) {
+        System.out.println("\nYou're borrowing too much! You need to lend AT LEAST " + lendMinimum + " more item(s) than you've borrowed.");
     }
 
     /**
-     * Prompts user about items in the catalog
+     * Prompts user about items in the catalog.
      *
      * @param input the user's input
      */
@@ -245,16 +212,17 @@ public class SystemPresenter {
     /**
      * Prompts the user about an item they have chosen from the catalog
      *
-     * @param item  the item the user has chosen
+     * @param itemName  the name of the selected item
+     * @param owner the owner of the selected item
      * @param input the user's input
      */
-    public void catalogViewer(Item item, int input) {
+    public void catalogViewer(String itemName, String owner, int input) {
         switch (input) {
             case 1:
-                System.out.print("\nYou have chosen: [" + item + "]\n Would you like to 1) trade or 2) wishlist this item? (0 to cancel): ");
+                System.out.print("\nYou have chosen: [" + itemName + "]\n Would you like to 1) trade or 2) wishlist this item? (0 to cancel): ");
                 break;
             case 2:
-                System.out.print("\nAre you sure you want to trade for this item with user " + item.getOwnerUsername() + "? (Y/N): ");
+                System.out.print("\nAre you sure you want to trade for this item with user " + owner + "? (Y/N): ");
                 break;
         }
     }
@@ -288,10 +256,10 @@ public class SystemPresenter {
     /**
      * Prompts the user about whether to approve or reject a chosen item
      *
-     * @param item the chosen item
+     * @param itemName the name of the chosen item
      */
-    public void catalogEditor(Item item) {
-        System.out.println("\nYou have chosen: [" + item + "]");
+    public void catalogEditor(String itemName) {
+        System.out.println("\nYou have chosen: [" + itemName + "]");
         System.out.print("Would you like to 1) approve or 2) reject this item? (0 to quit): ");
     }
 
@@ -616,20 +584,20 @@ public class SystemPresenter {
         switch (situation) {
             case 1:
                 System.out.println("\nMost recent meeting suggestion: " + date + " at " + time +
-                        " - " + trade.getMeetingLocation1());
+                        " - " + trade.getFirstMeetingLocation());
                 break;
             case 2:
                 if (trade instanceof TemporaryTrade) {
                     System.out.println("\nFirst meeting: " + date + " at " + time +
-                            " - " + trade.getMeetingLocation1());
+                            " - " + trade.getFirstMeetingLocation());
                 } else {
                     System.out.println("\nMeeting: " + date + " at " + time +
-                            " - " + trade.getMeetingLocation1());
+                            " - " + trade.getFirstMeetingLocation());
                 }
                 break;
             case 3:
                 System.out.println("\nSecond meeting: " + date + " at " + time +
-                        " - " + ((TemporaryTrade) trade).getMeetingLocation2());
+                        " - " + ((TemporaryTrade) trade).getSecondMeetingLocation());
                 break;
         }
     }
@@ -797,12 +765,12 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents an admin user's ID
+     * Presents an admin user's ID,
      *
-     * @param user The AdminUser
+     * @param adminID the ID of the current admin
      */
-    public void showAdminID(AdminUser user) {
-        System.out.println("\nYour admin ID: " + user.getAdminID());
+    public void showAdminID(int adminID) {
+        System.out.println("\nYour admin ID: " + adminID);
     }
 
     /**

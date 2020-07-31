@@ -1,11 +1,7 @@
 package SystemFunctions;
-import SystemManagers.*;
-import Entities.*;
-import com.sun.deploy.panel.AbstractRadioPropertyGroup;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import SystemManagers.UserManager;
+import Entities.User;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +12,7 @@ import java.util.ArrayList;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-22
+ * last modified 2020-07-30
  */
 
 public class LoginSystem {

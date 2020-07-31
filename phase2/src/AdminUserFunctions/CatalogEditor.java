@@ -1,7 +1,9 @@
 package AdminUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
+
+import SystemManagers.UserManager;
+import SystemManagers.ItemManager;
+import Entities.AdminUser;
+import SystemFunctions.SystemPresenter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,7 +14,7 @@ import java.io.InputStreamReader;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-28
+ * last modified 2020-07-30
  */
 public class CatalogEditor {
     private AdminUser currentAdmin;
@@ -55,9 +57,9 @@ public class CatalogEditor {
                 input = Integer.parseInt(temp);
 
                 if (input != 0) {
-                    Item i = itemManager.getPendingItem(input);
-                    NormalUser itemOwner = userManager.getNormalByUsername(i.getOwnerUsername());
-                    systemPresenter.catalogEditor(i);
+                    long pendingItemID = itemManager.getPendingItem(input);
+                    String itemOwnerUsername = itemManager.getItemOwner(pendingItemID);
+                    systemPresenter.catalogEditor(itemManager.getItemName(pendingItemID));
                     String temp2 = bufferedReader.readLine();
                     while (!temp2.matches("[0-2]")) {
                         systemPresenter.invalidInput();
@@ -65,11 +67,11 @@ public class CatalogEditor {
                     }
                     int actionInput = Integer.parseInt(temp2);
                     if (actionInput == 1) {
-                        itemManager.approveItem(i);
-                        itemOwner.addInventory(i.getID());
+                        itemManager.approveItem(pendingItemID);
+                        userManager.addNormalUserInventory(pendingItemID, itemOwnerUsername);
                     } else if (actionInput == 2) {
-                        itemManager.rejectItem(i);
-                        itemOwner.removePendingInventory(i.getID());
+                        itemManager.rejectItem(pendingItemID);
+                        userManager.removeNormalUserPending(pendingItemID, itemOwnerUsername);
                     } else {
                         input = 0;
                     }

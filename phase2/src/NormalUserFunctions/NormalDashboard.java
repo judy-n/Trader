@@ -1,8 +1,10 @@
 package NormalUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
-import AdminUserFunctions.AccountUnfreezer;
+
+import SystemManagers.UserManager;
+import SystemManagers.ItemManager;
+import SystemManagers.TradeManager;
+import Entities.NormalUser;
+import SystemFunctions.SystemPresenter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,7 +18,7 @@ import java.io.InputStreamReader;
  * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-28
+ * last modified 2020-07-30
  */
 public class NormalDashboard {
     private NormalUser currentUser;
@@ -119,7 +121,7 @@ public class NormalDashboard {
                  * Unfreeze request option.
                  * Only appears for frozen accounts.
                  */
-                new AccountUnfreezer(currentUser, itemManager, userManager, tradeManager);
+                new UnfreezeRequester(currentUser, itemManager, userManager, tradeManager);
                 break;
 
             case 9:

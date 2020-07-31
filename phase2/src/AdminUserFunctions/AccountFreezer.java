@@ -1,11 +1,12 @@
 package AdminUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
+
+import SystemManagers.UserManager;
+import SystemManagers.ItemManager;
+import Entities.AdminUser;
+import SystemFunctions.SystemPresenter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-28
+ * last modified 2020-07-30
  */
 public class AccountFreezer {
     private AdminUser currentAdmin;
@@ -39,12 +40,8 @@ public class AccountFreezer {
 
         String input;
         List<String> usernames = userManager.getUsernamesToFreeze();
-        List<NormalUser> users = new ArrayList<>();
 
         systemPresenter.accountFreezer(usernames);
-        for (String username : usernames) {
-            users.add(userManager.getNormalByUsername(username));
-        }
 
         if (!usernames.isEmpty()) {
             try {
@@ -55,8 +52,8 @@ public class AccountFreezer {
                     systemPresenter.accountFreezer();
                 }
                 if (input.equalsIgnoreCase("y")) {
-                    for (NormalUser u : users) {
-                        u.freeze();
+                    for (String username : usernames) {
+                        userManager.freezeNormalUser(username);
                     }
                     userManager.clearUsernamesToFreeze();
                 }

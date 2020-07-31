@@ -1,7 +1,9 @@
 package AdminUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
+
+import SystemManagers.UserManager;
+import SystemManagers.ItemManager;
+import Entities.AdminUser;
+import SystemFunctions.SystemPresenter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,7 +14,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-28
+ * last modified 2020-07-30
  */
 
 public class AdminDashboard {
@@ -38,7 +40,7 @@ public class AdminDashboard {
 
         String regex = "[0-4]";
 
-        systemPresenter.showAdminID(currentAdmin);
+        systemPresenter.showAdminID(currentAdmin.getAdminID());
         if (currentAdmin.getAdminID() != 1) {
             systemPresenter.adminDashboard(1);
         } else {

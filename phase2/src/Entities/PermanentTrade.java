@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-13
+ * last modified 2020-07-30
  */
 public class PermanentTrade extends Trade implements Serializable, Comparable<Trade> {
     /**
@@ -33,12 +33,12 @@ public class PermanentTrade extends Trade implements Serializable, Comparable<Tr
      * @param username the username of the user confirming the transaction
      */
     @Override
-    public void confirmTransaction1(String username) {
+    public void confirmFirstTransaction(String username) {
 
-        super.confirmTransaction1(username);
+        super.confirmFirstTransaction(username);
 
-        if (getUserTransactionConfirmation1(username) &&
-                getUserTransactionConfirmation1(getOtherUsername(username))) {
+        if (getUserFirstTransactionConfirmation(username) &&
+                getUserFirstTransactionConfirmation(getOtherUsername(username))) {
             closeTransaction();
         }
     }
@@ -52,7 +52,7 @@ public class PermanentTrade extends Trade implements Serializable, Comparable<Tr
     @Override
     public LocalDateTime getFinalMeetingDateTime() {
         if (getIsComplete()) {
-            return getMeetingDateTime1();
+            return getFirstMeetingDateTime();
         }
         return null;
     }
@@ -78,9 +78,9 @@ public class PermanentTrade extends Trade implements Serializable, Comparable<Tr
     @Override
     public int compareTo(Trade trade) {
         if (trade instanceof TemporaryTrade && ((TemporaryTrade) trade).hasSecondMeeting()) {
-            return getMeetingDateTime1().compareTo(trade.getFinalMeetingDateTime());
+            return getFirstMeetingDateTime().compareTo(trade.getFinalMeetingDateTime());
         } else {
-            return getMeetingDateTime1().compareTo(trade.getMeetingDateTime1());
+            return getFirstMeetingDateTime().compareTo(trade.getFirstMeetingDateTime());
         }
     }
 }

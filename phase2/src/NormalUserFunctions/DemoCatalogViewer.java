@@ -1,7 +1,9 @@
 package NormalUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
+
+import SystemManagers.UserManager;
+import SystemManagers.ItemManager;
+import SystemFunctions.SystemPresenter;
+import SystemFunctions.SystemController;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,19 +15,17 @@ import java.io.InputStreamReader;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-19
- * last modified 2020-07-20
+ * last modified 2020-07-30
  */
 public class DemoCatalogViewer {
     private ItemManager itemManager;
     private UserManager userManager;
-    private TradeManager tradeManager;
     private SystemPresenter systemPresenter;
     private BufferedReader bufferedReader;
 
-    public DemoCatalogViewer(ItemManager im, UserManager um, TradeManager tm) {
+    public DemoCatalogViewer(ItemManager im, UserManager um) {
         itemManager = im;
         userManager = um;
-        tradeManager = tm;
 
         systemPresenter = new SystemPresenter();
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -48,6 +48,6 @@ public class DemoCatalogViewer {
         }
         close();
     }
-    private void close() { new DemoDashboard(itemManager, userManager, tradeManager); }
+    private void close() { new DemoDashboard(itemManager, userManager); }
 
 }

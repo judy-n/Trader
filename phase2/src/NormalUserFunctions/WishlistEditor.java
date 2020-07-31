@@ -1,7 +1,12 @@
 package NormalUserFunctions;
-import SystemManagers.*;
-import Entities.*;
-import SystemFunctions.*;
+
+import SystemManagers.UserManager;
+import SystemManagers.ItemManager;
+import SystemManagers.TradeManager;
+import Entities.NormalUser;
+import Entities.Item;
+import SystemFunctions.SystemPresenter;
+import SystemFunctions.MenuItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +19,7 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-28
+ * last modified 2020-07-30
  */
 public class WishlistEditor extends MenuItem{
     private NormalUser currentUser;
@@ -43,7 +48,7 @@ public class WishlistEditor extends MenuItem{
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        List<Item> itemWishlist = itemManager.getApprovedItemsByIDs(currentUser.getWishlist());
+        List<Item> itemWishlist = itemManager.getItemsByIDs(currentUser.getWishlist());
         systemPresenter.wishlistEditor(itemWishlist);
         try {
             String temp = bufferedReader.readLine();
