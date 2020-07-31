@@ -17,7 +17,7 @@ import SystemFunctions.ReadWriter;
  * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
 public class UserManager extends Manager implements Serializable {
     private List<NormalUser> allNormals;
@@ -491,6 +491,7 @@ public class UserManager extends Manager implements Serializable {
         getNormalByUsername(usernameToFreeze).freeze();
     }
 
+
     private void setNormalUserWeeklyTradeMax(String username, int threshold) {
         getNormalByUsername(username).setWeeklyTradeMax(threshold);
     }
@@ -507,24 +508,40 @@ public class UserManager extends Manager implements Serializable {
         getNormalByUsername(username).setMeetingEditMax(threshold);
     }
 
+    /**
+     * Sets all normalUser weekly trade max thresholds to the given number
+     * @param threshold the new threshold
+     */
     public void setAllNormalUserWeeklyTradeMax(int threshold) {
         for (String username : getAllNormaUserUsernames()) {
             setNormalUserWeeklyTradeMax(username, threshold);
         }
     }
 
+    /**
+     * Sets all normalUser incomplete trade max thresholds to the given number
+     * @param threshold the new threshold
+     */
     public void setAllNormalUserIncompleteMax(int threshold) {
         for (String username : getAllNormaUserUsernames()) {
             setNormalUserIncompleteMax(username, threshold);
         }
     }
 
+    /**
+     * Sets all normalUser minimum lending thresholds to the given number
+     * @param threshold the new threshold
+     */
     public void setAllNormalUserLendMinimum(int threshold) {
             for (String username : getAllNormaUserUsernames()) {
                 setNormalUserLendMinimum(username, threshold);
             }
         }
 
+    /**
+     * Sets all normalUser max meeting edit threshold to the given number
+     * @param threshold the new threshold
+     */
     public void setALlNormalUserMeetingEditMax(int threshold) {
             for (String username : getAllNormaUserUsernames())
             {
