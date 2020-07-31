@@ -13,16 +13,17 @@ import java.util.List;
  * @author Ning Zhang
  * @author Yingjia Liu
  * @author Judy Naamani
+ * @author Liam Huff
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-28
+ * last modified 2020-07-31
  */
 public class ThresholdEditor {
     private ItemManager itemManager;
     private UserManager userManager;
     private AdminUser currentUser;
-    private SystemPresenter sp;
-    private BufferedReader br;
+    private SystemPresenter systemPresenter;
+    private BufferedReader bufferedReader;
 
     /**
      * Creates a <ThresholdEditor></ThresholdEditor> with the given admin and item/user managers.
@@ -37,38 +38,38 @@ public class ThresholdEditor {
         itemManager = im;
         userManager = um;
 
-        sp = new SystemPresenter();
-        br = new BufferedReader(new InputStreamReader(System.in));
+        systemPresenter = new SystemPresenter();
+        bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         NormalUser subjectUser;
         String usernameInput;
         int newThreshold;
-        sp.thresholdEditor(0);
+        systemPresenter.thresholdEditor(0);
 
         try {
-            String temp1 = br.readLine();
+            String temp1 = bufferedReader.readLine();
             while (!temp1.matches("[0-2]")) {
-                sp.invalidInput();
-                temp1 = br.readLine();
+                systemPresenter.invalidInput();
+                temp1 = bufferedReader.readLine();
             }
 
             if (temp1.matches("1")) {
-                sp.thresholdEditor(1);
+                systemPresenter.thresholdEditor(1);
             try {
-                usernameInput = br.readLine();
+                usernameInput = bufferedReader.readLine();
                 while (!usernameInput.equals("0") && userManager.normalUsernameExists(usernameInput)) {
-                    sp.invalidInput();
-                    usernameInput = br.readLine();
+                    systemPresenter.invalidInput();
+                    usernameInput = bufferedReader.readLine();
                 }
 
                 if (!usernameInput.equals("0")) {
                     subjectUser = userManager.getNormalByUsername(usernameInput);
 
-                    sp.thresholdEditor(2);
-                    String temp = br.readLine();
+                    systemPresenter.thresholdEditor(2);
+                    String temp = bufferedReader.readLine();
                     while (!temp.matches("[0-4]")) {
-                        sp.invalidInput();
-                        temp = br.readLine();
+                        systemPresenter.invalidInput();
+                        temp = bufferedReader.readLine();
                     }
                     int choiceInput = Integer.parseInt(temp);
 
@@ -76,22 +77,22 @@ public class ThresholdEditor {
                         case 0:
                             break;
                         case 1:
-                            sp.thresholdEditor(1, subjectUser.getWeeklyTradeMax());
+                            systemPresenter.thresholdEditor(1, subjectUser.getWeeklyTradeMax());
                             newThreshold = thresholdInputCheck();
                             subjectUser.setWeeklyTradeMax(newThreshold);
                             break;
                         case 2:
-                            sp.thresholdEditor(2, subjectUser.getMeetingEditMax());
+                            systemPresenter.thresholdEditor(2, subjectUser.getMeetingEditMax());
                             newThreshold = thresholdInputCheck();
                             subjectUser.setMeetingEditMax(newThreshold);
                             break;
                         case 3:
-                            sp.thresholdEditor(3, subjectUser.getLendMinimum());
+                            systemPresenter.thresholdEditor(3, subjectUser.getLendMinimum());
                             newThreshold = thresholdInputCheck();
                             subjectUser.setLendMinimum(newThreshold);
                             break;
                         case 4:
-                            sp.thresholdEditor(4, subjectUser.getIncompleteMax());
+                            systemPresenter.thresholdEditor(4, subjectUser.getIncompleteMax());
                             newThreshold = thresholdInputCheck();
                             subjectUser.setIncompleteMax(newThreshold);
                             break;
@@ -100,16 +101,16 @@ public class ThresholdEditor {
                 close();
 
             } catch (IOException e) {
-                sp.exceptionMessage();
+                systemPresenter.exceptionMessage();
             }
 
 
         }else if (temp1.matches("2")){
-                sp.thresholdEditor(2);
-                String temp2 = br.readLine();
+                systemPresenter.thresholdEditor(2);
+                String temp2 = bufferedReader.readLine();
                 while (!temp2.matches("[0-4]")) {
-                    sp.invalidInput();
-                    temp2 = br.readLine();
+                    systemPresenter.invalidInput();
+                    temp2 = bufferedReader.readLine();
                 }
                 int choiceInput = Integer.parseInt(temp2);
 
@@ -121,75 +122,62 @@ public class ThresholdEditor {
                         String line1 = Files.readAllLines(Paths.get("src/thresholds.txt")).get(0);
                         String[] splitLine = line1.split(":");
                         int oldWeeklyTradeMax = Integer.parseInt(splitLine[1]);
-                        sp.thresholdEditor(1, oldWeeklyTradeMax);
+                        systemPresenter.thresholdEditor(1, oldWeeklyTradeMax);
                         newThreshold = thresholdInputCheck();
                         editThreshold("weeklyTradeMax :", oldWeeklyTradeMax, newThreshold);
 
                         // Edits the threshold values for all current registered users.
-                        List<NormalUser> allNormals = um.getAllNormals();
-                        for (NormalUser u: allNormals){
-                            u.setWeeklyTradeMax(newThreshold);
-                        }
+                        userManager.setAllNormalUserWeeklyTradeMax(newThreshold);
                         break;
                     case 2:
                         // Edits the threshold values for all future users that will be created.
                         String line2 = Files.readAllLines(Paths.get("src/thresholds.txt")).get(1);
                         String[] splitLine1 = line2.split(":");
                         int oldMeetingEditMax = Integer.parseInt(splitLine1[1]);
-                        sp.thresholdEditor(2, oldMeetingEditMax);
+                        systemPresenter.thresholdEditor(2, oldMeetingEditMax);
                         newThreshold = thresholdInputCheck();
                         editThreshold("meetingEditMax :", oldMeetingEditMax, newThreshold);
 
                         // Edits the threshold values for all current registered users.
-                        allNormals = um.getAllNormals();
-                        for (NormalUser u: allNormals){
-                            u.setMeetingEditMax(newThreshold);
-                        }
-                        break;
+                        userManager.setALlNormalUserMeetingEditMax(newThreshold);
                     case 3:
                         // Edits the threshold values for all future users that will be created.
                         String line3 = Files.readAllLines(Paths.get("src/thresholds.txt")).get(2);
                         String[] splitLine2 = line3.split(":");
                         int oldLendMinimum = Integer.parseInt(splitLine2[1]);
-                        sp.thresholdEditor(3, oldLendMinimum);
+                        systemPresenter.thresholdEditor(3, oldLendMinimum);
                         newThreshold = thresholdInputCheck();
                         editThreshold("lendMinimum :", oldLendMinimum, newThreshold);
 
                         // Edits the threshold values for all current registered users.
-                        allNormals = um.getAllNormals();
-                        for (NormalUser u: allNormals){
-                            u.setLendMinimum(newThreshold);
-                        }
+                        userManager.setAllNormalUserLendMinimum(newThreshold);
                         break;
                     case 4:
                         // Edits the threshold values for all future users that will be created.
                         String line = Files.readAllLines(Paths.get("src/thresholds.txt")).get(3);
                         String[] splitLine3 = line.split(":");
                         int oldIncompleteMax = Integer.parseInt(splitLine3[1]);
-                        sp.thresholdEditor(4, oldIncompleteMax);
+                        systemPresenter.thresholdEditor(4, oldIncompleteMax);
                         newThreshold = thresholdInputCheck();
                         editThreshold("incompleteMax :", oldIncompleteMax, newThreshold);
 
                         // Edits the threshold values for all current registered users.
-                        allNormals = um.getAllNormals();
-                        for (NormalUser u: allNormals){
-                            u.setIncompleteMax(newThreshold);
-                        }
+                        userManager.setAllNormalUserIncompleteMax(newThreshold);
                         break;
                 }
             }
             close();
         } catch(IOException e){
-            sp.exceptionMessage();
+            systemPresenter.exceptionMessage();
         }
 
     }
 
     private int thresholdInputCheck() throws IOException {
-        String temp2 = br.readLine();
+        String temp2 = bufferedReader.readLine();
         while (!temp2.matches("[0-9]+")) {
-            sp.invalidInput();
-            temp2 = br.readLine();
+            systemPresenter.invalidInput();
+            temp2 = bufferedReader.readLine();
         }
         return Integer.parseInt(temp2);
     }
@@ -217,7 +205,7 @@ public class ThresholdEditor {
                 writer.close();
 
         } catch (IOException e) {
-            sp.exceptionMessage();
+            systemPresenter.exceptionMessage();
         }
     }
 
