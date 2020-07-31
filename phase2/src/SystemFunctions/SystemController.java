@@ -29,9 +29,9 @@ public class SystemController {
 
     private ReadWriter readWriter;
 
-    private String userManagerPath = "src/usermanager.ser";
-    private String itemManagerPath = "src/itemmanager.ser";
-    private String tradeManagerPath = "src/trademanager.ser";
+    private final String USER_MANAGER_PATH = "src/usermanager.ser";
+    private final String ITEM_MANAGER_PATH = "src/itemmanager.ser";
+    private final String TRADE_MANAGER_PATH = "src/trademanager.ser";
 
     private SystemPresenter systemPresenter;
 
@@ -122,7 +122,7 @@ public class SystemController {
 
     private void tryReadManagers() {
         try {
-            userManager = (UserManager) readWriter.readFromFile(userManagerPath, 1);
+            userManager = (UserManager) readWriter.readFromFile(USER_MANAGER_PATH, 1);
         } catch (IOException e) {
             systemPresenter.exceptionMessage(1, "Reading", "UserManager");
         } catch (ClassNotFoundException e) {
@@ -130,7 +130,7 @@ public class SystemController {
         }
 
         try {
-            itemManager = (ItemManager) readWriter.readFromFile(itemManagerPath, 2);
+            itemManager = (ItemManager) readWriter.readFromFile(ITEM_MANAGER_PATH, 2);
         } catch (IOException e) {
             systemPresenter.exceptionMessage(1, "Reading", "ItemManager");
         } catch (ClassNotFoundException e) {
@@ -138,7 +138,7 @@ public class SystemController {
         }
 
         try {
-            tradeManager = (TradeManager) readWriter.readFromFile(tradeManagerPath, 3);
+            tradeManager = (TradeManager) readWriter.readFromFile(TRADE_MANAGER_PATH, 3);
         } catch (IOException e) {
             systemPresenter.exceptionMessage(1, "Reading", "TradeManager");
         } catch (ClassNotFoundException e) {
@@ -148,19 +148,19 @@ public class SystemController {
 
     public void tryWriteManagers() {
         try {
-            readWriter.saveToFile(userManagerPath, userManager);
+            readWriter.saveToFile(USER_MANAGER_PATH, userManager);
         } catch (IOException e) {
             systemPresenter.exceptionMessage(1, "Writing", "UserManager");
         }
 
         try {
-            readWriter.saveToFile(itemManagerPath, itemManager);
+            readWriter.saveToFile(ITEM_MANAGER_PATH, itemManager);
         } catch (IOException e) {
             systemPresenter.exceptionMessage(1, "Writing", "ItemManager");
         }
 
         try {
-            readWriter.saveToFile(tradeManagerPath, tradeManager);
+            readWriter.saveToFile(TRADE_MANAGER_PATH, tradeManager);
         } catch (IOException e) {
             systemPresenter.exceptionMessage(1, "Writing", "TradeManager");
         }
