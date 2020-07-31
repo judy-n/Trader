@@ -6,6 +6,7 @@ import Entities.AdminUser;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import SystemFunctions.ReadWriter;
 
 /**
  * Stores all <User></User>s in the system.
@@ -24,6 +25,7 @@ public class UserManager extends Manager implements Serializable {
     private List<String> usernamesToFreeze;
     private List<String> unfreezeRequests;
     private List<String> usernamesOnVacation;
+    private ReadWriter readWriter;
 
     /**
      * Creates a <UserManager></UserManager>, setting all lists to empty by default.
@@ -472,6 +474,14 @@ public class UserManager extends Manager implements Serializable {
         getNormalByUsername(username).addWishlist(itemIDToAdd);
     }
 
+    private List<String> getAllNormaUserUsernames() {
+        ArrayList<String> allUsernames = new ArrayList<>();
+        for (User user : getAllUsers()) {
+            allUsernames.add(user.getUsername());
+        }
+        return allUsernames;
+    }
+
     /**
      * Freezes the account associated with the given username.
      *
@@ -480,6 +490,48 @@ public class UserManager extends Manager implements Serializable {
     public void freezeNormalUser(String usernameToFreeze) {
         getNormalByUsername(usernameToFreeze).freeze();
     }
+
+    private void setNormalUserWeeklyTradeMax(String username, int threshold) {
+        getNormalByUsername(username).setWeeklyTradeMax(threshold);
+    }
+
+    private void setNormalUserIncompleteMax(String username, int threshold) {
+        getNormalByUsername(username).setIncompleteMax(threshold);
+    }
+
+    private void setNormalUserLendMinimum(String username, int threshold) {
+        getNormalByUsername(username).setLendMinimum(threshold);
+    }
+
+    private void setNormalUserMeetingEditMax(String username, int threshold) {
+        getNormalByUsername(username).setMeetingEditMax(threshold);
+    }
+
+    public void setAllNormalUserWeeklyTradeMax(int threshold) {
+        for (String username : getAllNormaUserUsernames()) {
+            setNormalUserWeeklyTradeMax(username, threshold);
+        }
+    }
+
+    public void setAllNormalUserIncompleteMax(int threshold) {
+        for (String username : getAllNormaUserUsernames()) {
+            setNormalUserIncompleteMax(username, threshold);
+        }
+    }
+
+    public void setAllNormalUserLendMinimum(int threshold) {
+            for (String username : getAllNormaUserUsernames()) {
+                setNormalUserLendMinimum(username, threshold);
+            }
+        }
+
+    public void setALlNormalUserMeetingEditMax(int threshold) {
+            for (String username : getAllNormaUserUsernames())
+            {
+                setNormalUserLendMinimum(username, threshold);
+            }
+        }
+
 }
 
 
