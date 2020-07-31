@@ -9,6 +9,8 @@ import Entities.AdminUser;
 import NormalUserFunctions.DemoDashboard;
 import NormalUserFunctions.NormalDashboard;
 import AdminUserFunctions.AdminDashboard;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ import java.util.List;
  * @since 2020-07-03
  * last modified 2020-07-30
  */
-public class SystemController {
+public class SystemController extends JFrame {
     private UserManager userManager;
     private ItemManager itemManager;
     private TradeManager tradeManager;
@@ -63,6 +65,7 @@ public class SystemController {
 
         if (userManager.getAllUsers().isEmpty()) {
             tryReadAdmin();
+            userManager.createNormalUser("test", "e", "p", "homeCity");
         }
 
 //        while (choice != 0) {
@@ -96,7 +99,7 @@ public class SystemController {
         ArrayList<Integer> invalidInput = signUpSystem.validateInput(username, email, password, validatePassword);
         if(invalidInput.isEmpty()){
             NormalUser newUser = new SignUpSystem(userManager).createNewNormal(username, email, password, homeCity);
-            new NormalDashboard(newUser, itemManager, userManager, tradeManager);
+            new DashboardFrame(new NormalDashboard(newUser, itemManager, userManager, tradeManager));
         }
         return invalidInput;
     }
@@ -107,9 +110,9 @@ public class SystemController {
         if(invalidInput.isEmpty()) {
             User currentUser = newLoginSystem.getUser();
             if (currentUser instanceof AdminUser) {
-                new AdminDashboard((AdminUser) currentUser, itemManager, userManager);
+                //new DashboardFrame(new AdminDashboard((AdminUser) currentUser, itemManager, userManager));
             } else {
-                new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager);
+                new DashboardFrame(new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager));
             }
         }
         return invalidInput;

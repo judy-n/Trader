@@ -1,5 +1,7 @@
 package AdminUserFunctions;
 
+import Entities.User;
+import SystemFunctions.Dashboard;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import Entities.AdminUser;
@@ -17,7 +19,7 @@ import java.io.InputStreamReader;
  * last modified 2020-07-30
  */
 
-public class AdminDashboard {
+public class AdminDashboard extends Dashboard {
     private AdminUser currentAdmin;
     private ItemManager itemManager;
     private UserManager userManager;
@@ -80,5 +82,9 @@ public class AdminDashboard {
                 new AdminCreator(currentAdmin, itemManager, userManager);
                 break;
         }
+    }
+    @Override
+    public User getUser(){
+        return currentAdmin;
     }
 }

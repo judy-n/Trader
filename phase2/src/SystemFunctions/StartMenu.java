@@ -2,6 +2,8 @@ package SystemFunctions;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 
@@ -57,7 +59,6 @@ public class StartMenu extends JPanel {
 
         JLabel welcomeText = new JLabel(startMenuPresenter.startMenu(1));
 
-
         welcomeText.setFont(font);
         welcomeText.setSize(new Dimension(300,40));
 
@@ -82,7 +83,6 @@ public class StartMenu extends JPanel {
         });
         demo.addActionListener(e -> systemController.demoUser());
         endProgram.addActionListener(e -> {
-            //this.removeAll();
             systemController.tryWriteManagers();
             System.exit(0);
         });
@@ -161,6 +161,7 @@ public class StartMenu extends JPanel {
                 makeInvalidInputWarning(allTypeInvalidInput[0]);
                 if(allTypeInvalidInput[0].isEmpty()){
                     loggedIn();
+                    this.setVisible(true);
                 }
             });
         }else{
@@ -217,7 +218,9 @@ public class StartMenu extends JPanel {
                         inputtedEmail, inputtedPassword, validateInputtedPassword, inputtedHomeCity);
                 makeInvalidInputWarning(allTypeInvalidInput[0]);
                 if(allTypeInvalidInput[0].isEmpty()){
+
                     loggedIn();
+                    this.setVisible(true);
                 }
             });
         }
@@ -227,11 +230,19 @@ public class StartMenu extends JPanel {
     private void loggedIn(){
         this.removeAll();
         this.revalidate();
+        JButton logoutButton = new JButton("Log out");
+        initializeButton(logoutButton, 200,40,50,50);
+        logoutButton.addActionListener(e -> {
+            this.removeAll();
+            this.revalidate();
+            mainMenu();
+            this.repaint();
+        });
         JLabel loggedInMsg = new JLabel(startMenuPresenter.loginSystem(5));
-        loggedInMsg.setLocation(X_POS, FIRST_LINE_Y);
         loggedInMsg.setForeground(Color.BLACK);
         loggedInMsg.setSize(200,40);
         this.add(loggedInMsg);
+        loggedInMsg.setLocation(X_POS, FIRST_LINE_Y);
         this.repaint();
     }
 
