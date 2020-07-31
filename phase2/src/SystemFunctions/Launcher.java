@@ -24,7 +24,7 @@ public class Launcher extends JFrame{
         programWindow.setUndecorated(false);
         programWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         SystemController systemController = new SystemController();
-        startMenu = new StartMenu(systemController);
+        startMenu = new StartMenu(systemController, programWindow);
         programWindow.add(startMenu);
         programWindow.setVisible(true);
 

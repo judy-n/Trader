@@ -94,29 +94,30 @@ public class SystemController extends JFrame {
     }
 
     public ArrayList<Integer> normalUserSignUp(String username, String email, String password,
-                                               String validatePassword, String homeCity){
-        SignUpSystem signUpSystem = new SignUpSystem(userManager);
-        ArrayList<Integer> invalidInput = signUpSystem.validateInput(username, email, password, validatePassword);
-        if(invalidInput.isEmpty()){
-            NormalUser newUser = new SignUpSystem(userManager).createNewNormal(username, email, password, homeCity);
-            new DashboardFrame(new NormalDashboard(newUser, itemManager, userManager, tradeManager));
-        }
+                                               String validatePassword){
+        ArrayList<Integer> invalidInput = new SignUpSystem(userManager).validateInput(username, email, password, validatePassword);
         return invalidInput;
     }
 
+    public void normalUserSignUp(String username, String email, String password, String homeCity, JFrame parent){
+        NormalUser newUser = new SignUpSystem(userManager).createNewNormal(username, email, password, homeCity);
+        new DashboardFrame(new NormalDashboard(newUser, itemManager, userManager, tradeManager), parent);
+    }
+
     public ArrayList<Integer> userLogin(String usernameOrEmail, String password){
-        LoginSystem newLoginSystem = new LoginSystem(userManager);
-        ArrayList<Integer> invalidInput = newLoginSystem.validateInput(usernameOrEmail, password);
-        if(invalidInput.isEmpty()) {
-            User currentUser = newLoginSystem.getUser();
-            if (currentUser instanceof AdminUser) {
-                //new DashboardFrame(new AdminDashboard((AdminUser) currentUser, itemManager, userManager));
-            } else {
-                new DashboardFrame(new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager));
-            }
-        }
+        ArrayList<Integer> invalidInput = new LoginSystem(userManager).validateInput(usernameOrEmail, password);
         return invalidInput;
     }
+
+    public void userLogin(String usernameOrEmail, JFrame parent){
+        User currentUser = new LoginSystem(userManager).getUser(usernameOrEmail);
+        if (currentUser instanceof AdminUser) {
+            new DashboardFrame(new AdminDashboard((AdminUser) currentUser, itemManager, userManager), parent);
+        } else {
+            new DashboardFrame(new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager), parent);
+        }
+    }
+
 
     public void demoUser(){
         new DemoDashboard(itemManager, userManager);

@@ -3,21 +3,21 @@ package SystemFunctions;
 import Entities.User;
 import javax.swing.*;
 
-public class DashboardFrame extends JFrame{
+public class DashboardFrame extends JDialog{
     private Dashboard dashboard;
-    public JFrame DashboardWindow;
+    public JDialog DashboardWindow;
+    public JFrame parent;
 
-    public DashboardFrame(Dashboard dashboard) {
+    public DashboardFrame(Dashboard dashboard, JFrame parent) {
         this.dashboard = dashboard;
+        this.parent = parent;
         User user = dashboard.getUser();
-
-        DashboardWindow = new JFrame("Dashboard | "+ user.getUsername());
+        System.out.println(user.getUsername());
+        DashboardWindow = new JDialog(parent, "Dashboard | "+user.getUsername(), true);
         DashboardWindow.setSize(820, 576);
         DashboardWindow.setResizable(false);
         DashboardWindow.setUndecorated(false);
         DashboardWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        DashboardWindow.setLayout(null);
-
         DashboardWindow.add(dashboard);
         DashboardWindow.setVisible(true);
 

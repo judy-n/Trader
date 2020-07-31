@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 public class LoginSystem {
     private String validPw;
-    private User currentUser;
     private UserManager userManager;
 
     /**
@@ -33,13 +32,8 @@ public class LoginSystem {
         if(!userManager.usernameExists(usernameOrEmail) && !userManager.emailExists(usernameOrEmail)){
             invalidInput.add(2);
         }
-        if (usernameOrEmail.contains("@")) {
-            validPw = userManager.emailPassword(usernameOrEmail);
-            currentUser = userManager.getUserByEmail(usernameOrEmail);
-        } else {
-            validPw = userManager.usernamePassword(usernameOrEmail);
-            currentUser = userManager.getUserByUsername(usernameOrEmail);
-        }
+        User currentUser = userManager.getUserByUsernameOrEmail(usernameOrEmail);
+        validPw = currentUser.getPassword();
         if(!password.equals(validPw)){
             invalidInput.add(4);
         }
@@ -51,7 +45,7 @@ public class LoginSystem {
      *
      * @return the user who just logged in
      */
-    public User getUser() {
-        return currentUser;
+    public User getUser(String usernameOrEmail) {
+        return userManager.getUserByUsernameOrEmail(usernameOrEmail);
     }
 }

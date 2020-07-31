@@ -153,35 +153,6 @@ public class UserManager extends Manager implements Serializable {
         return allAdmins;
     }
 
-
-    /**
-     * Takes the given username for any type of user and returns the associated account password.
-     *
-     * @param username the username of the user whose password is being retrieved
-     * @return the account password associated with the given username
-     */
-    public String usernamePassword(String username) {
-        for (User u : getAllUsers()) {
-            if (u.getUsername().equals(username))
-                return u.getPassword();
-        }
-        return null;
-    }
-
-    /**
-     * Takes the given email for any type of user and returns the associated account password.
-     *
-     * @param email the email of the user whose password is being retrieved
-     * @return the account password associated with the given email
-     */
-    public String emailPassword(String email) {
-        for (User u : getAllUsers()) {
-            if (u.getEmail().equals(email))
-                return u.getPassword();
-        }
-        return null;
-    }
-
     /**
      * Checks if a user with the given email already exists in the user database,
      * regardless of what type of user is passed in.
@@ -301,13 +272,7 @@ public class UserManager extends Manager implements Serializable {
         unfreezeRequests.add(username);
     }
 
-    /**
-     * Gets a user by the given username (regardless of type of user).
-     *
-     * @param username the user's username
-     * @return the user with the given username
-     */
-    public User getUserByUsername(String username) {
+    private User getUserByUsername(String username) {
         for (User u : getAllUsers()) {
             if (u.getUsername().equals(username)) {
                 return u;
@@ -316,13 +281,7 @@ public class UserManager extends Manager implements Serializable {
         return null;
     }
 
-    /**
-     * Gets a user by the given email (regardless of type of user).
-     *
-     * @param email the user's email
-     * @return the user with the given email
-     */
-    public User getUserByEmail(String email) {
+    private User getUserByEmail(String email) {
         for (User u : getAllUsers()) {
             if (u.getEmail().equals(email)) {
                 return u;
@@ -330,6 +289,20 @@ public class UserManager extends Manager implements Serializable {
         }
         return null;
     }
+    /**
+     * Gets a user by the given username or email (regardless of type of user).
+     *
+     * @param usernameOrEmail the user's email
+     * @return the user with the given email
+     */
+    public User getUserByUsernameOrEmail(String usernameOrEmail){
+        if (usernameOrEmail.contains("@")) {
+           return getUserByEmail(usernameOrEmail);
+        } else {
+            return getUserByUsername(usernameOrEmail);
+        }
+    }
+
 
     /**
      * Adds the given username to the list of usernames on vacation.

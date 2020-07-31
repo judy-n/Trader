@@ -33,11 +33,12 @@ public class StartMenu extends JPanel {
     private final int X_SPACE = 200;
     private JLabel invalid;
     private final ArrayList<Integer>[] allTypeInvalidInput = new ArrayList[]{new ArrayList<>()};
-
+    private JFrame parent;
     /**
      * Creates a <StartMenu></StartMenu> that lets the user choose their next course of action through user input.
      */
-    public StartMenu(SystemController systemController) {
+    public StartMenu(SystemController systemController, JFrame parent) {
+        this.parent = parent;
         this.systemController = systemController;
         startMenuPresenter = new StartMenuPresenter();
         invalid = new JLabel();
@@ -161,6 +162,8 @@ public class StartMenu extends JPanel {
                 makeInvalidInputWarning(allTypeInvalidInput[0]);
                 if(allTypeInvalidInput[0].isEmpty()){
                     loggedIn();
+                    System.out.println(parent.getTitle());
+                    systemController.userLogin(emailOrUsername, parent);
                     this.setVisible(true);
                 }
             });
@@ -215,11 +218,13 @@ public class StartMenu extends JPanel {
                 validateInputtedPassword = String.valueOf(validatePasswordInput.getPassword());
                 inputtedHomeCity = homeCity.getText();
                 allTypeInvalidInput[0] = systemController.normalUserSignUp(inputtedUsername,
-                        inputtedEmail, inputtedPassword, validateInputtedPassword, inputtedHomeCity);
+                        inputtedEmail, inputtedPassword, validateInputtedPassword);
                 makeInvalidInputWarning(allTypeInvalidInput[0]);
                 if(allTypeInvalidInput[0].isEmpty()){
-
                     loggedIn();
+                    System.out.println(parent.getTitle());
+                    systemController.normalUserSignUp(inputtedUsername, inputtedEmail, inputtedPassword,
+                            inputtedHomeCity, parent);
                     this.setVisible(true);
                 }
             });

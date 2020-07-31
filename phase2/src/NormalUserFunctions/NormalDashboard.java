@@ -5,6 +5,8 @@ import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
 import Entities.NormalUser;
+import com.sun.scenario.effect.impl.sw.java.JSWBlend_COLOR_BURNPeer;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -41,31 +43,30 @@ public class NormalDashboard extends Dashboard {
 
         this.setPreferredSize(new Dimension(820, 576));
         this.setLayout(null);
-        drawPanels();
+        drawDefault();
+        this.validate();
+        this.repaint();
     }
 
+    private void drawDefault(){
+        JButton userProfilePic = new JButton();
+        userProfilePic.setSize(new Dimension(85,110));
+        userProfilePic.setBackground(Color.BLACK);
+        this.add(userProfilePic);
+        userProfilePic.setLocation(30,30);
 
-        private void drawPanels(){
-            JButton login = new JButton("WHY");
-            JButton signUp = new JButton("startMenuPresenter.signUpSystem(0)");
-            JButton demo = new JButton("startMenuPresenter.startMenu(4)");
-            JButton endProgram = new JButton("startMenuPresenter.startMenu(5)");
+        JLabel inventory = new JLabel("Inventory");
+        inventory.setSize(new Dimension(200, 30));
+        inventory.setForeground(Color.BLACK);
+        this.add(inventory);
+        inventory.setLocation(30, 150);
 
-            initializeButton(login, 200, 40, 160, 190);
-            initializeButton(signUp, 200, 40, 440, 190);
-            initializeButton(demo, 200, 40, 310, 250);
-            initializeButton(endProgram, 200, 40, 310, 310);
-
-            JLabel welcomeText = new JLabel("startMenuPresenter.startMenu(1)");
-
-            //welcomeText.setFont(font);
-            welcomeText.setSize(new Dimension(300,40));
-
-            welcomeText.setForeground(Color.BLACK);
-
-            this.add(welcomeText);
-            welcomeText.setLocation(310, 50);
-        }
+        JLabel wishlist = new JLabel("Wishlist");
+        wishlist.setSize(200,30);
+        wishlist.setForeground(Color.BLACK);
+        this.add(wishlist);
+        wishlist.setLocation(30,190);
+    }
 //        String regex = "[0-7]";
 //
 //        // user frozen and on vacation
