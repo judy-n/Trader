@@ -24,7 +24,6 @@ public class ThresholdEditor {
     private AdminUser currentUser;
     private SystemPresenter systemPresenter;
     private BufferedReader bufferedReader;
-    private final String THRESHOLD_FILE_PATH = "src/thresholds.txt";
 
     /**
      * Creates a <ThresholdEditor></ThresholdEditor> with the given admin and item/user managers.
@@ -184,6 +183,7 @@ public class ThresholdEditor {
     }
 
     private void editThreshold(String thresholdType, int oldThreshold, int newThreshold) throws FileNotFoundException {
+        String THRESHOLD_FILE_PATH = "src/thresholds.txt";
         File file = new File(THRESHOLD_FILE_PATH);
         String oldContent = "";
 
