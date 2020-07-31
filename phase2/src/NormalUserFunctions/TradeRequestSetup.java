@@ -15,7 +15,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-28
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
 public class TradeRequestSetup {
     String currUsername;
@@ -23,13 +23,15 @@ public class TradeRequestSetup {
     ItemManager itemManager;
     SystemPresenter systemPresenter;
     BufferedReader bufferedReader;
+    boolean mustLend;
 
-    public TradeRequestSetup(String username, UserManager um, ItemManager im, SystemPresenter sp, BufferedReader br) {
+    public TradeRequestSetup(String username, UserManager um, ItemManager im, SystemPresenter sp, BufferedReader br, boolean mustLend) {
         currUsername = username;
         userManager = um;
         itemManager = im;
         systemPresenter = sp;
         bufferedReader = br;
+        this.mustLend = mustLend;
     }
 
     public void makeTradeRequest(Item selectedItem) throws IOException {
@@ -57,6 +59,7 @@ public class TradeRequestSetup {
             List<Item> fullInventory = itemManager.getItemsByIDs(userManager.getNormalUserInventory(currUsername));
             List<Item> availableInventory = itemManager.getAvailableItems(fullInventory);
 
+            /* show suggested items */
             if (suggestionChoice.equalsIgnoreCase("Y")) {
                 List<Item> otherUserWishlist = itemManager.getItemsByIDs(userManager.getNormalUserWishlist(traderUsername));
                 List<Item> suggestedItems = new ArrayList<>();
@@ -72,17 +75,33 @@ public class TradeRequestSetup {
 
                 if (suggestedItems.isEmpty()) {
                    systemPresenter.tradeRequestSetup(2);
-                   suggestionChoice = "N";
                 } else {
                     systemPresenter.tradeRequestSetup(suggestedItems, 1);
-                    lendItemSelection(suggestedItems, items);
                 }
             }
 
-            if (suggestionChoice.equalsIgnoreCase("N")) {
+            /* show all items available for trade in the current user's inventory and allow them to select one */
+            boolean selectionSuccessful;
+            do {
                 systemPresenter.tradeRequestSetup(availableInventory, 2);
-                lendItemSelection(availableInventory, items);
-            }
+
+                String tempInput = bufferedReader.readLine();
+                while (!tempInput.matches("[0-9]+") || Integer.parseInt(tempInput) > availableInventory.size()) {
+                    systemPresenter.invalidInput();
+                    tempInput = bufferedReader.readLine();
+                }
+                int indexInput = Integer.parseInt(tempInput);
+                if (indexInput == 0 && mustLend) {
+                    selectionSuccessful = false;
+                    systemPresenter.tradeRequestSetup(3);
+                } else {
+                    if (indexInput != 0) {
+                        Item lendingItem = availableInventory.get(indexInput - 1);
+                        items[0] = lendingItem.getID();
+                    }
+                    selectionSuccessful = true;
+                }
+            } while (!selectionSuccessful);
 
             userManager.addTradeRequestBothUsers(traders, items);
             if (!userManager.getNormalUserWishlist(currUsername).contains(selectedItem.getID())) {
@@ -93,19 +112,6 @@ public class TradeRequestSetup {
 
         } else {
             systemPresenter.cancelled();
-        }
-    }
-
-    private void lendItemSelection(List<Item> itemList, long[] tradeItems) throws IOException {
-        String tempInput = bufferedReader.readLine();
-        while (!tempInput.matches("[0-9]+") || Integer.parseInt(tempInput) > itemList.size()) {
-            systemPresenter.invalidInput();
-            tempInput = bufferedReader.readLine();
-        }
-        int indexInput = Integer.parseInt(tempInput);
-        if (indexInput != 0) {
-            Item lendingItem = itemList.get(indexInput - 1);
-            tradeItems[0] = lendingItem.getID();
         }
     }
 }

@@ -390,13 +390,23 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Getter for a normal user's number of times borrowed.
+     * Getter for a normal user's number of items borrowed in their trade requests.
      *
      * @param username the username of the normal user
-     * @return the number of times they've borrowed
+     * @return the number of items they've requested to borrow an item
      */
     public int getNormalUserTimesBorrowed(String username) {
         return getNormalByUsername(username).getTimesBorrowed();
+    }
+
+    /**
+     * Getter for a normal user's number of items lent in their trade requests.
+     *
+     * @param username the username of the normal user
+     * @return the number of items they've offered to lend an item
+     */
+    public int getNormalUserTimesLent(String username) {
+        return getNormalByUsername(username).getTimesLent();
     }
 
     /**

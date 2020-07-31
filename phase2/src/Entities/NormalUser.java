@@ -133,6 +133,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Returns the number of times this user has requested to borrow an item from someone else.
      * Only counts requests that have yet to be accepted or rejected.
+     * Doesn't count received trade requests.
      *
      * @return the number of times this user has requested to borrow
      */
@@ -144,6 +145,23 @@ public class NormalUser extends User implements Serializable {
             }
         }
         return timesBorrowed;
+    }
+
+    /**
+     * Returns the number of times this user has offered to lend an item to someone else in a trade request.
+     * Only counts requests that have yet to be accepted or rejected.
+     * Doesn't count received trade requests.
+     *
+     * @return the number of times this user has offered to lend an item in a trade request
+     */
+    public int getTimesLent() {
+        int timesLent = 0;
+        for (String[] key : tradeRequests.keySet()) {
+            if (key[0].equals(getUsername()) && tradeRequests.get(key)[0] != 0) {
+                timesLent++;
+            }
+        }
+        return timesLent;
     }
 
     /**

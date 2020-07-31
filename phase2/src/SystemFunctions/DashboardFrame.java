@@ -1,7 +1,6 @@
 package SystemFunctions;
 
 import Entities.User;
-
 import javax.swing.*;
 
 public class DashboardFrame extends JFrame{

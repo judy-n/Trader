@@ -58,7 +58,7 @@ public class CatalogViewer extends MenuItem {
         systemPresenter.catalogViewer(itemsSameCity);
 
         int timesBorrowed = userManager.getNormalUserTimesBorrowed(username) + tradeManager.getTimesBorrowed(username);
-        int timesLent = tradeManager.getTimesLent(username);
+        int timesLent = userManager.getNormalUserTimesLent(username) + tradeManager.getTimesLent(username);
 
         systemPresenter.catalogViewer(1);
         try {
@@ -81,10 +81,16 @@ public class CatalogViewer extends MenuItem {
                 }
                 int tradeOrWishlist = Integer.parseInt(temp2);
 
-                if (tradeOrWishlist == 1 && !selectedItem.getAvailability()) {
-                    systemPresenter.catalogViewer(3);
+                if (tradeOrWishlist == 1 && (!selectedItem.getAvailability()) ||
+                        userManager.getNormalByUsername(itemManager.getItemOwner(itemID)).getIsFrozen()) {
 
-                    //option to add unavailable item to wishlist
+                    if (!selectedItem.getAvailability()) {
+                        systemPresenter.catalogViewer(3);
+                    } else {
+                        systemPresenter.catalogViewer(7);
+                    }
+
+                    //option to add unavailable item or item belonging to frozen user to wishlist
                     String confirmInput = bufferedReader.readLine();
                     while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
                         systemPresenter.invalidInput();
@@ -101,9 +107,26 @@ public class CatalogViewer extends MenuItem {
                     } else if (userManager.isRequestedInTrade(username, itemID)) {
                         systemPresenter.catalogViewer(6);
                     } else if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < currentUser.getLendMinimum())) {
-                        systemPresenter.catalogViewerLend(currentUser.getLendMinimum());
+                        systemPresenter.catalogViewerLendWarning(currentUser.getLendMinimum());
                     } else {
-                        new TradeRequestSetup(username, userManager, itemManager, systemPresenter, bufferedReader).makeTradeRequest(selectedItem);
+
+                        /*
+                         * If this code is reached, then the user is allowed to set up a trade since they've
+                         * lent at least lendMinimum more items than they've borrowed, or it's the user's
+                         * first time initiating a trade request/all their past requests were rejected.
+                         *
+                         * However, if the difference between the number of items they've lent and the number of
+                         * items they've borrowed is exactly equal to lendMinimum, then the user must offer to
+                         * lend an item in order to keep the balance.
+                         *
+                         * Additionally, if it's the user's first time initiating a trade request
+                         * or all their past requests were rejected, then they must request a two-way trade.
+                         */
+                        boolean mustLend = false;
+                        if (timesBorrowed == 0 || (timesLent - timesBorrowed) == currentUser.getLendMinimum()) {
+                            mustLend = true;
+                        }
+                        new TradeRequestSetup(username, userManager, itemManager, systemPresenter, bufferedReader, mustLend).makeTradeRequest(selectedItem);
                     }
                 }
 

@@ -174,7 +174,7 @@ public class SystemPresenter {
      *
      * @param lendMinimum the lending minimum of the current user
      */
-    public void catalogViewerLend(int lendMinimum) {
+    public void catalogViewerLendWarning(int lendMinimum) {
         System.out.println("\nYou're borrowing too much! You need to lend AT LEAST " + lendMinimum + " more item(s) than you've borrowed.");
     }
 
@@ -205,6 +205,10 @@ public class SystemPresenter {
                 break;
             case 6:
                 System.out.println("\nYou've already sent a request to borrow this item!");
+                break;
+            case 7:
+                System.out.println("\nThis item's owner is currently frozen!" +
+                        "\nWould you like to add it to your wishlist instead? (Y/N): ");
                 break;
         }
     }
@@ -871,11 +875,14 @@ public class SystemPresenter {
     public void tradeRequestSetup(int input) {
         switch (input) {
             case 1:
-                System.out.print("Would you like us to suggest items to lend to the other user? (Y/N): ");
+                System.out.print("\nWould you like us to suggest items to lend to the other user? (Y/N): ");
                 break;
             case 2:
-                System.out.println("\nUh oh! We couldn't find any items that the other user might want to borrow from you." +
-                        "\nInstead, choose any item from your inventory or make it a one-way trade below.");
+                System.out.println("\nUh oh! We couldn't find any items that the other user might want to borrow from you :(");
+                break;
+            case 3:
+                System.out.println("\nSorry, to maintain the balance of how many more items you've lent than you've borrowed," +
+                        "you must choose an item to lend to the other user.");
                 break;
         }
     }
@@ -889,14 +896,15 @@ public class SystemPresenter {
     public void tradeRequestSetup(List<Item> itemList, int input) {
         switch(input) {
             case 1:
-                System.out.println("These are all the items you can currently lend out that the other user might want to borrow:");
+                System.out.println("\nThese are all the items you can currently lend out that the other user might want to borrow:");
+                presentAllItems(itemList, false);
                 break;
             case 2:
-                System.out.println("Here are all your items currently available for trade:");
+                System.out.println("\nHere are all your items currently available for trade:");
+                presentAllItems(itemList, false);
+                System.out.print("Enter the index of the item you'd like to lend (0 to not lend anything): ");
                 break;
         }
-        presentAllItems(itemList, false);
-        System.out.print("Enter the index of the item you'd like to lend (0 to not lend anything): ");
     }
 
     /**
