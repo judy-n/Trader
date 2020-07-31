@@ -14,6 +14,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * ReadWriter reads from and writes to a .ser file that contains a <Manager></Manager>
@@ -109,5 +111,29 @@ public class ReadWriter {
         }
         bufferedReader.close();
         return adminCredentials;
+    }
+
+    /**
+     * Reads in the default thresholds.
+     * Only called when the program is first run (when there are no users in the database).
+     *
+     * @param filePath the path of the file being read
+     * @throws IOException when an IO error occurs while reading
+     */
+    public int[] readThresholdsFromFile(String filePath) throws IOException {
+        File file = new File(filePath);
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+
+        int[] thresholds = new int[4];
+        String line;
+        int count = 0;
+        while ((line = bufferedReader.readLine()) != null) {
+            String[] splitLine = line.split(":");
+            int threshold = Integer.parseInt(splitLine[1]);
+            thresholds[count] = threshold;
+            count++;
+        }
+        bufferedReader.close();
+        return thresholds;
     }
 }
