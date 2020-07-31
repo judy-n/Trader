@@ -70,19 +70,18 @@ public class NormalDashboard extends Dashboard {
 //
 //        // user frozen and on vacation
 //        if ((currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
-//            regex = "[0-8]+[[10]]";
+//            regex = "[0-8]+[10]";
 //            //systemPresenter.normalDashboard(2);
 //        }
-//        // --------------------------- Is the Regex correct below? ----------------------------------
+//
+//        // user frozen and not on vacation
 //        else if ((currentUser.getIsFrozen()) && !(currentUser.getIsOnVacation())) {
 //            regex = "[0-9]";
 //            //systemPresenter.normalDashboard(3);
 //        }
 //
-//        // --------------------------- Is the Regex correct below?? ----------------------------------
-//
-//        // no...
-//
+//        // why is this regex not right?? i dont see it.
+//        // user not frozen and on vacation
 //        else if (!(currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
 //            regex = "[0-7]+[10]";
 //            //systemPresenter.normalDashboard(4);
@@ -90,6 +89,7 @@ public class NormalDashboard extends Dashboard {
 //
 //        // not frozen and not on vacation
 //        else {
+//            regex = "[0-7]+[9]";
 //            //systemPresenter.normalDashboard(1);
 //        }
 
