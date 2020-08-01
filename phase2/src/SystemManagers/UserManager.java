@@ -6,7 +6,6 @@ import Entities.AdminUser;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import SystemFunctions.ReadWriter;
 
 /**
  * Stores all <User></User>s in the system.
@@ -26,8 +25,7 @@ public class UserManager extends Manager implements Serializable {
     private List<String> usernamesToFreeze;
     private List<String> unfreezeRequests;
     private List<String> usernamesOnVacation;
-    private ReadWriter readWriter;
-    private int[] currentThresholds;
+    private int[] currDefaultThresholds;
 
     /**
      * Creates a <UserManager></UserManager>, setting all lists to empty by default.
@@ -38,7 +36,7 @@ public class UserManager extends Manager implements Serializable {
         usernamesToFreeze = new ArrayList<>();
         unfreezeRequests = new ArrayList<>();
         usernamesOnVacation = new ArrayList<>();
-        currentThresholds = new int[4];
+        currDefaultThresholds = new int[4];
     }
 
     /**
@@ -51,7 +49,7 @@ public class UserManager extends Manager implements Serializable {
      * @param homeCity the new user's homeCity
      */
     public void createNormalUser(String username, String email, String password, String homeCity) {
-        allNormals.add(new NormalUser(username, email, password, homeCity, currentThresholds));
+        allNormals.add(new NormalUser(username, email, password, homeCity, currDefaultThresholds));
     }
 
     /**
@@ -292,15 +290,16 @@ public class UserManager extends Manager implements Serializable {
         }
         return null;
     }
+
     /**
      * Gets a user by the given username or email (regardless of type of user).
      *
      * @param usernameOrEmail the user's email
      * @return the user with the given email
      */
-    public User getUserByUsernameOrEmail(String usernameOrEmail){
+    public User getUserByUsernameOrEmail(String usernameOrEmail) {
         if (usernameOrEmail.contains("@")) {
-           return getUserByEmail(usernameOrEmail);
+            return getUserByEmail(usernameOrEmail);
         } else {
             return getUserByUsername(usernameOrEmail);
         }
@@ -340,10 +339,6 @@ public class UserManager extends Manager implements Serializable {
     public List<String> getUsernamesOnVacation() {
         return usernamesOnVacation;
     }
-
-
-    // below this are basically just calls of methods in NormalUser by taking in a username
-    // trying to decrease dependency of controllers on NormalUser (?)
 
     /**
      * Setter for the home city of the normal user with the given username.
@@ -401,7 +396,7 @@ public class UserManager extends Manager implements Serializable {
      * for both the involved users.
      *
      * @param usernames the usernames of the two traders
-     * @param itemIDs the item IDs involved in the trade request
+     * @param itemIDs   the item IDs involved in the trade request
      */
     public void addTradeRequestBothUsers(String[] usernames, long[] itemIDs) {
         NormalUser initiator = getNormalByUsername(usernames[0]);
@@ -424,7 +419,7 @@ public class UserManager extends Manager implements Serializable {
      * Adds the given item ID to the inventory of the account associated with the given username.
      *
      * @param itemIDToAdd the item ID being added to inventory
-     * @param username the username of the account whose inventory is being modified
+     * @param username    the username of the account whose inventory is being modified
      */
     public void addNormalUserInventory(long itemIDToAdd, String username) {
         getNormalByUsername(username).addInventory(itemIDToAdd);
@@ -434,7 +429,7 @@ public class UserManager extends Manager implements Serializable {
      * Removes the given item ID from the pending inventory of the account associated with the given username.
      *
      * @param itemIDToRemove the item ID being removed from pending inventory
-     * @param username the username of the account whose pending inventory is being modified
+     * @param username       the username of the account whose pending inventory is being modified
      */
     public void removeNormalUserPending(long itemIDToRemove, String username) {
         getNormalByUsername(username).removePendingInventory(itemIDToRemove);
@@ -454,7 +449,7 @@ public class UserManager extends Manager implements Serializable {
      * Adds the given item ID to the wishlist of the user associated with the given username.
      *
      * @param itemIDToAdd the item ID being added to wishlist
-     * @param username the username of the user whose wishlist is being modified
+     * @param username    the username of the user whose wishlist is being modified
      */
     public void addNormalUserWishlist(long itemIDToAdd, String username) {
         getNormalByUsername(username).addWishlist(itemIDToAdd);
@@ -477,37 +472,89 @@ public class UserManager extends Manager implements Serializable {
         getNormalByUsername(usernameToFreeze).freeze();
     }
 
-
-    private void setNormalUserWeeklyTradeMax(String username, int threshold) {
-        NormalUser user = getNormalByUsername(username);
-        if (user != null) {
-            user.setWeeklyTradeMax(threshold);
-        }
+    /**
+     * Getter for the weekly trade limit of the user associated with the given username.
+     *
+     * @param username the username of the user whose weekly trade limit is being retrieved
+     * @return the weekly trade limit of the user associated with the given username
+     */
+    public int getNormalUserWeeklyTradeMax(String username) {
+        return getNormalByUsername(username).getWeeklyTradeMax();
     }
 
-    private void setNormalUserIncompleteMax(String username, int threshold) {
-        NormalUser user = getNormalByUsername(username);
-        if (user != null) {
-            user.setIncompleteMax(threshold);
-        }
+    /**
+     * Setter for the weekly trade limit of the user associated with the given username.
+     *
+     * @param username the username of the user whose weekly trade limit is being modified
+     * @param threshold the new weekly trade limit
+     */
+    public void setNormalUserWeeklyTradeMax(String username, int threshold) {
+        getNormalByUsername(username).setWeeklyTradeMax(threshold);
     }
 
-    private void setNormalUserLendMinimum(String username, int threshold) {
-        NormalUser user = getNormalByUsername(username);
-        if (user != null) {
-            user.setLendMinimum(threshold);
-        }
+    /**
+     * Getter for the meeting edit limit of the user associated with the given username.
+     *
+     * @param username the username of the user whose meeting edit limit is being retrieved
+     * @return the meeting edit limit of the user associated with the given username
+     */
+    public int getNormalUserMeetingEditMax(String username) {
+        return getNormalByUsername(username).getMeetingEditMax();
     }
 
-    private void setNormalUserMeetingEditMax(String username, int threshold) {
-        NormalUser user = getNormalByUsername(username);
-        if (user != null) {
-            user.setMeetingEditMax(threshold);
-        }
+    /**
+     * Setter for the meeting edit limit of the user associated with the given username.
+     *
+     * @param username the username of the user whose meeting edit limit is being modified
+     * @param threshold the new meeting edit limit
+     */
+    public void setNormalUserMeetingEditMax(String username, int threshold) {
+        getNormalByUsername(username).setMeetingEditMax(threshold);
+    }
+
+    /**
+     * Getter for the minimum lending over borrowing limit of the user associated with the given username.
+     *
+     * @param username the username of the user whose minimum lending over borrowing limit is being retrieved
+     * @return the minimum lending over borrowing limit of the user associated with the given username
+     */
+    public int getNormalUserLendMinimum(String username) {
+        return getNormalByUsername(username).getLendMinimum();
+    }
+
+    /**
+     * Setter for the minimum lending over borrowing limit of the user associated with the given username.
+     *
+     * @param username the username of the user whose minimum lending over borrowing limit is being modified
+     * @param threshold the new minimum lending over borrowing limit
+     */
+    public void setNormalUserLendMinimum(String username, int threshold) {
+        getNormalByUsername(username).setLendMinimum(threshold);
+    }
+
+    /**
+     * Getter for the incomplete trade limit of the user associated with the given username.
+     *
+     * @param username the username of the user whose incomplete trade limit is being retrieved
+     * @return the incomplete trade limit of the user associated with the given username
+     */
+    public int getNormalUserIncompleteMax(String username) {
+        return getNormalByUsername(username).getIncompleteMax();
+    }
+
+    /**
+     * Setter for the incomplete trade limit of the user associated with the given username.
+     *
+     * @param username the username of the user whose incomplete trade limit is being modified
+     * @param threshold the new incomplete trade limit
+     */
+    public void setNormalUserIncompleteMax(String username, int threshold) {
+        getNormalByUsername(username).setIncompleteMax(threshold);
     }
 
     /**
      * Sets all normalUser weekly trade max thresholds to the given number
+     *
      * @param threshold the new threshold
      */
     public void setAllNormalUserWeeklyTradeMax(int threshold) {
@@ -518,6 +565,7 @@ public class UserManager extends Manager implements Serializable {
 
     /**
      * Sets all normalUser incomplete trade max thresholds to the given number
+     *
      * @param threshold the new threshold
      */
     public void setAllNormalUserIncompleteMax(int threshold) {
@@ -528,36 +576,43 @@ public class UserManager extends Manager implements Serializable {
 
     /**
      * Sets all normalUser minimum lending thresholds to the given number
+     *
      * @param threshold the new threshold
      */
     public void setAllNormalUserLendMinimum(int threshold) {
-            for (String username : getAllNormaUserUsernames()) {
-                setNormalUserLendMinimum(username, threshold);
-            }
+        for (String username : getAllNormaUserUsernames()) {
+            setNormalUserLendMinimum(username, threshold);
         }
+    }
 
     /**
      * Sets all normalUser max meeting edit threshold to the given number
+     *
      * @param threshold the new threshold
      */
     public void setALlNormalUserMeetingEditMax(int threshold) {
-            for (String username : getAllNormaUserUsernames())
-            {
-                setNormalUserMeetingEditMax(username, threshold);
-            }
+        for (String username : getAllNormaUserUsernames()) {
+            setNormalUserMeetingEditMax(username, threshold);
         }
+    }
 
     /**
-     * Sets the currentThresholds (the default thresholds for new users) to the given thresholds.
-     * @param thresholds the new threshold values.
+     * Sets the <currentThresholds></currentThresholds> (the default thresholds for new users) to the given thresholds.
+     *
+     * @param thresholds the new threshold values
      */
-    public void setCurrentThresholds(int[] thresholds) { currentThresholds = thresholds; }
+    public void setCurrentThresholds(int[] thresholds) {
+        currDefaultThresholds = thresholds;
+    }
 
     /**
-     * Getter for the currentThresholds (default threshold values).
+     * Getter for the <currentThresholds></currentThresholds> (default threshold values).
+     *
      * @return the system's default thresholds
      */
-    public int[] getCurrentThresholds() { return currentThresholds; }
+    public int[] getCurrentThresholds() {
+        return currDefaultThresholds;
+    }
 }
 
 
