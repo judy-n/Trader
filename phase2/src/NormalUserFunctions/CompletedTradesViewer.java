@@ -1,5 +1,6 @@
 package NormalUserFunctions;
 
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
@@ -19,28 +20,33 @@ import java.time.format.DateTimeFormatter;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
 public class CompletedTradesViewer extends MenuItem {
+    private NormalUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
-    private NormalUser currentUser;
+    private NotificationSystem notifSystem;
 
     /**
-     * Creates a <CompletedTradesViewer></CompletedTradesViewer> that lets a normal user view their three most recent
-     * completed trades or three most frequent trade partners.
+     * Creates a <CompletedTradesViewer></CompletedTradesViewer> with the given normal user,
+     * item/user/trade managers, and notification system.
+     * Lets a normal user view their three most recent completed trades or three most frequent trade partners.
      *
-     * @param user the normal user who's currently logged in
-     * @param im   the system's item manager
-     * @param um   the system's user manager
-     * @param tm   the system's trade manager
+     * @param user         the normal user who's currently logged in
+     * @param itemManager  the system's item manager
+     * @param userManager  the system's user manager
+     * @param tradeManager the system's trade manager
+     * @param notifSystem  the system's notification manager
      */
-    public CompletedTradesViewer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
+    public CompletedTradesViewer(NormalUser user, ItemManager itemManager, UserManager userManager,
+                                 TradeManager tradeManager, NotificationSystem notifSystem) {
         currentUser = user;
-        itemManager = im;
-        userManager = um;
-        tradeManager = tm;
+        this.itemManager = itemManager;
+        this.userManager = userManager;
+        this.tradeManager = tradeManager;
+        this.notifSystem = notifSystem;
     }
 
     /**
@@ -111,7 +117,7 @@ public class CompletedTradesViewer extends MenuItem {
     }
 
     private void close() {
-        new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
+        new NormalDashboard(currentUser, itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override

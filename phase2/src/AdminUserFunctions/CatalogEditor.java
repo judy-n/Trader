@@ -1,5 +1,6 @@
 package AdminUserFunctions;
 
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import Entities.AdminUser;
@@ -14,25 +15,30 @@ import java.io.InputStreamReader;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
 public class CatalogEditor {
     private AdminUser currentAdmin;
     private ItemManager itemManager;
     private UserManager userManager;
+    private NotificationSystem notifSystem;
 
     /**
-     * Creates a <CatalogEditor></CatalogEditor> with the given admin and item/user managers.
+     * Creates a <CatalogEditor></CatalogEditor> with the given admin,
+     * item/user managers, and notification system.
      * Lets an admin user approve or reject items added to the system by normal users.
      *
-     * @param user the admin who's currently logged in
-     * @param im   the system's item manager
-     * @param um   the system's user manager
+     * @param user        the admin who's currently logged in
+     * @param itemManager the system's item manager
+     * @param userManager the system's user manager
+     * @param notifSystem the system's notification manager
      */
-    public CatalogEditor(AdminUser user, ItemManager im, UserManager um) {
+    public CatalogEditor(AdminUser user, ItemManager itemManager,
+                         UserManager userManager, NotificationSystem notifSystem) {
         currentAdmin = user;
-        itemManager = im;
-        userManager = um;
+        this.itemManager = itemManager;
+        this.userManager = userManager;
+        this.notifSystem = notifSystem;
 
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -85,6 +91,6 @@ public class CatalogEditor {
     }
 
     private void close() {
-        new AdminDashboard(currentAdmin, itemManager, userManager);
+        new AdminDashboard(currentAdmin, itemManager, userManager, notifSystem);
     }
 }

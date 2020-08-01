@@ -6,6 +6,7 @@ import Entities.Item;
 import SystemFunctions.SystemPresenter;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,23 +19,36 @@ import java.util.List;
  * last modified 2020-07-31
  */
 public class TradeRequestSetup {
-    String currUsername;
-    UserManager userManager;
-    ItemManager itemManager;
-    SystemPresenter systemPresenter;
-    BufferedReader bufferedReader;
+    private String currUsername;
+    private UserManager userManager;
+    private ItemManager itemManager;
     boolean mustLend;
 
-    public TradeRequestSetup(String username, UserManager um, ItemManager im, SystemPresenter sp, BufferedReader br, boolean mustLend) {
+    /**
+     * Creates a <TradeRequestSetup></TradeRequestSetup> with the given username, item/user managers,
+     * and boolean indicating whether or not the user must lend an item in the trade request.
+     *
+     * @param username    the username of the normal user who's currently logged in
+     * @param itemManager the system's item manager
+     * @param userManager the system's user manager
+     * @param mustLend    true iff the user must lend an item in the trade request
+     */
+    public TradeRequestSetup(String username, ItemManager itemManager, UserManager userManager, boolean mustLend) {
         currUsername = username;
-        userManager = um;
-        itemManager = im;
-        systemPresenter = sp;
-        bufferedReader = br;
+        this.itemManager = itemManager;
+        this.userManager = userManager;
         this.mustLend = mustLend;
     }
 
+    /**
+     * Allows the user to set up a trade request through user input.
+     *
+     * @param selectedItem the item selected by the user to borrow in the trade request
+     * @throws IOException when there's an error reading user input
+     */
     public void makeTradeRequest(Item selectedItem) throws IOException {
+        SystemPresenter systemPresenter = new SystemPresenter();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         systemPresenter.catalogViewer(selectedItem.getName(), selectedItem.getOwnerUsername(), 2);
 
@@ -74,7 +88,7 @@ public class TradeRequestSetup {
                 }
 
                 if (suggestedItems.isEmpty()) {
-                   systemPresenter.tradeRequestSetup(2);
+                    systemPresenter.tradeRequestSetup(2);
                 } else {
                     systemPresenter.tradeRequestSetup(suggestedItems, 1);
                 }

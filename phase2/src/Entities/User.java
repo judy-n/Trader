@@ -1,6 +1,7 @@
 package Entities;
 
 import java.io.Serializable;
+import java.util.Observable;
 
 /**
  * <User></User> is an abstract class that contains the basic information every user of this program should have:
@@ -9,9 +10,9 @@ import java.io.Serializable;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-12
+ * last modified 2020-07-31
  */
-public abstract class User implements Serializable {
+public abstract class User extends Observable implements Serializable {
     private String username;
     private String email;
     private String password;

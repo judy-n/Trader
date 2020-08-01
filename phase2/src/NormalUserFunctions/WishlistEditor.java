@@ -1,5 +1,6 @@
 package NormalUserFunctions;
 
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
@@ -19,31 +20,36 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
-public class WishlistEditor extends MenuItem{
+public class WishlistEditor extends MenuItem {
     private NormalUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
+    private NotificationSystem notifSystem;
 
     /**
-     * Creates a <WishlistEditor></WishlistEditor> with the given normal user and item/user/trade managers.
+     * Creates a <WishlistEditor></WishlistEditor> with the given normal user,
+     * item/user/trade managers, and notification system.
      * Prints to the screen the given user's wishlist and options to remove/cancel using <SystemPresenter></SystemPresenter>.
      * This class lets the user remove items from their wishlist through user input.
      * They can only add items to their wishlist when browsing items available for trade.
      *
-     * @param user the normal user who's currently logged in
-     * @param im   the system's item manager
-     * @param um   the system's user manager
-     * @param tm   the system's trade manager
+     * @param user         the normal user who's currently logged in
+     * @param itemManager  the system's item manager
+     * @param userManager  the system's user manager
+     * @param tradeManager the system's trade manager
+     * @param notifSystem  the system's notification manager
      */
-    public WishlistEditor(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
+    public WishlistEditor(NormalUser user, ItemManager itemManager, UserManager userManager,
+                          TradeManager tradeManager, NotificationSystem notifSystem) {
 
         currentUser = user;
-        userManager = um;
-        itemManager = im;
-        tradeManager = tm;
+        this.itemManager = itemManager;
+        this.userManager = userManager;
+        this.tradeManager = tradeManager;
+        this.notifSystem = notifSystem;
 
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -93,7 +99,7 @@ public class WishlistEditor extends MenuItem{
     }
 
     private void close() {
-        new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
+        new NormalDashboard(currentUser, itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override

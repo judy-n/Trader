@@ -1,5 +1,6 @@
 package AdminUserFunctions;
 
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import Entities.AdminUser;
@@ -17,43 +18,38 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
 public class AccountUnfreezer extends MenuItem {
     private AdminUser currentAdmin;
     private ItemManager itemManager;
     private UserManager userManager;
-    private SystemPresenter systemPresenter;
+    private NotificationSystem notifSystem;
 
     /**
-     * Creates an <AccountUnfreezer></AccountUnfreezer> with the given admin and item/user managers.
+     * Creates an <AccountUnfreezer></AccountUnfreezer> with the given admin,
+     * item/user managers, and notification system.
      * Lets the admin view requests to be unfrozen and choose which ones to accept.
      *
-     * @param user the admin who's currently logged in
-     * @param im   the system's item manager
-     * @param um   the system's user manager
+     * @param user        the admin who's currently logged in
+     * @param itemManager the system's item manager
+     * @param userManager the system's user manager
+     * @param notifSystem the system's notification manager
      */
-    public AccountUnfreezer(AdminUser user, ItemManager im, UserManager um) {
+    public AccountUnfreezer(AdminUser user, ItemManager itemManager,
+                            UserManager userManager, NotificationSystem notifSystem) {
         currentAdmin = user;
-        itemManager = im;
-        userManager = um;
-        systemPresenter = new SystemPresenter();
+        this.itemManager = itemManager;
+        this.userManager = userManager;
+        this.notifSystem = notifSystem;
 
-        reviewUnfreezeRequests();
-        close();
-    }
-
-    /*
-     * Displays the list of Users that requested to be unfrozen,
-     * and the admin can choose which ones to unfreeze (or none).
-     */
-    private void reviewUnfreezeRequests() {
+        SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
         int indexInput;
         List<String> usernames = userManager.getUnfreezeRequests();
 
         systemPresenter.adminGetUnfreezeRequests(usernames);
-
         if (!usernames.isEmpty()) {
             try {
                 String input = bufferedReader.readLine();
@@ -89,14 +85,15 @@ public class AccountUnfreezer extends MenuItem {
                 systemPresenter.exceptionMessage();
             }
         }
+        close();
     }
 
     private void close() {
-        new AdminDashboard(currentAdmin, itemManager, userManager);
+        new AdminDashboard(currentAdmin, itemManager, userManager, notifSystem);
     }
 
     @Override
-    public String getTitle(){
+    public String getTitle() {
         return ("Review Unfreeze Requests");
     }
 

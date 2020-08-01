@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Displays a dashboard for a demo user.
+ * Displays a dashboard for a user choosing to demo the program.
  *
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-19
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
 
 public class DemoDashboard {
@@ -24,14 +24,14 @@ public class DemoDashboard {
     private int input;
 
     /**
-     * Creates a <DemoDashboard></DemoDashboard> with the given demo user and item/user managers.
+     * Creates a <DemoDashboard></DemoDashboard> with the given item/user managers.
      *
-     * @param im   the system's item manager
-     * @param um   the system's user manager
+     * @param itemManager the system's item manager
+     * @param userManager the system's user manager
      */
-    public DemoDashboard(ItemManager im, UserManager um){
-        itemManager = im;
-        userManager = um;
+    public DemoDashboard(ItemManager itemManager, UserManager userManager) {
+        this.itemManager = itemManager;
+        this.userManager = userManager;
 
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));

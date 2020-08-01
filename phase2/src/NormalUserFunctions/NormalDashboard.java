@@ -1,11 +1,12 @@
 package NormalUserFunctions;
+
 import Entities.User;
 import SystemFunctions.Dashboard;
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
 import Entities.NormalUser;
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_COLOR_BURNPeer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,27 +20,32 @@ import java.awt.*;
  * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
 public class NormalDashboard extends Dashboard {
     private NormalUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
+    private NotificationSystem notifSystem;
 
     /**
-     * Creates a <NormalDashboard></NormalDashboard> with the given normal user and item/user/trade managers.
+     * Creates a <NormalDashboard></NormalDashboard> with the given normal user,
+     * item/user/trade managers, and notification system.
      *
-     * @param user the normal user who's currently logged in
-     * @param im   the system's item manager
-     * @param um   the system's user manager
-     * @param tm   the system's trade manager
+     * @param user         the normal user who's currently logged in
+     * @param itemManager  the system's item manager
+     * @param userManager  the system's user manager
+     * @param tradeManager the system's trade manager
+     * @param notifSystem  the system's notification manager
      */
-    public NormalDashboard(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
+    public NormalDashboard(NormalUser user, ItemManager itemManager, UserManager userManager,
+                           TradeManager tradeManager, NotificationSystem notifSystem) {
         currentUser = user;
-        itemManager = im;
-        userManager = um;
-        tradeManager = tm;
+        this.itemManager = itemManager;
+        this.userManager = userManager;
+        this.tradeManager = tradeManager;
+        this.notifSystem = notifSystem;
 
         this.setPreferredSize(new Dimension(820, 576));
         this.setLayout(null);
@@ -48,12 +54,12 @@ public class NormalDashboard extends Dashboard {
         this.repaint();
     }
 
-    private void drawDefault(){
+    private void drawDefault() {
         JButton userProfilePic = new JButton();
-        userProfilePic.setSize(new Dimension(85,110));
+        userProfilePic.setSize(new Dimension(85, 110));
         userProfilePic.setBackground(Color.BLACK);
         this.add(userProfilePic);
-        userProfilePic.setLocation(30,30);
+        userProfilePic.setLocation(30, 30);
 
         JLabel inventory = new JLabel("Inventory");
         inventory.setSize(new Dimension(200, 30));
@@ -62,10 +68,10 @@ public class NormalDashboard extends Dashboard {
         inventory.setLocation(30, 150);
 
         JLabel wishlist = new JLabel("Wishlist");
-        wishlist.setSize(200,30);
+        wishlist.setSize(200, 30);
         wishlist.setForeground(Color.BLACK);
         this.add(wishlist);
-        wishlist.setLocation(30,190);
+        wishlist.setLocation(30, 190);
     }
 //        String regex = "[0-7]";
 //
@@ -171,7 +177,7 @@ public class NormalDashboard extends Dashboard {
 //
 //    }
 
-    private void initializeButton(JButton button, int width, int height, int xPos, int yPos){
+    private void initializeButton(JButton button, int width, int height, int xPos, int yPos) {
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
         button.setSize(new Dimension(width, height));
@@ -180,8 +186,9 @@ public class NormalDashboard extends Dashboard {
         button.setLocation(xPos, yPos);
 
     }
+
     @Override
-    public User getUser(){
+    public User getUser() {
         return currentUser;
     }
 }

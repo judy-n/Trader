@@ -1,5 +1,6 @@
 package NormalUserFunctions;
 
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
@@ -23,16 +24,17 @@ import java.util.ArrayList;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-29
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
-public class TradeRequestViewer extends MenuItem{
-    private LinkedHashMap<String[], long[]> initiatedTrades;
-    private LinkedHashMap<String[], long[]> receivedTrades;
-
+public class TradeRequestViewer extends MenuItem {
     private NormalUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
+    private NotificationSystem notifSystem;
+
+    private LinkedHashMap<String[], long[]> initiatedTrades;
+    private LinkedHashMap<String[], long[]> receivedTrades;
     private String[] keyToRemove;
     private long itemToBorrowID;
     private long itemToLendID;
@@ -41,20 +43,24 @@ public class TradeRequestViewer extends MenuItem{
     private BufferedReader bufferedReader;
 
     /**
-     * Creates an <TradeRequestViewer></TradeRequestViewer> with the given normal user and item/user/trade managers.
+     * Creates an <TradeRequestViewer></TradeRequestViewer> with the given normal user,
+     * item/user/trade managers, and notification system.
      * Prints to the screen all trade requests received/sent by the given normal user and options on actions to take
      * using <SystemPresenter></SystemPresenter>.
      *
-     * @param user the normal user who's currently logged in
-     * @param im   the system's item manager
-     * @param um   the system's user manager
-     * @param tm   the system's trade manager
+     * @param user         the normal user who's currently logged in
+     * @param itemManager  the system's item manager
+     * @param userManager  the system's user manager
+     * @param tradeManager the system's trade manager
+     * @param notifSystem  the system's notification manager
      */
-    public TradeRequestViewer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
+    public TradeRequestViewer(NormalUser user, ItemManager itemManager, UserManager userManager,
+                              TradeManager tradeManager, NotificationSystem notifSystem) {
         currentUser = user;
-        itemManager = im;
-        userManager = um;
-        tradeManager = tm;
+        this.itemManager = itemManager;
+        this.userManager = userManager;
+        this.tradeManager = tradeManager;
+        this.notifSystem = notifSystem;
 
         systemPresenter = new SystemPresenter();
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -216,7 +222,7 @@ public class TradeRequestViewer extends MenuItem{
 
                             /* suggest time */
                             systemPresenter.tradeRequestViewer(4);
-                            LocalDateTime time = new DateTimeSuggestion(currentUser, tradeManager).suggestDateTime();
+                            LocalDateTime time = new DateTimeSuggestion(currentUser.getUsername(), userManager, tradeManager).suggestDateTime();
 
                             /* suggest place */
                             systemPresenter.tradeRequestViewer(2);
@@ -252,10 +258,6 @@ public class TradeRequestViewer extends MenuItem{
         }
     }
 
-    private void close() {
-        new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
-    }
-
     private String[] getTradeHelper(int index) {
         List<String[]> traders = new ArrayList<>();
         List<long[]> itemIDs = new ArrayList<>();
@@ -288,6 +290,10 @@ public class TradeRequestViewer extends MenuItem{
 
     private String[] getKeyToRemove() {
         return keyToRemove;
+    }
+
+    private void close() {
+        new NormalDashboard(currentUser, itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override

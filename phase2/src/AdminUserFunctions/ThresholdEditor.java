@@ -42,7 +42,8 @@ public class ThresholdEditor {
      * @param userManager the system's user manager
      * @param notifSystem the system's notification manager
      */
-    public ThresholdEditor(AdminUser user, ItemManager itemManager, UserManager userManager, NotificationSystem notifSystem) {
+    public ThresholdEditor(AdminUser user, ItemManager itemManager,
+                           UserManager userManager, NotificationSystem notifSystem) {
         currentUser = user;
         this.itemManager = itemManager;
         this.userManager = userManager;

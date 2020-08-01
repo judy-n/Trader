@@ -1,5 +1,6 @@
 package NormalUserFunctions;
 
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
@@ -22,36 +23,41 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
 public class CatalogViewer extends MenuItem {
     private NormalUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
+    private NotificationSystem notifSystem;
     private SystemPresenter systemPresenter;
     private BufferedReader bufferedReader;
     private String username;
 
     /**
-     * Creates an <CatalogViewer></CatalogViewer> with the given normal user and item/user/trade managers.
+     * Creates an <CatalogViewer></CatalogViewer> with the given normal user,
+     * item/user/trade managers, and notification system.
      * Displays all items available for trade (excluding the current user's items).
      *
-     * @param user the normal user who's currently logged in
-     * @param im   the system's item manager
-     * @param um   the system's user manager
-     * @param tm   the system's trade manager
+     * @param user         the normal user who's currently logged in
+     * @param itemManager  the system's item manager
+     * @param userManager  the system's user manager
+     * @param tradeManager the system's trade manager
+     * @param notifSystem  the system's notification manager
      */
-    public CatalogViewer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
+    public CatalogViewer(NormalUser user, ItemManager itemManager, UserManager userManager,
+                         TradeManager tradeManager, NotificationSystem notifSystem) {
         currentUser = user;
-        itemManager = im;
-        userManager = um;
-        tradeManager = tm;
-        username = currentUser.getUsername();
+        this.itemManager = itemManager;
+        this.userManager = userManager;
+        this.tradeManager = tradeManager;
+        this.notifSystem = notifSystem;
 
         systemPresenter = new SystemPresenter();
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
+        username = currentUser.getUsername();
         List<Item> itemsSameCity = filterItemsHomeCity();
         int maxIndex = itemsSameCity.size();
 
@@ -126,7 +132,7 @@ public class CatalogViewer extends MenuItem {
                         if (timesBorrowed == 0 || (timesLent - timesBorrowed) == currentUser.getLendMinimum()) {
                             mustLend = true;
                         }
-                        new TradeRequestSetup(username, userManager, itemManager, systemPresenter, bufferedReader, mustLend).makeTradeRequest(selectedItem);
+                        new TradeRequestSetup(username, itemManager, userManager, mustLend).makeTradeRequest(selectedItem);
                     }
                 }
 
@@ -159,7 +165,7 @@ public class CatalogViewer extends MenuItem {
     }
 
     private void close() {
-        new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
+        new NormalDashboard(currentUser, itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override

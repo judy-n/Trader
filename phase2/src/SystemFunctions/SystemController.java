@@ -1,5 +1,6 @@
 package SystemFunctions;
 
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
@@ -36,6 +37,7 @@ public class SystemController extends JFrame {
     private final String TRADE_MANAGER_PATH = "src/trademanager.ser";
 
     private SystemPresenter systemPresenter;
+    private NotificationSystem notifSystem;
 
     /**
      * Creates a <SystemController></SystemController>.
@@ -45,6 +47,7 @@ public class SystemController extends JFrame {
     public SystemController() {
 
         systemPresenter = new SystemPresenter();
+        notifSystem = new NotificationSystem();
 
         readWriter = new ReadWriter();
         tryReadManagers();
@@ -97,26 +100,24 @@ public class SystemController extends JFrame {
 
     public ArrayList<Integer> normalUserSignUp(String username, String email, String password,
                                                String validatePassword){
-        ArrayList<Integer> invalidInput = new SignUpSystem(userManager).validateInput(username, email, password, validatePassword);
-        return invalidInput;
+        return new SignUpSystem(userManager).validateInput(username, email, password, validatePassword);
     }
 
     public void normalUserSignUp(String username, String email, String password, String homeCity, JFrame parent){
-        NormalUser newUser = new SignUpSystem(userManager).createNewNormal(username, email, password, homeCity);
-        new DashboardFrame(new NormalDashboard(newUser, itemManager, userManager, tradeManager), parent);
+        NormalUser newUser = new SignUpSystem(userManager).createNewNormal(username, email, password, homeCity, notifSystem);
+        new DashboardFrame(new NormalDashboard(newUser, itemManager, userManager, tradeManager, notifSystem), parent);
     }
 
     public ArrayList<Integer> userLogin(String usernameOrEmail, String password){
-        ArrayList<Integer> invalidInput = new LoginSystem(userManager).validateInput(usernameOrEmail, password);
-        return invalidInput;
+        return new LoginSystem(userManager).validateInput(usernameOrEmail, password);
     }
 
     public void userLogin(String usernameOrEmail, JFrame parent){
         User currentUser = new LoginSystem(userManager).getUser(usernameOrEmail);
         if (currentUser instanceof AdminUser) {
-            new DashboardFrame(new AdminDashboard((AdminUser) currentUser, itemManager, userManager), parent);
+            new DashboardFrame(new AdminDashboard((AdminUser) currentUser, itemManager, userManager, notifSystem), parent);
         } else {
-            new DashboardFrame(new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager), parent);
+            new DashboardFrame(new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager, notifSystem), parent);
         }
     }
 

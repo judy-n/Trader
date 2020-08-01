@@ -1,5 +1,6 @@
 package SystemFunctions;
 
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import Entities.NormalUser;
 import java.util.ArrayList;
@@ -67,15 +68,18 @@ public class SignUpSystem {
      *
      * @return the normal user that was just created
      */
-    public NormalUser createNewNormal(String username, String email, String password, String homeCity) {
+    public NormalUser createNewNormal(String username, String email, String password, String homeCity, NotificationSystem notifSystem) {
         userManager.createNormalUser(username, email, password, homeCity);
-        return userManager.getNormalByUsername(username);
+        NormalUser newNormalUser = userManager.getNormalByUsername(username);
+        newNormalUser.addObserver(notifSystem);
+        return newNormalUser;
     }
 
     /**
      * Creates a new <AdminUser></AdminUser> based on input from <inputProcess()></inputProcess()>.
      */
-    public void createNewAdmin(String username, String email, String password) {
+    public void createNewAdmin(String username, String email, String password, NotificationSystem notifSystem) {
         userManager.createAdminUser(username, email, password);
+        userManager.getAdminByUsername(username).addObserver(notifSystem);
     }
 }

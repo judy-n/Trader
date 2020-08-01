@@ -1,7 +1,7 @@
 package NormalUserFunctions;
 
 import SystemManagers.TradeManager;
-import Entities.NormalUser;
+import SystemManagers.UserManager;
 import SystemFunctions.SystemPresenter;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,10 +19,11 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-08
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
 public class DateTimeSuggestion {
-    private NormalUser currentUser;
+    private String currUsername;
+    private UserManager userManager;
     private TradeManager tradeManager;
     private SystemPresenter systemPresenter;
     private final String dateFormat = "yyyy/MM/dd";
@@ -31,14 +32,16 @@ public class DateTimeSuggestion {
     private String[] time;
 
     /**
-     * Creates a <DateTimeSuggestion></DateTimeSuggestion> with the given normal user and trade manager.
+     * Creates a <DateTimeSuggestion></DateTimeSuggestion> with the given normal username and user/trade managers.
      *
-     * @param user the normal user who's currently logged in
-     * @param tm   the system's trade manager
+     * @param username     the username of the normal user who's currently logged in
+     * @param userManager  the system's user manager
+     * @param tradeManager the system's trade manager
      */
-    public DateTimeSuggestion(NormalUser user, TradeManager tm) {
-        currentUser = user;
-        tradeManager = tm;
+    public DateTimeSuggestion(String username, UserManager userManager, TradeManager tradeManager) {
+        currUsername = username;
+        this.userManager = userManager;
+        this.tradeManager = tradeManager;
         systemPresenter = new SystemPresenter();
     }
 
@@ -64,11 +67,11 @@ public class DateTimeSuggestion {
             }
             time = LocalDateTime.of(getYear(), getMonth(),
                     getDay(), getHour(), getMinute());
-            tradesInWeek = tradeManager.getNumMeetingsThisWeek(currentUser.getUsername(), time.toLocalDate());
-            if (tradesInWeek >= currentUser.getWeeklyTradeMax()) {
+            tradesInWeek = tradeManager.getNumMeetingsThisWeek(currUsername, time.toLocalDate());
+            if (tradesInWeek >= userManager.getNormalUserWeeklyTradeMax(currUsername)) {
                 systemPresenter.failedSuggestion();
             }
-        } while (tradesInWeek >= currentUser.getWeeklyTradeMax());
+        } while (tradesInWeek >= userManager.getNormalUserWeeklyTradeMax(currUsername));
         return time;
     }
 

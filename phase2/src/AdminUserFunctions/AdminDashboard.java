@@ -2,6 +2,7 @@ package AdminUserFunctions;
 
 import Entities.User;
 import SystemFunctions.Dashboard;
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import Entities.AdminUser;
@@ -16,26 +17,31 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
 
 public class AdminDashboard extends Dashboard {
     private AdminUser currentAdmin;
     private ItemManager itemManager;
     private UserManager userManager;
+    private NotificationSystem notifSystem;
     private int input;
 
     /**
-     * Creates an <AdminDashboard></AdminDashboard> with the given admin and item/user managers.
+     * Creates an <AdminDashboard></AdminDashboard> with the given admin,
+     * item/user managers, and notification system.
      *
-     * @param user the admin who's currently logged in
-     * @param im   the system's item manager
-     * @param um   the system's user manager
+     * @param user        the admin who's currently logged in
+     * @param itemManager the system's item manager
+     * @param userManager the system's user manager
+     * @param notifSystem the system's notification manager
      */
-    public AdminDashboard(AdminUser user, ItemManager im, UserManager um) {
+    public AdminDashboard(AdminUser user, ItemManager itemManager,
+                          UserManager userManager, NotificationSystem notifSystem) {
         currentAdmin = user;
-        itemManager = im;
-        userManager = um;
+        this.itemManager = itemManager;
+        this.userManager = userManager;
+        this.notifSystem = notifSystem;
 
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -66,25 +72,26 @@ public class AdminDashboard extends Dashboard {
                 systemPresenter.logoutMessage();
                 break;
             case 1:
-                new CatalogEditor(currentAdmin, itemManager, userManager);
+                new CatalogEditor(currentAdmin, itemManager, userManager, notifSystem);
                 break;
             case 2:
-                new AccountFreezer(currentAdmin, itemManager, userManager);
+                new AccountFreezer(currentAdmin, itemManager, userManager, notifSystem);
                 break;
             case 3:
-                new AccountUnfreezer(currentAdmin, itemManager, userManager);
+                new AccountUnfreezer(currentAdmin, itemManager, userManager, notifSystem);
                 break;
 
             case 4:
-                new ThresholdEditor(currentAdmin, itemManager, userManager);
+                new ThresholdEditor(currentAdmin, itemManager, userManager, notifSystem);
                 break;
             case 5:
-                new AdminCreator(currentAdmin, itemManager, userManager);
+                new AdminCreator(currentAdmin, itemManager, userManager, notifSystem);
                 break;
         }
     }
+
     @Override
-    public User getUser(){
+    public User getUser() {
         return currentAdmin;
     }
 }

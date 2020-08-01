@@ -1,9 +1,9 @@
 package NormalUserFunctions;
 
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
-import Entities.NormalUser;
 import Entities.Item;
 import Entities.Trade;
 import Entities.TemporaryTrade;
@@ -26,35 +26,39 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
 public class OngoingTradesViewer extends MenuItem {
-    private NormalUser currentUser;
+    private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
+    private NotificationSystem notifSystem;
 
     /**
-     * Creates a <OngoingTradesViewer></OngoingTradesViewer> with the given normal user and item/user/trade managers.
+     * Creates a <OngoingTradesViewer></OngoingTradesViewer> with the given normal username,
+     * item/user/trade managers, and notification system.
      * Lets users see their ongoing trades that haven't been cancelled and edit/confirm trade meetings.
      *
-     * @param user the normal user who's currently logged in
-     * @param im   the system's item manager
-     * @param um   the system's user manager
-     * @param tm   the system's trade manager
+     * @param username     the username of the normal user who's currently logged in
+     * @param itemManager  the system's item manager
+     * @param userManager  the system's user manager
+     * @param tradeManager the system's trade manager
+     * @param notifSystem  the system's notification manager
      */
-    public OngoingTradesViewer(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
-        currentUser = user;
-        itemManager = im;
-        userManager = um;
-        tradeManager = tm;
+    public OngoingTradesViewer(String username, ItemManager itemManager, UserManager userManager,
+                               TradeManager tradeManager, NotificationSystem notifSystem) {
+        currUsername = username;
+        this.itemManager = itemManager;
+        this.userManager = userManager;
+        this.tradeManager = tradeManager;
+        this.notifSystem = notifSystem;
 
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         int indexInput;
         int choiceInput;
-        String currUsername = currentUser.getUsername();
         List<Trade> ongoingTrades = tradeManager.getOngoingTrades(currUsername);
         List<Item[]> tradeItems = new ArrayList<>();
 
@@ -127,12 +131,12 @@ public class OngoingTradesViewer extends MenuItem {
                             }
 
                             int editCount = selected.getUserEditCount(currUsername);
-                            int editMax = currentUser.getMeetingEditMax();
+                            int editMax = userManager.getNormalUserMeetingEditMax(currUsername);
                             if (editCount < editMax) {
                                 systemPresenter.ongoingTrades(editCount, (editCount + 1 == editMax));
                                 systemPresenter.ongoingTrades(7);
 
-                                LocalDateTime time = new DateTimeSuggestion(currentUser, tradeManager).suggestDateTime();
+                                LocalDateTime time = new DateTimeSuggestion(currUsername, userManager, tradeManager).suggestDateTime();
 
                                 systemPresenter.ongoingTrades(8);
                                 String placeSuggestion = bufferedReader.readLine();
@@ -171,7 +175,7 @@ public class OngoingTradesViewer extends MenuItem {
                             }
 
                             int weeklyTrade = tradeManager.getNumMeetingsThisWeek(currUsername, selected.getFirstMeetingDateTime().toLocalDate());
-                            if (weeklyTrade > currentUser.getWeeklyTradeMax()) {
+                            if (weeklyTrade > userManager.getNormalUserWeeklyTradeMax(currUsername)) {
                                 systemPresenter.ongoingTrades(10);
                             } else {
                                 selected.confirmAgreedMeeting();
@@ -243,11 +247,11 @@ public class OngoingTradesViewer extends MenuItem {
                             selected.setIsCancelled();
                             long[] itemIDs = selected.getInvolvedItemIDs();
                             if (itemIDs[0] != 0) {
-                                Item tempItem1 = im.getItem(itemIDs[0]);
+                                Item tempItem1 = itemManager.getItem(itemIDs[0]);
                                 tempItem1.setAvailability(true);
                             }
                             if (itemIDs[1] != 0) {
-                                Item tempItem2 = im.getItem(itemIDs[1]);
+                                Item tempItem2 = itemManager.getItem(itemIDs[1]);
                                 tempItem2.setAvailability(true);
                             }
                             systemPresenter.ongoingTrades(2);
@@ -263,19 +267,8 @@ public class OngoingTradesViewer extends MenuItem {
         close();
     }
 
-    /**
-     * Constructs an OngoingTradesViewer based on username rather than user (PLEASE USE THIS ONE INSTEAD)
-     * @param currentUsername the username of the current user
-     * @param im the item manager
-     * @param um the user manager
-     * @param tm the trade manager
-     */
-    public OngoingTradesViewer(String currentUsername, ItemManager im, UserManager um, TradeManager tm) {
-        new OngoingTradesViewer(um.getNormalByUsername(currentUsername), im, um, tm);
-    }
-
     private void close() {
-        new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
+        new NormalDashboard(userManager.getNormalByUsername(currUsername), itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override

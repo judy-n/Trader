@@ -1,5 +1,6 @@
 package NormalUserFunctions;
 
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
@@ -21,7 +22,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
 
 public class InventoryEditor extends MenuItem {
@@ -29,21 +30,26 @@ public class InventoryEditor extends MenuItem {
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
+    private NotificationSystem notifSystem;
 
     /**
-     * Creates an <InventoryEditor></InventoryEditor> with the given normal user and item/user/trade managers.
+     * Creates an <InventoryEditor></InventoryEditor> with the given normal user,
+     * item/user/trade managers, and notification system.
      * Prints to the screen the given user's inventory and options to add/remove/cancel.
      *
-     * @param user the normal user who's currently logged in
-     * @param im   the system's item manager
-     * @param um   the system's user manager
-     * @param tm   the system's trade manager
+     * @param user         the normal user who's currently logged in
+     * @param itemManager  the system's item manager
+     * @param userManager  the system's user manager
+     * @param tradeManager the system's trade manager
+     * @param notifSystem  the system's notification manager
      */
-    public InventoryEditor(NormalUser user, ItemManager im, UserManager um, TradeManager tm) {
+    public InventoryEditor(NormalUser user, ItemManager itemManager, UserManager userManager,
+                           TradeManager tradeManager, NotificationSystem notifSystem) {
         currentUser = user;
-        itemManager = im;
-        userManager = um;
-        tradeManager = tm;
+        this.itemManager = itemManager;
+        this.userManager = userManager;
+        this.tradeManager = tradeManager;
+        this.notifSystem = notifSystem;
 
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -129,7 +135,7 @@ public class InventoryEditor extends MenuItem {
 
                             currentUser.removeInventory(selectedItem.getID());
                             itemManager.getItem(selectedItem.getID()).setIsRemoved(true);
-                            //don't remove from ItemManager
+                            // don't remove from ItemManager
 
                             systemPresenter.inventoryRemoveItem(selectedItem.getName(), 0, 2);
                         } else {
@@ -148,7 +154,7 @@ public class InventoryEditor extends MenuItem {
     }
 
     private void close() {
-        new NormalDashboard(currentUser, itemManager, userManager, tradeManager);
+        new NormalDashboard(currentUser, itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override
