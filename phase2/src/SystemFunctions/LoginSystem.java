@@ -27,25 +27,16 @@ public class LoginSystem {
         this.userManager = userManager;
     }
 
-    public ArrayList<Integer> validateInput(String usernameOrEmail, String password){
+    public ArrayList<Integer> validateInput(String usernameOrEmail, String password) {
         ArrayList<Integer> invalidInput = new ArrayList<>();
-        if(!userManager.usernameExists(usernameOrEmail) && !userManager.emailExists(usernameOrEmail)){
+        if (!userManager.usernameExists(usernameOrEmail) && !userManager.emailExists(usernameOrEmail)) {
             invalidInput.add(2);
         }
-        User currentUser = userManager.getUserByUsernameOrEmail(usernameOrEmail);
-        validPw = currentUser.getPassword();
-        if(!password.equals(validPw)){
+        validPw = userManager.getUserPassword(usernameOrEmail);
+        if (!password.equals(validPw)) {
             invalidInput.add(4);
         }
         return invalidInput;
     }
 
-    /**
-     * Getter for this <LoginSystem></LoginSystem>'s logged-in user.
-     *
-     * @return the user who just logged in
-     */
-    public User getUser(String usernameOrEmail) {
-        return userManager.getUserByUsernameOrEmail(usernameOrEmail);
-    }
 }
