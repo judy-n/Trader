@@ -15,6 +15,7 @@ import SystemFunctions.ReadWriter;
  * @author Liam Huff
  * @author Yingjia Liu
  * @author Kushagra Mehta
+ * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
  * last modified 2020-07-31
@@ -26,6 +27,7 @@ public class UserManager extends Manager implements Serializable {
     private List<String> unfreezeRequests;
     private List<String> usernamesOnVacation;
     private ReadWriter readWriter;
+    private int[] currentThresholds;
 
     /**
      * Creates a <UserManager></UserManager>, setting all lists to empty by default.
@@ -36,6 +38,7 @@ public class UserManager extends Manager implements Serializable {
         usernamesToFreeze = new ArrayList<>();
         unfreezeRequests = new ArrayList<>();
         usernamesOnVacation = new ArrayList<>();
+        currentThresholds = new int[4];
     }
 
     /**
@@ -48,7 +51,7 @@ public class UserManager extends Manager implements Serializable {
      * @param homeCity the new user's homeCity
      */
     public void createNormalUser(String username, String email, String password, String homeCity) {
-        allNormals.add(new NormalUser(username, email, password, homeCity));
+        allNormals.add(new NormalUser(username, email, password, homeCity, currentThresholds));
     }
 
     /**
@@ -476,19 +479,31 @@ public class UserManager extends Manager implements Serializable {
 
 
     private void setNormalUserWeeklyTradeMax(String username, int threshold) {
-        getNormalByUsername(username).setWeeklyTradeMax(threshold);
+        NormalUser user = getNormalByUsername(username);
+        if (user != null) {
+            user.setWeeklyTradeMax(threshold);
+        }
     }
 
     private void setNormalUserIncompleteMax(String username, int threshold) {
-        getNormalByUsername(username).setIncompleteMax(threshold);
+        NormalUser user = getNormalByUsername(username);
+        if (user != null) {
+            user.setIncompleteMax(threshold);
+        }
     }
 
     private void setNormalUserLendMinimum(String username, int threshold) {
-        getNormalByUsername(username).setLendMinimum(threshold);
+        NormalUser user = getNormalByUsername(username);
+        if (user != null) {
+            user.setLendMinimum(threshold);
+        }
     }
 
     private void setNormalUserMeetingEditMax(String username, int threshold) {
-        getNormalByUsername(username).setMeetingEditMax(threshold);
+        NormalUser user = getNormalByUsername(username);
+        if (user != null) {
+            user.setMeetingEditMax(threshold);
+        }
     }
 
     /**
@@ -528,10 +543,14 @@ public class UserManager extends Manager implements Serializable {
     public void setALlNormalUserMeetingEditMax(int threshold) {
             for (String username : getAllNormaUserUsernames())
             {
-                setNormalUserLendMinimum(username, threshold);
+                setNormalUserMeetingEditMax(username, threshold);
             }
         }
 
+
+    public void setCurrentThresholds(int[] thresholds) { currentThresholds = thresholds; }
+
+    public int[] getCurrentThresholds() { return currentThresholds; }
 }
 
 
