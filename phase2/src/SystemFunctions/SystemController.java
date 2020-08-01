@@ -22,7 +22,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-30
+ * last modified 2020-07-31
  */
 public class SystemController extends JFrame {
     private UserManager userManager;
@@ -48,6 +48,8 @@ public class SystemController extends JFrame {
 
         readWriter = new ReadWriter();
         tryReadManagers();
+        int[] defaultThresholds = tryReadThresholds();
+        userManager.setCurrentThresholds(defaultThresholds);
 
         tradeManager.cancelAllUnconfirmedTrades();
         List<String> cancelledUsers = tradeManager.getCancelledUsers();
@@ -179,5 +181,15 @@ public class SystemController extends JFrame {
             systemPresenter.exceptionMessage(1, "Reading", "initial admin credentials");
             e.printStackTrace();
         }
+    }
+
+    private int[] tryReadThresholds() {
+        String thresholdsPath = "src/thresholds.txt";
+        try {
+            return readWriter.readThresholdsFromFile(thresholdsPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
