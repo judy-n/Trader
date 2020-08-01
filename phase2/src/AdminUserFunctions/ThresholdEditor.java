@@ -168,6 +168,10 @@ public class ThresholdEditor {
 
     }
 
+    /**
+     * Returns a valid threshold based on user input.
+     * @return threshold value.
+     */
     private int thresholdInputCheck() throws IOException {
         String temp2 = bufferedReader.readLine();
         while (!temp2.matches("[0-9]+")) {
@@ -177,6 +181,14 @@ public class ThresholdEditor {
         return Integer.parseInt(temp2);
     }
 
+    /**
+     * Updates the threshold values of this thresholdType in the file and in the currentThresholds of userManager.
+     *
+     * @param thresholdType the name of the threshold that's being edited.
+     * @param oldThreshold  the previous value of this threshold
+     * @param newThreshold  the new value for the threshold (given by the admin)
+     * @param thresholdIndex the index of this threshold (0: weeklyTradeMax, 1: meetingEditMax, 2: lendMinimum, 3: incompleteMax)
+     */
     private void editThreshold(String thresholdType, int oldThreshold, int newThreshold, int thresholdIndex) throws FileNotFoundException {
         File file = new File(THRESHOLD_FILE_PATH);
         String oldContent = "";
