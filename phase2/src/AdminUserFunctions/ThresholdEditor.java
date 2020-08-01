@@ -40,7 +40,6 @@ public class ThresholdEditor {
 
         systemPresenter = new SystemPresenter();
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
         NormalUser subjectUser;
         String usernameInput;
         int newThreshold;
@@ -124,7 +123,7 @@ public class ThresholdEditor {
                         int oldWeeklyTradeMax = Integer.parseInt(splitLine[1]);
                         systemPresenter.thresholdEditor(1, oldWeeklyTradeMax);
                         newThreshold = thresholdInputCheck();
-                        editThreshold("weeklyTradeMax :", oldWeeklyTradeMax, newThreshold);
+                        editThreshold("weeklyTradeMax :", oldWeeklyTradeMax, newThreshold, 0);
 
                         // Edits the threshold values for all current registered users.
                         userManager.setAllNormalUserWeeklyTradeMax(newThreshold);
@@ -136,7 +135,7 @@ public class ThresholdEditor {
                         int oldMeetingEditMax = Integer.parseInt(splitLine1[1]);
                         systemPresenter.thresholdEditor(2, oldMeetingEditMax);
                         newThreshold = thresholdInputCheck();
-                        editThreshold("meetingEditMax :", oldMeetingEditMax, newThreshold);
+                        editThreshold("meetingEditMax :", oldMeetingEditMax, newThreshold, 1);
 
                         // Edits the threshold values for all current registered users.
                         userManager.setALlNormalUserMeetingEditMax(newThreshold);
@@ -147,7 +146,7 @@ public class ThresholdEditor {
                         int oldLendMinimum = Integer.parseInt(splitLine2[1]);
                         systemPresenter.thresholdEditor(3, oldLendMinimum);
                         newThreshold = thresholdInputCheck();
-                        editThreshold("lendMinimum :", oldLendMinimum, newThreshold);
+                        editThreshold("lendMinimum :", oldLendMinimum, newThreshold, 2);
 
                         // Edits the threshold values for all current registered users.
                         userManager.setAllNormalUserLendMinimum(newThreshold);
@@ -159,7 +158,7 @@ public class ThresholdEditor {
                         int oldIncompleteMax = Integer.parseInt(splitLine3[1]);
                         systemPresenter.thresholdEditor(4, oldIncompleteMax);
                         newThreshold = thresholdInputCheck();
-                        editThreshold("incompleteMax :", oldIncompleteMax, newThreshold);
+                        editThreshold("incompleteMax :", oldIncompleteMax, newThreshold, 3);
 
                         // Edits the threshold values for all current registered users.
                         userManager.setAllNormalUserIncompleteMax(newThreshold);
@@ -182,7 +181,7 @@ public class ThresholdEditor {
         return Integer.parseInt(temp2);
     }
 
-    private void editThreshold(String thresholdType, int oldThreshold, int newThreshold) throws FileNotFoundException {
+    private void editThreshold(String thresholdType, int oldThreshold, int newThreshold, int thresholdIndex) throws FileNotFoundException {
         String THRESHOLD_FILE_PATH = "src/thresholds.txt";
         File file = new File(THRESHOLD_FILE_PATH);
         String oldContent = "";
@@ -208,6 +207,11 @@ public class ThresholdEditor {
         } catch (IOException e) {
             systemPresenter.exceptionMessage();
         }
+        // Updates the thresholds for UserManager.
+        int [] newDefault = userManager.getCurrentThresholds();
+        newDefault[thresholdIndex] = newThreshold;
+        userManager.setCurrentThresholds(newDefault);
+
     }
 
     private void close() {
