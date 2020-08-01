@@ -17,7 +17,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-31
+ * last modified 2020-08-01
  */
 public class UserManager extends Manager implements Serializable {
     private List<NormalUser> allNormals;
@@ -613,6 +613,14 @@ public class UserManager extends Manager implements Serializable {
     public int[] getCurrentThresholds() {
         return currDefaultThresholds;
     }
+
+    /**
+     * Getter for a Normal User's password given username
+     * 
+     * @param username the username of the normal user
+     * @return the associated password
+     */
+    public String getNormalUserPassword(String username) {return getNormalByUsername(username).getPassword();}
 }
 
 
