@@ -24,6 +24,8 @@ public class ThresholdEditor {
     private AdminUser currentUser;
     private SystemPresenter systemPresenter;
     private BufferedReader bufferedReader;
+    private ReadWriter readWriter;
+    private final String THRESHOLD_FILE_PATH = "src/thresholds.txt";;
 
     /**
      * Creates a <ThresholdEditor></ThresholdEditor> with the given admin and item/user managers.
@@ -37,6 +39,8 @@ public class ThresholdEditor {
         currentUser = user;
         itemManager = im;
         userManager = um;
+        readWriter = new ReadWriter();
+
 
         systemPresenter = new SystemPresenter();
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -118,9 +122,7 @@ public class ThresholdEditor {
                         break;
                     case 1:
                         // Edits the threshold values for all future users that will be created.
-                        String line1 = Files.readAllLines(Paths.get("src/thresholds.txt")).get(0);
-                        String[] splitLine = line1.split(":");
-                        int oldWeeklyTradeMax = Integer.parseInt(splitLine[1]);
+                        int oldWeeklyTradeMax = readWriter.readThresholdsFromFile(THRESHOLD_FILE_PATH)[0];
                         systemPresenter.thresholdEditor(1, oldWeeklyTradeMax);
                         newThreshold = thresholdInputCheck();
                         editThreshold("weeklyTradeMax :", oldWeeklyTradeMax, newThreshold, 0);
@@ -130,9 +132,7 @@ public class ThresholdEditor {
                         break;
                     case 2:
                         // Edits the threshold values for all future users that will be created.
-                        String line2 = Files.readAllLines(Paths.get("src/thresholds.txt")).get(1);
-                        String[] splitLine1 = line2.split(":");
-                        int oldMeetingEditMax = Integer.parseInt(splitLine1[1]);
+                        int oldMeetingEditMax = readWriter.readThresholdsFromFile(THRESHOLD_FILE_PATH)[1];
                         systemPresenter.thresholdEditor(2, oldMeetingEditMax);
                         newThreshold = thresholdInputCheck();
                         editThreshold("meetingEditMax :", oldMeetingEditMax, newThreshold, 1);
@@ -141,9 +141,7 @@ public class ThresholdEditor {
                         userManager.setALlNormalUserMeetingEditMax(newThreshold);
                     case 3:
                         // Edits the threshold values for all future users that will be created.
-                        String line3 = Files.readAllLines(Paths.get("src/thresholds.txt")).get(2);
-                        String[] splitLine2 = line3.split(":");
-                        int oldLendMinimum = Integer.parseInt(splitLine2[1]);
+                        int oldLendMinimum = readWriter.readThresholdsFromFile(THRESHOLD_FILE_PATH)[2];
                         systemPresenter.thresholdEditor(3, oldLendMinimum);
                         newThreshold = thresholdInputCheck();
                         editThreshold("lendMinimum :", oldLendMinimum, newThreshold, 2);
@@ -153,9 +151,7 @@ public class ThresholdEditor {
                         break;
                     case 4:
                         // Edits the threshold values for all future users that will be created.
-                        String line = Files.readAllLines(Paths.get("src/thresholds.txt")).get(3);
-                        String[] splitLine3 = line.split(":");
-                        int oldIncompleteMax = Integer.parseInt(splitLine3[1]);
+                        int oldIncompleteMax = readWriter.readThresholdsFromFile(THRESHOLD_FILE_PATH)[3];
                         systemPresenter.thresholdEditor(4, oldIncompleteMax);
                         newThreshold = thresholdInputCheck();
                         editThreshold("incompleteMax :", oldIncompleteMax, newThreshold, 3);
@@ -182,7 +178,6 @@ public class ThresholdEditor {
     }
 
     private void editThreshold(String thresholdType, int oldThreshold, int newThreshold, int thresholdIndex) throws FileNotFoundException {
-        String THRESHOLD_FILE_PATH = "src/thresholds.txt";
         File file = new File(THRESHOLD_FILE_PATH);
         String oldContent = "";
 
