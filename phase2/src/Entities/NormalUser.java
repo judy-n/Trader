@@ -21,7 +21,7 @@ import java.util.Map;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-28
+ * last modified 2020-07-31
  */
 public class NormalUser extends User implements Serializable {
     private List<Long> inventory;
@@ -52,12 +52,13 @@ public class NormalUser extends User implements Serializable {
     private int incompleteMax;
 
     /**
-     * Creates a <NormalUser></NormalUser> with the given username, email, and password.
+     * Creates a <NormalUser></NormalUser> with the given username, email, password, and thresholds.
      * Also initializes default empty inventory, wishlist, and tradeRequests, and account status non-frozen.
      *
      * @param username the username being assigned to this <NormalUser></NormalUser>
      * @param email    the email address being assigned to this <NormalUser></NormalUser>
      * @param password the password being assigned to this <NormalUser></NormalUser>
+     * @param thresholds the default threshold values assigned to this <NormalUser></NormalUser>
      */
     public NormalUser(String username, String email, String password, int[] thresholds) {
         super(username, email, password);
@@ -74,13 +75,14 @@ public class NormalUser extends User implements Serializable {
     }
 
     /**
-     * Creates a <NormalUser></NormalUser> with the given username, email, and password, and homeCity
+     * Creates a <NormalUser></NormalUser> with the given username, email, password, homeCity, and thresholds.
      * Also initializes default empty inventory, wishlist, and tradeRequests, and account status non-frozen.
      *
      * @param username the username being assigned to this <NormalUser></NormalUser>
      * @param email    the email address being assigned to this <NormalUser></NormalUser>
      * @param password the password being assigned to this <NormalUser></NormalUser>
      * @param homeCity the homeCity of this NormalUser
+     * @param thresholds the default threshold values assigned to this <NormalUser></NormalUser>.
      */
     public NormalUser(String username, String email, String password, String homeCity, int[] thresholds) {
         super(username, email, password);
