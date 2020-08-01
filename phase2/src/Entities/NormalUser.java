@@ -42,55 +42,14 @@ public class NormalUser extends User implements Serializable {
     /* the maximum number of transactions this user can schedule in a week */
     private int weeklyTradeMax;
 
-    {
-        try {
-            String line = Files.readAllLines(Paths.get("src/thresholds.txt")).get(0);
-            String[] splitLine = line.split(":");
-            weeklyTradeMax = Integer.parseInt(splitLine[1]);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     /* the maximum number of times this user may edit any of their trade's meeting details */
     private int meetingEditMax;
 
-    {
-        try {
-            String line = Files.readAllLines(Paths.get("src/thresholds.txt")).get(1);
-            String[] splitLine = line.split(":");
-            meetingEditMax = Integer.parseInt(splitLine[1]);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     /* to request a trade, this user must have lent at least lendMinimum item(s) more than they have borrowed */
     private int lendMinimum;
-    {
-        try {
-            String line = Files.readAllLines(Paths.get("src/thresholds.txt")).get(2);
-            String[] splitLine = line.split(":");
-            lendMinimum = Integer.parseInt(splitLine[1]);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /* the maximum number of incomplete trades this user can have before their account is at risk of being frozen */
     private int incompleteMax;
-    {
-        try {
-            String line = Files.readAllLines(Paths.get("src/thresholds.txt")).get(3);
-            String[] splitLine = line.split(":");
-            incompleteMax = Integer.parseInt(splitLine[1]);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Creates a <NormalUser></NormalUser> with the given username, email, and password.
@@ -100,7 +59,7 @@ public class NormalUser extends User implements Serializable {
      * @param email    the email address being assigned to this <NormalUser></NormalUser>
      * @param password the password being assigned to this <NormalUser></NormalUser>
      */
-    public NormalUser(String username, String email, String password) {
+    public NormalUser(String username, String email, String password, int[] thresholds) {
         super(username, email, password);
         inventory = new ArrayList<>();
         pendingInventory = new ArrayList<>();
@@ -108,6 +67,10 @@ public class NormalUser extends User implements Serializable {
         tradeRequests = new HashMap<>();
         isFrozen = false;
         isOnVacation = false;
+        weeklyTradeMax = thresholds[0];
+        meetingEditMax = thresholds[1];
+        lendMinimum = thresholds[2];
+        incompleteMax = thresholds[3];
     }
 
     /**
@@ -119,7 +82,7 @@ public class NormalUser extends User implements Serializable {
      * @param password the password being assigned to this <NormalUser></NormalUser>
      * @param homeCity the homeCity of this NormalUser
      */
-    public NormalUser(String username, String email, String password, String homeCity) {
+    public NormalUser(String username, String email, String password, String homeCity, int[] thresholds) {
         super(username, email, password);
         inventory = new ArrayList<>();
         pendingInventory = new ArrayList<>();
@@ -128,6 +91,10 @@ public class NormalUser extends User implements Serializable {
         isFrozen = false;
         isOnVacation = false;
         this.homeCity  = homeCity;
+        weeklyTradeMax = thresholds[0];
+        meetingEditMax = thresholds[1];
+        lendMinimum = thresholds[2];
+        incompleteMax = thresholds[3];
     }
 
     /**
