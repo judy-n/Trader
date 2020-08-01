@@ -136,6 +136,7 @@ public class ReadWriter {
      * @param thresholdType the name of the threshold that's being edited.
      * @param oldThreshold  the previous value of this threshold
      * @param newThreshold  the new value for the threshold (given by the admin)
+     * @throws IOException when IO error occurs while writing
      */
     public void saveThresholdsToFile(String filePath, String thresholdType, int oldThreshold, int newThreshold) throws IOException {
         File file = new File(filePath);

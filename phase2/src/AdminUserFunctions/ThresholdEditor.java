@@ -190,23 +190,13 @@ public class ThresholdEditor {
         return Integer.parseInt(temp2);
     }
 
-    // private methods don't need javadoc but since part of it's being moved to ReadWriter you can reuse the javadoc here
-    /**
-     * Updates the threshold values of this thresholdType in the file and in the currentThresholds of userManager.
-     *
-     * @param thresholdType the name of the threshold that's being edited.
-     * @param oldThreshold  the previous value of this threshold
-     * @param newThreshold  the new value for the threshold (given by the admin)
-     * @param thresholdIndex the index of this threshold (0: weeklyTradeMax, 1: meetingEditMax, 2: lendMinimum, 3: incompleteMax)
-     */
     private void editThreshold(String thresholdType, int oldThreshold, int newThreshold, int thresholdIndex) throws IOException {
         // Writes to the file.
         String THRESHOLD_FILE_PATH = "src/thresholds.txt";
         readWriter.saveThresholdsToFile(THRESHOLD_FILE_PATH, thresholdType, oldThreshold, newThreshold);
 
-
         // Updates the thresholds for UserManager.
-        int [] newDefault = userManager.getCurrentThresholds();
+        int[] newDefault = userManager.getCurrentThresholds();
         newDefault[thresholdIndex] = newThreshold;
         userManager.setCurrentThresholds(newDefault);
 
