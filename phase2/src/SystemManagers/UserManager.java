@@ -615,12 +615,13 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Getter for a Normal User's password given username
-     * 
-     * @param username the username of the normal user
+     * Getter for a User's password given the associated username or email
+     *
+     * @param usernameOrEmail the username of the normal user
      * @return the associated password
      */
-    public String getNormalUserPassword(String username) {return getNormalByUsername(username).getPassword();}
+    public String getUserPassword(String usernameOrEmail) {
+        return getUserByUsernameOrEmail(usernameOrEmail).getPassword();}
 }
 
 
