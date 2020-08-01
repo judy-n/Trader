@@ -26,7 +26,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-31
+ * last modified 2020-08-01
  */
 public class OngoingTradesViewer extends MenuItem {
     private String currUsername;
@@ -170,7 +170,7 @@ public class OngoingTradesViewer extends MenuItem {
 
                             /* can't confirm a meeting time that has already passed */
                             if (LocalDateTime.now().isAfter(selected.getFirstMeetingDateTime())) {
-                                systemPresenter.ongoingTrades(19);
+                                systemPresenter.ongoingTrades(20);
                                 break;
                             }
 
@@ -188,17 +188,17 @@ public class OngoingTradesViewer extends MenuItem {
 
                             /* can't confirm transaction if no agreed meeting */
                             if (!selected.getHasAgreedMeeting()) {
-                                systemPresenter.ongoingTrades(15);
+                                systemPresenter.ongoingTrades(16);
                                 break;
                             }
 
                             /* can't confirm more than once */
                             if (selected instanceof TemporaryTrade &&
                                     ((TemporaryTrade) selected).getUserSecondTransactionConfirmation(currUsername)) {
-                                systemPresenter.ongoingTrades(17);
+                                systemPresenter.ongoingTrades(18);
                                 break;
                             } else if (selected.getUserFirstTransactionConfirmation(currUsername)) {
-                                systemPresenter.ongoingTrades(17);
+                                systemPresenter.ongoingTrades(18);
                                 break;
                             }
 
@@ -208,7 +208,7 @@ public class OngoingTradesViewer extends MenuItem {
                                 new ConfirmAndCloseTempTrade().confirmAndCloseTempTransaction(currUsername,
                                         (TemporaryTrade) selected, itemManager);
                                 if (selected.getIsComplete()) {
-                                    systemPresenter.ongoingTrades(13);
+                                    systemPresenter.ongoingTrades(14);
                                 } else {
                                     systemPresenter.ongoingTrades(3);
                                 }
@@ -216,7 +216,7 @@ public class OngoingTradesViewer extends MenuItem {
                                     now.compareTo(selected.getFirstMeetingDateTime()) > 0) {
                                 selected.confirmFirstTransaction(currUsername);
                                 if (((TemporaryTrade) selected).hasSecondMeeting()) {
-                                    systemPresenter.ongoingTrades(14);
+                                    systemPresenter.ongoingTrades(15);
                                 } else {
                                     systemPresenter.ongoingTrades(3);
                                 }
@@ -231,7 +231,7 @@ public class OngoingTradesViewer extends MenuItem {
                                 }
                             } else {
                                 /* can't confirm transaction before its scheduled time */
-                                systemPresenter.ongoingTrades(16);
+                                systemPresenter.ongoingTrades(17);
                             }
                             break;
 
@@ -240,7 +240,7 @@ public class OngoingTradesViewer extends MenuItem {
 
                             /* can't cancel if meeting already scheduled */
                             if (selected.getHasAgreedMeeting()) {
-                                systemPresenter.ongoingTrades(18);
+                                systemPresenter.ongoingTrades(19);
                                 break;
                             }
 

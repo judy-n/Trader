@@ -16,7 +16,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-30
+ * last modified 2020-08-01
  */
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
@@ -548,25 +548,31 @@ public class SystemPresenter {
                 System.out.println("\nThis meeting has already been agreed upon, so you cannot edit it.");
                 break;
             case 13:
-                System.out.println("\nYour trade partner has also confirmed, so this transaction is now closed.");
+                System.out.println("\nYour trade partner has also confirmed the transaction, so this permanent trade is now closed." +
+                        "\n The item you lent in this permanent trade has automatically been removed from your inventory," +
+                        "\n and if the other user's item was in your wishlist it has been removed.\"");
                 break;
             case 14:
-                System.out.println("\nYour trade partner has also confirmed, " +
-                        "so your second meeting has been set to exactly 30 days from the first meeting (same time, same place).");
+                System.out.println("\nYour trade partner has also confirmed the transaction, so this temporary trade is now closed." +
+                        "\n The item you lent is now available for trade again.");
                 break;
             case 15:
-                System.out.println("\nYou and your trade partner have not yet agreed upon a meeting date/time/location!");
+                System.out.println("\nYour trade partner has also confirmed the transaction, " +
+                        "so your second meeting has been set to exactly 30 days from the first meeting (same time, same place).");
                 break;
             case 16:
-                System.out.println("\nCannot confirm a meeting before it is scheduled to take place.");
+                System.out.println("\nYou and your trade partner have not yet agreed upon a meeting date/time/location!");
                 break;
             case 17:
-                System.out.println("\nYou've already confirmed that the latest transaction took place!");
+                System.out.println("\nCannot confirm a meeting before it is scheduled to take place.");
                 break;
             case 18:
-                System.out.println("\nYou may not cancel a trade after the meeting has already been scheduled.");
+                System.out.println("\nYou've already confirmed that the latest transaction took place!");
                 break;
             case 19:
+                System.out.println("\nYou may not cancel a trade after the meeting has already been scheduled.");
+                break;
+            case 20:
                 System.out.println("\nThe suggested meeting time has already passed! You'll have to suggest a new time and place.");
                 break;
         }
