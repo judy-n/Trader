@@ -731,6 +731,9 @@ public class SystemPresenter {
                         "\n 3 - Lend minimum" +
                         "\n 4 - Incomplete trade maximum" + choicePrompt);
                 break;
+            case 3:
+                System.out.println("\nUnable to edit threshold values - the username you entered belongs to an admin!");
+                break;
         }
     }
 
