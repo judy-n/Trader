@@ -547,9 +547,16 @@ public class UserManager extends Manager implements Serializable {
             }
         }
 
-
+    /**
+     * Sets the currentThresholds (the default thresholds for new users) to the given thresholds.
+     * @param thresholds the new threshold values.
+     */
     public void setCurrentThresholds(int[] thresholds) { currentThresholds = thresholds; }
 
+    /**
+     * Getter for the currentThresholds (default threshold values).
+     * @return the system's default thresholds
+     */
     public int[] getCurrentThresholds() { return currentThresholds; }
 }
 

@@ -23,9 +23,10 @@ import java.nio.file.Paths;
  * @author Ning Zhang
  * @author Yingjia Liu
  * @author Liam Huff
+ * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-17
- * last modified 2020-07-22
+ * last modified 2020-07-31
  */
 
 public class ReadWriter {
