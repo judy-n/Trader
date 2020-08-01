@@ -1,5 +1,6 @@
 package AdminUserFunctions;
 
+import SystemFunctions.ReadWriter;
 import SystemManagers.ItemManager;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
@@ -31,6 +32,7 @@ public class ThresholdEditor {
     private NotificationSystem notifSystem;
     private SystemPresenter systemPresenter;
     private BufferedReader bufferedReader;
+    private ReadWriter readWriter;
 
     /**
      * Creates a <ThresholdEditor></ThresholdEditor> with the given admin,
@@ -47,7 +49,7 @@ public class ThresholdEditor {
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.notifSystem = notifSystem;
-
+        readWriter = new ReadWriter();
         systemPresenter = new SystemPresenter();
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -196,32 +198,12 @@ public class ThresholdEditor {
      * @param newThreshold  the new value for the threshold (given by the admin)
      * @param thresholdIndex the index of this threshold (0: weeklyTradeMax, 1: meetingEditMax, 2: lendMinimum, 3: incompleteMax)
      */
-    private void editThreshold(String thresholdType, int oldThreshold, int newThreshold, int thresholdIndex) throws FileNotFoundException {
+    private void editThreshold(String thresholdType, int oldThreshold, int newThreshold, int thresholdIndex) throws IOException {
+        // Writes to the file.
         String THRESHOLD_FILE_PATH = "src/thresholds.txt";
-        File file = new File(THRESHOLD_FILE_PATH);
-        String oldContent = "";
+        readWriter.saveThresholdsToFile(THRESHOLD_FILE_PATH, thresholdType, oldThreshold, newThreshold);
 
-        BufferedReader reader = new BufferedReader(new FileReader(file));
 
-        try {
-            String line = reader.readLine();
-
-            while (line != null) {
-
-                oldContent = oldContent + line + System.lineSeparator();
-                line = reader.readLine();
-            }
-            String newContent = oldContent.replaceAll(thresholdType + oldThreshold,
-                    thresholdType + newThreshold);
-
-            FileWriter writer = new FileWriter(file);
-            writer.write(newContent);
-            reader.close();
-            writer.close();
-
-        } catch (IOException e) {
-            systemPresenter.exceptionMessage();
-        }
         // Updates the thresholds for UserManager.
         int [] newDefault = userManager.getCurrentThresholds();
         newDefault[thresholdIndex] = newThreshold;
