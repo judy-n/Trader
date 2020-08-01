@@ -4,10 +4,18 @@ import SystemManagers.ItemManager;
 import SystemManagers.Manager;
 import SystemManagers.TradeManager;
 import SystemManagers.UserManager;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 /**
  * ReadWriter reads from and writes to a .ser file that contains a <Manager></Manager>
