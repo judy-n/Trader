@@ -4,16 +4,8 @@ import SystemManagers.ItemManager;
 import SystemManagers.Manager;
 import SystemManagers.TradeManager;
 import SystemManagers.UserManager;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.BufferedInputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
+
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -136,5 +128,34 @@ public class ReadWriter {
         }
         bufferedReader.close();
         return thresholds;
+    }
+
+    /**
+     * Updates the threshold values of this thresholdType in the file.
+     *
+     * @param thresholdType the name of the threshold that's being edited.
+     * @param oldThreshold  the previous value of this threshold
+     * @param newThreshold  the new value for the threshold (given by the admin)
+     */
+    public void saveThresholdsToFile(String filePath, String thresholdType, int oldThreshold, int newThreshold) throws IOException {
+        File file = new File(filePath);
+        String oldContent = "";
+
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+
+        String line = reader.readLine();
+
+        while (line != null) {
+            oldContent = oldContent + line + System.lineSeparator();
+            line = reader.readLine();
+        }
+
+        String newContent = oldContent.replaceAll(thresholdType + oldThreshold,
+                thresholdType + newThreshold);
+
+        FileWriter writer = new FileWriter(file);
+        writer.write(newContent);
+        reader.close();
+        writer.close();
     }
 }
