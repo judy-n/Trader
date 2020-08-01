@@ -617,7 +617,7 @@ public class UserManager extends Manager implements Serializable {
     /**
      * Getter for a User's password given the associated username or email
      *
-     * @param usernameOrEmail the username of the normal user
+     * @param usernameOrEmail the username of the user
      * @return the associated password
      */
     public String getUserPassword(String usernameOrEmail) {
