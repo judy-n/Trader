@@ -23,7 +23,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-31
+ * last modified 2020-07-02
  */
 public class SystemController extends JFrame {
     private UserManager userManager;
