@@ -113,7 +113,7 @@ public class SystemController extends JFrame {
     }
 
     public void userLogin(String usernameOrEmail, JFrame parent){
-        User currentUser = new LoginSystem(userManager).getUser(usernameOrEmail);
+        User currentUser = userManager.getUserByUsernameOrEmail(usernameOrEmail);
         if (currentUser instanceof AdminUser) {
             new DashboardFrame(new AdminDashboard((AdminUser) currentUser, itemManager, userManager, notifSystem), parent);
         } else {
