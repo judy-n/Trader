@@ -19,7 +19,7 @@ import java.io.InputStreamReader;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-31
+ * last modified 2020-07-02
  */
 public class ThresholdEditor {
     private AdminUser currentUser;
