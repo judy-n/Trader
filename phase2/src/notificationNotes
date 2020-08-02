@@ -21,9 +21,14 @@ From an admin:
 
 - admin undoes an action:
     > admin undoes another admin's approval for A's pending item
+    > DON'T remove item completely from ItemManager in case owner already started trading it etc. (NullPointers T-T)
+    > remember to check if it's still in A's inventory
         "An admin retracted the approval for your item [item name]."
     > admin un-sends A's trade request
+    > remove from both A and trade partner's list of requests
+    > remember to check if the trade request us still in the list
         "Your trade request to [other user] was removed by an admin."
+        "A trade request to you from [A] was removed by an admin."
 
 -------------------------------------------------------------------
 
