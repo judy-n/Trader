@@ -22,7 +22,6 @@ import java.io.InputStreamReader;
  * last modified 2020-07-02
  */
 public class ThresholdEditor {
-    private AdminUser currentUser;
     private ItemManager itemManager;
     private UserManager userManager;
     private NotificationSystem notifSystem;

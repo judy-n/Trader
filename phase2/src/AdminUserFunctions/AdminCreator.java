@@ -48,6 +48,6 @@ public class AdminCreator {
     }
 
     private void close() {
-        new AdminDashboard(currentAdmin, itemManager, userManager, notifSystem);
+        new AdminDashboard(currentAdmin.getUsername(), itemManager, userManager, notifSystem);
     }
 }
