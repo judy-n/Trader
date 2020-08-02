@@ -29,20 +29,23 @@ public class ThresholdEditor {
     private SystemPresenter systemPresenter;
     private BufferedReader bufferedReader;
     private ReadWriter readWriter;
+    private String currentUsername;
+
 
     /**
      * Creates a <ThresholdEditor></ThresholdEditor> with the given admin,
      * item/user managers, and notification system.
      * Lets an admin change a certain user's threshold values through user input.
      *
-     * @param user        the admin who's currently logged in
+     * @param username        the username of the admin who's currently logged in
      * @param itemManager the system's item manager
      * @param userManager the system's user manager
      * @param notifSystem the system's notification manager
      */
-    public ThresholdEditor(AdminUser user, ItemManager itemManager,
+    public ThresholdEditor(String username, ItemManager itemManager,
                            UserManager userManager, NotificationSystem notifSystem) {
-        currentUser = user;
+
+        this.currentUsername = username;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.notifSystem = notifSystem;
@@ -199,6 +202,6 @@ public class ThresholdEditor {
     }
 
     private void close() {
-        new AdminDashboard(currentUser, itemManager, userManager, notifSystem);
+        new AdminDashboard(userManager.getAdminByUsername(currentUsername), itemManager, userManager, notifSystem);
     }
 }
