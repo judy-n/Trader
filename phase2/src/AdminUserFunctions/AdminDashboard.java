@@ -101,6 +101,11 @@ public class AdminDashboard extends Dashboard {
     }
 
     @Override
+    public String getUsername() {
+        return currentAdmin.getUsername();
+    }
+
+    @Override
     public User getUser() {
         return currentAdmin;
     }

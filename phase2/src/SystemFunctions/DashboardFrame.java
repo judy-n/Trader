@@ -11,9 +11,9 @@ public class DashboardFrame extends JDialog{
     public DashboardFrame(Dashboard dashboard, JFrame parent) {
         this.dashboard = dashboard;
         this.parent = parent;
-        User user = dashboard.getUser();
-        System.out.println(user.getUsername());
-        DashboardWindow = new JDialog(parent, "Dashboard | "+user.getUsername(), true);
+        String username = dashboard.getUsername();
+        System.out.println(username);
+        DashboardWindow = new JDialog(parent, "Dashboard | "+username, true);
         DashboardWindow.setSize(820, 576);
         DashboardWindow.setResizable(false);
         DashboardWindow.setUndecorated(false);

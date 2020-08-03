@@ -198,7 +198,10 @@ public class NormalDashboard extends Dashboard {
     }
 
     @Override
-    public User getUser() {
-        return currentUser;
+    public String getUsername() {
+        return currentUser.getUsername();
     }
+
+    @Override
+    public User getUser() {return currentUser;}
 }
