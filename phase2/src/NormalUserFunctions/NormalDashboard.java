@@ -24,7 +24,7 @@ import java.awt.*;
  */
 public class NormalDashboard extends Dashboard {
     private NormalUser currentUser;
-    private String currentUsername;
+    private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
@@ -38,7 +38,7 @@ public class NormalDashboard extends Dashboard {
     public NormalDashboard(String username, ItemManager itemManager, UserManager userManager,
                            TradeManager tradeManager, NotificationSystem notifSystem) {
 
-        this.currentUsername = username;
+        this.currUsername = username;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
@@ -136,7 +136,7 @@ public class NormalDashboard extends Dashboard {
 //                //systemPresenter.logoutMessage();
 //                break;
 //            case 1:
-//                new CatalogViewer(currentUsername, itemManager, userManager, tradeManager);
+//                new CatalogViewer(currUsername, itemManager, userManager, tradeManager);
 //                break;
 //
 //            case 2:

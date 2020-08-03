@@ -4,7 +4,6 @@ import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
-import Entities.NormalUser;
 import Entities.Item;
 import SystemFunctions.SystemPresenter;
 import SystemFunctions.MenuItem;
@@ -26,7 +25,7 @@ import java.util.List;
  * last modified 2020-08-03
  */
 public class CatalogViewer extends MenuItem {
-    private String currentUsername;
+    private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
@@ -47,7 +46,7 @@ public class CatalogViewer extends MenuItem {
      */
     public CatalogViewer(String username, ItemManager itemManager, UserManager userManager,
                          TradeManager tradeManager, NotificationSystem notifSystem) {
-        currentUsername = username;
+        currUsername = username;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
@@ -61,9 +60,9 @@ public class CatalogViewer extends MenuItem {
 
         systemPresenter.catalogViewer(itemsSameCity);
 
-        int timesBorrowed = userManager.getNormalUserTimesBorrowed(currentUsername) + tradeManager.getTimesBorrowed(currentUsername);
-        int timesLent = userManager.getNormalUserTimesLent(currentUsername) + tradeManager.getTimesLent(currentUsername);
-        int lendMinimum = userManager.getNormalUserLendMinimum(currentUsername);
+        int timesBorrowed = userManager.getNormalUserTimesBorrowed(currUsername) + tradeManager.getTimesBorrowed(currUsername);
+        int timesLent = userManager.getNormalUserTimesLent(currUsername) + tradeManager.getTimesLent(currUsername);
+        int lendMinimum = userManager.getNormalUserLendMinimum(currUsername);
 
         systemPresenter.catalogViewer(1);
         try {
@@ -87,7 +86,7 @@ public class CatalogViewer extends MenuItem {
                 int tradeOrWishlist = Integer.parseInt(temp2);
 
                 if (tradeOrWishlist == 1 && (!selectedItem.getAvailability()) ||
-                        userManager.getNormalByUsername(itemManager.getItemOwner(itemID)).getIsFrozen()) {
+                        userManager.getNormalUserIsFrozen(itemManager.getItemOwner(itemID))) {
 
                     if (!selectedItem.getAvailability()) {
                         systemPresenter.catalogViewer(3);
@@ -107,9 +106,9 @@ public class CatalogViewer extends MenuItem {
                     }
 
                 } else if (tradeOrWishlist == 1) {
-                    if (userManager.getNormalUserIsFrozen(currentUsername)) {
+                    if (userManager.getNormalUserIsFrozen(currUsername)) {
                         systemPresenter.catalogViewer(2);
-                    } else if (userManager.isRequestedInTrade(currentUsername, itemID)) {
+                    } else if (userManager.isRequestedInTrade(currUsername, itemID)) {
                         systemPresenter.catalogViewer(6);
                     } else if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < lendMinimum)) {
                         systemPresenter.catalogViewerLendWarning(lendMinimum);
@@ -131,13 +130,13 @@ public class CatalogViewer extends MenuItem {
                         if (timesBorrowed == 0 || (timesLent - timesBorrowed) == lendMinimum) {
                             mustLend = true;
                         }
-                        new TradeRequestSetup(currentUsername, itemManager, userManager, mustLend).makeTradeRequest(selectedItem);
+                        new TradeRequestSetup(currUsername, itemManager, userManager, mustLend).makeTradeRequest(selectedItem);
                     }
                 }
-                List<Long> currentUserWishlist = userManager.getNormalUserWishlist(currentUsername);
+                List<Long> currentUserWishlist = userManager.getNormalUserWishlist(currUsername);
 
                 if (tradeOrWishlist == 2 && !currentUserWishlist.contains(itemID)) {
-                    userManager.addNormalUserWishlist(itemID, currentUsername);
+                    userManager.addNormalUserWishlist(itemID, currUsername);
                     systemPresenter.catalogViewer(4);
                 } else if (tradeOrWishlist == 2 && currentUserWishlist.contains(itemID)) {
                     systemPresenter.catalogViewer(5);
@@ -153,11 +152,11 @@ public class CatalogViewer extends MenuItem {
      * Returns a list of items that are owned by users with the same home city as the current user.
      */
     private List<Item> filterItemsHomeCity() {
-        List<Item> items = itemManager.getApprovedItems(currentUsername);
+        List<Item> items = itemManager.getApprovedItems(currUsername);
         List<Item> itemsSameCity = new ArrayList<>();
 
         for (Item i : items) {
-            if (userManager.getNormalUserHomeCity(i.getOwnerUsername()).equals(userManager.getNormalUserHomeCity(currentUsername))) {
+            if (userManager.getNormalUserHomeCity(i.getOwnerUsername()).equals(userManager.getNormalUserHomeCity(currUsername))) {
                 itemsSameCity.add(i);
             }
         }
@@ -165,7 +164,7 @@ public class CatalogViewer extends MenuItem {
     }
 
     private void close() {
-        new NormalDashboard(currentUsername, itemManager, userManager, tradeManager, notifSystem);
+        new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override

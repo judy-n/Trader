@@ -257,6 +257,16 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
+     * Returns the username at the given index in the list of unfreeze requests.
+     *
+     * @param index the index of the user being unfrozen
+     * @return the username at the given index in the list of unfreeze requests
+     */
+    public String getUnfreezeUsername(int index) {
+        return unfreezeRequests.get(index);
+    }
+
+    /**
      * Removes the user at the given index from the list of unfreeze requests and unfreezes them.
      *
      * @param index the index of the user being unfrozen
@@ -769,7 +779,7 @@ public class UserManager extends Manager implements Serializable {
      * @param usernameOrEmail the username or email of the user
      */
     public void removeTradeRequests(String[] key, String usernameOrEmail) {
-       getNormalByUsernameOrEmail(usernameOrEmail).removeTradeRequests(key);
+        getNormalByUsernameOrEmail(usernameOrEmail).removeTradeRequests(key);
     }
 
     /**
@@ -782,5 +792,3 @@ public class UserManager extends Manager implements Serializable {
         getNormalByUsernameOrEmail(usernameOrEmail).removeWishlist(itemID);
     }
 }
-
-

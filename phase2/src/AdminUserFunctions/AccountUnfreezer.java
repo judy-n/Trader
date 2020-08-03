@@ -21,7 +21,7 @@ import java.util.List;
  * last modified 2020-08-03
  */
 public class AccountUnfreezer extends MenuItem {
-    private String currentUsername;
+    private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private NotificationSystem notifSystem;
@@ -38,7 +38,7 @@ public class AccountUnfreezer extends MenuItem {
      */
     public AccountUnfreezer(String username, ItemManager itemManager,
                             UserManager userManager, NotificationSystem notifSystem) {
-        this.currentUsername = username;
+        this.currUsername = username;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.notifSystem = notifSystem;
@@ -71,7 +71,9 @@ public class AccountUnfreezer extends MenuItem {
                         indexInput = Integer.parseInt(temp);
 
                         if (indexInput != 0) {
+                            String unfreezeUsername = userManager.getUnfreezeUsername(indexInput);
                             userManager.removeUnfreezeRequest(indexInput);
+                            userManager.getNotifHelper().basicUpdate("UNFROZEN", unfreezeUsername, currUsername);
 
                             systemPresenter.adminGetUnfreezeRequests(2);
 
@@ -89,7 +91,7 @@ public class AccountUnfreezer extends MenuItem {
     }
 
     private void close() {
-        new AdminDashboard(currentUsername, itemManager, userManager, notifSystem);
+        new AdminDashboard(currUsername, itemManager, userManager, notifSystem);
     }
 
     @Override

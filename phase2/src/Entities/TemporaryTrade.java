@@ -130,12 +130,12 @@ public class TemporaryTrade extends Trade implements Serializable, Comparable<Tr
     /**
      * Return String representation of this temporary trade.
      *
-     * @param currentUsername the username of the user currently logged in
+     * @param currUsername the username of the user currently logged in
      * @return the trade type and the given user's trade partner in a string
      */
     @Override
-    public String toString(String currentUsername) {
-        return "Temporary trade with < " + getOtherUsername(currentUsername) + " > - ";
+    public String toString(String currUsername) {
+        return "Temporary trade with < " + getOtherUsername(currUsername) + " > - ";
     }
 
     /**

@@ -4,7 +4,6 @@ import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
-import Entities.NormalUser;
 import Entities.Item;
 import SystemFunctions.SystemPresenter;
 import SystemFunctions.MenuItem;
@@ -23,7 +22,7 @@ import java.util.List;
  * last modified 2020-08-03
  */
 public class WishlistEditor extends MenuItem {
-    private String currentUsername;
+    private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
@@ -36,16 +35,16 @@ public class WishlistEditor extends MenuItem {
      * This class lets the user remove items from their wishlist through user input.
      * They can only add items to their wishlist when browsing items available for trade.
      *
-     * @param currentUsername  the normal user who's currently logged in
+     * @param currUsername  the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
      * @param notifSystem  the system's notification manager
      */
-    public WishlistEditor(String currentUsername, ItemManager itemManager, UserManager userManager,
+    public WishlistEditor(String currUsername, ItemManager itemManager, UserManager userManager,
                           TradeManager tradeManager, NotificationSystem notifSystem) {
 
-        this.currentUsername = currentUsername;
+        this.currUsername = currUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
@@ -54,7 +53,7 @@ public class WishlistEditor extends MenuItem {
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        List<Item> itemWishlist = itemManager.getItemsByIDs(userManager.getNormalUserWishlist(currentUsername));
+        List<Item> itemWishlist = itemManager.getItemsByIDs(userManager.getNormalUserWishlist(currUsername));
         systemPresenter.wishlistEditor(itemWishlist);
         try {
             String temp = bufferedReader.readLine();
@@ -64,7 +63,7 @@ public class WishlistEditor extends MenuItem {
             }
             int input = Integer.parseInt(temp);
             if (input == 1) {
-                if (userManager.getNormalUserWishlist(currentUsername).isEmpty()) {
+                if (userManager.getNormalUserWishlist(currUsername).isEmpty()) {
                     systemPresenter.wishlistRemoveItem(1);
                 } else {
                     systemPresenter.wishlistRemoveItem(2);
@@ -84,7 +83,7 @@ public class WishlistEditor extends MenuItem {
                         confirmInput = bufferedReader.readLine();
                     }
                     if (confirmInput.equalsIgnoreCase("y")) {
-                        userManager.removeFromNormalUserWishlist(selected.getID(), currentUsername);
+                        userManager.removeFromNormalUserWishlist(selected.getID(), currUsername);
                         systemPresenter.wishlistRemoveItem(selected.getName(), 2);
                     } else {
                         systemPresenter.cancelled();
@@ -99,7 +98,7 @@ public class WishlistEditor extends MenuItem {
     }
 
     private void close() {
-        new NormalDashboard(currentUsername, itemManager, userManager, tradeManager, notifSystem);
+        new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override

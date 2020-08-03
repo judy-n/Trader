@@ -3,7 +3,6 @@ package AdminUserFunctions;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
-import Entities.AdminUser;
 import SystemFunctions.SystemPresenter;
 import SystemFunctions.MenuItem;
 import java.io.BufferedReader;
@@ -20,7 +19,7 @@ import java.util.List;
  * last modified 2020-07-03
  */
 public class AccountFreezer extends MenuItem {
-    private String currentUsername;
+    private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private NotificationSystem notifSystem;
@@ -37,7 +36,7 @@ public class AccountFreezer extends MenuItem {
      */
     public AccountFreezer(String username, ItemManager itemManager,
                           UserManager userManager, NotificationSystem notifSystem) {
-        this.currentUsername = username;
+        this.currUsername = username;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.notifSystem = notifSystem;
@@ -61,6 +60,7 @@ public class AccountFreezer extends MenuItem {
                 if (input.equalsIgnoreCase("y")) {
                     for (String usernameToFreeze : usernames) {
                         userManager.freezeNormalUser(usernameToFreeze);
+                        userManager.getNotifHelper().basicUpdate("FROZEN", usernameToFreeze, currUsername);
                     }
                     userManager.clearUsernamesToFreeze();
                 }
@@ -73,7 +73,7 @@ public class AccountFreezer extends MenuItem {
 
 
     private void close() {
-        new AdminDashboard(currentUsername, itemManager, userManager, notifSystem);
+        new AdminDashboard(currUsername, itemManager, userManager, notifSystem);
     }
 
     @Override

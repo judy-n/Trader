@@ -272,10 +272,10 @@ public abstract class Trade implements Serializable, Comparable<Trade> {
      * Returns a String representation of this trade.
      * Abstract method implemented by subclasses of <Trade></Trade>.
      *
-     * @param currentUsername the username of the user who's currently logged in
+     * @param currUsername the username of the user who's currently logged in
      * @return a String representation of this trade
      */
-    public abstract String toString(String currentUsername);
+    public abstract String toString(String currUsername);
 
     /**
      * Allows trades to be compared to each other based on their latest meeting time.

@@ -109,11 +109,11 @@ public class SystemController extends JFrame {
     }
 
     public void userLogin(String usernameOrEmail, JFrame parent){
-        String currentUsername = userManager.getUsername(usernameOrEmail);
-        if (userManager.isAdmin(currentUsername)) {
-            new DashboardFrame(new AdminDashboard(currentUsername, itemManager, userManager, notifSystem), parent);
+        String currUsername = userManager.getUsername(usernameOrEmail);
+        if (userManager.isAdmin(currUsername)) {
+            new DashboardFrame(new AdminDashboard(currUsername, itemManager, userManager, notifSystem), parent);
         } else {
-            new DashboardFrame(new NormalDashboard(currentUsername, itemManager, userManager, tradeManager, notifSystem), parent);
+            new DashboardFrame(new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem), parent);
         }
     }
 

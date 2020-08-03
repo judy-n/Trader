@@ -3,7 +3,6 @@ package AdminUserFunctions;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
-import Entities.AdminUser;
 import SystemFunctions.SystemPresenter;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +17,7 @@ import java.io.InputStreamReader;
  * last modified 2020-08-03
  */
 public class CatalogEditor {
-    private String currentUsername;
+    private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private NotificationSystem notifSystem;
@@ -31,7 +30,7 @@ public class CatalogEditor {
      */
     public CatalogEditor(String username, ItemManager itemManager,
                          UserManager userManager, NotificationSystem notifSystem) {
-        this.currentUsername = username;
+        this.currUsername = username;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.notifSystem = notifSystem;
@@ -88,6 +87,6 @@ public class CatalogEditor {
     }
 
     private void close() {
-        new AdminDashboard(currentUsername, itemManager, userManager, notifSystem);
+        new AdminDashboard(currUsername, itemManager, userManager, notifSystem);
     }
 }

@@ -75,9 +75,9 @@ From A's own actions:
 CATAGORIZED:
 
 (notifType, usernameNotified, otherParty):
-+ admin freezes A's account
+> admin freezes A's account
     "Your account was frozen by an admin due to it exceeding the maximum allowed number of incomplete trades."
-+ admin accepts A's unfreeze request
+> admin accepts A's unfreeze request
     "Your request to unfreeze your account was accepted by an admin. Your account is now unfrozen."
 + B sends A a trade request
     "You received a trade request from [B]."

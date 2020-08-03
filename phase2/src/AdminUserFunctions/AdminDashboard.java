@@ -5,7 +5,6 @@ import SystemFunctions.Dashboard;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
-import Entities.AdminUser;
 import SystemFunctions.SystemPresenter;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,7 +20,7 @@ import java.io.InputStreamReader;
  */
 
 public class AdminDashboard extends Dashboard {
-    private String currentUsername;
+    private String currUsername;
     private UserManager userManager;
     private int input;
 
@@ -33,14 +32,14 @@ public class AdminDashboard extends Dashboard {
     public AdminDashboard(String username, ItemManager itemManager,
                           UserManager userManager, NotificationSystem notifSystem) {
 
-        this.currentUsername = username;
+        this.currUsername = username;
         this.userManager = userManager;
 
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         String regex = "[0-4]";
-        int adminID = userManager.getAdminID(currentUsername);
+        int adminID = userManager.getAdminID(currUsername);
 
         systemPresenter.showAdminID(adminID);
         if (adminID != 1) {
@@ -66,31 +65,31 @@ public class AdminDashboard extends Dashboard {
                 systemPresenter.logoutMessage();
                 break;
             case 1:
-                new CatalogEditor(currentUsername, itemManager, userManager, notifSystem);
+                new CatalogEditor(currUsername, itemManager, userManager, notifSystem);
                 break;
             case 2:
-                new AccountFreezer(currentUsername, itemManager, userManager, notifSystem);
+                new AccountFreezer(currUsername, itemManager, userManager, notifSystem);
                 break;
             case 3:
-                new AccountUnfreezer(currentUsername, itemManager, userManager, notifSystem);
+                new AccountUnfreezer(currUsername, itemManager, userManager, notifSystem);
                 break;
 
             case 4:
-                new ThresholdEditor(currentUsername, itemManager, userManager, notifSystem);
+                new ThresholdEditor(currUsername, itemManager, userManager, notifSystem);
                 break;
             case 5:
-                new AdminCreator(currentUsername, itemManager, userManager, notifSystem);
+                new AdminCreator(currUsername, itemManager, userManager, notifSystem);
                 break;
         }
     }
 
     @Override
     public String getUsername() {
-        return currentUsername;
+        return currUsername;
     }
 
     @Override
     public User getUser() {
-        return userManager.getAdminByUsername(currentUsername);
+        return userManager.getAdminByUsername(currUsername);
     }
 }

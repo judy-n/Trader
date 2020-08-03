@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
  * last modified 2020-08-03
  */
 public class CompletedTradesViewer extends MenuItem {
-    private String currentUsername;
+    private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
@@ -34,15 +34,15 @@ public class CompletedTradesViewer extends MenuItem {
      * item/user/trade managers, and notification system.
      * Lets a normal user view their three most recent completed trades or three most frequent trade partners.
      *
-     * @param currentUsername   the username of the normal user who's currently logged in
+     * @param currUsername   the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
      * @param notifSystem  the system's notification manager
      */
-    public CompletedTradesViewer(String currentUsername, ItemManager itemManager, UserManager userManager,
+    public CompletedTradesViewer(String currUsername, ItemManager itemManager, UserManager userManager,
                                  TradeManager tradeManager, NotificationSystem notifSystem) {
-        this.currentUsername = currentUsername;
+        this.currUsername = currUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
@@ -55,7 +55,7 @@ public class CompletedTradesViewer extends MenuItem {
     public void viewRecentThreeTrades() {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        Trade[] recentThree = tradeManager.getRecentThreeTrades(currentUsername);
+        Trade[] recentThree = tradeManager.getRecentThreeTrades(currUsername);
 
         System.out.println("\nHere are your three most recently completed trades:");
         if (recentThree[0] == null) {
@@ -68,26 +68,26 @@ public class CompletedTradesViewer extends MenuItem {
                 if (recentThree[i] != null) {
                     Trade trade = recentThree[i];
                     LocalDateTime meeting = trade.getFinalMeetingDateTime();
-                    String otherUsername = trade.getOtherUsername(currentUsername);
+                    String otherUsername = trade.getOtherUsername(currUsername);
 
                     /*
                      * tempItemIDs[0] - ID of item lent by current user
                      * tempItemIDs[1] - ID of item borrowed by current user
                      */
-                    long[] tempItemIDs = {trade.getLentItemID(currentUsername), trade.getLentItemID(otherUsername)};
+                    long[] tempItemIDs = {trade.getLentItemID(currUsername), trade.getLentItemID(otherUsername)};
 
                     if (tempItemIDs[0] == 0) {
                         Item itemBorrowed = itemManager.getItem(tempItemIDs[1]);
                         tradePrint = meeting.format(formatter) + "   " +
-                                trade.toString(currentUsername) + "you borrowed [" + itemBorrowed.getName() + "]";
+                                trade.toString(currUsername) + "you borrowed [" + itemBorrowed.getName() + "]";
                     } else if (tempItemIDs[1] == 0) {
                         Item itemLent = itemManager.getItem(tempItemIDs[0]);
                         tradePrint = meeting.format(formatter) + "   " +
-                                trade.toString(currentUsername) + "you lent [" + itemLent.getName() + "]";
+                                trade.toString(currUsername) + "you lent [" + itemLent.getName() + "]";
                     } else {
                         Item[] tempItems = {itemManager.getItem(tempItemIDs[0]), itemManager.getItem(tempItemIDs[1])};
                         tradePrint = meeting.format(formatter) + "   " +
-                                trade.toString(currentUsername) + "you lent [" +
+                                trade.toString(currUsername) + "you lent [" +
                                 tempItems[0].getName() + "] for [" + tempItems[1].getName() + "]";
                     }
                 }
@@ -101,7 +101,7 @@ public class CompletedTradesViewer extends MenuItem {
      * Displays the top three frequent trade partners for a normal user.
      */
     public void viewTopThreeTrader() {
-        String[] topTraders = tradeManager.getFrequentTradePartners(currentUsername);
+        String[] topTraders = tradeManager.getFrequentTradePartners(currUsername);
         System.out.println("\nHere are your top 3 most frequent trade partners:");
         int index = 1;
         if (topTraders[0].equals("empty")) {
@@ -116,7 +116,7 @@ public class CompletedTradesViewer extends MenuItem {
     }
 
     private void close() {
-        new NormalDashboard(currentUsername, itemManager, userManager, tradeManager, notifSystem);
+        new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override

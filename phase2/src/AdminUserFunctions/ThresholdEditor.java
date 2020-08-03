@@ -4,7 +4,6 @@ import SystemFunctions.ReadWriter;
 import SystemManagers.ItemManager;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
-import Entities.AdminUser;
 import SystemFunctions.SystemPresenter;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +27,7 @@ public class ThresholdEditor {
     private SystemPresenter systemPresenter;
     private BufferedReader bufferedReader;
     private ReadWriter readWriter;
-    private String currentUsername;
+    private String currUsername;
 
 
     /**
@@ -44,7 +43,7 @@ public class ThresholdEditor {
     public ThresholdEditor(String username, ItemManager itemManager,
                            UserManager userManager, NotificationSystem notifSystem) {
 
-        this.currentUsername = username;
+        this.currUsername = username;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.notifSystem = notifSystem;
@@ -201,6 +200,6 @@ public class ThresholdEditor {
     }
 
     private void close() {
-        new AdminDashboard(currentUsername, itemManager, userManager, notifSystem);
+        new AdminDashboard(currUsername, itemManager, userManager, notifSystem);
     }
 }

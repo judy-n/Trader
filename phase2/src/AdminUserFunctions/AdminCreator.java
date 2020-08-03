@@ -17,7 +17,7 @@ import SystemFunctions.SignUpSystem;
  * last modified 2020-08-03
  */
 public class AdminCreator {
-    private String currentUsername;
+    private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private NotificationSystem notifSystem;
@@ -26,13 +26,13 @@ public class AdminCreator {
      * Creates an <AdminCreator></AdminCreator> with the given admin, item/user managers, and notification system.
      * Lets the initial admin create other admins using <SignUpSystem></SignUpSystem>.
      *
-     * @param currentUsername the initial admin's username
+     * @param currUsername the initial admin's username
      * @param itemManager the system's item manager
      * @param userManager the system's user manager
      * @param notifSystem the system's notification manager
      */
-    public AdminCreator(String currentUsername, ItemManager itemManager, UserManager userManager, NotificationSystem notifSystem) {
-        this.currentUsername = currentUsername;
+    public AdminCreator(String currUsername, ItemManager itemManager, UserManager userManager, NotificationSystem notifSystem) {
+        this.currUsername = currUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.notifSystem = notifSystem;
@@ -48,6 +48,6 @@ public class AdminCreator {
     }
 
     private void close() {
-        new AdminDashboard(currentUsername, itemManager, userManager, notifSystem);
+        new AdminDashboard(currUsername, itemManager, userManager, notifSystem);
     }
 }

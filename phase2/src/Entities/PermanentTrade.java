@@ -60,12 +60,12 @@ public class PermanentTrade extends Trade implements Serializable, Comparable<Tr
     /**
      * Return a String representation of this permanent trade.
      *
-     * @param currentUsername the username of the user currently logged in
+     * @param currUsername the username of the user currently logged in
      * @return the trade type and the given user's trade partner in a string
      */
     @Override
-    public String toString(String currentUsername) {
-        return "Permanent trade with < " + getOtherUsername(currentUsername) + " > - ";
+    public String toString(String currUsername) {
+        return "Permanent trade with < " + getOtherUsername(currUsername) + " > - ";
     }
 
     /**
