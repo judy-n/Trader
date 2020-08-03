@@ -83,24 +83,21 @@ public class NormalDashboard extends Dashboard {
         this.add(wishlist);
         wishlist.setLocation(30, 190);
     }
-//        String regex = "[0-7]";
+//        String regex = "[0-9]";
 //
 //        // user frozen and on vacation
 //        if ((currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
-//            regex = "[0-8]+[10]";
 //            //systemPresenter.normalDashboard(2);
 //        }
 //
 //        // user frozen and not on vacation
 //        else if ((currentUser.getIsFrozen()) && !(currentUser.getIsOnVacation())) {
-//            regex = "[0-9]";
 //            //systemPresenter.normalDashboard(3);
 //        }
 //
-//        // why is this regex not right?? i dont see it.
 //        // user not frozen and on vacation
 //        else if (!(currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
-//            regex = "[0-7]+[10]";
+//            regex = "[0-7]+[9]";
 //            //systemPresenter.normalDashboard(4);
 //        }
 //
@@ -164,13 +161,8 @@ public class NormalDashboard extends Dashboard {
 //                break;
 //
 //            case 9:
-//                // set on vacation status.
-//                currentUser.setOnVacation(true);
-//                break;
-//
-//            case 10:
-//                // set not on vacation status.
-//                currentUser.setOnVacation(false);
+//                // change vacation status.
+//                new Vacation(currentUser, itemManager, userManager, tradeManager);
 //                break;
 //        }
 
