@@ -33,6 +33,16 @@ public class NormalDashboard extends Dashboard {
      * Creates a <NormalDashboard></NormalDashboard> with the given normal user,
      * item/user/trade managers, and notification system.
      *
+     */
+    public NormalDashboard(String username, ItemManager itemManager, UserManager userManager,
+                           TradeManager tradeManager, NotificationSystem notifSystem) {
+        this(userManager.getNormalByUsername(username), itemManager, userManager, tradeManager, notifSystem);
+    }
+
+    /**
+     * Creates a <NormalDashboard></NormalDashboard> with the given normal user,
+     * item/user/trade managers, and notification system.
+     *
      * @param user         the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
