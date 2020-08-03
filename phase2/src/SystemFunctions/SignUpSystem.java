@@ -68,18 +68,19 @@ public class SignUpSystem {
      *
      * @return the normal user that was just created
      */
-    public NormalUser createNewNormal(String username, String email, String password, String homeCity, NotificationSystem notifSystem) {
+    public NormalUser createNewNormal(String username, String email, String password,
+                                      String homeCity, NotificationSystem notifSystem) {
         userManager.createNormalUser(username, email, password, homeCity);
         NormalUser newNormalUser = userManager.getNormalByUsername(username);
         newNormalUser.addObserver(notifSystem);
+        notifSystem.addUser(newNormalUser.getUsername());
         return newNormalUser;
     }
 
     /**
      * Creates a new <AdminUser></AdminUser> based on input from <inputProcess()></inputProcess()>.
      */
-    public void createNewAdmin(String username, String email, String password, NotificationSystem notifSystem) {
+    public void createNewAdmin(String username, String email, String password) {
         userManager.createAdminUser(username, email, password);
-        userManager.getAdminByUsername(username).addObserver(notifSystem);
     }
 }

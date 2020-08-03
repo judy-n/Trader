@@ -26,6 +26,7 @@ public class UserManager extends Manager implements Serializable {
     private List<String> unfreezeRequests;
     private List<String> usernamesOnVacation;
     private int[] currDefaultThresholds;
+    private UserNotificationHelper notifHelper;
 
     /**
      * Creates a <UserManager></UserManager>, setting all lists to empty by default.
@@ -37,6 +38,7 @@ public class UserManager extends Manager implements Serializable {
         unfreezeRequests = new ArrayList<>();
         usernamesOnVacation = new ArrayList<>();
         currDefaultThresholds = new int[4];
+        notifHelper = new UserNotificationHelper();
     }
 
     /**
@@ -646,13 +648,26 @@ public class UserManager extends Manager implements Serializable {
             return getNormalByUsername(usernameOrEmail);
         }
     }
+
     /**
      * Return true iff NormalUser with given username is frozen
+     *
      * @param usernameOrEmail the user's username or email
      * @return true iff user is frozen
      */
     public boolean getNormalUserIsFrozen(String usernameOrEmail) {
-        return getNormalByUsernameOrEmail(usernameOrEmail).getIsFrozen();}
+        return getNormalByUsernameOrEmail(usernameOrEmail).getIsFrozen();
+    }
+
+    /**
+     * Getter for the notification helper.
+     * Gives access to the methods that help create notifications triggered by certain user actions.
+     *
+     * @return the notification helper
+     */
+    public UserNotificationHelper getNotifHelper() {
+        return notifHelper;
+    }
 }
 
 

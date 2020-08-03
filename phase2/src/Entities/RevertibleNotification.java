@@ -6,9 +6,9 @@ package Entities;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-08-01
- * last modified 2020-08-01
+ * last modified 2020-08-02
  */
-public abstract class RevertibleNotification extends Notification {
+public class RevertibleNotification extends Notification {
     String revertedUsername;
     String subject;
     // subject is either the ID of an item just approved by an admin (yes we are using parseLong to convert back)

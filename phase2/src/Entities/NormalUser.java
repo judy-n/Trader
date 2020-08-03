@@ -1,13 +1,11 @@
 package Entities;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 
 /**
  * Represents a normal user in our trade program.
@@ -52,37 +50,14 @@ public class NormalUser extends User implements Serializable {
     private int incompleteMax;
 
     /**
-     * Creates a <NormalUser></NormalUser> with the given username, email, password, and thresholds.
+     * Creates a <NormalUser></NormalUser> with the given username, email, password, home city, and thresholds.
      * Also initializes default empty inventory, wishlist, and tradeRequests, and account status non-frozen.
      *
      * @param username the username being assigned to this <NormalUser></NormalUser>
      * @param email    the email address being assigned to this <NormalUser></NormalUser>
      * @param password the password being assigned to this <NormalUser></NormalUser>
+     * @param homeCity the homeCity of this <NormalUser></NormalUser>
      * @param thresholds the default threshold values assigned to this <NormalUser></NormalUser>
-     */
-    public NormalUser(String username, String email, String password, int[] thresholds) {
-        super(username, email, password);
-        inventory = new ArrayList<>();
-        pendingInventory = new ArrayList<>();
-        wishlist = new ArrayList<>();
-        tradeRequests = new HashMap<>();
-        isFrozen = false;
-        isOnVacation = false;
-        weeklyTradeMax = thresholds[0];
-        meetingEditMax = thresholds[1];
-        lendMinimum = thresholds[2];
-        incompleteMax = thresholds[3];
-    }
-
-    /**
-     * Creates a <NormalUser></NormalUser> with the given username, email, password, homeCity, and thresholds.
-     * Also initializes default empty inventory, wishlist, and tradeRequests, and account status non-frozen.
-     *
-     * @param username the username being assigned to this <NormalUser></NormalUser>
-     * @param email    the email address being assigned to this <NormalUser></NormalUser>
-     * @param password the password being assigned to this <NormalUser></NormalUser>
-     * @param homeCity the homeCity of this NormalUser
-     * @param thresholds the default threshold values assigned to this <NormalUser></NormalUser>.
      */
     public NormalUser(String username, String email, String password, String homeCity, int[] thresholds) {
         super(username, email, password);
@@ -388,21 +363,24 @@ public class NormalUser extends User implements Serializable {
     public void setOnVacation(boolean vacationStatus) { isOnVacation = vacationStatus;}
 
     /**
-     * Getter for this user's homecity
-     * @return this user's homecity
+     * Getter for this user's home city
+     * @return this user's home city
      */
     public String getHomeCity() {
         return homeCity;
     }
 
     /**
-     * Setter for the homecity of NormalUser
+     * Setter for the home city of this user
      * @param homeCity the home city
      */
     public void setHomeCity(String homeCity) {
         this.homeCity = homeCity;
     }
 
+    public void setChangedNormal() {
+        setChanged();
+    }
 }
 
 

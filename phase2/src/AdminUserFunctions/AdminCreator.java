@@ -14,7 +14,7 @@ import SystemFunctions.SignUpSystem;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-31
+ * last modified 2020-08-02
  */
 public class AdminCreator {
     private AdminUser currentAdmin;
@@ -42,7 +42,7 @@ public class AdminCreator {
         String password = "";
 
         SystemPresenter systemPresenter = new SystemPresenter();
-        new SignUpSystem(userManager).createNewAdmin(username, email, password, notifSystem);
+        new SignUpSystem(userManager).createNewAdmin(username, email, password);
         systemPresenter.adminCreator();
         close();
     }
