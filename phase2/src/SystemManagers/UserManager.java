@@ -6,6 +6,7 @@ import Entities.AdminUser;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Stores all <User></User>s in the system.
@@ -716,6 +717,70 @@ public class UserManager extends Manager implements Serializable {
      * @return the Admin's ID
      */
     public int getAdminID(String usernameOrEmail) {return getAdminByUsernameOrEmail(usernameOrEmail).getAdminID();}
+
+    /**
+     * Return true iff user with associated is not equal to null
+     * @param username the associated username or email
+     * @return true iff user exists
+     */
+    public boolean doesUserExist(String username) {return getUserByUsernameOrEmail(username) != null;}
+
+    /**
+     * Removes item with associated itemID from inventory of Normal User with associated username or email
+     * @param itemID the itemID to be removed
+     * @param usernameOrEmail the Normal User's username or email
+     */
+    public void removeNormalUserinventory(long itemID, String usernameOrEmail) {
+        getNormalByUsernameOrEmail(usernameOrEmail).removeInventory(itemID);
+    }
+
+    /**
+     * Getter for a Normal User's pending inventory
+     * @param usernameOrEmail the associated Normal User's username or Email
+     * @return the Normal User's pending inventory
+     */
+    public List<Long> getNormalUserPendingInventory(String usernameOrEmail) {
+        return getNormalByUsernameOrEmail(usernameOrEmail).getPendingInventory();
+    }
+
+    /**
+     * Adds item with itemID to the Normal User's pending inventory with given username or email
+     *
+     * @param itemID the itemID to be added to pending inventory
+     * @param usernameOrEmail the user's username or email
+     */
+    public void addNormalUserPendingInventory(long itemID, String usernameOrEmail) {
+        getNormalByUsernameOrEmail(usernameOrEmail).addPendingInventory(itemID);
+    }
+
+    /**
+     * Getter for a Normal User's trade requests, given associated username or email
+     * @param usernameOrEmail the associated username or email
+     * @return the trade requests
+     */
+    public Map<String[], long[]> getNormalUserTradeRequests(String usernameOrEmail) {
+        return getNormalByUsernameOrEmail(usernameOrEmail).getTradeRequests();
+    }
+
+    /**
+     * Removes given tradeRequests from the Normal User with given username or email's trade requests
+     *
+     * @param key the key of the trade request to be removed
+     * @param usernameOrEmail the username or email of the user
+     */
+    public void removeTradeRequests(String[] key, String usernameOrEmail) {
+       getNormalByUsernameOrEmail(usernameOrEmail).removeTradeRequests(key);
+    }
+
+    /**
+     * Removes the item with the given itemID from the user with the given username or email's wishlist
+     *
+     * @param itemID the item ID to be removed
+     * @param usernameOrEmail the username or email of the normal user
+     */
+    public void removeFromNormalUserWishlist(long itemID, String usernameOrEmail) {
+        getNormalByUsernameOrEmail(usernameOrEmail).removeWishlist(itemID);
+    }
 }
 
 

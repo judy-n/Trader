@@ -22,11 +22,11 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-07-31
+ * last modified 2020-08-03
  */
 
 public class InventoryEditor extends MenuItem {
-    private NormalUser currentUser;
+    private String currentUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
@@ -37,15 +37,15 @@ public class InventoryEditor extends MenuItem {
      * item/user/trade managers, and notification system.
      * Prints to the screen the given user's inventory and options to add/remove/cancel.
      *
-     * @param user         the normal user who's currently logged in
+     * @param currentUsername  the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
      * @param notifSystem  the system's notification manager
      */
-    public InventoryEditor(NormalUser user, ItemManager itemManager, UserManager userManager,
+    public InventoryEditor(String currentUsername, ItemManager itemManager, UserManager userManager,
                            TradeManager tradeManager, NotificationSystem notifSystem) {
-        currentUser = user;
+        this.currentUsername = currentUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
@@ -54,8 +54,8 @@ public class InventoryEditor extends MenuItem {
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        List<Item> itemInventory = itemManager.getItemsByIDs(currentUser.getInventory());
-        List<Item> pendingItems = itemManager.getItemsByIDs(currentUser.getPendingInventory());
+        List<Item> itemInventory = itemManager.getItemsByIDs(userManager.getNormalUserInventory(currentUsername));
+        List<Item> pendingItems = itemManager.getItemsByIDs(userManager.getNormalUserPendingInventory(currentUsername));
 
         systemPresenter.inventoryEditor(itemInventory, pendingItems);
         try {
@@ -93,8 +93,8 @@ public class InventoryEditor extends MenuItem {
                     confirmInput = bufferedReader.readLine();
                 }
                 if (confirmInput.equalsIgnoreCase("Y")) {
-                    long newItemID = itemManager.createItem(itemNameInput, itemDescriptionInput, currentUser.getUsername());
-                    currentUser.addPendingInventory(newItemID);
+                    long newItemID = itemManager.createItem(itemNameInput, itemDescriptionInput, currentUsername);
+                    userManager.addNormalUserPendingInventory(newItemID, currentUsername);
 
                     systemPresenter.inventoryAddItem(4);
                 } else {
@@ -115,15 +115,16 @@ public class InventoryEditor extends MenuItem {
                     }
                     int indexInput = Integer.parseInt(temp2);
                     Item selectedItem = itemInventory.get(indexInput - 1);
+                    long selectedItemID = selectedItem.getID();
 
                     /*
                      * Allow removal if item is available + not being asked for in a trade request
                      * OR if item is in a trade that's been cancelled due to users failing to confirm the transaction
                      */
-                    if (currentUser.isRequestedInTrade(selectedItem.getID())) {
+                    if (userManager.isRequestedInTrade(currentUsername, selectedItemID)) {
                         systemPresenter.inventoryRemoveItem(4);
                     } else if (selectedItem.getAvailability() ||
-                            (!selectedItem.getAvailability() && tradeManager.getItemInCancelledTrade(selectedItem.getID()))) {
+                            (!selectedItem.getAvailability() && tradeManager.getItemInCancelledTrade(selectedItemID))) {
                         systemPresenter.inventoryRemoveItem(selectedItem.getName(), indexInput, 1);
 
                         String confirmInput = bufferedReader.readLine();
@@ -133,8 +134,8 @@ public class InventoryEditor extends MenuItem {
                         }
                         if (confirmInput.equalsIgnoreCase("Y")) {
 
-                            currentUser.removeInventory(selectedItem.getID());
-                            itemManager.getItem(selectedItem.getID()).setIsRemoved(true);
+                            userManager.removeNormalUserinventory(selectedItemID, currentUsername);
+                            itemManager.getItem(selectedItemID).setIsRemoved(true);
                             // don't remove from ItemManager
 
                             systemPresenter.inventoryRemoveItem(selectedItem.getName(), 0, 2);
@@ -154,7 +155,7 @@ public class InventoryEditor extends MenuItem {
     }
 
     private void close() {
-        new NormalDashboard(currentUser.getUsername(), itemManager, userManager, tradeManager, notifSystem);
+        new NormalDashboard(currentUsername, itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override

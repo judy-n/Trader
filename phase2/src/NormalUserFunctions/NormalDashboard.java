@@ -20,10 +20,11 @@ import java.awt.*;
  * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-31
+ * last modified 2020-08-03
  */
 public class NormalDashboard extends Dashboard {
     private NormalUser currentUser;
+    private String currentUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
@@ -36,8 +37,20 @@ public class NormalDashboard extends Dashboard {
      */
     public NormalDashboard(String username, ItemManager itemManager, UserManager userManager,
                            TradeManager tradeManager, NotificationSystem notifSystem) {
-        this(userManager.getNormalByUsername(username), itemManager, userManager, tradeManager, notifSystem);
+
+        this.currentUsername = username;
+        this.itemManager = itemManager;
+        this.userManager = userManager;
+        this.tradeManager = tradeManager;
+        this.notifSystem = notifSystem;
+
+        this.setPreferredSize(new Dimension(820, 576));
+        this.setLayout(null);
+        drawDefault();
+        this.validate();
+        this.repaint();
     }
+
 
     /**
      * Creates a <NormalDashboard></NormalDashboard> with the given normal user,
@@ -123,7 +136,7 @@ public class NormalDashboard extends Dashboard {
 //                //systemPresenter.logoutMessage();
 //                break;
 //            case 1:
-//                new CatalogViewer(currentUser, itemManager, userManager, tradeManager);
+//                new CatalogViewer(currentUsername, itemManager, userManager, tradeManager);
 //                break;
 //
 //            case 2:

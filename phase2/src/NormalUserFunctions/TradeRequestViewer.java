@@ -24,10 +24,10 @@ import java.util.ArrayList;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-29
- * last modified 2020-07-31
+ * last modified 2020-08-03
  */
 public class TradeRequestViewer extends MenuItem {
-    private NormalUser currentUser;
+    private String currentUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
@@ -48,15 +48,16 @@ public class TradeRequestViewer extends MenuItem {
      * Prints to the screen all trade requests received/sent by the given normal user and options on actions to take
      * using <SystemPresenter></SystemPresenter>.
      *
-     * @param user         the normal user who's currently logged in
+     * @param currentUsername   the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
      * @param notifSystem  the system's notification manager
      */
-    public TradeRequestViewer(NormalUser user, ItemManager itemManager, UserManager userManager,
+    public TradeRequestViewer(String currentUsername, ItemManager itemManager, UserManager userManager,
                               TradeManager tradeManager, NotificationSystem notifSystem) {
-        currentUser = user;
+
+        this.currentUsername = currentUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
@@ -64,7 +65,7 @@ public class TradeRequestViewer extends MenuItem {
 
         systemPresenter = new SystemPresenter();
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        if (currentUser.getIsFrozen()) {
+        if (userManager.getNormalUserIsFrozen(currentUsername)) {
             caseUserIsFrozen();
         } else {
             caseUserNotFrozen();
@@ -81,11 +82,11 @@ public class TradeRequestViewer extends MenuItem {
         receivedTrades = new LinkedHashMap<>();
 
         /* separate into initiated trades and received trades */
-        for (String[] key : currentUser.getTradeRequests().keySet()) {
-            if (currentUser.getUsername().equals(key[0])) {
-                initiatedTrades.put(key, currentUser.getTradeRequests().get(key));
+        for (String[] key : userManager.getNormalUserTradeRequests(currentUsername).keySet()) {
+            if (currentUsername.equals(key[0])) {
+                initiatedTrades.put(key, userManager.getNormalUserTradeRequests(currentUsername).get(key));
             } else if (!userManager.getNormalByUsername(key[1]).getIsFrozen()) {
-                receivedTrades.put(key, currentUser.getTradeRequests().get(key));
+                receivedTrades.put(key, userManager.getNormalUserTradeRequests(currentUsername).get(key));
             }
         }
 
@@ -154,11 +155,11 @@ public class TradeRequestViewer extends MenuItem {
                 /* input is selected request index */
                 if (input != 0) {
                     String[] senderAndItemNames = getTradeHelper(input);
-                    NormalUser sender = userManager.getNormalByUsername(senderAndItemNames[0]);
+                    String senderUsername = senderAndItemNames[0];
                     String[] tradeItemNames = {senderAndItemNames[1], senderAndItemNames[2]};
 
                     /* 1) accept, or 2) reject ? */
-                    systemPresenter.tradeRequestViewer(3, sender.getUsername(), tradeItemNames);
+                    systemPresenter.tradeRequestViewer(3, senderUsername, tradeItemNames);
 
                     String temp2 = bufferedReader.readLine();
                     while (!temp2.matches("[1-2]")) {
@@ -170,7 +171,7 @@ public class TradeRequestViewer extends MenuItem {
                     if (acceptReject == 2) {        /* reject request */
 
                         /* sure you want to reject? */
-                        systemPresenter.tradeRequestViewer(4, sender.getUsername(), tradeItemNames);
+                        systemPresenter.tradeRequestViewer(4, senderUsername, tradeItemNames);
                         String inputConfirm = bufferedReader.readLine();
                         while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
                             systemPresenter.invalidInput();
@@ -180,8 +181,8 @@ public class TradeRequestViewer extends MenuItem {
                         /* confirm rejection */
                         if (inputConfirm.equalsIgnoreCase("y")) {
 
-                            currentUser.removeTradeRequests(getKeyToRemove());
-                            sender.removeTradeRequests(getKeyToRemove());
+                            userManager.removeTradeRequests(getKeyToRemove(), currentUsername);
+                            userManager.removeTradeRequests(getKeyToRemove(), senderUsername);
 
                             systemPresenter.tradeRequestViewer(9);
                         } else {
@@ -197,7 +198,7 @@ public class TradeRequestViewer extends MenuItem {
                          */
 
                         /* trade with xx person? */
-                        systemPresenter.tradeRequestViewer(1, sender.getUsername(), tradeItemNames);
+                        systemPresenter.tradeRequestViewer(1, senderUsername, tradeItemNames);
                         String inputConfirm = bufferedReader.readLine();
                         while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
                             systemPresenter.invalidInput();
@@ -208,11 +209,11 @@ public class TradeRequestViewer extends MenuItem {
                         if (inputConfirm.equalsIgnoreCase("y")) {
 
                             /* remove the trade request from both parties once its been accepted */
-                            currentUser.removeTradeRequests(getKeyToRemove());
-                            sender.removeTradeRequests(getKeyToRemove());
+                            userManager.removeTradeRequests(getKeyToRemove(), currentUsername);
+                            userManager.removeTradeRequests(getKeyToRemove(), senderUsername);
 
                             /* permanent or temporary? */
-                            systemPresenter.tradeRequestViewer(2, sender.getUsername(), tradeItemNames);
+                            systemPresenter.tradeRequestViewer(2, senderUsername, tradeItemNames);
                             systemPresenter.tradeRequestViewer(6);
                             String permOrTemp = bufferedReader.readLine();
                             while (!permOrTemp.equals("1") && !(permOrTemp.equals("2"))) {
@@ -222,7 +223,7 @@ public class TradeRequestViewer extends MenuItem {
 
                             /* suggest time */
                             systemPresenter.tradeRequestViewer(4);
-                            LocalDateTime time = new DateTimeSuggestion(currentUser.getUsername(), userManager, tradeManager).suggestDateTime();
+                            LocalDateTime time = new DateTimeSuggestion(currentUsername, userManager, tradeManager).suggestDateTime();
 
                             /* suggest place */
                             systemPresenter.tradeRequestViewer(2);
@@ -239,10 +240,10 @@ public class TradeRequestViewer extends MenuItem {
                             }
 
                             if (permOrTemp.equals("1")) {
-                                tradeManager.createPermTrade(new String[]{currentUser.getUsername(), sender.getUsername()},
+                                tradeManager.createPermTrade(new String[]{currentUsername, senderUsername},
                                         new long[]{itemToLendID, itemToBorrowID}, time, place);
                             } else {
-                                tradeManager.createTempTrade(new String[]{currentUser.getUsername(), sender.getUsername()},
+                                tradeManager.createTempTrade(new String[]{currentUsername, senderUsername},
                                         new long[]{itemToLendID, itemToBorrowID}, time, place);
                             }
                         } else {
@@ -293,7 +294,7 @@ public class TradeRequestViewer extends MenuItem {
     }
 
     private void close() {
-        new NormalDashboard(currentUser.getUsername(), itemManager, userManager, tradeManager, notifSystem);
+        new NormalDashboard(currentUsername, itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override

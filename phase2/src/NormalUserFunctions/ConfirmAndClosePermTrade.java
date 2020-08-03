@@ -11,7 +11,7 @@ import Entities.PermanentTrade;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-31
+ * last modified 2020-08-03
  */
 public class ConfirmAndClosePermTrade {
 
@@ -31,23 +31,31 @@ public class ConfirmAndClosePermTrade {
         String[] usernames = permTrade.getInvolvedUsernames();
 
         if (permTrade.getIsComplete()) {
+            String tempUsername1 = usernames[0];
+            String tempUsername2 = usernames[1];
             NormalUser tempUser1 = userManager.getNormalByUsername(usernames[0]);
             NormalUser tempUser2 = userManager.getNormalByUsername(usernames[1]);
+
+            // could also use usermanager.doesUserExist(username), but I won't change that because I'm not sure if  works in the same way
             assert tempUser1 != null && tempUser2 != null;
 
             long[] itemIDs = permTrade.getInvolvedItemIDs();
-            if (itemIDs[0] != 0) {
-                tempUser1.removeInventory(itemIDs[0]);
-                itemManager.getItem(itemIDs[0]).setIsRemoved(true);
-                if (tempUser2.getWishlist().contains(itemIDs[0])) {
-                    tempUser2.removeWishlist(itemIDs[0]);
+            long itemID1 = itemIDs[0];
+            long itemID2 = itemIDs[1];
+
+            if (itemID1!= 0) {
+                userManager.removeNormalUserinventory(itemID1, tempUsername1);
+                tempUser1.removeInventory(itemID1);
+                itemManager.getItem(itemID1).setIsRemoved(true);
+                if (tempUser2.getWishlist().contains(itemID1)) {
+                    tempUser2.removeWishlist(itemID1);
                 }
             }
-            if (itemIDs[1] != 0) {
-                tempUser2.removeInventory(itemIDs[1]);
-                itemManager.getItem(itemIDs[1]).setIsRemoved(true);
-                if (tempUser1.getWishlist().contains(itemIDs[1])) {
-                    tempUser1.removeWishlist(itemIDs[1]);
+            if (itemID2 != 0) {
+                userManager.removeNormalUserinventory(itemID2, tempUsername2);
+                itemManager.getItem(itemID2).setIsRemoved(true);
+                if (tempUser1.getWishlist().contains(itemID2)) {
+                    tempUser1.removeWishlist(itemID2);
                 }
             }
         }

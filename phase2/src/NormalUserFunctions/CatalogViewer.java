@@ -23,32 +23,31 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-31
+ * last modified 2020-08-03
  */
 public class CatalogViewer extends MenuItem {
-    private NormalUser currentUser;
+    private String currentUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
     private NotificationSystem notifSystem;
     private SystemPresenter systemPresenter;
     private BufferedReader bufferedReader;
-    private String username;
 
     /**
-     * Creates an <CatalogViewer></CatalogViewer> with the given normal user,
+     * Creates an <CatalogViewer></CatalogViewer> with the given normal user username,
      * item/user/trade managers, and notification system.
      * Displays all items available for trade (excluding the current user's items).
      *
-     * @param user         the normal user who's currently logged in
+     * @param username     the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
      * @param notifSystem  the system's notification manager
      */
-    public CatalogViewer(NormalUser user, ItemManager itemManager, UserManager userManager,
+    public CatalogViewer(String username, ItemManager itemManager, UserManager userManager,
                          TradeManager tradeManager, NotificationSystem notifSystem) {
-        currentUser = user;
+        currentUsername = username;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
@@ -57,14 +56,14 @@ public class CatalogViewer extends MenuItem {
         systemPresenter = new SystemPresenter();
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        username = currentUser.getUsername();
         List<Item> itemsSameCity = filterItemsHomeCity();
         int maxIndex = itemsSameCity.size();
 
         systemPresenter.catalogViewer(itemsSameCity);
 
-        int timesBorrowed = userManager.getNormalUserTimesBorrowed(username) + tradeManager.getTimesBorrowed(username);
-        int timesLent = userManager.getNormalUserTimesLent(username) + tradeManager.getTimesLent(username);
+        int timesBorrowed = userManager.getNormalUserTimesBorrowed(currentUsername) + tradeManager.getTimesBorrowed(currentUsername);
+        int timesLent = userManager.getNormalUserTimesLent(currentUsername) + tradeManager.getTimesLent(currentUsername);
+        int lendMinimum = userManager.getNormalUserLendMinimum(currentUsername);
 
         systemPresenter.catalogViewer(1);
         try {
@@ -108,12 +107,12 @@ public class CatalogViewer extends MenuItem {
                     }
 
                 } else if (tradeOrWishlist == 1) {
-                    if (currentUser.getIsFrozen()) {
+                    if (userManager.getNormalUserIsFrozen(currentUsername)) {
                         systemPresenter.catalogViewer(2);
-                    } else if (userManager.isRequestedInTrade(username, itemID)) {
+                    } else if (userManager.isRequestedInTrade(currentUsername, itemID)) {
                         systemPresenter.catalogViewer(6);
-                    } else if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < currentUser.getLendMinimum())) {
-                        systemPresenter.catalogViewerLendWarning(currentUser.getLendMinimum());
+                    } else if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < lendMinimum)) {
+                        systemPresenter.catalogViewerLendWarning(lendMinimum);
                     } else {
 
                         /*
@@ -129,17 +128,18 @@ public class CatalogViewer extends MenuItem {
                          * or all their past requests were rejected, then they must request a two-way trade.
                          */
                         boolean mustLend = false;
-                        if (timesBorrowed == 0 || (timesLent - timesBorrowed) == currentUser.getLendMinimum()) {
+                        if (timesBorrowed == 0 || (timesLent - timesBorrowed) == lendMinimum) {
                             mustLend = true;
                         }
-                        new TradeRequestSetup(username, itemManager, userManager, mustLend).makeTradeRequest(selectedItem);
+                        new TradeRequestSetup(currentUsername, itemManager, userManager, mustLend).makeTradeRequest(selectedItem);
                     }
                 }
+                List<Long> currentUserWishlist = userManager.getNormalUserWishlist(currentUsername);
 
-                if (tradeOrWishlist == 2 && !currentUser.getWishlist().contains(itemID)) {
-                    currentUser.addWishlist(itemID);
+                if (tradeOrWishlist == 2 && !currentUserWishlist.contains(itemID)) {
+                    userManager.addNormalUserWishlist(itemID, currentUsername);
                     systemPresenter.catalogViewer(4);
-                } else if (tradeOrWishlist == 2 && currentUser.getWishlist().contains(itemID)) {
+                } else if (tradeOrWishlist == 2 && currentUserWishlist.contains(itemID)) {
                     systemPresenter.catalogViewer(5);
                 }
             }
@@ -153,11 +153,11 @@ public class CatalogViewer extends MenuItem {
      * Returns a list of items that are owned by users with the same home city as the current user.
      */
     private List<Item> filterItemsHomeCity() {
-        List<Item> items = itemManager.getApprovedItems(username);
+        List<Item> items = itemManager.getApprovedItems(currentUsername);
         List<Item> itemsSameCity = new ArrayList<>();
 
         for (Item i : items) {
-            if (userManager.getNormalUserHomeCity(i.getOwnerUsername()).equals(userManager.getNormalUserHomeCity(username))) {
+            if (userManager.getNormalUserHomeCity(i.getOwnerUsername()).equals(userManager.getNormalUserHomeCity(currentUsername))) {
                 itemsSameCity.add(i);
             }
         }
@@ -165,7 +165,7 @@ public class CatalogViewer extends MenuItem {
     }
 
     private void close() {
-        new NormalDashboard(currentUser.getUsername(), itemManager, userManager, tradeManager, notifSystem);
+        new NormalDashboard(currentUsername, itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override

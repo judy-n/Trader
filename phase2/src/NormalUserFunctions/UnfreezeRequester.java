@@ -14,10 +14,10 @@ import SystemFunctions.SystemPresenter;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-30
- * last modified 2020-07-31
+ * last modified 2020-08-03
  */
 public class UnfreezeRequester {
-    private NormalUser currentUser;
+    private String currentUsername;
     private UserManager userManager;
     private ItemManager itemManager;
     private TradeManager tradeManager;
@@ -29,15 +29,15 @@ public class UnfreezeRequester {
      * item/user/trade managers, and notification system.
      * Lets a frozen normal user send a request to be unfrozen to admins.
      *
-     * @param user         the normal user who's currently logged in
+     * @param currentUsername  the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
      * @param notifSystem  the system's notification manager
      */
-    public UnfreezeRequester(NormalUser user, ItemManager itemManager, UserManager userManager,
+    public UnfreezeRequester(String currentUsername, ItemManager itemManager, UserManager userManager,
                              TradeManager tradeManager, NotificationSystem notifSystem) {
-        currentUser = user;
+        this.currentUsername = currentUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
@@ -50,15 +50,15 @@ public class UnfreezeRequester {
 
     /* Sends a request to be unfrozen. */
     private void requestUnfreeze() {
-        if (userManager.getUnfreezeRequests().contains(currentUser.getUsername())) {
+        if (userManager.getUnfreezeRequests().contains(currentUsername)) {
             systemPresenter.requestUnfreeze(1);
         } else {
-            userManager.addUnfreezeRequest(currentUser.getUsername());
+            userManager.addUnfreezeRequest(currentUsername);
             systemPresenter.requestUnfreeze(2);
         }
     }
 
     private void close() {
-        new NormalDashboard(currentUser.getUsername(), itemManager, userManager, tradeManager, notifSystem);
+        new NormalDashboard(currentUsername, itemManager, userManager, tradeManager, notifSystem);
     }
 }
