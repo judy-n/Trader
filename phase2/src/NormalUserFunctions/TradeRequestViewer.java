@@ -293,7 +293,7 @@ public class TradeRequestViewer extends MenuItem {
     }
 
     private void close() {
-        new NormalDashboard(currentUser, itemManager, userManager, tradeManager, notifSystem);
+        new NormalDashboard(currentUser.getUsername(), itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override

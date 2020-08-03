@@ -59,6 +59,6 @@ public class UnfreezeRequester {
     }
 
     private void close() {
-        new NormalDashboard(currentUser, itemManager, userManager, tradeManager, notifSystem);
+        new NormalDashboard(currentUser.getUsername(), itemManager, userManager, tradeManager, notifSystem);
     }
 }
