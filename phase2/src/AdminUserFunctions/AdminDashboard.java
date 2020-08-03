@@ -17,14 +17,12 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-02
+ * last modified 2020-08-03
  */
 
 public class AdminDashboard extends Dashboard {
-    private AdminUser currentAdmin;
-    private ItemManager itemManager;
+    private String currentUsername;
     private UserManager userManager;
-    private NotificationSystem notifSystem;
     private int input;
 
     /**
@@ -34,32 +32,18 @@ public class AdminDashboard extends Dashboard {
      */
     public AdminDashboard(String username, ItemManager itemManager,
                           UserManager userManager, NotificationSystem notifSystem) {
-        this(userManager.getAdminByUsername(username), itemManager, userManager, notifSystem);
-    }
 
-    /**
-     * Creates an <AdminDashboard></AdminDashboard> with the given admin,
-     * item/user managers, and notification system.
-     *
-     * @param user        the admin who's currently logged in
-     * @param itemManager the system's item manager
-     * @param userManager the system's user manager
-     * @param notifSystem the system's notification manager
-     */
-    public AdminDashboard(AdminUser user, ItemManager itemManager,
-                          UserManager userManager, NotificationSystem notifSystem) {
-        currentAdmin = user;
-        this.itemManager = itemManager;
+        this.currentUsername = username;
         this.userManager = userManager;
-        this.notifSystem = notifSystem;
 
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         String regex = "[0-4]";
+        int adminID = userManager.getAdminID(currentUsername);
 
-        systemPresenter.showAdminID(currentAdmin.getAdminID());
-        if (currentAdmin.getAdminID() != 1) {
+        systemPresenter.showAdminID(adminID);
+        if (adminID != 1) {
             systemPresenter.adminDashboard(1);
         } else {
             regex = "[0-5]";
@@ -82,31 +66,31 @@ public class AdminDashboard extends Dashboard {
                 systemPresenter.logoutMessage();
                 break;
             case 1:
-                new CatalogEditor(currentAdmin, itemManager, userManager, notifSystem);
+                new CatalogEditor(currentUsername, itemManager, userManager, notifSystem);
                 break;
             case 2:
-                new AccountFreezer(currentAdmin, itemManager, userManager, notifSystem);
+                new AccountFreezer(currentUsername, itemManager, userManager, notifSystem);
                 break;
             case 3:
-                new AccountUnfreezer(currentAdmin, itemManager, userManager, notifSystem);
+                new AccountUnfreezer(currentUsername, itemManager, userManager, notifSystem);
                 break;
 
             case 4:
-                new ThresholdEditor(currentAdmin.getUsername(), itemManager, userManager, notifSystem);
+                new ThresholdEditor(currentUsername, itemManager, userManager, notifSystem);
                 break;
             case 5:
-                new AdminCreator(currentAdmin, itemManager, userManager, notifSystem);
+                new AdminCreator(currentUsername, itemManager, userManager, notifSystem);
                 break;
         }
     }
 
     @Override
     public String getUsername() {
-        return currentAdmin.getUsername();
+        return currentUsername;
     }
 
     @Override
     public User getUser() {
-        return currentAdmin;
+        return userManager.getAdminByUsername(currentUsername);
     }
 }

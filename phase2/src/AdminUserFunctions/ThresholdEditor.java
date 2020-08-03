@@ -19,7 +19,7 @@ import java.io.InputStreamReader;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-02
+ * last modified 2020-08-03
  */
 public class ThresholdEditor {
     private ItemManager itemManager;
@@ -32,7 +32,7 @@ public class ThresholdEditor {
 
 
     /**
-     * Creates a <ThresholdEditor></ThresholdEditor> with the given admin,
+     * Creates a <ThresholdEditor></ThresholdEditor> with the given admin username,
      * item/user managers, and notification system.
      * Lets an admin change a certain user's threshold values through user input.
      *
@@ -201,6 +201,6 @@ public class ThresholdEditor {
     }
 
     private void close() {
-        new AdminDashboard(userManager.getAdminByUsername(currentUsername), itemManager, userManager, notifSystem);
+        new AdminDashboard(currentUsername, itemManager, userManager, notifSystem);
     }
 }

@@ -709,6 +709,13 @@ public class UserManager extends Manager implements Serializable {
     public int getNormalUserNumIncomplete(String usernameOrEmail) {
         return getNormalByUsernameOrEmail(usernameOrEmail).getNumIncomplete();
     }
+
+    /**
+     * Returns the ID of the Admin with the associated username or email
+     * @param usernameOrEmail the Admin's username or email
+     * @return the Admin's ID
+     */
+    public int getAdminID(String usernameOrEmail) {return getAdminByUsernameOrEmail(usernameOrEmail).getAdminID();}
 }
 
 

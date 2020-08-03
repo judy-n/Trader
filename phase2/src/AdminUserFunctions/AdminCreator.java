@@ -14,10 +14,10 @@ import SystemFunctions.SignUpSystem;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-08-02
+ * last modified 2020-08-03
  */
 public class AdminCreator {
-    private AdminUser currentAdmin;
+    private String currentUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private NotificationSystem notifSystem;
@@ -26,28 +26,28 @@ public class AdminCreator {
      * Creates an <AdminCreator></AdminCreator> with the given admin, item/user managers, and notification system.
      * Lets the initial admin create other admins using <SignUpSystem></SignUpSystem>.
      *
-     * @param user        the initial admin
+     * @param currentUsername the initial admin's username
      * @param itemManager the system's item manager
      * @param userManager the system's user manager
      * @param notifSystem the system's notification manager
      */
-    public AdminCreator(AdminUser user, ItemManager itemManager, UserManager userManager, NotificationSystem notifSystem) {
-        currentAdmin = user;
+    public AdminCreator(String currentUsername, ItemManager itemManager, UserManager userManager, NotificationSystem notifSystem) {
+        this.currentUsername = currentUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.notifSystem = notifSystem;
 
-        String username = "";
+        String newUsername = "";
         String email = "";
         String password = "";
 
         SystemPresenter systemPresenter = new SystemPresenter();
-        new SignUpSystem(userManager).createNewAdmin(username, email, password);
+        new SignUpSystem(userManager).createNewAdmin(newUsername, email, password);
         systemPresenter.adminCreator();
         close();
     }
 
     private void close() {
-        new AdminDashboard(currentAdmin.getUsername(), itemManager, userManager, notifSystem);
+        new AdminDashboard(currentUsername, itemManager, userManager, notifSystem);
     }
 }

@@ -18,10 +18,10 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-07-31
+ * last modified 2020-08-03
  */
 public class AccountUnfreezer extends MenuItem {
-    private AdminUser currentAdmin;
+    private String currentUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private NotificationSystem notifSystem;
@@ -31,14 +31,14 @@ public class AccountUnfreezer extends MenuItem {
      * item/user managers, and notification system.
      * Lets the admin view requests to be unfrozen and choose which ones to accept.
      *
-     * @param user        the admin who's currently logged in
+     * @param username the username of the admin who's currently logged in
      * @param itemManager the system's item manager
      * @param userManager the system's user manager
      * @param notifSystem the system's notification manager
      */
-    public AccountUnfreezer(AdminUser user, ItemManager itemManager,
+    public AccountUnfreezer(String username, ItemManager itemManager,
                             UserManager userManager, NotificationSystem notifSystem) {
-        currentAdmin = user;
+        this.currentUsername = username;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.notifSystem = notifSystem;
@@ -89,7 +89,7 @@ public class AccountUnfreezer extends MenuItem {
     }
 
     private void close() {
-        new AdminDashboard(currentAdmin.getUsername(), itemManager, userManager, notifSystem);
+        new AdminDashboard(currentUsername, itemManager, userManager, notifSystem);
     }
 
     @Override

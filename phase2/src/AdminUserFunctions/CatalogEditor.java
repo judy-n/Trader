@@ -15,27 +15,23 @@ import java.io.InputStreamReader;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-31
+ * last modified 2020-08-03
  */
 public class CatalogEditor {
-    private AdminUser currentAdmin;
+    private String currentUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private NotificationSystem notifSystem;
 
     /**
-     * Creates a <CatalogEditor></CatalogEditor> with the given admin,
+     * Creates a <CatalogEditor></CatalogEditor> with the given admin username,
      * item/user managers, and notification system.
      * Lets an admin user approve or reject items added to the system by normal users.
      *
-     * @param user        the admin who's currently logged in
-     * @param itemManager the system's item manager
-     * @param userManager the system's user manager
-     * @param notifSystem the system's notification manager
      */
-    public CatalogEditor(AdminUser user, ItemManager itemManager,
+    public CatalogEditor(String username, ItemManager itemManager,
                          UserManager userManager, NotificationSystem notifSystem) {
-        currentAdmin = user;
+        this.currentUsername = username;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.notifSystem = notifSystem;
@@ -88,9 +84,10 @@ public class CatalogEditor {
         } catch (IOException e) {
             systemPresenter.exceptionMessage();
         }
+
     }
 
     private void close() {
-        new AdminDashboard(currentAdmin.getUsername(), itemManager, userManager, notifSystem);
+        new AdminDashboard(currentUsername, itemManager, userManager, notifSystem);
     }
 }
