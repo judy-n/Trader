@@ -83,6 +83,7 @@ public class OngoingTradesViewer extends MenuItem {
                 if (indexInput != 0) {
 
                     Trade selectedTrade = ongoingTrades.get(indexInput - 1);
+                    String traderUsername = selectedTrade.getOtherUsername(currUsername);
 
                     if (!selectedTrade.getHasAgreedMeeting()) {
 
@@ -136,7 +137,8 @@ public class OngoingTradesViewer extends MenuItem {
                                 systemPresenter.ongoingTrades(editCount, (editCount + 1 == editMax));
                                 systemPresenter.ongoingTrades(7);
 
-                                LocalDateTime time = new DateTimeSuggestion(currUsername, userManager, tradeManager).suggestDateTime();
+                                LocalDateTime time = new DateTimeSuggestion
+                                        (currUsername, userManager, tradeManager).suggestDateTime();
 
                                 systemPresenter.ongoingTrades(8);
                                 String placeSuggestion = bufferedReader.readLine();
@@ -150,7 +152,7 @@ public class OngoingTradesViewer extends MenuItem {
 
                                 /* Notify other user of new suggestion */
                                 userManager.getNotifHelper().basicUpdate
-                                        ("NEW SUGGESTION", selectedTrade.getOtherUsername(currUsername), currUsername);
+                                        ("NEW SUGGESTION", traderUsername, currUsername);
 
                                 systemPresenter.ongoingTrades(11);
                             } else {
@@ -189,7 +191,7 @@ public class OngoingTradesViewer extends MenuItem {
 
                                 /* Notify other user of meeting agreement */
                                 userManager.getNotifHelper().basicUpdate
-                                        ("MEETING AGREED", selectedTrade.getOtherUsername(currUsername), currUsername);
+                                        ("MEETING AGREED", traderUsername, currUsername);
                             }
                             break;
 
@@ -204,6 +206,7 @@ public class OngoingTradesViewer extends MenuItem {
 
                             /* can't confirm more than once */
                             if (selectedTrade instanceof TemporaryTrade &&
+                                    ((TemporaryTrade) selectedTrade).hasSecondMeeting() &&
                                     ((TemporaryTrade) selectedTrade).getUserSecondTransactionConfirmation(currUsername)) {
                                 systemPresenter.ongoingTrades(18);
                                 break;
@@ -216,37 +219,59 @@ public class OngoingTradesViewer extends MenuItem {
                             if (selectedTrade instanceof TemporaryTrade && ((TemporaryTrade) selectedTrade).hasSecondMeeting() &&
                                     now.compareTo(((TemporaryTrade) selectedTrade).getSecondMeetingDateTime()) > 0) {
 
+                                // confirm second transaction of a temporary trade
                                 new ConfirmAndCloseTempTrade().confirmAndCloseTempTransaction
                                         (currUsername, (TemporaryTrade) selectedTrade, itemManager);
 
                                 if (selectedTrade.getIsComplete()) {
-                                    systemPresenter.ongoingTrades(14);
-
                                     /* Notify other user of temp trade closing */
                                     userManager.getNotifHelper().basicUpdate
-                                            ("MEETING AGREED", selectedTrade.getOtherUsername(currUsername), currUsername);
-                                } else {
-                                    systemPresenter.ongoingTrades(3);
+                                            ("CONFIRM TEMP TRADE SECOND TRANSACTION AFTER", traderUsername, currUsername);
 
+                                    systemPresenter.ongoingTrades(14);
+                                } else {
                                     /* Notify other user of this user confirming before them */
                                     userManager.getNotifHelper().basicUpdate
-                                            ("CONFIRM BEFORE", selectedTrade.getOtherUsername(currUsername), currUsername);
+                                            ("CONFIRM BEFORE", traderUsername, currUsername);
+
+                                    systemPresenter.ongoingTrades(3);
                                 }
                             } else if (selectedTrade instanceof TemporaryTrade && selectedTrade.getHasAgreedMeeting() &&
                                     now.compareTo(selectedTrade.getFirstMeetingDateTime()) > 0) {
+
+                                // confirm first transaction of a temporary trade
                                 selectedTrade.confirmFirstTransaction(currUsername);
+
                                 if (((TemporaryTrade) selectedTrade).hasSecondMeeting()) {
+                                    /* Notify other user of temp trade first transaction closing */
+                                    userManager.getNotifHelper().basicUpdate
+                                            ("CONFIRM TEMP TRADE FIRST TRANSACTION AFTER", traderUsername, currUsername);
+
                                     systemPresenter.ongoingTrades(15);
                                 } else {
+                                    /* Notify other user of this user confirming before them */
+                                    userManager.getNotifHelper().basicUpdate
+                                            ("CONFIRM BEFORE", traderUsername, currUsername);
+
                                     systemPresenter.ongoingTrades(3);
                                 }
                             } else if (selectedTrade instanceof PermanentTrade && selectedTrade.getHasAgreedMeeting() &&
                                     now.compareTo(selectedTrade.getFirstMeetingDateTime()) > 0) {
-                                new ConfirmAndClosePermTrade().confirmAndClosePermTransaction(currUsername,
-                                        (PermanentTrade) selectedTrade, itemManager, userManager);
+
+                                // confirm transaction of a permanent trade
+                                new ConfirmAndClosePermTrade().confirmAndClosePermTransaction
+                                        (currUsername, (PermanentTrade) selectedTrade, itemManager, userManager);
+
                                 if (selectedTrade.getIsComplete()) {
+                                    /* Notify other user of perm trade closing */
+                                    userManager.getNotifHelper().basicUpdate
+                                            ("CONFIRM PERM TRADE AFTER", traderUsername, currUsername);
+
                                     systemPresenter.ongoingTrades(13);
                                 } else {
+                                    /* Notify other user of this user confirming before them */
+                                    userManager.getNotifHelper().basicUpdate
+                                            ("CONFIRM BEFORE", traderUsername, currUsername);
                                     systemPresenter.ongoingTrades(3);
                                 }
                             } else {
@@ -265,6 +290,10 @@ public class OngoingTradesViewer extends MenuItem {
                             }
 
                             selectedTrade.setIsCancelled();
+
+                            // Since the trade is cancelled before the first meeting is scheduled,
+                            // we know the users still have their respective items.
+                            // Therefore, we can automatically make their items available for trade again.
                             long[] itemIDs = selectedTrade.getInvolvedItemIDs();
                             if (itemIDs[0] != 0) {
                                 Item tempItem1 = itemManager.getItem(itemIDs[0]);
@@ -275,6 +304,16 @@ public class OngoingTradesViewer extends MenuItem {
                                 tempItem2.setAvailability(true);
                             }
                             systemPresenter.ongoingTrades(2);
+
+                            String itemName;
+                            if (selectedTrade.getLentItemID(traderUsername) != 0) {
+                                itemName = itemManager.getItemName(selectedTrade.getLentItemID(traderUsername));
+                            } else {
+                                itemName = itemManager.getItemName(selectedTrade.getLentItemID(currUsername));
+                            }
+                            /* Notify the other user of cancelled trade */
+                            userManager.getNotifHelper().itemUpdate
+                                    ("TRADE CANCELLED", traderUsername, currUsername, itemName);
                             break;
                         case 5:
                             break;

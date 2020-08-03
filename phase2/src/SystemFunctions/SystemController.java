@@ -20,7 +20,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-03
+ * last modified 2020-08-03
  */
 public class SystemController extends JFrame {
     private UserManager userManager;
@@ -52,21 +52,37 @@ public class SystemController extends JFrame {
         userManager.setCurrentThresholds(defaultThresholds);
 
         tradeManager.cancelAllUnconfirmedTrades();
-        List<String> cancelledUsers = tradeManager.getCancelledUsers();
+        List<String[]> cancelledUserPairs = tradeManager.getCancelledUserPairs();
 
-        for (String username : cancelledUsers) {
-            userManager.increaseNormalUserNumIncomplete(username);
-        }
-        for (String username : cancelledUsers) {
-            if (userManager.getNormalUserNumIncomplete(username) > userManager.getNormalUserIncompleteMax(username)) {
-                userManager.addUsernamesToFreeze(username);
+        for (String[] usernames : cancelledUserPairs) {
+
+            /* Notify both users of incomplete trade (second notif created along with first in NotificationSystem) */
+            userManager.getNotifHelper().basicUpdate("INCOMPLETE TRADE", usernames[0], usernames[1]);
+
+            userManager.increaseNormalUserNumIncomplete(usernames[0]);
+            userManager.increaseNormalUserNumIncomplete(usernames[1]);
+
+            if (userManager.getNormalUserNumIncomplete(usernames[0]) >
+                    userManager.getNormalUserIncompleteMax(usernames[0])) {
+                userManager.addUsernamesToFreeze(usernames[0]);
+
+                /* Notify user of exceeding incomplete trade limit */
+                userManager.getNotifHelper().basicUpdate("FREEZE WARNING", usernames[0], "");
+            }
+
+            if (userManager.getNormalUserNumIncomplete(usernames[1]) >
+                    userManager.getNormalUserIncompleteMax(usernames[1])) {
+                userManager.addUsernamesToFreeze(usernames[1]);
+
+                /* Notify user of exceeding incomplete trade limit */
+                userManager.getNotifHelper().basicUpdate("FREEZE WARNING", usernames[1], "");
             }
         }
-        tradeManager.clearCancelledUsers();
+        tradeManager.clearCancelledUserPairs();
 
         if (userManager.getAllUsers().isEmpty()) {
             tryReadAdmin();
-            userManager.createNormalUser("test", "e", "p", "homeCity");
+            userManager.createNormalUser("test", "a@b.com", "p", "homeCity");
         }
 
 //        while (choice != 0) {
@@ -170,22 +186,21 @@ public class SystemController extends JFrame {
     }
 
     private void tryReadAdmin() {
-        String initAdminPath = "src/init_admin_login.txt";
+        final String INIT_ADMIN_PATH = "src/init_admin_login.txt";
         try {
-            String[] adminCredentials = readWriter.readAdminFromFile(initAdminPath);
+            String[] adminCredentials = readWriter.readAdminFromFile(INIT_ADMIN_PATH);
             userManager.createAdminUser(adminCredentials[0], adminCredentials[1], adminCredentials[2]);
         } catch (IOException e) {
             systemPresenter.exceptionMessage(1, "Reading", "initial admin credentials");
-            e.printStackTrace();
         }
     }
 
     private int[] tryReadThresholds() {
-        String thresholdsPath = "src/thresholds.txt";
+        final String THRESHOLDS_PATH = "src/thresholds.txt";
         try {
-            return readWriter.readThresholdsFromFile(thresholdsPath);
+            return readWriter.readThresholdsFromFile(THRESHOLDS_PATH);
         } catch (IOException e) {
-            e.printStackTrace();
+            systemPresenter.exceptionMessage(1, "Reading", "threshold values");
         }
         return null;
     }

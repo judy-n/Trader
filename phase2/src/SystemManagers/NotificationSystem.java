@@ -82,7 +82,7 @@ public class NotificationSystem implements Observer {
     private void createNotif(String notifType, String usernameNotified, String otherParty) {
         Notification mainNotif;
         Notification activityToRecord = null;
-        String mainMessage = "";
+        String mainMessage;
         String recordMessage = "";
 
         switch (notifType) {
@@ -93,7 +93,7 @@ public class NotificationSystem implements Observer {
                 break;
             case "UNFROZEN":
                 mainMessage = "Your request to unfreeze your account was accepted by an admin. " +
-                        "Your account is now unfrozen.";
+                        "Your account is now unfrozen and your incomplete trade count has been reset to zero.";
                 recordMessage = "Admin " + otherParty + " unfroze " + usernameNotified + "'s account.";
                 break;
             case "TRADE REQUEST RECEIVED":
@@ -158,6 +158,9 @@ public class NotificationSystem implements Observer {
                 mainMessage = "Welcome back! Your account has now regained full functionality.";
                 recordMessage = "User " + usernameNotified + " is back from vacation.";
                 break;
+            default:
+                mainMessage = "Unknown notification type! :(";
+                break;
         }
 
         mainNotif = new Notification(mainMessage);
@@ -174,7 +177,7 @@ public class NotificationSystem implements Observer {
     private void createNotif(String notifType, String usernameNotified, String otherParty, String subjectName) {
         Notification mainNotif;
         Notification activityToRecord;
-        String mainMessage = "";
+        String mainMessage;
         String recordMessage = "";
 
         switch (notifType) {
@@ -199,7 +202,7 @@ public class NotificationSystem implements Observer {
                 break;
             case "TRADE CANCELLED":
                 mainMessage = otherParty + " has cancelled their trade with you for [" + subjectName + "].";
-                recordMessage = otherParty + " cancelled their trade with " + usernameNotified;
+                recordMessage = otherParty + " cancelled their trade with " + usernameNotified + " .";
                 break;
             case "TRADE REQUEST UNSENT":
                 mainMessage = "Your trade request to " + otherParty + " was removed by an admin.";
@@ -209,6 +212,9 @@ public class NotificationSystem implements Observer {
                 // Notify the other user as well.
                 String mirrorMessage = "A trade request sent to you from " + usernameNotified + " was removed by an admin.";
                 userToNotifMap.get(otherParty).add(new Notification(mirrorMessage));
+                break;
+            default:
+                mainMessage = "Unknown notification type! :(";
                 break;
         }
 
@@ -225,7 +231,7 @@ public class NotificationSystem implements Observer {
                             String subjectName, String subjectValue) {
         Notification mainNotif;
         Notification activityToRecord = null;
-        String mainMessage = "";
+        String mainMessage;
         String recordMessage = "";
 
         switch (notifType) {
@@ -239,7 +245,7 @@ public class NotificationSystem implements Observer {
                 
                 break;
             case "THRESHOLD SINGLE USER":
-                mainMessage = "An admin changed your " + subjectName + " to " + subjectValue + ".";
+                mainMessage = "An admin changed your [" + subjectName + "] to " + subjectValue + ".";
                 recordMessage = "Admin " + otherParty + " changed " + usernameNotified + "'s " 
                         + subjectName + " to " + subjectValue + ".";
                 break;
@@ -247,6 +253,9 @@ public class NotificationSystem implements Observer {
                 mainMessage = "The default " + subjectName + " has been changed to " + subjectValue + " for all users.";
                 recordMessage = "Admin " + otherParty + " changed the default " + subjectName + 
                         " to " + subjectValue + " for all users.";
+                break;
+            default:
+                mainMessage = "Unknown notification type! :(";
                 break;
         }
 

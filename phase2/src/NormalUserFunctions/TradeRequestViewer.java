@@ -179,6 +179,10 @@ public class TradeRequestViewer extends MenuItem {
 
                         /* confirm rejection */
                         if (inputConfirm.equalsIgnoreCase("y")) {
+                            /* Notify sender of rejected trade request */
+                            userManager.getNotifHelper().itemUpdate
+                                    ("TRADE REQUEST REJECTED", senderUsername, currUsername,
+                                            itemManager.getItemName(itemToLendID));
 
                             userManager.removeTradeRequests(getKeyToRemove(), currUsername);
                             userManager.removeTradeRequests(getKeyToRemove(), senderUsername);
@@ -245,6 +249,11 @@ public class TradeRequestViewer extends MenuItem {
                                 tradeManager.createTempTrade(new String[]{currUsername, senderUsername},
                                         new long[]{itemToLendID, itemToBorrowID}, time, place);
                             }
+
+                            /* Notify sender of accepted trade request */
+                            userManager.getNotifHelper().itemUpdate
+                                    ("TRADE REQUEST ACCEPTED", senderUsername, currUsername,
+                                            itemManager.getItemName(itemToLendID));
                         } else {
                             systemPresenter.cancelled();
                         }

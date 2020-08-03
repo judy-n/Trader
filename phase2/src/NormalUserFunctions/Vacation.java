@@ -49,10 +49,14 @@ public class Vacation {
     private void switchVacationStatus() {
         if (userManager.getNormalUserOnVacation(currUsername)) {
             userManager.removeUsernamesOnVacation(currUsername);
-            systemPresenter.accountsNotOnVacation();
+
+            /* Notify user of vacation status OFF */
+            userManager.getNotifHelper().basicUpdate("OFF VACATION", currUsername, "");
         } else {
             userManager.addUsernamesOnVacation(currUsername);
-            systemPresenter.accountsOnVacation();
+
+            /* Notify user of vacation status ON */
+            userManager.getNotifHelper().basicUpdate("ON VACATION", currUsername, "");
         }
     }
     /* ends vacation transaction and gets user back to the dashboard*/

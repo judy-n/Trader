@@ -52,7 +52,8 @@ public class ThresholdEditor {
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         String usernameInput;
-        int newThreshold;
+        int newThreshold = 0;
+        int maxChoice = userManager.getNumThresholds();
         systemPresenter.thresholdEditor(0);
 
         try {
@@ -61,12 +62,13 @@ public class ThresholdEditor {
                 systemPresenter.invalidInput();
                 temp1 = bufferedReader.readLine();
             }
+            int allOrOneChoice = Integer.parseInt(temp1);
 
-            if (temp1.matches("1")) {
+            if (allOrOneChoice == 1) {
                 systemPresenter.thresholdEditor(1);
                 try {
                     usernameInput = bufferedReader.readLine();
-                    while (!usernameInput.equals("0") && userManager.normalUsernameExists(usernameInput)) {
+                    while (!usernameInput.equals("0") && !userManager.normalUsernameExists(usernameInput)) {
                         systemPresenter.invalidInput();
                         usernameInput = bufferedReader.readLine();
                     }
@@ -79,7 +81,7 @@ public class ThresholdEditor {
                         } else {
                             systemPresenter.thresholdEditor(2);
                             String temp = bufferedReader.readLine();
-                            while (!temp.matches("[0-4]")) {
+                            while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > maxChoice) {
                                 systemPresenter.invalidInput();
                                 temp = bufferedReader.readLine();
                             }
@@ -109,6 +111,12 @@ public class ThresholdEditor {
                                     userManager.setNormalUserIncompleteMax(usernameInput, newThreshold);
                                     break;
                             }
+
+                            if (choiceInput != 0) {
+                                /* Notify user of threshold change */
+                                userManager.getNotifHelper().thresholdUpdate
+                                        ("THRESHOLD SINGLE USER", usernameInput, currUsername, choiceInput, newThreshold);
+                            }
                         }
                     }
                     close();
@@ -117,11 +125,10 @@ public class ThresholdEditor {
                     systemPresenter.exceptionMessage();
                 }
 
-
-            } else if (temp1.matches("2")) {
+            } else if (allOrOneChoice == 2) {
                 systemPresenter.thresholdEditor(2);
                 String temp2 = bufferedReader.readLine();
-                while (!temp2.matches("[0-4]")) {
+                while (!temp2.matches("[0-9]+") || Integer.parseInt(temp2) > maxChoice) {
                     systemPresenter.invalidInput();
                     temp2 = bufferedReader.readLine();
                 }
@@ -170,6 +177,15 @@ public class ThresholdEditor {
                         userManager.setAllNormalUserIncompleteMax(newThreshold);
                         break;
                 }
+
+                if (choiceInput != 0) {
+                    /* Notifies all users of threshold change */
+                    for (String normalUsername : userManager.getAllNormalUsernames()) {
+                        /* Notify user of threshold change */
+                        userManager.getNotifHelper().thresholdUpdate
+                                ("THRESHOLD ALL USER", normalUsername, currUsername, choiceInput, newThreshold);
+                    }
+                }
             }
             close();
         } catch (IOException e) {
@@ -187,10 +203,14 @@ public class ThresholdEditor {
         return Integer.parseInt(temp2);
     }
 
-    private void editThreshold(String thresholdType, int oldThreshold, int newThreshold, int thresholdIndex) throws IOException {
+    private void editThreshold(String thresholdType, int oldThreshold, int newThreshold, int thresholdIndex) {
         // Writes to the file.
         String THRESHOLD_FILE_PATH = "src/thresholds.txt";
-        readWriter.saveThresholdsToFile(THRESHOLD_FILE_PATH, thresholdType, oldThreshold, newThreshold);
+        try {
+            readWriter.saveThresholdsToFile(THRESHOLD_FILE_PATH, thresholdType, oldThreshold, newThreshold);
+        } catch (IOException e) {
+            systemPresenter.exceptionMessage(1, "Writing", "threshold values");
+        }
 
         // Updates the thresholds for UserManager.
         int[] newDefault = userManager.getCurrentThresholds();

@@ -30,7 +30,26 @@ public class UserNotificationHelper extends UserManager {
     }
 
     public void thresholdUpdate(String action, String usernameNotified, String otherParty,
-                                String thresholdType, int newValue) {
+                                int thresholdTypeInt, int newValue) {
+        String thresholdType;
+        switch (thresholdTypeInt) {
+            case 1:
+                thresholdType = "maximum number of weekly trade meetings";
+                break;
+            case 2:
+                thresholdType = "maximum number of edits you can make to a trade's meeting details";
+                break;
+            case 3:
+                thresholdType = "minimum number of items more you must lend than items borrowed";
+                break;
+            case 4:
+                thresholdType = "maximum number of incomplete trades you can have " +
+                        "before being at risk of getting frozen by an admin";
+                break;
+            default:
+                thresholdType = "unknown threshold type!";
+                break;
+        }
         String[] notifArg = {action, usernameNotified, otherParty, thresholdType, String.valueOf(newValue)};
         notifyUser(usernameNotified, notifArg);
     }

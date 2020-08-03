@@ -28,6 +28,7 @@ public class UserManager extends Manager implements Serializable {
     private List<String> usernamesOnVacation;
     private int[] currDefaultThresholds;
     private UserNotificationHelper notifHelper;
+    private List<String> allNormalUsernames;
 
     /**
      * Creates a <UserManager></UserManager>, setting all lists to empty by default.
@@ -40,6 +41,7 @@ public class UserManager extends Manager implements Serializable {
         usernamesOnVacation = new ArrayList<>();
         currDefaultThresholds = new int[4];
         notifHelper = new UserNotificationHelper();
+        allNormalUsernames = new ArrayList<>();
     }
 
     /**
@@ -53,6 +55,7 @@ public class UserManager extends Manager implements Serializable {
      */
     public void createNormalUser(String username, String email, String password, String homeCity) {
         allNormals.add(new NormalUser(username, email, password, homeCity, currDefaultThresholds));
+        allNormalUsernames.add(username);
     }
 
     /**
@@ -140,6 +143,15 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
+     * Getter or all normal users' usernames in the system.
+     *
+     * @return a list of all normal users' usernames in the system
+     */
+    public List<String> getAllNormalUsernames() {
+        return allNormalUsernames;
+    }
+
+    /**
      * Getter for all normal users in the user database.
      *
      * @return a list of all normal users in the user database
@@ -196,12 +208,7 @@ public class UserManager extends Manager implements Serializable {
      * @return true if user with given username exists, false otherwise
      */
     public boolean normalUsernameExists(String username) {
-        for (User u : allNormals) {
-            if (u.getUsername().equals(username)) {
-                return true;
-            }
-        }
-        return false;
+        return allNormalUsernames.contains(username);
     }
 
     /**
@@ -474,14 +481,6 @@ public class UserManager extends Manager implements Serializable {
         getNormalByUsername(username).addWishlist(itemIDToAdd);
     }
 
-    private List<String> getAllNormaUserUsernames() {
-        ArrayList<String> allUsernames = new ArrayList<>();
-        for (User user : getAllUsers()) {
-            allUsernames.add(user.getUsername());
-        }
-        return allUsernames;
-    }
-
     /**
      * Freezes the account associated with the given username.
      *
@@ -504,7 +503,7 @@ public class UserManager extends Manager implements Serializable {
     /**
      * Setter for the weekly trade limit of the user associated with the given username.
      *
-     * @param username the username of the user whose weekly trade limit is being modified
+     * @param username  the username of the user whose weekly trade limit is being modified
      * @param threshold the new weekly trade limit
      */
     public void setNormalUserWeeklyTradeMax(String username, int threshold) {
@@ -524,7 +523,7 @@ public class UserManager extends Manager implements Serializable {
     /**
      * Setter for the meeting edit limit of the user associated with the given username.
      *
-     * @param username the username of the user whose meeting edit limit is being modified
+     * @param username  the username of the user whose meeting edit limit is being modified
      * @param threshold the new meeting edit limit
      */
     public void setNormalUserMeetingEditMax(String username, int threshold) {
@@ -544,7 +543,7 @@ public class UserManager extends Manager implements Serializable {
     /**
      * Setter for the minimum lending over borrowing limit of the user associated with the given username.
      *
-     * @param username the username of the user whose minimum lending over borrowing limit is being modified
+     * @param username  the username of the user whose minimum lending over borrowing limit is being modified
      * @param threshold the new minimum lending over borrowing limit
      */
     public void setNormalUserLendMinimum(String username, int threshold) {
@@ -564,7 +563,7 @@ public class UserManager extends Manager implements Serializable {
     /**
      * Setter for the incomplete trade limit of the user associated with the given username.
      *
-     * @param username the username of the user whose incomplete trade limit is being modified
+     * @param username  the username of the user whose incomplete trade limit is being modified
      * @param threshold the new incomplete trade limit
      */
     public void setNormalUserIncompleteMax(String username, int threshold) {
@@ -572,45 +571,45 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Sets all normalUser weekly trade max thresholds to the given number
+     * Sets all normal user weekly trade max thresholds to the given number.
      *
      * @param threshold the new threshold
      */
     public void setAllNormalUserWeeklyTradeMax(int threshold) {
-        for (String username : getAllNormaUserUsernames()) {
+        for (String username : allNormalUsernames) {
             setNormalUserWeeklyTradeMax(username, threshold);
         }
     }
 
     /**
-     * Sets all normalUser incomplete trade max thresholds to the given number
+     * Sets all normal user incomplete trade max thresholds to the given number.
      *
      * @param threshold the new threshold
      */
     public void setAllNormalUserIncompleteMax(int threshold) {
-        for (String username : getAllNormaUserUsernames()) {
+        for (String username : allNormalUsernames) {
             setNormalUserIncompleteMax(username, threshold);
         }
     }
 
     /**
-     * Sets all normalUser minimum lending thresholds to the given number
+     * Sets all normal user minimum lending thresholds to the given number.
      *
      * @param threshold the new threshold
      */
     public void setAllNormalUserLendMinimum(int threshold) {
-        for (String username : getAllNormaUserUsernames()) {
+        for (String username : allNormalUsernames) {
             setNormalUserLendMinimum(username, threshold);
         }
     }
 
     /**
-     * Sets all normalUser max meeting edit threshold to the given number
+     * Sets all normal user max meeting edit threshold to the given number.
      *
      * @param threshold the new threshold
      */
     public void setALlNormalUserMeetingEditMax(int threshold) {
-        for (String username : getAllNormaUserUsernames()) {
+        for (String username : allNormalUsernames) {
             setNormalUserMeetingEditMax(username, threshold);
         }
     }
@@ -634,7 +633,16 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Getter for a User's password given the associated username or email
+     * Returns the number of threshold values in the program.
+     *
+     * @return the number of threshold values in the program
+     */
+    public int getNumThresholds() {
+        return currDefaultThresholds.length;
+    }
+
+    /**
+     * Getter for a user's password given the associated username or email.
      *
      * @param usernameOrEmail the username of the user
      * @return the associated password
@@ -644,20 +652,15 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Return true iff user with given username or email is an AdminUser
+     * Return true iff user with given username or email is an admin.
+     *
      * @param usernameOrEmail the given username or email
-     * @return true iff user is Admin
+     * @return true iff user is an admin
      */
     public boolean isAdmin(String usernameOrEmail) {
         return getUserByUsernameOrEmail(usernameOrEmail) instanceof AdminUser;
     }
 
-    /**
-     * Gets a NormalUser by the given username or email.
-     *
-     * @param usernameOrEmail the user's username or email
-     * @return the user with the given username or email
-     */
     private NormalUser getNormalByUsernameOrEmail(String usernameOrEmail) {
         if (usernameOrEmail.contains("@")) {
             return getNormalByEmail(usernameOrEmail);
@@ -666,14 +669,22 @@ public class UserManager extends Manager implements Serializable {
         }
     }
 
+    private AdminUser getAdminByUsernameOrEmail(String usernameOrEmail) {
+        if (usernameOrEmail.contains("@")) {
+            return getAdminByEmail(usernameOrEmail);
+        } else {
+            return getAdminByUsername(usernameOrEmail);
+        }
+    }
+
     /**
-     * Return true iff NormalUser with given username is frozen
+     * Return whether or not the account associated with given username is frozen.
      *
-     * @param usernameOrEmail the user's username or email
+     * @param username the user's username or email
      * @return true iff user is frozen
      */
-    public boolean getNormalUserIsFrozen(String usernameOrEmail) {
-        return getNormalByUsernameOrEmail(usernameOrEmail).getIsFrozen();
+    public boolean getNormalUserIsFrozen(String username) {
+        return getNormalByUsernameOrEmail(username).getIsFrozen();
     }
 
     /**
@@ -687,27 +698,14 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Gets an AdminUser by the given username or email.
+     * Gets a username of a user, given the associated username or email of that user.
      *
-     * @param usernameOrEmail the Admin's email or username
-     * @return the user with the given email
-     */
-    private AdminUser getAdminByUsernameOrEmail(String usernameOrEmail) {
-        if (usernameOrEmail.contains("@")) {
-            return getAdminByEmail(usernameOrEmail);
-        } else {
-            return getAdminByUsername(usernameOrEmail);
-        }
-    }
-
-    /**
-     * Gets a username of a user, given the associated username or email of that user
-     *
-     * @param usernameOrEmail the associated username or email. Emails are preferred, as entering a username would be
-     *                        redundant
+     * @param usernameOrEmail the associated username or email
      * @return the associated username
      */
-    public String getUsername(String usernameOrEmail) {return getUserByUsernameOrEmail(usernameOrEmail).getUsername();}
+    public String getUsername(String usernameOrEmail) {
+        return getUserByUsernameOrEmail(usernameOrEmail).getUsername();
+    }
 
     /**
      * Increases NumIncomplete threshold for NormalUser with associated username or email
@@ -719,7 +717,8 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Getter for Number of Incomplete trades made by Normal User with associated username or email
+     * Getter for Number of Incomplete trades made by Normal User with associated username or email.
+     *
      * @param usernameOrEmail the associated username or email
      * @return NumIncomplete, the number of incomplete trades
      */
@@ -728,22 +727,29 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Returns the ID of the Admin with the associated username or email
+     * Returns the ID of the Admin with the associated username or email.
+     *
      * @param usernameOrEmail the Admin's username or email
      * @return the Admin's ID
      */
-    public int getAdminID(String usernameOrEmail) {return getAdminByUsernameOrEmail(usernameOrEmail).getAdminID();}
+    public int getAdminID(String usernameOrEmail) {
+        return getAdminByUsernameOrEmail(usernameOrEmail).getAdminID();
+    }
 
     /**
-     * Return true iff user with associated is not equal to null
+     * Return true iff user with associated is not equal to null.
+     *
      * @param username the associated username or email
      * @return true iff user exists
      */
-    public boolean doesUserExist(String username) {return getUserByUsernameOrEmail(username) != null;}
+    public boolean doesUserExist(String username) {
+        return getUserByUsernameOrEmail(username) != null;
+    }
 
     /**
-     * Removes item with associated itemID from inventory of Normal User with associated username or email
-     * @param itemID the itemID to be removed
+     * Removes item with associated itemID from inventory of Normal User with associated username or email.
+     *
+     * @param itemID          the itemID to be removed
      * @param usernameOrEmail the Normal User's username or email
      */
     public void removeNormalUserinventory(long itemID, String usernameOrEmail) {
@@ -751,7 +757,8 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Getter for a Normal User's pending inventory
+     * Getter for a Normal User's pending inventory.
+     *
      * @param usernameOrEmail the associated Normal User's username or Email
      * @return the Normal User's pending inventory
      */
@@ -760,9 +767,9 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Adds item with itemID to the Normal User's pending inventory with given username or email
+     * Adds item with itemID to the Normal User's pending inventory with given username or email.
      *
-     * @param itemID the itemID to be added to pending inventory
+     * @param itemID          the itemID to be added to pending inventory
      * @param usernameOrEmail the user's username or email
      */
     public void addNormalUserPendingInventory(long itemID, String usernameOrEmail) {
@@ -770,7 +777,8 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Getter for a Normal User's trade requests, given associated username or email
+     * Getter for a Normal User's trade requests, given associated username or email.
+     *
      * @param usernameOrEmail the associated username or email
      * @return the trade requests
      */
@@ -779,9 +787,9 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Removes given tradeRequests from the Normal User with given username or email's trade requests
+     * Removes given tradeRequests from the Normal User with given username or email's trade requests.
      *
-     * @param key the key of the trade request to be removed
+     * @param key             the key of the trade request to be removed
      * @param usernameOrEmail the username or email of the user
      */
     public void removeTradeRequests(String[] key, String usernameOrEmail) {
@@ -789,9 +797,9 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Removes the item with the given itemID from the user with the given username or email's wishlist
+     * Removes the item with the given itemID from the user with the given username or email's wishlist.
      *
-     * @param itemID the item ID to be removed
+     * @param itemID          the item ID to be removed
      * @param usernameOrEmail the username or email of the normal user
      */
     public void removeFromNormalUserWishlist(long itemID, String usernameOrEmail) {

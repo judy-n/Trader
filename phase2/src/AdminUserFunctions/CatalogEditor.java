@@ -60,6 +60,7 @@ public class CatalogEditor {
                 if (input != 0) {
                     long pendingItemID = itemManager.getPendingItem(input);
                     String itemOwnerUsername = itemManager.getItemOwner(pendingItemID);
+
                     systemPresenter.catalogEditor(itemManager.getItemName(pendingItemID));
                     String temp2 = bufferedReader.readLine();
                     while (!temp2.matches("[0-2]")) {
@@ -70,9 +71,21 @@ public class CatalogEditor {
                     if (actionInput == 1) {
                         itemManager.approveItem(pendingItemID);
                         userManager.addNormalUserInventory(pendingItemID, itemOwnerUsername);
+
+                        /* Notify item owner of approval */
+                        userManager.getNotifHelper().itemUpdateWithID
+                                ("ITEM APPROVED", itemOwnerUsername, currUsername,
+                                        itemManager.getItemName(pendingItemID), pendingItemID);
+
                     } else if (actionInput == 2) {
                         itemManager.rejectItem(pendingItemID);
                         userManager.removeNormalUserPending(pendingItemID, itemOwnerUsername);
+
+                        /* Notify item owner of rejection */
+                        userManager.getNotifHelper().itemUpdate
+                                ("ITEM REJECTED", itemOwnerUsername, currUsername,
+                                        itemManager.getItemName(pendingItemID));
+
                     } else {
                         input = 0;
                     }

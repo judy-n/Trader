@@ -22,11 +22,12 @@ import java.util.Map;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-30
+ * last modified 2020-08-03
  */
 public class TradeManager extends Manager implements Serializable {
     private List<Trade> allTrades;
-    private List<String> cancelledUsers;
+    private List<String[]> cancelledUserPairs;
+    private long TIME_LIMIT = 24; // # of hours allowed for confirming a transaction after it's scheduled time
 
     /**
      * Creates a <TradeManager></TradeManager>.
@@ -34,7 +35,7 @@ public class TradeManager extends Manager implements Serializable {
      */
     public TradeManager() {
         allTrades = new ArrayList<>();
-        cancelledUsers = new ArrayList<>();
+        cancelledUserPairs = new ArrayList<>();
     }
 
     /**
@@ -118,9 +119,6 @@ public class TradeManager extends Manager implements Serializable {
      * of the meeting date/time.
      */
     public void cancelAllUnconfirmedTrades() {
-
-        long TIME_LIMIT = 24; // # of hours allowed for confirming a transaction after it's scheduled time
-
         LocalDateTime now = LocalDateTime.now();
         for (Trade t : getAllOngoingNotCancelledTrades()) {
             if (t instanceof TemporaryTrade && t.getHasAgreedMeeting()) {
@@ -128,45 +126,35 @@ public class TradeManager extends Manager implements Serializable {
                 LocalDateTime meeting1 = temp.getFirstMeetingDateTime();
                 if (now.compareTo(meeting1.plusHours(TIME_LIMIT)) > 0 && !temp.hasSecondMeeting()) {
                     t.setIsCancelled();
-                    addCancelledUsers(t.getInvolvedUsernames());
+                    cancelledUserPairs.add(t.getInvolvedUsernames());
                 } else if (now.compareTo(((TemporaryTrade) t).getSecondMeetingDateTime().plusHours(TIME_LIMIT)) > 0
                         && !t.getIsComplete()) {
                     t.setIsCancelled();
-                    addCancelledUsers(t.getInvolvedUsernames());
+                    cancelledUserPairs.add(t.getInvolvedUsernames());
                 }
             } else if (t instanceof PermanentTrade && t.getHasAgreedMeeting()) {
                 if (now.compareTo(t.getFirstMeetingDateTime().plusHours(TIME_LIMIT)) > 0 && !t.getIsComplete()) {
                     t.setIsCancelled();
-                    addCancelledUsers(t.getInvolvedUsernames());
+                    cancelledUserPairs.add(t.getInvolvedUsernames());
                 }
             }
         }
     }
 
     /**
-     * Adds usernames to the list of users with cancelled trades.
+     * Getter for the list of user pairs with incomplete trades.
      *
-     * @param users the usernames to be added to the list of users with cancelled trades
+     * @return the list of user pairs with incomplete trades
      */
-    public void addCancelledUsers(String[] users) {
-        cancelledUsers.add(users[0]);
-        cancelledUsers.add(users[1]);
-    }
-
-    /**
-     * Getter for the list of users with cancelled trades.
-     *
-     * @return the list of users with cancelled trades
-     */
-    public List<String> getCancelledUsers() {
-        return cancelledUsers;
+    public List<String[]> getCancelledUserPairs() {
+        return cancelledUserPairs;
     }
 
     /**
      * Clears all users from the list of users with cancelled trades.
      */
-    public void clearCancelledUsers() {
-        cancelledUsers.clear();
+    public void clearCancelledUserPairs() {
+        cancelledUserPairs.clear();
     }
 
     /**

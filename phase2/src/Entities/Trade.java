@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  * Represents an approved trade between two normal users.
  * <Trade></Trade> stores the usernames of both users in an array which is parallel to an array
  * containing the IDs of the items each user is lending in this trade.
- * Note that an ID of 0.0 means the associated user is not lending an item (aka a one-way trade).
+ * Note that an ID of 0 means the associated user is not lending an item (aka a one-way trade).
  * Also note that in the username array, the username at index 0 is the user who accepted the trade request
  * while the username at index 1 is the sender of the trade request.
  *
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-30
+ * last modified 2020-08-03
  */
 
 public abstract class Trade implements Serializable, Comparable<Trade> {

@@ -16,7 +16,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-08-01
+ * last modified 2020-08-03
  */
 public class SystemPresenter {
     private final String choicePrompt = "\nPlease enter your choice here: ";
@@ -811,58 +811,6 @@ public class SystemPresenter {
     }
 
     /**
-     * presents string for when all users in list are on vacation
-     */
-    public void accountsOnVacation() {
-        System.out.println("All accounts on vacation!");
-    }
-
-    /**
-     * Presents vacation accounts' command options
-     *
-     * @param usernames usernames of users on vacation
-     */
-    public void accountsOnVacation(List<String> usernames) {
-        System.out.println("\nThese are the users that are on vacation:");
-        int i = 1;
-
-        for (String username : usernames) {
-            System.out.println(i + ". " + username);
-            i++;
-        }
-
-        if (usernames.isEmpty()) {
-            emptyListMessage();
-        }
-    }
-
-    /**
-     * presents string for when all users in list are not on vacation
-     */
-    public void accountsNotOnVacation() {
-        System.out.println("All accounts not on vacation!");
-    }
-
-    /**
-     * Presents vacation accounts' command options
-     *
-     * @param usernames usernames of users not on vacation
-     */
-    public void accountsNotOnVacation(List<String> usernames) {
-        System.out.println("\nThese are the users that are not on vacation:");
-        int i = 1;
-
-        for (String username : usernames) {
-            System.out.println(i + ". " + username);
-            i++;
-        }
-
-        if (usernames.isEmpty()) {
-            emptyListMessage();
-        }
-    }
-
-    /**
      * Presents the demo dashboard.
      */
     public void demoDashboard() {
@@ -995,13 +943,5 @@ public class SystemPresenter {
      */
     public void exitProgram() {
         System.out.println("\nExiting... Thank you for using our program!");
-    }
-
-    /**
-     * Presents an error message when the program fails to close the input stream.
-     */
-    public void streamExceptionMessage() {
-        System.out.println("\nError closing the input stream!");
-        System.exit(-1);
     }
 }
