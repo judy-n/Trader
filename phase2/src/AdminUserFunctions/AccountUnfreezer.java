@@ -3,7 +3,6 @@ package AdminUserFunctions;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
-import Entities.AdminUser;
 import SystemFunctions.SystemPresenter;
 import SystemFunctions.MenuItem;
 import java.io.BufferedReader;
@@ -71,8 +70,10 @@ public class AccountUnfreezer extends MenuItem {
                         indexInput = Integer.parseInt(temp);
 
                         if (indexInput != 0) {
-                            String unfreezeUsername = userManager.getUnfreezeUsername(indexInput);
-                            userManager.removeUnfreezeRequest(indexInput);
+                            String unfreezeUsername = userManager.getUnfreezeUsername(indexInput - 1);
+                            userManager.removeUnfreezeRequest(indexInput - 1);
+
+                            /* Notify normal user of account being unfrozen */
                             userManager.getNotifHelper().basicUpdate("UNFROZEN", unfreezeUsername, currUsername);
 
                             systemPresenter.adminGetUnfreezeRequests(2);

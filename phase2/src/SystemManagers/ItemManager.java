@@ -133,7 +133,7 @@ public class ItemManager extends Manager implements Serializable {
      * @return the item at the given index
      */
     public Item getApprovedItem(int index) {
-        return approvedItems.get(index - 1);
+        return approvedItems.get(index);
     }
 
     /**

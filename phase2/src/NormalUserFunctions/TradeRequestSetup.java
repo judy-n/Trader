@@ -122,6 +122,9 @@ public class TradeRequestSetup {
                 userManager.addNormalUserWishlist(selectedItem.getID(), currUsername);
             }
 
+            /* Notify other user of new trade request */
+            userManager.getNotifHelper().basicUpdate("TRADE REQUEST RECEIVED", traderUsername, currUsername);
+
             systemPresenter.tradeRequestSetup(traderUsername);
 
         } else {

@@ -3,7 +3,6 @@ package AdminUserFunctions;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
-import Entities.AdminUser;
 import SystemFunctions.SystemPresenter;
 import SystemFunctions.SignUpSystem;
 

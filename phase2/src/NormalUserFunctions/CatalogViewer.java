@@ -55,10 +55,11 @@ public class CatalogViewer extends MenuItem {
         systemPresenter = new SystemPresenter();
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        List<Item> itemsSameCity = filterItemsHomeCity();
-        int maxIndex = itemsSameCity.size();
+        List<Item> allItemsOtherUsers = itemManager.getApprovedItems(currUsername);
+        List<Item> catalogToView = filterItemsNotOnVacation(filterItemsHomeCity(allItemsOtherUsers));
+        int maxIndex = catalogToView.size();
 
-        systemPresenter.catalogViewer(itemsSameCity);
+        systemPresenter.catalogViewer(catalogToView);
 
         int timesBorrowed = userManager.getNormalUserTimesBorrowed(currUsername) + tradeManager.getTimesBorrowed(currUsername);
         int timesLent = userManager.getNormalUserTimesLent(currUsername) + tradeManager.getTimesLent(currUsername);
@@ -73,7 +74,7 @@ public class CatalogViewer extends MenuItem {
             }
             int input = Integer.parseInt(temp);
             if (input != 0) {
-                Item selectedItem = itemsSameCity.get(input - 1);
+                Item selectedItem = catalogToView.get(input - 1);
                 long itemID = selectedItem.getID();
 
                 systemPresenter.catalogViewer(selectedItem.getName(), selectedItem.getOwnerUsername(), 1);
@@ -151,16 +152,28 @@ public class CatalogViewer extends MenuItem {
     /*
      * Returns a list of items that are owned by users with the same home city as the current user.
      */
-    private List<Item> filterItemsHomeCity() {
-        List<Item> items = itemManager.getApprovedItems(currUsername);
+    private List<Item> filterItemsHomeCity(List<Item> listToFilter) {
         List<Item> itemsSameCity = new ArrayList<>();
-
-        for (Item i : items) {
+        for (Item i : listToFilter) {
             if (userManager.getNormalUserHomeCity(i.getOwnerUsername()).equals(userManager.getNormalUserHomeCity(currUsername))) {
                 itemsSameCity.add(i);
             }
         }
         return itemsSameCity;
+    }
+
+    /*
+     * Returns a list of items that are owned by users NOT on vacation.
+     */
+    private List<Item> filterItemsNotOnVacation(List<Item> listToFilter) {
+        List<Item> itemsNotOnVacation = new ArrayList<>();
+        for (Item i : listToFilter) {
+            if (!userManager.getNormalUserOnVacation(i.getOwnerUsername())) {
+                itemsNotOnVacation.add(i);
+            }
+        }
+        return itemsNotOnVacation;
+
     }
 
     private void close() {

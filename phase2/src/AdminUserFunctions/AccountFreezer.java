@@ -60,6 +60,8 @@ public class AccountFreezer extends MenuItem {
                 if (input.equalsIgnoreCase("y")) {
                     for (String usernameToFreeze : usernames) {
                         userManager.freezeNormalUser(usernameToFreeze);
+
+                        /* Notify normal user of account being frozen */
                         userManager.getNotifHelper().basicUpdate("FROZEN", usernameToFreeze, currUsername);
                     }
                     userManager.clearUsernamesToFreeze();

@@ -1,7 +1,5 @@
 package NormalUserFunctions;
 
-
-import Entities.NormalUser;
 import SystemManagers.ItemManager;
 import SystemManagers.NotificationSystem;
 import SystemManagers.TradeManager;
@@ -22,21 +20,21 @@ public class Vacation {
     private ItemManager itemManager;
     private TradeManager tradeManager;
     private UserManager userManager;
-    private NormalUser currentUser;
+    private String currUsername;
 
     /**
      * Allows change to the normal user's vacation status with given notification
      * system and item/user/trade managers.
      *
-     * @param user         the normal user who is currently logged in
+     * @param username     the username of the normal user who is currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
      * @param notifSystem  the system's notification manager
      */
-    public Vacation(NormalUser user, ItemManager itemManager, UserManager userManager,
+    public Vacation(String username, ItemManager itemManager, UserManager userManager,
                     TradeManager tradeManager, NotificationSystem notifSystem) {
-        currentUser = user;
+        currUsername = username;
         this.userManager = userManager;
         this.notifSystem = notifSystem;
         this.itemManager = itemManager;
@@ -49,18 +47,16 @@ public class Vacation {
 
     /* Switches the vacation status of the normal user. */
     private void switchVacationStatus() {
-        if (userManager.getUsernamesOnVacation().contains(currentUser.getUsername())) {
-            userManager.removeUsernamesOnVacation(currentUser.getUsername());
-            currentUser.setOnVacation(false);
+        if (userManager.getNormalUserOnVacation(currUsername)) {
+            userManager.removeUsernamesOnVacation(currUsername);
             systemPresenter.accountsNotOnVacation();
         } else {
-            userManager.addUsernamesOnVacation(currentUser.getUsername());
-            currentUser.setOnVacation(true);
+            userManager.addUsernamesOnVacation(currUsername);
             systemPresenter.accountsOnVacation();
         }
     }
     /* ends vacation transaction and gets user back to the dashboard*/
     private void close() {
-        new NormalDashboard(currentUser.getUsername(), itemManager, userManager, tradeManager, notifSystem);
+        new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem);
     }
 }

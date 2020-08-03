@@ -82,25 +82,25 @@ public class OngoingTradesViewer extends MenuItem {
 
                 if (indexInput != 0) {
 
-                    Trade selected = ongoingTrades.get(indexInput - 1);
+                    Trade selectedTrade = ongoingTrades.get(indexInput - 1);
 
-                    if (!selected.getHasAgreedMeeting()) {
+                    if (!selectedTrade.getHasAgreedMeeting()) {
 
                         /* print latest meeting suggestion */
-                        systemPresenter.ongoingTrades(1, selected.getFirstMeetingDateTime(), selected);
+                        systemPresenter.ongoingTrades(1, selectedTrade.getFirstMeetingDateTime(), selectedTrade);
 
                     } else {
 
                         /* print first meeting details */
-                        systemPresenter.ongoingTrades(2, selected.getFirstMeetingDateTime(), selected);
+                        systemPresenter.ongoingTrades(2, selectedTrade.getFirstMeetingDateTime(), selectedTrade);
 
                     }
-                    if (selected instanceof TemporaryTrade) {
-                        TemporaryTrade tempSelected = (TemporaryTrade) selected;
-                        if (tempSelected.hasSecondMeeting()) {
+                    if (selectedTrade instanceof TemporaryTrade) {
+                        TemporaryTrade tempSelectedTrade = (TemporaryTrade) selectedTrade;
+                        if (tempSelectedTrade.hasSecondMeeting()) {
 
                             /* print second meeting details */
-                            systemPresenter.ongoingTrades(3, tempSelected.getSecondMeetingDateTime(), selected);
+                            systemPresenter.ongoingTrades(3, tempSelectedTrade.getSecondMeetingDateTime(), selectedTrade);
 
                         }
                     }
@@ -119,18 +119,18 @@ public class OngoingTradesViewer extends MenuItem {
                         case 1:
 
                             /* can't edit if already agreed upon */
-                            if (selected.getHasAgreedMeeting()) {
+                            if (selectedTrade.getHasAgreedMeeting()) {
                                 systemPresenter.ongoingTrades(12);
                                 break;
                             }
 
                             /* can't edit if latest suggestion is yours */
-                            if (selected.getLastEditor().equals(currUsername)) {
+                            if (selectedTrade.getLastEditor().equals(currUsername)) {
                                 systemPresenter.ongoingTrades(6);
                                 break;
                             }
 
-                            int editCount = selected.getUserEditCount(currUsername);
+                            int editCount = selectedTrade.getUserEditCount(currUsername);
                             int editMax = userManager.getNormalUserMeetingEditMax(currUsername);
                             if (editCount < editMax) {
                                 systemPresenter.ongoingTrades(editCount, (editCount + 1 == editMax));
@@ -144,9 +144,14 @@ public class OngoingTradesViewer extends MenuItem {
                                     systemPresenter.invalidInput();
                                     placeSuggestion = bufferedReader.readLine();
                                 }
-                                selected.setFirstMeetingDateTime(time);
-                                selected.setFirstMeetingLocation(placeSuggestion);
-                                selected.addUserEditCount(currUsername);
+                                selectedTrade.setFirstMeetingDateTime(time);
+                                selectedTrade.setFirstMeetingLocation(placeSuggestion);
+                                selectedTrade.addUserEditCount(currUsername);
+
+                                /* Notify other user of new suggestion */
+                                userManager.getNotifHelper().basicUpdate
+                                        ("NEW SUGGESTION", selectedTrade.getOtherUsername(currUsername), currUsername);
+
                                 systemPresenter.ongoingTrades(11);
                             } else {
                                 systemPresenter.ongoingTrades(9);
@@ -157,29 +162,34 @@ public class OngoingTradesViewer extends MenuItem {
                         case 2:
 
                             /* can't confirm meeting if already agreed upon */
-                            if (selected.getHasAgreedMeeting()) {
+                            if (selectedTrade.getHasAgreedMeeting()) {
                                 systemPresenter.ongoingTrades(5);
                                 break;
                             }
 
                             /* can't confirm your own suggestion */
-                            if (selected.getLastEditor().equals(currUsername)) {
+                            if (selectedTrade.getLastEditor().equals(currUsername)) {
                                 systemPresenter.ongoingTrades(6);
                                 break;
                             }
 
                             /* can't confirm a meeting time that has already passed */
-                            if (LocalDateTime.now().isAfter(selected.getFirstMeetingDateTime())) {
+                            if (LocalDateTime.now().isAfter(selectedTrade.getFirstMeetingDateTime())) {
                                 systemPresenter.ongoingTrades(20);
                                 break;
                             }
 
-                            int weeklyTrade = tradeManager.getNumMeetingsThisWeek(currUsername, selected.getFirstMeetingDateTime().toLocalDate());
+                            int weeklyTrade = tradeManager.getNumMeetingsThisWeek
+                                    (currUsername, selectedTrade.getFirstMeetingDateTime().toLocalDate());
                             if (weeklyTrade > userManager.getNormalUserWeeklyTradeMax(currUsername)) {
                                 systemPresenter.ongoingTrades(10);
                             } else {
-                                selected.confirmAgreedMeeting();
+                                selectedTrade.confirmAgreedMeeting();
                                 systemPresenter.ongoingTrades(4);
+
+                                /* Notify other user of meeting agreement */
+                                userManager.getNotifHelper().basicUpdate
+                                        ("MEETING AGREED", selectedTrade.getOtherUsername(currUsername), currUsername);
                             }
                             break;
 
@@ -187,44 +197,54 @@ public class OngoingTradesViewer extends MenuItem {
                         case 3:
 
                             /* can't confirm transaction if no agreed meeting */
-                            if (!selected.getHasAgreedMeeting()) {
+                            if (!selectedTrade.getHasAgreedMeeting()) {
                                 systemPresenter.ongoingTrades(16);
                                 break;
                             }
 
                             /* can't confirm more than once */
-                            if (selected instanceof TemporaryTrade &&
-                                    ((TemporaryTrade) selected).getUserSecondTransactionConfirmation(currUsername)) {
+                            if (selectedTrade instanceof TemporaryTrade &&
+                                    ((TemporaryTrade) selectedTrade).getUserSecondTransactionConfirmation(currUsername)) {
                                 systemPresenter.ongoingTrades(18);
                                 break;
-                            } else if (selected.getUserFirstTransactionConfirmation(currUsername)) {
+                            } else if (selectedTrade.getUserFirstTransactionConfirmation(currUsername)) {
                                 systemPresenter.ongoingTrades(18);
                                 break;
                             }
 
                             LocalDateTime now = LocalDateTime.now();
-                            if (selected instanceof TemporaryTrade && ((TemporaryTrade) selected).hasSecondMeeting() &&
-                                    now.compareTo(((TemporaryTrade) selected).getSecondMeetingDateTime()) > 0) {
-                                new ConfirmAndCloseTempTrade().confirmAndCloseTempTransaction(currUsername,
-                                        (TemporaryTrade) selected, itemManager);
-                                if (selected.getIsComplete()) {
+                            if (selectedTrade instanceof TemporaryTrade && ((TemporaryTrade) selectedTrade).hasSecondMeeting() &&
+                                    now.compareTo(((TemporaryTrade) selectedTrade).getSecondMeetingDateTime()) > 0) {
+
+                                new ConfirmAndCloseTempTrade().confirmAndCloseTempTransaction
+                                        (currUsername, (TemporaryTrade) selectedTrade, itemManager);
+
+                                if (selectedTrade.getIsComplete()) {
                                     systemPresenter.ongoingTrades(14);
+
+                                    /* Notify other user of temp trade closing */
+                                    userManager.getNotifHelper().basicUpdate
+                                            ("MEETING AGREED", selectedTrade.getOtherUsername(currUsername), currUsername);
                                 } else {
                                     systemPresenter.ongoingTrades(3);
+
+                                    /* Notify other user of this user confirming before them */
+                                    userManager.getNotifHelper().basicUpdate
+                                            ("CONFIRM BEFORE", selectedTrade.getOtherUsername(currUsername), currUsername);
                                 }
-                            } else if (selected instanceof TemporaryTrade && selected.getHasAgreedMeeting() &&
-                                    now.compareTo(selected.getFirstMeetingDateTime()) > 0) {
-                                selected.confirmFirstTransaction(currUsername);
-                                if (((TemporaryTrade) selected).hasSecondMeeting()) {
+                            } else if (selectedTrade instanceof TemporaryTrade && selectedTrade.getHasAgreedMeeting() &&
+                                    now.compareTo(selectedTrade.getFirstMeetingDateTime()) > 0) {
+                                selectedTrade.confirmFirstTransaction(currUsername);
+                                if (((TemporaryTrade) selectedTrade).hasSecondMeeting()) {
                                     systemPresenter.ongoingTrades(15);
                                 } else {
                                     systemPresenter.ongoingTrades(3);
                                 }
-                            } else if (selected instanceof PermanentTrade && selected.getHasAgreedMeeting() &&
-                                    now.compareTo(selected.getFirstMeetingDateTime()) > 0) {
+                            } else if (selectedTrade instanceof PermanentTrade && selectedTrade.getHasAgreedMeeting() &&
+                                    now.compareTo(selectedTrade.getFirstMeetingDateTime()) > 0) {
                                 new ConfirmAndClosePermTrade().confirmAndClosePermTransaction(currUsername,
-                                        (PermanentTrade) selected, itemManager, userManager);
-                                if (selected.getIsComplete()) {
+                                        (PermanentTrade) selectedTrade, itemManager, userManager);
+                                if (selectedTrade.getIsComplete()) {
                                     systemPresenter.ongoingTrades(13);
                                 } else {
                                     systemPresenter.ongoingTrades(3);
@@ -239,13 +259,13 @@ public class OngoingTradesViewer extends MenuItem {
                         case 4:
 
                             /* can't cancel if meeting already scheduled */
-                            if (selected.getHasAgreedMeeting()) {
+                            if (selectedTrade.getHasAgreedMeeting()) {
                                 systemPresenter.ongoingTrades(19);
                                 break;
                             }
 
-                            selected.setIsCancelled();
-                            long[] itemIDs = selected.getInvolvedItemIDs();
+                            selectedTrade.setIsCancelled();
+                            long[] itemIDs = selectedTrade.getInvolvedItemIDs();
                             if (itemIDs[0] != 0) {
                                 Item tempItem1 = itemManager.getItem(itemIDs[0]);
                                 tempItem1.setAvailability(true);

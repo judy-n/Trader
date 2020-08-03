@@ -79,13 +79,13 @@ CATAGORIZED:
     "Your account was frozen by an admin due to it exceeding the maximum allowed number of incomplete trades."
 > admin accepts A's unfreeze request
     "Your request to unfreeze your account was accepted by an admin. Your account is now unfrozen."
-+ B sends A a trade request
+> B sends A a trade request
     "You received a trade request from [B]."
-+ B edits the meeting details of an ongoing trade with A
+> B edits the meeting details of an ongoing trade with A
     "A new trade meeting suggestion has been made by [B]."
-+ B agrees with a meeting suggested by A
+> B agrees with a meeting suggested by A
     "[B] agreed to the trade meeting you suggested!"
-+ B confirms a transaction before A
+> B confirms a transaction before A
     "[B] has confirmed your transaction with them! Please remember to confirm on your end within 24 hours of the transaction's scheduled time."
 + B confirms a permanent trade transaction after A
     "[B] has also confirmed your transaction with them! This trade is now closed.

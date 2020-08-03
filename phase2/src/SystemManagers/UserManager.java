@@ -318,30 +318,26 @@ public class UserManager extends Manager implements Serializable {
         }
     }
 
-
     /**
-     * Adds the given username to the list of usernames on vacation.
+     * Adds the given username to the list of usernames on vacation
+     * and sets their account status to on vacation.
      *
      * @param username the username of a user on vacation
      */
     public void addUsernamesOnVacation(String username) {
         usernamesOnVacation.add(username);
+        getNormalByUsername(username).setOnVacation(true);
     }
 
     /**
-     * Removes the given username from the list of usernames on vacation.
+     * Removes the given username from the list of usernames on vacation
+     * and sets their account status to NOT on vacation.
      *
      * @param username the username of a user not on vacation
      */
     public void removeUsernamesOnVacation(String username) {
         usernamesOnVacation.remove(username);
-    }
-
-    /**
-     * Clears the list of usernames that are on vacation.
-     */
-    public void clearUsernamesOnVacation() {
-        usernamesOnVacation.clear();
+        getNormalByUsername(username).setOnVacation(false);
     }
 
     /**
@@ -351,6 +347,16 @@ public class UserManager extends Manager implements Serializable {
      */
     public List<String> getUsernamesOnVacation() {
         return usernamesOnVacation;
+    }
+
+    /**
+     * Getter for whether or not the account associated with the given username is on vacation.
+     *
+     * @param username the username to query
+     * @return true iff the account associated with the given username is on vacation
+     */
+    public boolean getNormalUserOnVacation(String username) {
+        return getNormalByUsername(username).getIsOnVacation();
     }
 
     /**
