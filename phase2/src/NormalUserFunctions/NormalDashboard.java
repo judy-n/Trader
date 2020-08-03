@@ -155,12 +155,12 @@ public class NormalDashboard extends Dashboard {
 //
 //            case 9:
 //                // set on vacation status.
-//                currentUser.onVacation();
+//                currentUser.setOnVacation(true);
 //                break;
 //
 //            case 10:
 //                // set not on vacation status.
-//                currentUser.notOnVacation();
+//                currentUser.setOnVacation(false);
 //                break;
 //        }
 

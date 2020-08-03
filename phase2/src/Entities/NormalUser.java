@@ -21,7 +21,7 @@ import java.util.Map;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-31
+ * last modified 2020-08-02
  */
 public class NormalUser extends User implements Serializable {
     private List<Long> inventory;
@@ -381,18 +381,11 @@ public class NormalUser extends User implements Serializable {
     }
 
     /**
-     * Sets NormalUser's status to on Vacation
+     * Setter for this user's vacation status.
+     *
+     * @param vacationStatus this user's vacation status (true if on vacation, false otherwise).
      */
-    public void onVacation() {
-        isOnVacation = true;
-    }
-
-    /**
-     * Sets NormalUser's status to not on Vacation
-     */
-    public void notOnVacation() {
-        isOnVacation = false;
-    }
+    public void setOnVacation(boolean vacationStatus) { isOnVacation = vacationStatus;}
 
     /**
      * Getter for this user's homecity
