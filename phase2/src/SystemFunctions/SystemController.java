@@ -4,9 +4,6 @@ import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
-import Entities.User;
-import Entities.NormalUser;
-import Entities.AdminUser;
 import NormalUserFunctions.DemoDashboard;
 import NormalUserFunctions.NormalDashboard;
 import AdminUserFunctions.AdminDashboard;
@@ -23,7 +20,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-02
+ * last modified 2020-07-03
  */
 public class SystemController extends JFrame {
     private UserManager userManager;
@@ -58,12 +55,11 @@ public class SystemController extends JFrame {
         List<String> cancelledUsers = tradeManager.getCancelledUsers();
 
         for (String username : cancelledUsers) {
-            userManager.getNormalByUsername(username).increaseNumIncomplete();
+            userManager.increaseNormalUserNumIncomplete(username);
         }
         for (String username : cancelledUsers) {
-            NormalUser user = userManager.getNormalByUsername(username);
-            if (user.getNumIncomplete() > user.getIncompleteMax()) {
-                userManager.addUsernamesToFreeze(user.getUsername());
+            if (userManager.getNormalUserNumIncomplete(username) > userManager.getNormalUserIncompleteMax(username)) {
+                userManager.addUsernamesToFreeze(username);
             }
         }
         tradeManager.clearCancelledUsers();
@@ -104,8 +100,8 @@ public class SystemController extends JFrame {
     }
 
     public void normalUserSignUp(String username, String email, String password, String homeCity, JFrame parent){
-        NormalUser newUser = new SignUpSystem(userManager).createNewNormal(username, email, password, homeCity, notifSystem);
-        new DashboardFrame(new NormalDashboard(newUser, itemManager, userManager, tradeManager, notifSystem), parent);
+        new SignUpSystem(userManager).createNewNormal(username, email, password, homeCity, notifSystem);
+        new DashboardFrame(new NormalDashboard(username, itemManager, userManager, tradeManager, notifSystem), parent);
     }
 
     public ArrayList<Integer> userLogin(String usernameOrEmail, String password){
@@ -113,12 +109,11 @@ public class SystemController extends JFrame {
     }
 
     public void userLogin(String usernameOrEmail, JFrame parent){
-        User currentUser = userManager.getUserByUsernameOrEmail(usernameOrEmail);
-        String currentUsername = currentUser.getUsername();
+        String currentUsername = userManager.getUsername(usernameOrEmail);
         if (userManager.isAdmin(currentUsername)) {
-            new DashboardFrame(new AdminDashboard((AdminUser) currentUser, itemManager, userManager, notifSystem), parent);
+            new DashboardFrame(new AdminDashboard(currentUsername, itemManager, userManager, notifSystem), parent);
         } else {
-            new DashboardFrame(new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager, notifSystem), parent);
+            new DashboardFrame(new NormalDashboard(currentUsername, itemManager, userManager, tradeManager, notifSystem), parent);
         }
     }
 

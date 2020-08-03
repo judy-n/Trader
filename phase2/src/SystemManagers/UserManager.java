@@ -17,7 +17,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-02
+ * last modified 2020-08-03
  */
 public class UserManager extends Manager implements Serializable {
     private List<NormalUser> allNormals;
@@ -638,8 +638,8 @@ public class UserManager extends Manager implements Serializable {
     /**
      * Gets a NormalUser by the given username or email.
      *
-     * @param usernameOrEmail the user's email
-     * @return the user with the given email
+     * @param usernameOrEmail the user's username or email
+     * @return the user with the given username or email
      */
     private NormalUser getNormalByUsernameOrEmail(String usernameOrEmail) {
         if (usernameOrEmail.contains("@")) {
@@ -667,6 +667,47 @@ public class UserManager extends Manager implements Serializable {
      */
     public UserNotificationHelper getNotifHelper() {
         return notifHelper;
+    }
+
+    /**
+     * Gets an AdminUser by the given username or email.
+     *
+     * @param usernameOrEmail the Admin's email or username
+     * @return the user with the given email
+     */
+    private AdminUser getAdminByUsernameOrEmail(String usernameOrEmail) {
+        if (usernameOrEmail.contains("@")) {
+            return getAdminByEmail(usernameOrEmail);
+        } else {
+            return getAdminByUsername(usernameOrEmail);
+        }
+    }
+
+    /**
+     * Gets a username of a user, given the associated username or email of that user
+     *
+     * @param usernameOrEmail the associated username or email. Emails are preferred, as entering a username would be
+     *                        redundant
+     * @return the associated username
+     */
+    public String getUsername(String usernameOrEmail) {return getUserByUsernameOrEmail(usernameOrEmail).getUsername();}
+
+    /**
+     * Increases NumIncomplete threshold for NormalUser with associated username or email
+     *
+     * @param usernameOrEmail the associated username or email
+     */
+    public void increaseNormalUserNumIncomplete(String usernameOrEmail) {
+        getNormalByUsernameOrEmail(usernameOrEmail).increaseNumIncomplete();
+    }
+
+    /**
+     * Getter for Number of Incomplete trades made by Normal User with associated username or email
+     * @param usernameOrEmail the associated username or email
+     * @return NumIncomplete, the number of incomplete trades
+     */
+    public int getNormalUserNumIncomplete(String usernameOrEmail) {
+        return getNormalByUsernameOrEmail(usernameOrEmail).getNumIncomplete();
     }
 }
 
