@@ -89,7 +89,7 @@ public class AccountUnfreezer extends MenuItem {
     }
 
     private void close() {
-        new AdminDashboard(currentAdmin, itemManager, userManager, notifSystem);
+        new AdminDashboard(currentAdmin.getUsername(), itemManager, userManager, notifSystem);
     }
 
     @Override

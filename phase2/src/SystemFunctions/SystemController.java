@@ -23,7 +23,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-31
+ * last modified 2020-07-02
  */
 public class SystemController extends JFrame {
     private UserManager userManager;
@@ -114,7 +114,8 @@ public class SystemController extends JFrame {
 
     public void userLogin(String usernameOrEmail, JFrame parent){
         User currentUser = userManager.getUserByUsernameOrEmail(usernameOrEmail);
-        if (currentUser instanceof AdminUser) {
+        String currentUsername = currentUser.getUsername();
+        if (userManager.isAdmin(currentUsername)) {
             new DashboardFrame(new AdminDashboard((AdminUser) currentUser, itemManager, userManager, notifSystem), parent);
         } else {
             new DashboardFrame(new NormalDashboard((NormalUser) currentUser, itemManager, userManager, tradeManager, notifSystem), parent);

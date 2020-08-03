@@ -17,7 +17,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-01
+ * last modified 2020-08-02
  */
 public class UserManager extends Manager implements Serializable {
     private List<NormalUser> allNormals;
@@ -621,7 +621,38 @@ public class UserManager extends Manager implements Serializable {
      * @return the associated password
      */
     public String getUserPassword(String usernameOrEmail) {
-        return getUserByUsernameOrEmail(usernameOrEmail).getPassword();}
+        return getUserByUsernameOrEmail(usernameOrEmail).getPassword();
+    }
+
+    /**
+     * Return true iff user with given username or email is an AdminUser
+     * @param usernameOrEmail the given username or email
+     * @return true iff user is Admin
+     */
+    public boolean isAdmin(String usernameOrEmail) {
+        return getUserByUsernameOrEmail(usernameOrEmail) instanceof AdminUser;
+    }
+
+    /**
+     * Gets a NormalUser by the given username or email.
+     *
+     * @param usernameOrEmail the user's email
+     * @return the user with the given email
+     */
+    private NormalUser getNormalByUsernameOrEmail(String usernameOrEmail) {
+        if (usernameOrEmail.contains("@")) {
+            return getNormalByEmail(usernameOrEmail);
+        } else {
+            return getNormalByUsername(usernameOrEmail);
+        }
+    }
+    /**
+     * Return true iff NormalUser with given username is frozen
+     * @param usernameOrEmail the user's username or email
+     * @return true iff user is frozen
+     */
+    public boolean getNormalUserIsFrozen(String usernameOrEmail) {
+        return getNormalByUsernameOrEmail(usernameOrEmail).getIsFrozen();}
 }
 
 

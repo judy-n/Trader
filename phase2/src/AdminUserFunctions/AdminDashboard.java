@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-31
+ * last modified 2020-07-02
  */
 
 public class AdminDashboard extends Dashboard {
@@ -26,6 +26,16 @@ public class AdminDashboard extends Dashboard {
     private UserManager userManager;
     private NotificationSystem notifSystem;
     private int input;
+
+    /**
+     * Creates an <AdminDashboard></AdminDashboard> with the given admin username,
+     * item/user managers, and notification system.
+     *  
+     */
+    public AdminDashboard(String username, ItemManager itemManager,
+                          UserManager userManager, NotificationSystem notifSystem) {
+        this(userManager.getAdminByUsername(username), itemManager, userManager, notifSystem);
+    }
 
     /**
      * Creates an <AdminDashboard></AdminDashboard> with the given admin,
@@ -82,7 +92,7 @@ public class AdminDashboard extends Dashboard {
                 break;
 
             case 4:
-                new ThresholdEditor(currentAdmin, itemManager, userManager, notifSystem);
+                new ThresholdEditor(currentAdmin.getUsername(), itemManager, userManager, notifSystem);
                 break;
             case 5:
                 new AdminCreator(currentAdmin, itemManager, userManager, notifSystem);
