@@ -45,7 +45,7 @@ public class AdminDashboard extends Dashboard {
         if (adminID != 1) {
             systemPresenter.adminDashboard(1);
         } else {
-            regex = "[0-5]";
+            regex = "[0-6]";
             systemPresenter.adminDashboard(2);
         }
         try {
@@ -73,12 +73,18 @@ public class AdminDashboard extends Dashboard {
             case 3:
                 new AccountUnfreezer(currUsername, itemManager, userManager, notifSystem);
                 break;
-
             case 4:
                 new ThresholdEditor(currUsername, itemManager, userManager, notifSystem);
                 break;
             case 5:
                 new AdminCreator(currUsername, itemManager, userManager, notifSystem);
+                break;
+            case 6:
+                //systemPresenter.usersOnVacation();
+                //userManager.getUsernamesOnVacation();
+                //new AdminDashboard(currUsername, itemManager, userManager, notifSystem);
+
+                new VacationViewer(currUsername, itemManager, userManager, notifSystem);
                 break;
         }
     }
