@@ -51,12 +51,12 @@ public class Vacation {
             userManager.removeUsernamesOnVacation(currUsername);
 
             /* Notify user of vacation status OFF */
-            userManager.getNotifHelper().basicUpdate("OFF VACATION", currUsername, "");
+            userManager.getNotifHelper(currUsername).basicUpdate("OFF VACATION", currUsername, "");
         } else {
             userManager.addUsernamesOnVacation(currUsername);
 
             /* Notify user of vacation status ON */
-            userManager.getNotifHelper().basicUpdate("ON VACATION", currUsername, "");
+            userManager.getNotifHelper(currUsername).basicUpdate("ON VACATION", currUsername, "");
         }
     }
     /* ends vacation transaction and gets user back to the dashboard*/

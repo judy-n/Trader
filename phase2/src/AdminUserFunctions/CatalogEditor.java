@@ -73,7 +73,7 @@ public class CatalogEditor {
                         userManager.addNormalUserInventory(pendingItemID, itemOwnerUsername);
 
                         /* Notify item owner of approval */
-                        userManager.getNotifHelper().itemUpdateWithID
+                        userManager.getNotifHelper(itemOwnerUsername).itemUpdateWithID
                                 ("ITEM APPROVED", itemOwnerUsername, currUsername,
                                         itemManager.getItemName(pendingItemID), pendingItemID);
 
@@ -82,7 +82,7 @@ public class CatalogEditor {
                         userManager.removeNormalUserPending(pendingItemID, itemOwnerUsername);
 
                         /* Notify item owner of rejection */
-                        userManager.getNotifHelper().itemUpdate
+                        userManager.getNotifHelper(itemOwnerUsername).itemUpdate
                                 ("ITEM REJECTED", itemOwnerUsername, currUsername,
                                         itemManager.getItemName(pendingItemID));
 

@@ -114,7 +114,7 @@ public class ThresholdEditor {
 
                             if (choiceInput != 0) {
                                 /* Notify user of threshold change */
-                                userManager.getNotifHelper().thresholdUpdate
+                                userManager.getNotifHelper(usernameInput).thresholdUpdate
                                         ("THRESHOLD SINGLE USER", usernameInput, currUsername, choiceInput, newThreshold);
                             }
                         }
@@ -182,7 +182,7 @@ public class ThresholdEditor {
                     /* Notifies all users of threshold change */
                     for (String normalUsername : userManager.getAllNormalUsernames()) {
                         /* Notify user of threshold change */
-                        userManager.getNotifHelper().thresholdUpdate
+                        userManager.getNotifHelper(normalUsername).thresholdUpdate
                                 ("THRESHOLD ALL USER", normalUsername, currUsername, choiceInput, newThreshold);
                     }
                 }

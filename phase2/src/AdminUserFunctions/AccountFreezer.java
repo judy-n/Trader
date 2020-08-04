@@ -62,7 +62,8 @@ public class AccountFreezer extends MenuItem {
                         userManager.freezeNormalUser(usernameToFreeze);
 
                         /* Notify normal user of account being frozen */
-                        userManager.getNotifHelper().basicUpdate("FROZEN", usernameToFreeze, currUsername);
+                        userManager.getNotifHelper(usernameToFreeze).basicUpdate
+                                ("FROZEN", usernameToFreeze, currUsername);
                     }
                     userManager.clearUsernamesToFreeze();
                 }

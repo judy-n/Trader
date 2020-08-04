@@ -1,6 +1,7 @@
 package SystemManagers;
 
 import Entities.NormalUser;
+import java.io.Serializable;
 
 /**
  * <UserNotificationHelper></UserNotificationHelper> helps create notifications
@@ -9,24 +10,29 @@ import Entities.NormalUser;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-08-02
- * last modified 2020-08-02
+ * last modified 2020-08-03
  */
-public class UserNotificationHelper extends UserManager {
+public class UserNotificationHelper implements Serializable {
+    private NormalUser currUserToNotify;
+
+    public void setCurrUserToNotify(NormalUser newUserToNotify) {
+        currUserToNotify = newUserToNotify;
+    }
 
     public void basicUpdate(String action, String usernameNotified, String otherParty) {
         String[] notifArg = {action, usernameNotified, otherParty};
-        notifyUser(usernameNotified, notifArg);
+        notifyUser(notifArg);
     }
 
     public void itemUpdate(String action, String usernameNotified, String otherParty, String itemName) {
         String[] notifArg = {action, usernameNotified, otherParty, itemName};
-        notifyUser(usernameNotified, notifArg);
+        notifyUser(notifArg);
     }
 
     public void itemUpdateWithID(String action, String usernameNotified, String otherParty,
                                  String itemName, long itemID) {
         String[] notifArg = {action, usernameNotified, otherParty, itemName, String.valueOf(itemID)};
-        notifyUser(usernameNotified, notifArg);
+        notifyUser(notifArg);
     }
 
     public void thresholdUpdate(String action, String usernameNotified, String otherParty,
@@ -51,17 +57,16 @@ public class UserNotificationHelper extends UserManager {
                 break;
         }
         String[] notifArg = {action, usernameNotified, otherParty, thresholdType, String.valueOf(newValue)};
-        notifyUser(usernameNotified, notifArg);
+        notifyUser(notifArg);
     }
 
     public void extraUsernameUpdate(String action, String usernameNotified, String otherParty, String adminUsername) {
         String[] notifArg = {action, usernameNotified, otherParty, adminUsername};
-        notifyUser(usernameNotified, notifArg);
+        notifyUser(notifArg);
     }
 
-    private void notifyUser(String usernameNotified, String[] notifArg) {
-        NormalUser userNotified = getNormalByUsername(usernameNotified);
-        userNotified.setChangedNormal();
-        userNotified.notifyObservers(notifArg);
+    private void notifyUser(String[] notifArg) {
+        currUserToNotify.setChangedNormal();
+        currUserToNotify.notifyObservers(notifArg);
     }
 }

@@ -691,9 +691,11 @@ public class UserManager extends Manager implements Serializable {
      * Getter for the notification helper.
      * Gives access to the methods that help create notifications triggered by certain user actions.
      *
+     * @param username the username of the user being notified
      * @return the notification helper
      */
-    public UserNotificationHelper getNotifHelper() {
+    public UserNotificationHelper getNotifHelper(String username) {
+        notifHelper.setCurrUserToNotify(getNormalByUsername(username));
         return notifHelper;
     }
 

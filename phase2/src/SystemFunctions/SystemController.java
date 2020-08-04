@@ -57,7 +57,8 @@ public class SystemController extends JFrame {
         for (String[] usernames : cancelledUserPairs) {
 
             /* Notify both users of incomplete trade (second notif created along with first in NotificationSystem) */
-            userManager.getNotifHelper().basicUpdate("INCOMPLETE TRADE", usernames[0], usernames[1]);
+            userManager.getNotifHelper(usernames[0]).basicUpdate
+                    ("INCOMPLETE TRADE", usernames[0], usernames[1]);
 
             userManager.increaseNormalUserNumIncomplete(usernames[0]);
             userManager.increaseNormalUserNumIncomplete(usernames[1]);
@@ -67,7 +68,8 @@ public class SystemController extends JFrame {
                 userManager.addUsernamesToFreeze(usernames[0]);
 
                 /* Notify user of exceeding incomplete trade limit */
-                userManager.getNotifHelper().basicUpdate("FREEZE WARNING", usernames[0], "");
+                userManager.getNotifHelper(usernames[0]).basicUpdate
+                        ("FREEZE WARNING", usernames[0], "");
             }
 
             if (userManager.getNormalUserNumIncomplete(usernames[1]) >
@@ -75,7 +77,8 @@ public class SystemController extends JFrame {
                 userManager.addUsernamesToFreeze(usernames[1]);
 
                 /* Notify user of exceeding incomplete trade limit */
-                userManager.getNotifHelper().basicUpdate("FREEZE WARNING", usernames[1], "");
+                userManager.getNotifHelper(usernames[1]).basicUpdate
+                        ("FREEZE WARNING", usernames[1], "");
             }
         }
         tradeManager.clearCancelledUserPairs();

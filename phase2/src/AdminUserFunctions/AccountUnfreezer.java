@@ -74,7 +74,8 @@ public class AccountUnfreezer extends MenuItem {
                             userManager.removeUnfreezeRequest(indexInput - 1);
 
                             /* Notify normal user of account being unfrozen */
-                            userManager.getNotifHelper().basicUpdate("UNFROZEN", unfreezeUsername, currUsername);
+                            userManager.getNotifHelper(unfreezeUsername).basicUpdate
+                                    ("UNFROZEN", unfreezeUsername, currUsername);
 
                             systemPresenter.adminGetUnfreezeRequests(2);
 

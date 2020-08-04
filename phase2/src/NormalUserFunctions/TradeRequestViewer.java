@@ -180,7 +180,7 @@ public class TradeRequestViewer extends MenuItem {
                         /* confirm rejection */
                         if (inputConfirm.equalsIgnoreCase("y")) {
                             /* Notify sender of rejected trade request */
-                            userManager.getNotifHelper().itemUpdate
+                            userManager.getNotifHelper(senderUsername).itemUpdate
                                     ("TRADE REQUEST REJECTED", senderUsername, currUsername,
                                             itemManager.getItemName(itemToLendID));
 
@@ -251,7 +251,7 @@ public class TradeRequestViewer extends MenuItem {
                             }
 
                             /* Notify sender of accepted trade request */
-                            userManager.getNotifHelper().itemUpdate
+                            userManager.getNotifHelper(senderUsername).itemUpdate
                                     ("TRADE REQUEST ACCEPTED", senderUsername, currUsername,
                                             itemManager.getItemName(itemToLendID));
                         } else {
