@@ -2,6 +2,7 @@ package SystemManagers;
 
 import Entities.Notification;
 import Entities.RevertibleNotification;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Observer;
  * @since 2020-07-30
  * last modified 2020-08-03
  */
-public class NotificationSystem implements Observer {
+public class NotificationSystem extends Manager implements Observer, Serializable {
 
     // Record of important activities that generated a notification
     private List<Notification> fullActivityLog;

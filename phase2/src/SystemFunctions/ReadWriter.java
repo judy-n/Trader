@@ -2,6 +2,7 @@ package SystemFunctions;
 
 import SystemManagers.ItemManager;
 import SystemManagers.Manager;
+import SystemManagers.NotificationSystem;
 import SystemManagers.TradeManager;
 import SystemManagers.UserManager;
 import java.io.BufferedInputStream;
@@ -26,7 +27,7 @@ import java.io.ObjectOutputStream;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-17
- * last modified 2020-07-31
+ * last modified 2020-08-03
  */
 
 public class ReadWriter {
@@ -35,10 +36,10 @@ public class ReadWriter {
     }
 
     /**
-     * Deserializes the .ser file that contains <Manager></Manager>'s serialization.
+     * Deserializes the .ser file that contains a <Manager></Manager>'s serialization.
      *
      * @param filePath the path of the file being read
-     * @return the de-serialized <Manager></Manager> if the file exists, a new <UserManager></UserManager> otherwise
+     * @return the de-serialized <Manager></Manager> if the file exists, a new <Manager></Manager> otherwise
      * @throws IOException            when an IO error occurs during deserialization
      * @throws ClassNotFoundException when <Manager></Manager> or any of the classes it depends on can't be found
      */
@@ -65,14 +66,20 @@ public class ReadWriter {
                     TradeManager tradeManager = (TradeManager) objectInputStream.readObject();
                     objectInputStream.close();
                     return tradeManager;
+                case 4:
+                    NotificationSystem notifSystem = (NotificationSystem) objectInputStream.readObject();
+                    objectInputStream.close();
+                    return notifSystem;
             }
         }
         if (type == 1) {
             return new UserManager();
         } else if (type == 2) {
             return new ItemManager();
-        } else {
+        } else if (type == 3) {
             return new TradeManager();
+        } else {
+            return new NotificationSystem();
         }
     }
 
@@ -148,18 +155,18 @@ public class ReadWriter {
      */
     public void saveThresholdsToFile(String filePath, String thresholdType, int oldThreshold, int newThreshold) throws IOException {
         File file = new File(filePath);
-        String oldContent = "";
+        StringBuilder oldContent = new StringBuilder();
 
         BufferedReader reader = new BufferedReader(new FileReader(file));
 
         String line = reader.readLine();
 
         while (line != null) {
-            oldContent = oldContent + line + System.lineSeparator();
+            oldContent.append(line).append(System.lineSeparator());
             line = reader.readLine();
         }
 
-        String newContent = oldContent.replaceAll(thresholdType + oldThreshold,
+        String newContent = oldContent.toString().replaceAll(thresholdType + oldThreshold,
                 thresholdType + newThreshold);
 
         FileWriter writer = new FileWriter(file);
