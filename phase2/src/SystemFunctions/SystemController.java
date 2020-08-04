@@ -26,15 +26,16 @@ public class SystemController extends JFrame {
     private UserManager userManager;
     private ItemManager itemManager;
     private TradeManager tradeManager;
+    private NotificationSystem notifSystem;
 
     private ReadWriter readWriter;
 
     private final String USER_MANAGER_PATH = "src/usermanager.ser";
     private final String ITEM_MANAGER_PATH = "src/itemmanager.ser";
     private final String TRADE_MANAGER_PATH = "src/trademanager.ser";
+    private final String NOTIF_SYSTEM_PATH = "src/notifsystem.ser";
 
     private SystemPresenter systemPresenter;
-    private NotificationSystem notifSystem;
 
     /**
      * Creates a <SystemController></SystemController>.
@@ -48,6 +49,7 @@ public class SystemController extends JFrame {
 
         readWriter = new ReadWriter();
         tryReadManagers();
+
         int[] defaultThresholds = tryReadThresholds();
         userManager.setCurrentThresholds(defaultThresholds);
 
@@ -167,6 +169,14 @@ public class SystemController extends JFrame {
         } catch (ClassNotFoundException e) {
             systemPresenter.exceptionMessage(2, "Reading", "TradeManager");
         }
+
+        try {
+            notifSystem = (NotificationSystem) readWriter.readFromFile(NOTIF_SYSTEM_PATH, 4);
+        } catch (IOException e) {
+            systemPresenter.exceptionMessage(1, "Reading", "NotificationSystem");
+        } catch (ClassNotFoundException e) {
+            systemPresenter.exceptionMessage(2, "Reading", "NotificationSystem");
+        }
     }
 
     public void tryWriteManagers() {
@@ -186,6 +196,12 @@ public class SystemController extends JFrame {
             readWriter.saveToFile(TRADE_MANAGER_PATH, tradeManager);
         } catch (IOException e) {
             systemPresenter.exceptionMessage(1, "Writing", "TradeManager");
+        }
+
+        try {
+            readWriter.saveToFile(NOTIF_SYSTEM_PATH, notifSystem);
+        } catch (IOException e) {
+            systemPresenter.exceptionMessage(1, "Writing", "NotificationSystem");
         }
     }
 
