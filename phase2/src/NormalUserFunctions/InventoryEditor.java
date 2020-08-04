@@ -133,7 +133,7 @@ public class InventoryEditor extends MenuItem {
                         }
                         if (confirmInput.equalsIgnoreCase("Y")) {
 
-                            userManager.removeNormalUserinventory(selectedItemID, currUsername);
+                            userManager.removeNormalUserInventory(selectedItemID, currUsername);
                             itemManager.getItem(selectedItemID).setIsRemoved(true);
                             // don't remove from ItemManager
 

@@ -327,7 +327,7 @@ public class OngoingTradesViewer extends MenuItem {
     }
 
     private void close() {
-        new NormalDashboard(userManager.getNormalByUsername(currUsername), itemManager, userManager, tradeManager, notifSystem);
+        new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem);
     }
 
     @Override

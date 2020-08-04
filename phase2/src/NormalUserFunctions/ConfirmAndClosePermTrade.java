@@ -44,7 +44,7 @@ public class ConfirmAndClosePermTrade {
             long itemID2 = itemIDs[1];
 
             if (itemID1!= 0) {
-                userManager.removeNormalUserinventory(itemID1, tempUsername1);
+                userManager.removeNormalUserInventory(itemID1, tempUsername1);
                 tempUser1.removeInventory(itemID1);
                 itemManager.getItem(itemID1).setIsRemoved(true);
                 if (tempUser2.getWishlist().contains(itemID1)) {
@@ -52,7 +52,7 @@ public class ConfirmAndClosePermTrade {
                 }
             }
             if (itemID2 != 0) {
-                userManager.removeNormalUserinventory(itemID2, tempUsername2);
+                userManager.removeNormalUserInventory(itemID2, tempUsername2);
                 itemManager.getItem(itemID2).setIsRemoved(true);
                 if (tempUser1.getWishlist().contains(itemID2)) {
                     tempUser1.removeWishlist(itemID2);

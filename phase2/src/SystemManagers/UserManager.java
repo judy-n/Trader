@@ -754,7 +754,7 @@ public class UserManager extends Manager implements Serializable {
      * @param itemID          the itemID to be removed
      * @param usernameOrEmail the Normal User's username or email
      */
-    public void removeNormalUserinventory(long itemID, String usernameOrEmail) {
+    public void removeNormalUserInventory(long itemID, String usernameOrEmail) {
         getNormalByUsernameOrEmail(usernameOrEmail).removeInventory(itemID);
     }
 

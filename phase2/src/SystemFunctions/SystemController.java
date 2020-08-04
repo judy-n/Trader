@@ -128,7 +128,8 @@ public class SystemController extends JFrame {
     }
 
     public void userLogin(String usernameOrEmail, JFrame parent){
-        String currUsername = userManager.getUsername(usernameOrEmail);
+        String currUsername = userManager.getUserByUsernameOrEmail(usernameOrEmail).getUsername();
+        System.out.println(currUsername);
         if (userManager.isAdmin(currUsername)) {
             new DashboardFrame(new AdminDashboard(currUsername, itemManager, userManager, notifSystem), parent);
         } else {

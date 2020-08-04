@@ -30,14 +30,19 @@ public class NormalDashboard extends Dashboard {
     private TradeManager tradeManager;
     private NotificationSystem notifSystem;
 
+
     /**
      * Creates a <NormalDashboard></NormalDashboard> with the given normal user,
      * item/user/trade managers, and notification system.
      *
+     * @param username     the username of the normal user who's currently logged in
+     * @param itemManager  the system's item manager
+     * @param userManager  the system's user manager
+     * @param tradeManager the system's trade manager
+     * @param notifSystem  the system's notification manager
      */
     public NormalDashboard(String username, ItemManager itemManager, UserManager userManager,
                            TradeManager tradeManager, NotificationSystem notifSystem) {
-
         this.currUsername = username;
         this.itemManager = itemManager;
         this.userManager = userManager;
@@ -51,63 +56,73 @@ public class NormalDashboard extends Dashboard {
         this.repaint();
     }
 
-
-    /**
-     * Creates a <NormalDashboard></NormalDashboard> with the given normal user,
-     * item/user/trade managers, and notification system.
-     *
-     * @param user         the normal user who's currently logged in
-     * @param itemManager  the system's item manager
-     * @param userManager  the system's user manager
-     * @param tradeManager the system's trade manager
-     * @param notifSystem  the system's notification manager
-     */
-    public NormalDashboard(NormalUser user, ItemManager itemManager, UserManager userManager,
-                           TradeManager tradeManager, NotificationSystem notifSystem) {
-        currentUser = user;
-        this.itemManager = itemManager;
-        this.userManager = userManager;
-        this.tradeManager = tradeManager;
-        this.notifSystem = notifSystem;
-
-        this.setPreferredSize(new Dimension(820, 576));
-        this.setLayout(null);
-        drawDefault();
-        this.validate();
-        this.repaint();
-    }
-
     private void drawDefault() {
-        JButton userProfilePic = new JButton();
-        userProfilePic.setSize(new Dimension(85, 110));
-        userProfilePic.setBackground(Color.BLACK);
-        this.add(userProfilePic);
-        userProfilePic.setLocation(30, 30);
-
-        JLabel inventory = new JLabel("Inventory");
-        inventory.setSize(new Dimension(200, 30));
-        inventory.setForeground(Color.BLACK);
-        this.add(inventory);
-        inventory.setLocation(30, 150);
-
-        JLabel wishlist = new JLabel("Wishlist");
-        wishlist.setSize(200, 30);
-        wishlist.setForeground(Color.BLACK);
-        this.add(wishlist);
-        wishlist.setLocation(30, 190);
+//        JButton userProfilePic = new JButton();
+//        userProfilePic.setSize(new Dimension(85, 110));
+//        userProfilePic.setBackground(Color.BLACK);
+//        this.add(userProfilePic);
+//        userProfilePic.setLocation(30, 30);
+//        JButton inventory = new JButton("Inventory");
+//        initializeButton(inventory, 200,30,30,150);
+        //inventory.addActionListener(e -> drawPopUpListViewer());
+//        JLabel inventory = new JLabel("Inventory");
+//        initializeLabel(inventory, 200,30, 30, 150);
+//        JLabel wishlist = new JLabel("Wishlist");
+//        initializeLabel(wishlist, 200,30,30, 190);
+//        String labels[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
+//        String labelss[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
+//        JList<String> catalogDisplayList = new JList<>(labels);
+//        JList<String> inventoryList = new JList<>(labelss);
+//
+//        //catalogDisplayList.setBounds(30,150, 100,100);
+//        catalogDisplayList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//        inventoryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//        JScrollPane scrollableCatalog = new JScrollPane(catalogDisplayList);
+//        JScrollPane scrollableInventory = new JScrollPane(inventoryList);
+//
+//        //scrollableCatalog.setPreferredSize(new Dimension(200,100));
+//        scrollableInventory.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+//        scrollableInventory.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+//        scrollableCatalog.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+//        scrollableCatalog.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+//        this.add(scrollableCatalog, BorderLayout.CENTER);
+        //this.add(scrollableInventory, BorderLayout.EAST);
     }
-//        String regex = "[0-9]";
+
+    private void drawPopUpListViewer(){
+        String labels[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
+        JList<String> catalogDisplayList = new JList<>(labels);
+        catalogDisplayList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollableCatalog = new JScrollPane(catalogDisplayList);
+        scrollableCatalog.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollableCatalog.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+
+    }
+
+    private void initializeLabel(JLabel label, int width, int height, int x_pos, int y_pos){
+        label.setSize(width, height);
+        label.setForeground(Color.BLACK);
+        this.add(label);
+        label.setLocation(x_pos, y_pos);
+
+    }
+
+//        String regex = "[0-7]";
 //
 //        // user frozen and on vacation
 //        if ((currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
+//            regex = "[0-8]+[10]";
 //            //systemPresenter.normalDashboard(2);
 //        }
 //
 //        // user frozen and not on vacation
 //        else if ((currentUser.getIsFrozen()) && !(currentUser.getIsOnVacation())) {
+//            regex = "[0-9]";
 //            //systemPresenter.normalDashboard(3);
 //        }
 //
+//        // why is this regex not right?? i dont see it.
 //        // user not frozen and on vacation
 //        else if (!(currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
 //            regex = "[0-7]+[9]";
@@ -201,10 +216,9 @@ public class NormalDashboard extends Dashboard {
         button.setLocation(xPos, yPos);
 
     }
-
     @Override
     public String getUsername() {
-        return currentUser.getUsername();
+        return currUsername;
     }
 
     @Override
