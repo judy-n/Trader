@@ -35,52 +35,52 @@ public class AdminDashboard extends Dashboard {
         this.currUsername = username;
         this.userManager = userManager;
 
-        SystemPresenter systemPresenter = new SystemPresenter();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
-        String regex = "[0-4]";
-        int adminID = userManager.getAdminID(currUsername);
-
-        systemPresenter.showAdminID(adminID);
-        if (adminID != 1) {
-            systemPresenter.adminDashboard(1);
-        } else {
-            regex = "[0-5]";
-            systemPresenter.adminDashboard(2);
-        }
-        try {
-            String temp;
-            temp = bufferedReader.readLine();
-            while (!temp.matches(regex)) {
-                systemPresenter.invalidInput();
-                temp = bufferedReader.readLine();
-            }
-            input = Integer.parseInt(temp);
-        } catch (IOException e) {
-            systemPresenter.exceptionMessage();
-        }
-
-        switch (input) {
-            case 0:
-                systemPresenter.logoutMessage();
-                break;
-            case 1:
-                new CatalogEditor(currUsername, itemManager, userManager, notifSystem);
-                break;
-            case 2:
-                new AccountFreezer(currUsername, itemManager, userManager, notifSystem);
-                break;
-            case 3:
-                new AccountUnfreezer(currUsername, itemManager, userManager, notifSystem);
-                break;
-
-            case 4:
-                new ThresholdEditor(currUsername, itemManager, userManager, notifSystem);
-                break;
-            case 5:
-                new AdminCreator(currUsername, itemManager, userManager, notifSystem);
-                break;
-        }
+//        SystemPresenter systemPresenter = new SystemPresenter();
+//        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+//
+//        String regex = "[0-4]";
+//        int adminID = userManager.getAdminID(currUsername);
+//
+//        systemPresenter.showAdminID(adminID);
+//        if (adminID != 1) {
+//            systemPresenter.adminDashboard(1);
+//        } else {
+//            regex = "[0-5]";
+//            systemPresenter.adminDashboard(2);
+//        }
+//        try {
+//            String temp;
+//            temp = bufferedReader.readLine();
+//            while (!temp.matches(regex)) {
+//                systemPresenter.invalidInput();
+//                temp = bufferedReader.readLine();
+//            }
+//            input = Integer.parseInt(temp);
+//        } catch (IOException e) {
+//            systemPresenter.exceptionMessage();
+//        }
+//
+//        switch (input) {
+//            case 0:
+//                systemPresenter.logoutMessage();
+//                break;
+//            case 1:
+//                new CatalogEditor(currUsername, itemManager, userManager, notifSystem);
+//                break;
+//            case 2:
+//                new AccountFreezer(currUsername, itemManager, userManager, notifSystem);
+//                break;
+//            case 3:
+//                new AccountUnfreezer(currUsername, itemManager, userManager, notifSystem);
+//                break;
+//
+//            case 4:
+//                new ThresholdEditor(currUsername, itemManager, userManager, notifSystem);
+//                break;
+//            case 5:
+//                new AdminCreator(currUsername, itemManager, userManager, notifSystem);
+//                break;
+        //}
     }
 
     @Override
@@ -89,7 +89,7 @@ public class AdminDashboard extends Dashboard {
     }
 
     @Override
-    public User getUser() {
-        return userManager.getAdminByUsername(currUsername);
+    public boolean isAdmin() {
+        return true;
     }
 }

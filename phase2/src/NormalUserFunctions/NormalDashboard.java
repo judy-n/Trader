@@ -1,15 +1,11 @@
 package NormalUserFunctions;
 
-import Entities.User;
 import SystemFunctions.Dashboard;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
 import Entities.NormalUser;
-
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * Displays a dashboard once a normal user logs in.
@@ -29,8 +25,7 @@ public class NormalDashboard extends Dashboard {
     private UserManager userManager;
     private TradeManager tradeManager;
     private NotificationSystem notifSystem;
-
-
+    private WishlistEditor wishlistEditor;
     /**
      * Creates a <NormalDashboard></NormalDashboard> with the given normal user,
      * item/user/trade managers, and notification system.
@@ -48,65 +43,25 @@ public class NormalDashboard extends Dashboard {
         this.userManager = userManager;
         this.tradeManager = tradeManager;
         this.notifSystem = notifSystem;
-
-        this.setPreferredSize(new Dimension(820, 576));
-        this.setLayout(null);
-        drawDefault();
-        this.validate();
-        this.repaint();
+        currentUser = userManager.getNormalByUsername(username);
+        wishlistEditor = new WishlistEditor(currUsername, itemManager, userManager);
+    }
+    public void editUserStatus(){
+        new StatusEditor(currUsername, userManager);
     }
 
-    private void drawDefault() {
-//        JButton userProfilePic = new JButton();
-//        userProfilePic.setSize(new Dimension(85, 110));
-//        userProfilePic.setBackground(Color.BLACK);
-//        this.add(userProfilePic);
-//        userProfilePic.setLocation(30, 30);
-//        JButton inventory = new JButton("Inventory");
-//        initializeButton(inventory, 200,30,30,150);
-        //inventory.addActionListener(e -> drawPopUpListViewer());
-//        JLabel inventory = new JLabel("Inventory");
-//        initializeLabel(inventory, 200,30, 30, 150);
-//        JLabel wishlist = new JLabel("Wishlist");
-//        initializeLabel(wishlist, 200,30,30, 190);
-//        String labels[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
-//        String labelss[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
-//        JList<String> catalogDisplayList = new JList<>(labels);
-//        JList<String> inventoryList = new JList<>(labelss);
-//
-//        //catalogDisplayList.setBounds(30,150, 100,100);
-//        catalogDisplayList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//        inventoryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//        JScrollPane scrollableCatalog = new JScrollPane(catalogDisplayList);
-//        JScrollPane scrollableInventory = new JScrollPane(inventoryList);
-//
-//        //scrollableCatalog.setPreferredSize(new Dimension(200,100));
-//        scrollableInventory.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-//        scrollableInventory.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-//        scrollableCatalog.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-//        scrollableCatalog.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-//        this.add(scrollableCatalog, BorderLayout.CENTER);
-        //this.add(scrollableInventory, BorderLayout.EAST);
+    public void sendUnfreezeRequest(){
+        new UnfreezeRequester(currUsername, userManager);
     }
 
-    private void drawPopUpListViewer(){
-        String labels[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
-        JList<String> catalogDisplayList = new JList<>(labels);
-        catalogDisplayList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane scrollableCatalog = new JScrollPane(catalogDisplayList);
-        scrollableCatalog.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollableCatalog.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-
+    public String[] getWishlist(){
+       return wishlistEditor.getWishlist();
     }
 
-    private void initializeLabel(JLabel label, int width, int height, int x_pos, int y_pos){
-        label.setSize(width, height);
-        label.setForeground(Color.BLACK);
-        this.add(label);
-        label.setLocation(x_pos, y_pos);
-
+    public void removeFromWishlist(int index){
+        wishlistEditor.removeItem(index);
     }
+
 
 //        String regex = "[0-7]";
 //
@@ -179,48 +134,15 @@ public class NormalDashboard extends Dashboard {
 //                /* View top three most frequent trading partners (only counts if trades are completed) */
 //                new CompletedTradesViewer(currentUser, itemManager, userManager, tradeManager).viewTopThreeTrader();
 //                break;
-//
-//            case 8:
-//                /*
-//                 * Unfreeze request option.
-//                 * Only appears for frozen accounts.
-//                 */
-//                new AccountUnfreezer(currentUser, itemManager, userManager, tradeManager);
-//                break;
-//
-//            case 9:
-//                // change vacation status.
-//                new Vacation(currentUser, itemManager, userManager, tradeManager);
-//                break;
 //        }
 
-//    private void initializeJComponent(JComponent component, int x_pos, int y_pos, int width, int height){
-//        component.setSize(new Dimension(width, height));
-//
-//        if(component instanceof JLabel){
-//            ((JLabel) component).setText("AHHHHH");
-//        }
-//        component.setForeground(Color.BLACK);
-//        component.setBackground(Color.BLACK);
-//        this.add(component);
-//        component.setLocation(x_pos, y_pos);
-//
-//    }
-
-    private void initializeButton(JButton button, int width, int height, int xPos, int yPos) {
-        button.setBackground(Color.WHITE);
-        button.setForeground(Color.BLACK);
-        button.setSize(new Dimension(width, height));
-        button.setFocusPainted(false);
-        this.add(button);
-        button.setLocation(xPos, yPos);
-
-    }
     @Override
     public String getUsername() {
         return currUsername;
     }
 
     @Override
-    public User getUser() {return currentUser;}
+    public boolean isAdmin() {
+        return false;
+    }
 }

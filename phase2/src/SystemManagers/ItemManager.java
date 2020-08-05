@@ -123,7 +123,7 @@ public class ItemManager extends Manager implements Serializable {
      * @return the <Item></Item> associated with the given ID
      */
     public Item getItem(long itemID) {
-        return idGetItem(approvedItems, itemID);
+        return idGetItem(getAllItems(), itemID);
     }
 
     /**

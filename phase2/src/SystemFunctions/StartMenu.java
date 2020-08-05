@@ -162,7 +162,6 @@ public class StartMenu extends JPanel {
                 makeInvalidInputWarning(allTypeInvalidInput[0]);
                 if(allTypeInvalidInput[0].isEmpty()){
                     loggedIn();
-                    System.out.println(parent.getTitle());
                     systemController.userLogin(emailOrUsername, parent);
                     this.setVisible(true);
                 }
