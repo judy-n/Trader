@@ -16,7 +16,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-28
- * last modified 2020-07-31
+ * last modified 2020-08-05
  */
 public class TradeRequestSetup {
     private String currUsername;
@@ -123,7 +123,7 @@ public class TradeRequestSetup {
             }
 
             /* Notify other user of new trade request */
-            userManager.getNotifHelper(traderUsername).basicUpdate
+            userManager.notifyUser(traderUsername).basicUpdate
                     ("TRADE REQUEST RECEIVED", traderUsername, currUsername);
 
             systemPresenter.tradeRequestSetup(traderUsername);

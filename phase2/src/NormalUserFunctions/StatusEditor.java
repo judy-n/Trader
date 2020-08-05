@@ -8,7 +8,7 @@ import SystemManagers.UserManager;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-08-03
- * last modified 2020-08-04
+ * last modified 2020-08-05
  */
 public class StatusEditor {
     private UserManager userManager;
@@ -33,12 +33,12 @@ public class StatusEditor {
             userManager.removeUsernamesOnVacation(currUsername);
 
             /* Notify user of vacation status OFF */
-            userManager.getNotifHelper(currUsername).basicUpdate("OFF VACATION", currUsername, "");
+            userManager.notifyUser(currUsername).basicUpdate("OFF VACATION", currUsername, "");
         } else {
             userManager.addUsernamesOnVacation(currUsername);
 
             /* Notify user of vacation status ON */
-            userManager.getNotifHelper(currUsername).basicUpdate("ON VACATION", currUsername, "");
+            userManager.notifyUser(currUsername).basicUpdate("ON VACATION", currUsername, "");
         }
     }
 }

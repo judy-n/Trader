@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-08-03
+ * last modified 2020-08-05
  */
 public class ThresholdEditor {
     private ItemManager itemManager;
@@ -28,7 +28,6 @@ public class ThresholdEditor {
     private BufferedReader bufferedReader;
     private ReadWriter readWriter;
     private String currUsername;
-
 
     /**
      * Creates a <ThresholdEditor></ThresholdEditor> with the given admin username,
@@ -114,7 +113,7 @@ public class ThresholdEditor {
 
                             if (choiceInput != 0) {
                                 /* Notify user of threshold change */
-                                userManager.getNotifHelper(usernameInput).thresholdUpdate
+                                userManager.notifyUser(usernameInput).thresholdUpdate
                                         ("THRESHOLD SINGLE USER", usernameInput, currUsername, choiceInput, newThreshold);
                             }
                         }
@@ -182,7 +181,7 @@ public class ThresholdEditor {
                     /* Notifies all users of threshold change */
                     for (String normalUsername : userManager.getAllNormalUsernames()) {
                         /* Notify user of threshold change */
-                        userManager.getNotifHelper(normalUsername).thresholdUpdate
+                        userManager.notifyUser(normalUsername).thresholdUpdate
                                 ("THRESHOLD ALL USER", normalUsername, currUsername, choiceInput, newThreshold);
                     }
                 }
@@ -191,7 +190,6 @@ public class ThresholdEditor {
         } catch (IOException e) {
             systemPresenter.exceptionMessage();
         }
-
     }
 
     private int thresholdInputCheck() throws IOException {

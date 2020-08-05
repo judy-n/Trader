@@ -72,6 +72,10 @@ From A's own actions:
 + A comes back from vacation
     "Welcome back! Your account has now regained full functionality."
 
+--------------------------------------------------------------------
+
+- admin creates new admin (only recorded in activity log)
+
 =================================================================================================================================
 CATAGORIZED:
 

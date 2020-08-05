@@ -30,7 +30,7 @@ public class AccountUnfreezer extends MenuItem {
      * item/user managers, and notification system.
      * Lets the admin view requests to be unfrozen and choose which ones to accept.
      *
-     * @param username the username of the admin who's currently logged in
+     * @param username    the username of the admin who's currently logged in
      * @param itemManager the system's item manager
      * @param userManager the system's user manager
      * @param notifSystem the system's notification manager
@@ -45,20 +45,19 @@ public class AccountUnfreezer extends MenuItem {
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        int indexInput;
-        List<String> usernames = userManager.getUnfreezeRequests();
-
-        systemPresenter.adminGetUnfreezeRequests(usernames);
-        if (!usernames.isEmpty()) {
-            try {
-                String input = bufferedReader.readLine();
-                while (!input.equalsIgnoreCase("y") && !input.equalsIgnoreCase("n")) {
-                    systemPresenter.invalidInput();
-                    input = bufferedReader.readLine();
-                }
-                if (input.equalsIgnoreCase("y")) {
-                    do {
-
+        int indexInput = 0;
+        List<String> usernames;
+        do {
+            usernames = userManager.getUnfreezeRequests();
+            systemPresenter.adminGetUnfreezeRequests(usernames);
+            if (!usernames.isEmpty()) {
+                try {
+                    String input = bufferedReader.readLine();
+                    while (!input.equalsIgnoreCase("y") && !input.equalsIgnoreCase("n")) {
+                        systemPresenter.invalidInput();
+                        input = bufferedReader.readLine();
+                    }
+                    if (input.equalsIgnoreCase("y")) {
                         systemPresenter.adminGetUnfreezeRequests(1);
 
                         int max = userManager.getNumUnfreezeRequest();
@@ -74,21 +73,20 @@ public class AccountUnfreezer extends MenuItem {
                             userManager.removeUnfreezeRequest(indexInput - 1);
 
                             /* Notify normal user of account being unfrozen */
-                            userManager.getNotifHelper(unfreezeUsername).basicUpdate
+                            userManager.notifyUser(unfreezeUsername).basicUpdate
                                     ("UNFROZEN", unfreezeUsername, currUsername);
 
                             systemPresenter.adminGetUnfreezeRequests(2);
-
-                            usernames = userManager.getUnfreezeRequests(); // update list
-                            systemPresenter.adminGetUnfreezeRequests(usernames); // reprint the list to update indexes
                         }
-                    } while (indexInput != 0);
+                    }
+                    systemPresenter.adminGetUnfreezeRequests(3);
+                } catch (IOException e) {
+                    systemPresenter.exceptionMessage();
                 }
-                systemPresenter.adminGetUnfreezeRequests(3);
-            } catch (IOException e) {
-                systemPresenter.exceptionMessage();
+            } else {
+                break;
             }
-        }
+        } while (indexInput != 0);
         close();
     }
 

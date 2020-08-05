@@ -15,7 +15,7 @@ import java.util.List;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-01
+ * last modified 2020-08-05
  */
 public class ItemManager extends Manager implements Serializable {
     private List<Item> approvedItems;
@@ -117,9 +117,9 @@ public class ItemManager extends Manager implements Serializable {
     }
 
     /**
-     * Takes in an approved item ID and returns the associated <Item></Item> object.
+     * Takes in an item ID and returns the associated <Item></Item> object.
      *
-     * @param itemID the ID of an approved item
+     * @param itemID the ID of an item
      * @return the <Item></Item> associated with the given ID
      */
     public Item getItem(long itemID) {
@@ -159,7 +159,7 @@ public class ItemManager extends Manager implements Serializable {
      * @return the ID of the pending item at the given index
      */
     public long getPendingItem(int index) {
-        return pendingItems.get(index - 1).getID();
+        return pendingItems.get(index).getID();
     }
 
     /*

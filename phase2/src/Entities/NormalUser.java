@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
 
 /**
  * Represents a normal user in our trade program.
@@ -19,7 +18,7 @@ import java.util.Observable;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-02
+ * last modified 2020-08-05
  */
 public class NormalUser extends User implements Serializable {
     private List<Long> inventory;
@@ -376,10 +375,6 @@ public class NormalUser extends User implements Serializable {
      */
     public void setHomeCity(String homeCity) {
         this.homeCity = homeCity;
-    }
-
-    public void setChangedNormal() {
-        setChanged();
     }
 }
 

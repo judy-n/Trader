@@ -17,7 +17,7 @@ import java.util.Observer;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-30
- * last modified 2020-08-03
+ * last modified 2020-08-05
  */
 public class NotificationSystem extends Manager implements Observer, Serializable {
 
@@ -41,13 +41,17 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
     }
 
     /**
-     * Takes in the username of a normal user and returns a list of all their notifications.
+     * Takes in the username of a normal user and returns a list of strings representing all their notifications.
      *
      * @param username the username of the user whose notifications are being retrieved
-     * @return a list of all the given user's notifications
+     * @return a list of string representations of all the given user's notifications
      */
-    public List<Notification> getUserNotifs(String username) {
-        return userToNotifMap.get(username);
+    public List<String> getUserNotifStrings(String username) {
+        List<String> notifStrings = new ArrayList<>();
+        for (Notification n : userToNotifMap.get(username)) {
+            notifStrings.add(n.toString());
+        }
+        return notifStrings;
     }
 
     /**
@@ -70,18 +74,32 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
     @Override
     public void update(Observable user, Object arg) {
         String[] notifArg = (String[]) arg;
+        String usernameNotified = notifArg[0];
+        String mainMessage = "";
 
-        if (notifArg.length == 3) {
-            createNotif(notifArg[0], notifArg[1], notifArg[2]);
+        if (notifArg.length == 1) {
+            recordAdminCreation(notifArg[0]);
+        } else if (notifArg.length == 3) {
+            mainMessage = createNotif(notifArg[0], notifArg[1], notifArg[2]);
         } else if (notifArg.length == 4) {
-            createNotif(notifArg[0], notifArg[1], notifArg[2], notifArg[3]);
+            mainMessage = createNotif(notifArg[0], notifArg[1], notifArg[2], notifArg[3]);
         } else if (notifArg.length == 5) {
-            createNotif(notifArg[0], notifArg[1], notifArg[2], notifArg[3], notifArg[4]);
+            mainMessage = createNotif(notifArg[0], notifArg[1], notifArg[2], notifArg[3], notifArg[4]);
+        } else {
+            mainMessage = "Unknown notification type! :(";
+        }
+
+        if (!mainMessage.equals("")) {
+            Notification mainNotif = new Notification(mainMessage);
+            userToNotifMap.get(usernameNotified).add(mainNotif);
         }
     }
 
-    private void createNotif(String notifType, String usernameNotified, String otherParty) {
-        Notification mainNotif;
+    private void recordAdminCreation (String newUsername) {
+        recordActivity(null, "Initial admin created new admin " + newUsername + " .");
+    }
+
+    private String createNotif(String notifType, String usernameNotified, String otherParty) {
         Notification activityToRecord = null;
         String mainMessage;
         String recordMessage = "";
@@ -164,20 +182,14 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
                 break;
         }
 
-        mainNotif = new Notification(mainMessage);
-        userToNotifMap.get(usernameNotified).add(mainNotif);
-
         if (!recordMessage.equals("")) {
-            if (activityToRecord == null) {
-                activityToRecord = new Notification(recordMessage);
-            }
-            recordActivity(activityToRecord);
+            recordActivity(activityToRecord, recordMessage);
         }
+        return mainMessage;
     }
 
-    private void createNotif(String notifType, String usernameNotified, String otherParty, String subjectName) {
-        Notification mainNotif;
-        Notification activityToRecord;
+    private String createNotif(String notifType, String usernameNotified, String otherParty, String subjectName) {
+        Notification activityToRecord = null;
         String mainMessage;
         String recordMessage = "";
 
@@ -219,18 +231,14 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
                 break;
         }
 
-        mainNotif = new Notification(mainMessage);
-        userToNotifMap.get(usernameNotified).add(mainNotif);
-
         if (!recordMessage.equals("")) {
-            activityToRecord = new Notification(recordMessage);
-            recordActivity(activityToRecord);
+            recordActivity(activityToRecord, recordMessage);
         }
+        return mainMessage;
     }
 
-    private void createNotif(String notifType, String usernameNotified, String otherParty,
+    private String createNotif(String notifType, String usernameNotified, String otherParty,
                             String subjectName, String subjectValue) {
-        Notification mainNotif;
         Notification activityToRecord = null;
         String mainMessage;
         String recordMessage = "";
@@ -243,16 +251,16 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
 
                 // Item approval can be undone by an admin.
                 activityToRecord = new RevertibleNotification(recordMessage, usernameNotified, subjectValue);
-                
+
                 break;
             case "THRESHOLD SINGLE USER":
                 mainMessage = "An admin changed your [" + subjectName + "] to " + subjectValue + ".";
-                recordMessage = "Admin " + otherParty + " changed " + usernameNotified + "'s " 
+                recordMessage = "Admin " + otherParty + " changed " + usernameNotified + "'s "
                         + subjectName + " to " + subjectValue + ".";
                 break;
             case "THRESHOLD ALL USERS":
                 mainMessage = "The default " + subjectName + " has been changed to " + subjectValue + " for all users.";
-                recordMessage = "Admin " + otherParty + " changed the default " + subjectName + 
+                recordMessage = "Admin " + otherParty + " changed the default " + subjectName +
                         " to " + subjectValue + " for all users.";
                 break;
             default:
@@ -260,20 +268,18 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
                 break;
         }
 
-        mainNotif = new Notification(mainMessage);
-        userToNotifMap.get(usernameNotified).add(mainNotif);
-        
         if (!recordMessage.equals("")) {
-            if (activityToRecord == null) {
-                activityToRecord = new Notification(recordMessage);
-            }
-            recordActivity(activityToRecord);
+            recordActivity(activityToRecord, recordMessage);
         }
+        return mainMessage;
     }
 
-    private void recordActivity(Notification activityToRecord) {
+    private void recordActivity(Notification activityToRecord, String recordMessage) {
+
         if (activityToRecord instanceof RevertibleNotification) {
             revertibleActivityLog.add((RevertibleNotification) activityToRecord);
+        } else {
+            activityToRecord = new Notification(recordMessage);
         }
         fullActivityLog.add(activityToRecord);
     }

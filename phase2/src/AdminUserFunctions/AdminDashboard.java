@@ -1,14 +1,9 @@
 package AdminUserFunctions;
 
-import Entities.User;
 import SystemFunctions.Dashboard;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
-import SystemFunctions.SystemPresenter;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  * Displays a dashboard once an administrative user logs in.
@@ -16,7 +11,7 @@ import java.io.InputStreamReader;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-08-03
+ * last modified 2020-08-05
  */
 
 public class AdminDashboard extends Dashboard {

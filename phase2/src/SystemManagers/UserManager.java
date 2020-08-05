@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-03
+ * last modified 2020-08-05
  */
 public class UserManager extends Manager implements Serializable {
     private List<NormalUser> allNormals;
@@ -688,14 +688,16 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Getter for the notification helper.
-     * Gives access to the methods that help create notifications triggered by certain user actions.
+     * Gets the notification helper which gives access to the methods that help
+     * create notifications triggered by certain user actions.
      *
      * @param username the username of the user being notified
+     *                 (except in the case where the initial admin's username is passed in,
+     *                 which doesn't notify the init admin but records an action in the activity log)
      * @return the notification helper
      */
-    public UserNotificationHelper getNotifHelper(String username) {
-        notifHelper.setCurrUserToNotify(getNormalByUsername(username));
+    public UserNotificationHelper notifyUser(String username) {
+        notifHelper.setCurrUserToNotify(getUserByUsername(username));
         return notifHelper;
     }
 

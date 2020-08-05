@@ -26,7 +26,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-08-01
+ * last modified 2020-08-05
  */
 public class OngoingTradesViewer extends MenuItem {
     private String currUsername;
@@ -151,7 +151,7 @@ public class OngoingTradesViewer extends MenuItem {
                                 selectedTrade.addUserEditCount(currUsername);
 
                                 /* Notify other user of new suggestion */
-                                userManager.getNotifHelper(traderUsername).basicUpdate
+                                userManager.notifyUser(traderUsername).basicUpdate
                                         ("NEW SUGGESTION", traderUsername, currUsername);
 
                                 systemPresenter.ongoingTrades(11);
@@ -190,7 +190,7 @@ public class OngoingTradesViewer extends MenuItem {
                                 systemPresenter.ongoingTrades(4);
 
                                 /* Notify other user of meeting agreement */
-                                userManager.getNotifHelper(traderUsername).basicUpdate
+                                userManager.notifyUser(traderUsername).basicUpdate
                                         ("MEETING AGREED", traderUsername, currUsername);
                             }
                             break;
@@ -225,13 +225,13 @@ public class OngoingTradesViewer extends MenuItem {
 
                                 if (selectedTrade.getIsComplete()) {
                                     /* Notify other user of temp trade closing */
-                                    userManager.getNotifHelper(traderUsername).basicUpdate
+                                    userManager.notifyUser(traderUsername).basicUpdate
                                             ("CONFIRM TEMP TRADE SECOND TRANSACTION AFTER", traderUsername, currUsername);
 
                                     systemPresenter.ongoingTrades(14);
                                 } else {
                                     /* Notify other user of this user confirming before them */
-                                    userManager.getNotifHelper(traderUsername).basicUpdate
+                                    userManager.notifyUser(traderUsername).basicUpdate
                                             ("CONFIRM BEFORE", traderUsername, currUsername);
 
                                     systemPresenter.ongoingTrades(3);
@@ -244,13 +244,13 @@ public class OngoingTradesViewer extends MenuItem {
 
                                 if (((TemporaryTrade) selectedTrade).hasSecondMeeting()) {
                                     /* Notify other user of temp trade first transaction closing */
-                                    userManager.getNotifHelper(traderUsername).basicUpdate
+                                    userManager.notifyUser(traderUsername).basicUpdate
                                             ("CONFIRM TEMP TRADE FIRST TRANSACTION AFTER", traderUsername, currUsername);
 
                                     systemPresenter.ongoingTrades(15);
                                 } else {
                                     /* Notify other user of this user confirming before them */
-                                    userManager.getNotifHelper(traderUsername).basicUpdate
+                                    userManager.notifyUser(traderUsername).basicUpdate
                                             ("CONFIRM BEFORE", traderUsername, currUsername);
 
                                     systemPresenter.ongoingTrades(3);
@@ -264,13 +264,13 @@ public class OngoingTradesViewer extends MenuItem {
 
                                 if (selectedTrade.getIsComplete()) {
                                     /* Notify other user of perm trade closing */
-                                    userManager.getNotifHelper(traderUsername).basicUpdate
+                                    userManager.notifyUser(traderUsername).basicUpdate
                                             ("CONFIRM PERM TRADE AFTER", traderUsername, currUsername);
 
                                     systemPresenter.ongoingTrades(13);
                                 } else {
                                     /* Notify other user of this user confirming before them */
-                                    userManager.getNotifHelper(traderUsername).basicUpdate
+                                    userManager.notifyUser(traderUsername).basicUpdate
                                             ("CONFIRM BEFORE", traderUsername, currUsername);
                                     systemPresenter.ongoingTrades(3);
                                 }
@@ -312,7 +312,7 @@ public class OngoingTradesViewer extends MenuItem {
                                 itemName = itemManager.getItemName(selectedTrade.getLentItemID(currUsername));
                             }
                             /* Notify the other user of cancelled trade */
-                            userManager.getNotifHelper(traderUsername).itemUpdate
+                            userManager.notifyUser(traderUsername).itemUpdate
                                     ("TRADE CANCELLED", traderUsername, currUsername, itemName);
                             break;
                         case 5:

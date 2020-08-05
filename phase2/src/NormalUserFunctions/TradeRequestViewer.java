@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-29
- * last modified 2020-08-03
+ * last modified 2020-08-05
  */
 public class TradeRequestViewer extends MenuItem {
     private String currUsername;
@@ -180,7 +180,7 @@ public class TradeRequestViewer extends MenuItem {
                         /* confirm rejection */
                         if (inputConfirm.equalsIgnoreCase("y")) {
                             /* Notify sender of rejected trade request */
-                            userManager.getNotifHelper(senderUsername).itemUpdate
+                            userManager.notifyUser(senderUsername).itemUpdate
                                     ("TRADE REQUEST REJECTED", senderUsername, currUsername,
                                             itemManager.getItemName(itemToLendID));
 
@@ -251,7 +251,7 @@ public class TradeRequestViewer extends MenuItem {
                             }
 
                             /* Notify sender of accepted trade request */
-                            userManager.getNotifHelper(senderUsername).itemUpdate
+                            userManager.notifyUser(senderUsername).itemUpdate
                                     ("TRADE REQUEST ACCEPTED", senderUsername, currUsername,
                                             itemManager.getItemName(itemToLendID));
                         } else {

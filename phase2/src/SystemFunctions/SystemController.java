@@ -20,7 +20,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-08-03
+ * last modified 2020-08-05
  */
 public class SystemController extends JFrame {
     private UserManager userManager;
@@ -50,16 +50,26 @@ public class SystemController extends JFrame {
         readWriter = new ReadWriter();
         tryReadManagers();
 
+        if (userManager.getAllUsers().isEmpty()) {
+            tryReadAdmin();
+            //for testing
+            userManager.createNormalUser("test", "a@b.com", "p", "homeCity");
+        }
+
         int[] defaultThresholds = tryReadThresholds();
         userManager.setCurrentThresholds(defaultThresholds);
 
+        handleIncompleteTrades();
+    }
+
+    private void handleIncompleteTrades() {
         tradeManager.cancelAllUnconfirmedTrades();
         List<String[]> cancelledUserPairs = tradeManager.getCancelledUserPairs();
 
         for (String[] usernames : cancelledUserPairs) {
 
             /* Notify both users of incomplete trade (second notif created along with first in NotificationSystem) */
-            userManager.getNotifHelper(usernames[0]).basicUpdate
+            userManager.notifyUser(usernames[0]).basicUpdate
                     ("INCOMPLETE TRADE", usernames[0], usernames[1]);
 
             userManager.increaseNormalUserNumIncomplete(usernames[0]);
@@ -70,7 +80,7 @@ public class SystemController extends JFrame {
                 userManager.addUsernamesToFreeze(usernames[0]);
 
                 /* Notify user of exceeding incomplete trade limit */
-                userManager.getNotifHelper(usernames[0]).basicUpdate
+                userManager.notifyUser(usernames[0]).basicUpdate
                         ("FREEZE WARNING", usernames[0], "");
             }
 
@@ -79,17 +89,11 @@ public class SystemController extends JFrame {
                 userManager.addUsernamesToFreeze(usernames[1]);
 
                 /* Notify user of exceeding incomplete trade limit */
-                userManager.getNotifHelper(usernames[1]).basicUpdate
+                userManager.notifyUser(usernames[1]).basicUpdate
                         ("FREEZE WARNING", usernames[1], "");
             }
         }
         tradeManager.clearCancelledUserPairs();
-
-        if (userManager.getAllUsers().isEmpty()) {
-            tryReadAdmin();
-            //for testing
-            userManager.createNormalUser("test", "a@b.com", "p", "homeCity");
-        }
     }
 
     public ArrayList<Integer> normalUserSignUp(String username, String email, String password,
@@ -186,6 +190,10 @@ public class SystemController extends JFrame {
         try {
             String[] adminCredentials = readWriter.readAdminFromFile(INIT_ADMIN_PATH);
             userManager.createAdminUser(adminCredentials[0], adminCredentials[1], adminCredentials[2]);
+
+            // Add observer only to initial admin (all other admins not observed by notif system)
+            userManager.getAdminByUsername(adminCredentials[0]).addObserver(notifSystem);
+
         } catch (IOException e) {
             systemPresenter.exceptionMessage(1, "Reading", "initial admin credentials");
         }

@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-08-03
+ * last modified 2020-08-05
  */
 public class CatalogEditor {
     private String currUsername;
@@ -58,7 +58,7 @@ public class CatalogEditor {
                 input = Integer.parseInt(temp);
 
                 if (input != 0) {
-                    long pendingItemID = itemManager.getPendingItem(input);
+                    long pendingItemID = itemManager.getPendingItem(input - 1);
                     String itemOwnerUsername = itemManager.getItemOwner(pendingItemID);
 
                     systemPresenter.catalogEditor(itemManager.getItemName(pendingItemID));
@@ -73,7 +73,7 @@ public class CatalogEditor {
                         userManager.addNormalUserInventory(pendingItemID, itemOwnerUsername);
 
                         /* Notify item owner of approval */
-                        userManager.getNotifHelper(itemOwnerUsername).itemUpdateWithID
+                        userManager.notifyUser(itemOwnerUsername).itemUpdateWithID
                                 ("ITEM APPROVED", itemOwnerUsername, currUsername,
                                         itemManager.getItemName(pendingItemID), pendingItemID);
 
@@ -82,12 +82,12 @@ public class CatalogEditor {
                         userManager.removeNormalUserPending(pendingItemID, itemOwnerUsername);
 
                         /* Notify item owner of rejection */
-                        userManager.getNotifHelper(itemOwnerUsername).itemUpdate
+                        userManager.notifyUser(itemOwnerUsername).itemUpdate
                                 ("ITEM REJECTED", itemOwnerUsername, currUsername,
                                         itemManager.getItemName(pendingItemID));
 
                     } else {
-                        input = 0;
+                        break;
                     }
                 }
             } while (input != 0);

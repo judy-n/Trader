@@ -1,6 +1,6 @@
 package SystemManagers;
 
-import Entities.NormalUser;
+import Entities.User;
 import java.io.Serializable;
 
 /**
@@ -10,12 +10,12 @@ import java.io.Serializable;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-08-02
- * last modified 2020-08-03
+ * last modified 2020-08-05
  */
 public class UserNotificationHelper implements Serializable {
-    private NormalUser currUserToNotify;
+    private User currUserToNotify;
 
-    public void setCurrUserToNotify(NormalUser newUserToNotify) {
+    public void setCurrUserToNotify(User newUserToNotify) {
         currUserToNotify = newUserToNotify;
     }
 
@@ -65,8 +65,13 @@ public class UserNotificationHelper implements Serializable {
         notifyUser(notifArg);
     }
 
+    public void recordAdminCreation(String newUsername) {
+        String[] notifArg = {newUsername};
+        notifyUser(notifArg);
+    }
+
     private void notifyUser(String[] notifArg) {
-        currUserToNotify.setChangedNormal();
+        currUserToNotify.setChangedUser();
         currUserToNotify.notifyObservers(notifArg);
     }
 }

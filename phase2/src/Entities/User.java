@@ -10,7 +10,7 @@ import java.util.Observable;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-07-31
+ * last modified 2020-08-05
  */
 public abstract class User extends Observable implements Serializable {
     private String username;
@@ -55,5 +55,13 @@ public abstract class User extends Observable implements Serializable {
      */
     public String getPassword() {
         return password;
+    }
+
+    /**
+     * Give other classes (namely <UserNotificationHelper></UserNotificationHelper>) access to
+     * the setChanged() method of <Observable></Observable>s.
+     */
+    public void setChangedUser() {
+        setChanged();
     }
 }

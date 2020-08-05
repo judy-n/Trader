@@ -16,7 +16,7 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-07-03
+ * last modified 2020-08-03
  */
 public class AccountFreezer extends MenuItem {
     private String currUsername;
@@ -62,7 +62,7 @@ public class AccountFreezer extends MenuItem {
                         userManager.freezeNormalUser(usernameToFreeze);
 
                         /* Notify normal user of account being frozen */
-                        userManager.getNotifHelper(usernameToFreeze).basicUpdate
+                        userManager.notifyUser(usernameToFreeze).basicUpdate
                                 ("FROZEN", usernameToFreeze, currUsername);
                     }
                     userManager.clearUsernamesToFreeze();
