@@ -798,36 +798,15 @@ public class SystemPresenter {
                 "\n 3 - view requests to unfreeze account" +
                 "\n 4 - edit threshold values";
         String menuInitAdmin = "\n 5 - add new admin to the system";
-        String menuVacation = "\n 6 - view accounts on vacation";
         String logoutOption = "\n 0 - log out";
 
         switch (input) {
-            // for all the other admins
             case 1:
-                System.out.print(menuNotInitAdmin + menuVacation + logoutOption + choicePrompt);
+                System.out.print(menuNotInitAdmin + logoutOption + choicePrompt);
                 break;
-            // only for the very first admin
             case 2:
-                System.out.print(menuNotInitAdmin + menuInitAdmin + menuVacation + logoutOption + choicePrompt);
+                System.out.print(menuNotInitAdmin + menuInitAdmin + logoutOption + choicePrompt);
                 break;
-        }
-    }
-
-
-    /**
-     * Presents the string for number of users on vacation.
-     *
-     * @param usernamesOnVacation the list of usernames of accounts that have requested to be unfrozen
-     */
-    public void usersOnVacation(List<String> usernamesOnVacation) {
-        System.out.println("\nHere are the users that are on vacation:");
-        int index = 1;
-        for (String username : usernamesOnVacation) {
-            System.out.println(index + ". " + username);
-            index++;
-        }
-        if (usernamesOnVacation.isEmpty()) {
-            emptyListMessage();
         }
     }
 
