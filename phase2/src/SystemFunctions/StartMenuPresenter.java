@@ -48,11 +48,11 @@ public class StartMenuPresenter {
             case 2:
                 return ("Email is already associated with an account! Please enter a different email.");
             case 3:
-                return("That is not an email address! Please enter a valid email.");
+                return("That's not an email address! Please enter a valid email.");
             case 4:
                 return("<html>Enter an username <br/> (min 3 characters, <br/> numbers/letters <br/> or _. in between)<html> ");
             case 5:
-                return("That username already exists! Please enter a different username.");
+                return("Username already exists! Please enter a different username.");
             case 6:
                 return("Invalid username.");
             case 7:
@@ -82,6 +82,7 @@ public class StartMenuPresenter {
         }
     }
 
+
     /**
      * Prompt based system for logging in an already existing user based on userinput
      *
@@ -94,7 +95,7 @@ public class StartMenuPresenter {
             case 1:
                 return ("Enter username or email: ");
             case 2:
-                return ("The Username/email does not exist in the database!");
+                return ("Username/email does not exist in our database!");
             case 3:
                 return ("Please enter your password: ");
             case 4:
@@ -105,4 +106,8 @@ public class StartMenuPresenter {
                 return null;
         }
     }
+
+
+
+
 }
