@@ -48,7 +48,7 @@ public class AccountFreezer {
     }
 
     /**
-     * Freezes all the users in the list of usernames to freeze.
+     * Freezes all the users in the list of usernames to freeze and notifies each user.
      */
     public void freezeAll() {
         for (String usernameToFreeze : userManager.getUsernamesToFreeze()) {
