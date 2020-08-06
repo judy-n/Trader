@@ -342,40 +342,21 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents to an admin the usernames of accounts that have requested to be unfrozen.
+     * Contains the labels for elements on the screen for viewing and accepting unfreeze requests.
      *
-     * @param unfreezeRequests the list of usernames of accounts that have requested to be unfrozen
+     * @param input the case corresponding to the label being retrieved
+     * @return the string to display
      */
-    public void adminGetUnfreezeRequests(List<String> unfreezeRequests) {
-        System.out.println("\nHere are the users that requested to be unfrozen:");
-        int index = 1;
-        for (String username : unfreezeRequests) {
-            System.out.println(index + ". " + username);
-            index++;
-        }
-        if (unfreezeRequests.isEmpty()) {
-            emptyListMessage();
-        } else {
-            System.out.print("\nWould you like to unfreeze any of the accounts? (Y/N): ");
-        }
-    }
-
-    /**
-     * Presents admin with information about unfreeze requests based on an input
-     *
-     * @param input the input
-     */
-    public void adminGetUnfreezeRequests(int input) {
+    public String accountUnfreezer(int input) {
         switch (input) {
             case 1:
-                System.out.print("\nEnter the index of the user you would like to unfreeze (0 to quit): ");
-                break;
+                return "Here are the users that requested to be unfrozen:";
             case 2:
-                System.out.println("\nThe user has been unfrozen!");
-                break;
+                return "Select the unfreeze request you'd like to accept:";
             case 3:
-                System.out.println("\nFinished!");
-                break;
+                return "The selected user has been unfrozen!";
+            default:
+                return null;
         }
     }
 
