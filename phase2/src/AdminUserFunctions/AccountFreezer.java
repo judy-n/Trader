@@ -4,7 +4,6 @@ import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemFunctions.SystemPresenter;
-import SystemFunctions.MenuItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,9 +15,9 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-08-03
+ * last modified 2020-08-05
  */
-public class AccountFreezer extends MenuItem {
+public class AccountFreezer {
     private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
@@ -77,10 +76,5 @@ public class AccountFreezer extends MenuItem {
 
     private void close() {
         new AdminDashboard(currUsername, itemManager, userManager, notifSystem);
-    }
-
-    @Override
-    public String getTitle() {
-        return ("Freeze Users");
     }
 }
