@@ -88,16 +88,17 @@ public class DashboardFrame extends JDialog{
         JButton inventory = new JButton("Inventory Editor");
         inventory.addActionListener(e -> {
             resetEverything();
-            drawListDisplay(normalDashboard.getInventory());
             drawUserInputPane(INVENTORY);
+            drawListDisplay(normalDashboard.getInventory());
             drawOptionalPanel(normalDashboard.getPendingInventory());
         });
 
         JButton wishlist = new JButton("Wishlist Editor");
         wishlist.addActionListener(e -> {
             resetEverything();
-            drawListDisplay(normalDashboard.getWishlist());
             drawUserInputPane(WISHLIST);
+            drawListDisplay(normalDashboard.getWishlist());
+
         }
         );
 
@@ -143,6 +144,13 @@ public class DashboardFrame extends JDialog{
         //userInputPanel.removeAll();
         JButton catalogEditor = new JButton("Catalog Editor");
         JButton freezer = new JButton("Freeze Accounts");
+        freezer.addActionListener(e -> {
+            resetEverything();
+            drawUserInputPane(FREEZE);
+            drawListDisplay(adminDashboard.getFreezeList());
+
+        });
+
         JButton unfreezer = new JButton("UnFreeze Accounts");
         JButton threshold = new JButton("Threshold Editor");
         JButton adminCreator = new JButton("Create New Admin");
@@ -163,7 +171,6 @@ public class DashboardFrame extends JDialog{
             //dashboardWindow.add(nothingToDisplay, BorderLayout.CENTER);
             userInputPanel.removeAll();
         }else {
-            userInputPanel.removeAll();
             listDisplay = new JList<>(displayItems);
             //System.out.println(displayItems);
             listDisplay.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -236,8 +243,15 @@ public class DashboardFrame extends JDialog{
                     }
                 });
                 break;
+
+            case FREEZE:
+                userInputPanel.removeAll();
+                JButton freezeAll = new JButton("Freeze All");
+                initializeButton(freezeAll, 100,20, userInputPanel);
+                freezeAll.addActionListener(e -> adminDashboard.freezeAll());
+
         }
-        //dashboardWindow.add(userInputPanel);
+
         dashboardWindow.setVisible(true);
     }
 

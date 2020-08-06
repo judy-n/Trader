@@ -44,7 +44,7 @@ public class AccountFreezer {
      * @return an array containing all the usernames to freeze
      */
     public String[] getFreezeList() {
-        return (String[]) userManager.getUsernamesToFreeze().toArray();
+        return userManager.getUsernamesToFreeze().toArray(new String[userManager.getUsernamesToFreeze().size()]);
     }
 
     /**

@@ -17,7 +17,7 @@ import SystemManagers.ItemManager;
 public class AdminDashboard extends Dashboard {
     private String currUsername;
     private UserManager userManager;
-    private int input;
+    private AccountFreezer accountFreezer;
 
     /**
      * Creates an <AdminDashboard></AdminDashboard> with the given admin username,
@@ -29,7 +29,7 @@ public class AdminDashboard extends Dashboard {
 
         this.currUsername = username;
         this.userManager = userManager;
-
+        accountFreezer = new AccountFreezer(username, userManager);
 //        SystemPresenter systemPresenter = new SystemPresenter();
 //        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 //
@@ -77,6 +77,15 @@ public class AdminDashboard extends Dashboard {
 //                break;
         //}
     }
+
+    public String[] getFreezeList(){
+        return accountFreezer.getFreezeList();
+    }
+
+    public void freezeAll(){
+        accountFreezer.freezeAll();
+    }
+
 
     @Override
     public String getUsername() {
