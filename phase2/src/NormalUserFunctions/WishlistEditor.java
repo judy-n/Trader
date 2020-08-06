@@ -3,8 +3,6 @@ package NormalUserFunctions;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import Entities.Item;
-import SystemFunctions.MenuItem;
-
 import java.util.*;
 
 /**
@@ -16,7 +14,7 @@ import java.util.*;
  * @since 2020-07-01
  * last modified 2020-08-04
  */
-public class WishlistEditor extends MenuItem {
+public class WishlistEditor {
     private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
@@ -112,10 +110,5 @@ public class WishlistEditor extends MenuItem {
         Item selected = itemWishlist.get(indexInput);
         //itemWishlist.remove(selected);
         userManager.removeFromNormalUserWishlist(selected.getID(), currUsername);
-    }
-
-    @Override
-    public String getTitle() {
-        return "Wishlist Editor";
     }
 }

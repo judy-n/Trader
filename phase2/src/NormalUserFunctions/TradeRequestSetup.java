@@ -119,7 +119,7 @@ public class TradeRequestSetup {
 
             userManager.addTradeRequestBothUsers(traders, items);
             if (!userManager.getNormalUserWishlist(currUsername).contains(selectedItem.getID())) {
-                userManager.addNormalUserWishlist(selectedItem.getID(), currUsername);
+                userManager.addToNormalUserWishlist(selectedItem.getID(), currUsername);
             }
 
             /* Notify other user of new trade request */

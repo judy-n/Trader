@@ -6,7 +6,6 @@ import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
 import Entities.Item;
 import SystemFunctions.SystemPresenter;
-import SystemFunctions.MenuItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,9 +21,9 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-03
+ * last modified 2020-08-05
  */
-public class CatalogViewer extends MenuItem {
+public class CatalogViewer {
     private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
@@ -137,7 +136,7 @@ public class CatalogViewer extends MenuItem {
                 List<Long> currentUserWishlist = userManager.getNormalUserWishlist(currUsername);
 
                 if (tradeOrWishlist == 2 && !currentUserWishlist.contains(itemID)) {
-                    userManager.addNormalUserWishlist(itemID, currUsername);
+                    userManager.addToNormalUserWishlist(itemID, currUsername);
                     systemPresenter.catalogViewer(4);
                 } else if (tradeOrWishlist == 2 && currentUserWishlist.contains(itemID)) {
                     systemPresenter.catalogViewer(5);
@@ -178,10 +177,5 @@ public class CatalogViewer extends MenuItem {
 
     private void close() {
         new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem);
-    }
-
-    @Override
-    public String getTitle() {
-        return "Catalog Viewer";
     }
 }

@@ -6,7 +6,6 @@ import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
 import Entities.Item;
 import SystemFunctions.SystemPresenter;
-import SystemFunctions.MenuItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
  * @since 2020-06-29
  * last modified 2020-08-05
  */
-public class TradeRequestViewer extends MenuItem {
+public class TradeRequestViewer {
     private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
@@ -303,10 +302,5 @@ public class TradeRequestViewer extends MenuItem {
 
     private void close() {
         new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem);
-    }
-
-    @Override
-    public String getTitle() {
-        return "Trade Request Viewer";
     }
 }

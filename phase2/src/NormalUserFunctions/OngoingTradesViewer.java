@@ -9,7 +9,6 @@ import Entities.Trade;
 import Entities.TemporaryTrade;
 import Entities.PermanentTrade;
 import SystemFunctions.SystemPresenter;
-import SystemFunctions.MenuItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,7 +27,7 @@ import java.util.List;
  * @since 2020-07-06
  * last modified 2020-08-05
  */
-public class OngoingTradesViewer extends MenuItem {
+public class OngoingTradesViewer {
     private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
@@ -328,10 +327,5 @@ public class OngoingTradesViewer extends MenuItem {
 
     private void close() {
         new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem);
-    }
-
-    @Override
-    public String getTitle() {
-        return "Ongoing Trades Viewer";
     }
 }

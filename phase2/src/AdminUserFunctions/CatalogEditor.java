@@ -70,7 +70,7 @@ public class CatalogEditor {
                     int actionInput = Integer.parseInt(temp2);
                     if (actionInput == 1) {
                         itemManager.approveItem(pendingItemID);
-                        userManager.addNormalUserInventory(pendingItemID, itemOwnerUsername);
+                        userManager.addToNormalUserInventory(pendingItemID, itemOwnerUsername);
 
                         /* Notify item owner of approval */
                         userManager.notifyUser(itemOwnerUsername).itemUpdateWithID
@@ -79,7 +79,7 @@ public class CatalogEditor {
 
                     } else if (actionInput == 2) {
                         itemManager.rejectItem(pendingItemID);
-                        userManager.removeNormalUserPending(pendingItemID, itemOwnerUsername);
+                        userManager.removeFromNormalUserPending(pendingItemID, itemOwnerUsername);
 
                         /* Notify item owner of rejection */
                         userManager.notifyUser(itemOwnerUsername).itemUpdate

@@ -6,7 +6,6 @@ import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
 import Entities.Item;
 import SystemFunctions.SystemPresenter;
-import SystemFunctions.MenuItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,7 +24,7 @@ import java.util.List;
  * last modified 2020-08-03
  */
 
-public class InventoryEditor extends MenuItem {
+public class InventoryEditor {
     private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
@@ -55,7 +54,7 @@ public class InventoryEditor extends MenuItem {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         itemInventory = itemManager.getItemsByIDs(userManager.getNormalUserInventory(currUsername));
-        List<Item> pendingItems = itemManager.getItemsByIDs(userManager.getNormalUserPendingInventory(currUsername));
+        List<Item> pendingItems = itemManager.getItemsByIDs(userManager.getNormalUserPending(currUsername));
 
 //        systemPresenter.inventoryEditor(itemInventory, pendingItems);
 //        try {
@@ -166,7 +165,7 @@ public class InventoryEditor extends MenuItem {
 
     public String[] getPendingInventory(){
         ArrayList<String> stringInventory = new ArrayList<>();
-        List<Item> pendingItems = itemManager.getItemsByIDs(userManager.getNormalUserPendingInventory(currUsername));
+        List<Item> pendingItems = itemManager.getItemsByIDs(userManager.getNormalUserPending(currUsername));
         int index = 1;
         for(Item item : pendingItems){
             stringInventory.add(index + ". " + item.toString() + "(pending)");
@@ -196,17 +195,12 @@ public class InventoryEditor extends MenuItem {
     public void removeInventory(int index){
         Item selectedItem = itemInventory.get(index);
         long selectedItemID = selectedItem.getID();
-        userManager.removeNormalUserInventory(selectedItemID, currUsername);
+        userManager.removeFromNormalUserInventory(selectedItemID, currUsername);
         itemManager.getItem(selectedItemID).setIsRemoved(true);
     }
 
     public void addInventory(String itemNameInput, String itemDescriptionInput){
         long newItemID = itemManager.createItem(itemNameInput, itemDescriptionInput, currUsername);
-        userManager.addNormalUserPendingInventory(newItemID, currUsername);
-    }
-
-    @Override
-    public String getTitle() {
-        return "Inventory Editor";
+        userManager.addToNormalUserPending(newItemID, currUsername);
     }
 }

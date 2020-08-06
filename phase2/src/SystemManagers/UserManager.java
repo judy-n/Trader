@@ -71,6 +71,25 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
+     * Returns the next admin ID in the system.
+     *
+     * @return the next admin ID
+     */
+    public int getNextAdminID() {
+        return allAdmins.size() + 1;
+    }
+
+    /**
+     * Returns the admin ID of the admin account associated with the given username.
+     *
+     * @param username the username of the admin whose ID is being retrieved
+     * @return the ID of the admin account associated with the given username
+     */
+    public int getAdminID(String username) {
+        return getAdminByUsername(username).getAdminID();
+    }
+
+    /**
      * Takes the given username and returns the associated <NormalUser></NormalUser>.
      *
      * @param username the username of the normal user being retrieved
@@ -237,15 +256,6 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Returns the next admin ID in the system.
-     *
-     * @return the next admin ID
-     */
-    public int getNextAdminID() {
-        return allAdmins.size() + 1;
-    }
-
-    /**
      * Getter for the list of unfreeze requests.
      *
      * @return the list of usernames of frozen normal users who have requested their account be unfrozen
@@ -274,6 +284,15 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
+     * Adds the given username to the list of unfreeze requests.
+     *
+     * @param username the username of the normal user requesting to be unfrozen
+     */
+    public void addUnfreezeRequest(String username) {
+        unfreezeRequests.add(username);
+    }
+
+    /**
      * Removes the user at the given index from the list of unfreeze requests and unfreezes them.
      *
      * @param index the index of the user being unfrozen
@@ -282,15 +301,6 @@ public class UserManager extends Manager implements Serializable {
         NormalUser unfreezeUser = getNormalByUsername(unfreezeRequests.get(index));
         unfreezeUser.unfreeze();
         unfreezeRequests.remove(unfreezeUser.getUsername());
-    }
-
-    /**
-     * Adds the given username to the list of unfreeze requests.
-     *
-     * @param username the username of the normal user requesting to be unfrozen
-     */
-    public void addUnfreezeRequest(String username) {
-        unfreezeRequests.add(username);
     }
 
     private User getUserByUsername(String username) {
@@ -326,6 +336,15 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
+     * Returns usernames of all account that are on vacation.
+     *
+     * @return usernamesOnVacation
+     */
+    public List<String> getUsernamesOnVacation() {
+        return usernamesOnVacation;
+    }
+
+    /**
      * Adds the given username to the list of usernames on vacation
      * and sets their account status to on vacation.
      *
@@ -348,15 +367,6 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Returns usernames of all account that are on vacation.
-     *
-     * @return usernamesOnVacation
-     */
-    public List<String> getUsernamesOnVacation() {
-        return usernamesOnVacation;
-    }
-
-    /**
      * Getter for whether or not the account associated with the given username is on vacation.
      *
      * @param username the username to query
@@ -367,16 +377,6 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Setter for the home city of the normal user with the given username.
-     *
-     * @param username the username
-     * @param homeCity the home city
-     */
-    public void setNormalUserHomeCity(String username, String homeCity) {
-        getNormalByUsername(username).setHomeCity(homeCity);
-    }
-
-    /**
      * Getter for the home city of the normal user with the given username.
      *
      * @param username the username
@@ -384,6 +384,16 @@ public class UserManager extends Manager implements Serializable {
      */
     public String getNormalUserHomeCity(String username) {
         return getNormalByUsername(username).getHomeCity();
+    }
+
+    /**
+     * Setter for the home city of the normal user with the given username.
+     *
+     * @param username the username
+     * @param homeCity the home city
+     */
+    public void setNormalUserHomeCity(String username, String homeCity) {
+        getNormalByUsername(username).setHomeCity(homeCity);
     }
 
     /**
@@ -407,14 +417,14 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Getter for if a normal user is requested in trade based on the item's id and the user's username.
+     * Getter for if a normal user is requested in trade based on the item's ID and the user's username.
      *
      * @param username the normal user's username
-     * @param id       the item id
+     * @param ID       the item ID
      * @return true iff the item is requested in trade
      */
-    public boolean isRequestedInTrade(String username, long id) {
-        return getNormalByUsername(username).isRequestedInTrade(id);
+    public boolean isRequestedInTrade(String username, long ID) {
+        return getNormalByUsername(username).isRequestedInTrade(ID);
     }
 
     /**
@@ -447,8 +457,38 @@ public class UserManager extends Manager implements Serializable {
      * @param itemIDToAdd the item ID being added to inventory
      * @param username    the username of the account whose inventory is being modified
      */
-    public void addNormalUserInventory(long itemIDToAdd, String username) {
+    public void addToNormalUserInventory(long itemIDToAdd, String username) {
         getNormalByUsername(username).addInventory(itemIDToAdd);
+    }
+
+    /**
+     * Removes the given item ID from inventory of account with associated username.
+     *
+     * @param itemID   the item ID to be removed from inventory
+     * @param username the username of the account whose inventory is being modified
+     */
+    public void removeFromNormalUserInventory(long itemID, String username) {
+        getNormalByUsername(username).removeInventory(itemID);
+    }
+
+    /**
+     * Getter for the pending inventory of the account associated with the given username.
+     *
+     * @param username the username of the account whose pending inventory is being retrieved
+     * @return the pending inventory of the account associated with the given username
+     */
+    public List<Long> getNormalUserPending(String username) {
+        return getNormalByUsername(username).getPendingInventory();
+    }
+
+    /**
+     * Adds the given item ID to the pending inventory of the account associated with the given username.
+     *
+     * @param itemID   the item ID to be added to pending inventory
+     * @param username the username of the account whose pending inventory is being modified
+     */
+    public void addToNormalUserPending(long itemID, String username) {
+        getNormalByUsername(username).addPendingInventory(itemID);
     }
 
     /**
@@ -457,7 +497,7 @@ public class UserManager extends Manager implements Serializable {
      * @param itemIDToRemove the item ID being removed from pending inventory
      * @param username       the username of the account whose pending inventory is being modified
      */
-    public void removeNormalUserPending(long itemIDToRemove, String username) {
+    public void removeFromNormalUserPending(long itemIDToRemove, String username) {
         getNormalByUsername(username).removePendingInventory(itemIDToRemove);
     }
 
@@ -477,8 +517,28 @@ public class UserManager extends Manager implements Serializable {
      * @param itemIDToAdd the item ID being added to wishlist
      * @param username    the username of the user whose wishlist is being modified
      */
-    public void addNormalUserWishlist(long itemIDToAdd, String username) {
+    public void addToNormalUserWishlist(long itemIDToAdd, String username) {
         getNormalByUsername(username).addWishlist(itemIDToAdd);
+    }
+
+    /**
+     * Removes the given item ID from the wishlist of the account associated with the given username.
+     *
+     * @param itemID   the item ID being removed from wishlist
+     * @param username the username of the account whose wishlist is being modified
+     */
+    public void removeFromNormalUserWishlist(long itemID, String username) {
+        getNormalByUsername(username).removeWishlist(itemID);
+    }
+
+    /**
+     * Return whether or not the account associated with given username is frozen.
+     *
+     * @param username the username whose account status is being retrieved
+     * @return true iff user is frozen
+     */
+    public boolean getNormalUserIsFrozen(String username) {
+        return getNormalByUsername(username).getIsFrozen();
     }
 
     /**
@@ -661,32 +721,6 @@ public class UserManager extends Manager implements Serializable {
         return getUserByUsernameOrEmail(usernameOrEmail) instanceof AdminUser;
     }
 
-    private NormalUser getNormalByUsernameOrEmail(String usernameOrEmail) {
-        if (usernameOrEmail.contains("@")) {
-            return getNormalByEmail(usernameOrEmail);
-        } else {
-            return getNormalByUsername(usernameOrEmail);
-        }
-    }
-
-    private AdminUser getAdminByUsernameOrEmail(String usernameOrEmail) {
-        if (usernameOrEmail.contains("@")) {
-            return getAdminByEmail(usernameOrEmail);
-        } else {
-            return getAdminByUsername(usernameOrEmail);
-        }
-    }
-
-    /**
-     * Return whether or not the account associated with given username is frozen.
-     *
-     * @param username the user's username or email
-     * @return true iff user is frozen
-     */
-    public boolean getNormalUserIsFrozen(String username) {
-        return getNormalByUsernameOrEmail(username).getIsFrozen();
-    }
-
     /**
      * Gets the notification helper which gives access to the methods that help
      * create notifications triggered by certain user actions.
@@ -702,111 +736,41 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Gets a username of a user, given the associated username or email of that user.
+     * Increases the number of incomplete trades by one for the account associated with the given username.
      *
-     * @param usernameOrEmail the associated username or email
-     * @return the associated username
+     * @param username the username of the account whose number of incomplete trades is being incremented by 1
      */
-    public String getUsername(String usernameOrEmail) {
-        return getUserByUsernameOrEmail(usernameOrEmail).getUsername();
+    public void increaseNormalUserNumIncomplete(String username) {
+        getNormalByUsername(username).increaseNumIncomplete();
     }
 
     /**
-     * Increases NumIncomplete threshold for NormalUser with associated username or email
+     * Getter for number of incomplete trades made by the account associated with the given username.
      *
-     * @param usernameOrEmail the associated username or email
+     * @param username the username of the account whose number of incomplete trades is being retrieved
+     * @return the number of incomplete trades made by the account associated with the given username
      */
-    public void increaseNormalUserNumIncomplete(String usernameOrEmail) {
-        getNormalByUsernameOrEmail(usernameOrEmail).increaseNumIncomplete();
+    public int getNormalUserNumIncomplete(String username) {
+        return getNormalByUsername(username).getNumIncomplete();
     }
 
     /**
-     * Getter for Number of Incomplete trades made by Normal User with associated username or email.
+     * Getter for the trade requests of the account associated with the given username.
      *
-     * @param usernameOrEmail the associated username or email
-     * @return NumIncomplete, the number of incomplete trades
+     * @param username the username of the account whose trade requests are being retrieved
+     * @return the trade requests of the account associated with the given username
      */
-    public int getNormalUserNumIncomplete(String usernameOrEmail) {
-        return getNormalByUsernameOrEmail(usernameOrEmail).getNumIncomplete();
+    public Map<String[], long[]> getNormalUserTradeRequests(String username) {
+        return getNormalByUsername(username).getTradeRequests();
     }
 
     /**
-     * Returns the ID of the Admin with the associated username or email.
+     * Removes the trade request with the given key from the account associated with the given username
      *
-     * @param usernameOrEmail the Admin's username or email
-     * @return the Admin's ID
+     * @param key      the key of the trade request to be removed
+     * @param username the username of the account whose trade requests are being modified
      */
-    public int getAdminID(String usernameOrEmail) {
-        return getAdminByUsernameOrEmail(usernameOrEmail).getAdminID();
-    }
-
-    /**
-     * Return true iff user with associated is not equal to null.
-     *
-     * @param username the associated username or email
-     * @return true iff user exists
-     */
-    public boolean doesUserExist(String username) {
-        return getUserByUsernameOrEmail(username) != null;
-    }
-
-    /**
-     * Removes item with associated itemID from inventory of Normal User with associated username or email.
-     *
-     * @param itemID          the itemID to be removed
-     * @param usernameOrEmail the Normal User's username or email
-     */
-    public void removeNormalUserInventory(long itemID, String usernameOrEmail) {
-        getNormalByUsernameOrEmail(usernameOrEmail).removeInventory(itemID);
-    }
-
-    /**
-     * Getter for a Normal User's pending inventory.
-     *
-     * @param usernameOrEmail the associated Normal User's username or Email
-     * @return the Normal User's pending inventory
-     */
-    public List<Long> getNormalUserPendingInventory(String usernameOrEmail) {
-        return getNormalByUsernameOrEmail(usernameOrEmail).getPendingInventory();
-    }
-
-    /**
-     * Adds item with itemID to the Normal User's pending inventory with given username or email.
-     *
-     * @param itemID          the itemID to be added to pending inventory
-     * @param usernameOrEmail the user's username or email
-     */
-    public void addNormalUserPendingInventory(long itemID, String usernameOrEmail) {
-        getNormalByUsernameOrEmail(usernameOrEmail).addPendingInventory(itemID);
-    }
-
-    /**
-     * Getter for a Normal User's trade requests, given associated username or email.
-     *
-     * @param usernameOrEmail the associated username or email
-     * @return the trade requests
-     */
-    public Map<String[], long[]> getNormalUserTradeRequests(String usernameOrEmail) {
-        return getNormalByUsernameOrEmail(usernameOrEmail).getTradeRequests();
-    }
-
-    /**
-     * Removes given tradeRequests from the Normal User with given username or email's trade requests.
-     *
-     * @param key             the key of the trade request to be removed
-     * @param usernameOrEmail the username or email of the user
-     */
-    public void removeTradeRequests(String[] key, String usernameOrEmail) {
-        getNormalByUsernameOrEmail(usernameOrEmail).removeTradeRequests(key);
-    }
-
-    /**
-     * Removes the item with the given itemID from the user with the given username or email's wishlist.
-     *
-     * @param itemID          the item ID to be removed
-     * @param usernameOrEmail the username or email of the normal user
-     */
-    public void removeFromNormalUserWishlist(long itemID, String usernameOrEmail) {
-        getNormalByUsernameOrEmail(usernameOrEmail).removeWishlist(itemID);
+    public void removeTradeRequests(String[] key, String username) {
+        getNormalByUsername(username).removeTradeRequests(key);
     }
 }
