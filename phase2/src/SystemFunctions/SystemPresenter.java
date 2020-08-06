@@ -765,10 +765,12 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents that a new admin has been created.
+     * Returns a message telling the user that a new admin was successfully created.
+     *
+     * @return a string to display
      */
-    public void adminCreator() {
-        System.out.println("\n New admin created!");
+    public String adminCreator() {
+        return "New admin created!";
     }
 
     /**
