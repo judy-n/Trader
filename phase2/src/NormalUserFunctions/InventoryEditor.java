@@ -15,7 +15,6 @@ import Entities.Item;
  * @since 2020-07-01
  * last modified 2020-08-06
  */
-
 public class InventoryEditor {
     private String currUsername;
     private ItemManager itemManager;

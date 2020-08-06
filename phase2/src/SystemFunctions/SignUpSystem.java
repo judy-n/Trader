@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-05
+ * last modified 2020-08-06
  */
 public class SignUpSystem {
     private UserManager userManager;
@@ -27,53 +27,68 @@ public class SignUpSystem {
     }
 
     public ArrayList<Integer> validateInput(String username, String email, String password, String validatePassword) {
-        ArrayList<Integer> invalidInput = new ArrayList<>();
-        if (username.isEmpty()) {
-            invalidInput.add(12);
+
+        ArrayList<Integer> invalidInputCases = new ArrayList<>();
+
+        if (username.trim().isEmpty()) {
+            invalidInputCases.add(12);
         } else {
-            if (userManager.usernameExists(username)) {
-                invalidInput.add(5);
+
+            if (userManager.usernameExists(username)) {     invalidInputCases.add(5);
             } else if (!username.matches("[a-zA-Z0-9]+([_.][a-zA-Z0-9]+)*") || username.length() < 3) {
-                invalidInput.add(6);
+                invalidInputCases.add(6);
             }
         }
-        if (email.isEmpty()) {
-            invalidInput.add(15);
+        if (email.trim().isEmpty()) {
+            invalidInputCases.add(15);
         } else {
             if (userManager.emailExists(email)) {
-                invalidInput.add(2);
+                invalidInputCases.add(2);
             } else if (!email.matches("[\\w]+(\\.[\\w]+)*@([a-zA-Z]+\\.)+[a-z]{2,}")) {
-                invalidInput.add(3);
+                invalidInputCases.add(3);
             }
         }
-        if (password.isEmpty()) {
-            invalidInput.add(16);
+        if (password.trim().isEmpty()) {
+            invalidInputCases.add(16);
         } else {
             if (!password.matches("[\\S]{6,20}")) {
-                invalidInput.add(8);
+                invalidInputCases.add(8);
             }
         }
-        if (validatePassword.isEmpty()) {
-            invalidInput.add(17);
+        if (!password.trim().isEmpty() && validatePassword.isEmpty()) {
+            invalidInputCases.add(17);
         } else {
             if (!validatePassword.equals(password)) {
-                invalidInput.add(10);
+                invalidInputCases.add(10);
             }
         }
-        return invalidInput;
+        return invalidInputCases;
+    }
+
+    public ArrayList<Integer> validateInputNormal(String username, String email, String password,
+                                                  String validatePassword, String homeCity) {
+
+        ArrayList<Integer> invalidInputCases = validateInput(username, email, password, validatePassword);
+
+        if (homeCity.trim().isEmpty()) {
+            invalidInputCases.add(18);
+            System.out.println("test1");
+        }
+        System.out.println("test2");
+        return invalidInputCases;
     }
 
     /**
      * Creates a new <NormalUser></NormalUser> based on input from <inputProcess()></inputProcess()>.
      *
-     * @param username the username of the new user
-     * @param email the email of the new user
-     * @param password the password of the new user
-     * @param homeCity the home city of the new user
+     * @param username    the username of the new user
+     * @param email       the email of the new user
+     * @param password    the password of the new user
+     * @param homeCity    the home city of the new user
      * @param notifSystem the notification system that will observe the new user
      */
     public void createNewNormal(String username, String email, String password,
-                                      String homeCity, NotificationSystem notifSystem) {
+                                String homeCity, NotificationSystem notifSystem) {
         userManager.createNormalUser(username, email, password, homeCity);
         NormalUser newNormalUser = userManager.getNormalByUsername(username);
         newNormalUser.addObserver(notifSystem);

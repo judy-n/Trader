@@ -28,6 +28,7 @@ public class SystemController extends JFrame {
     private ItemManager itemManager;
     private TradeManager tradeManager;
     private NotificationSystem notifSystem;
+    private SystemPresenter systemPresenter;
 
     private ReadWriter readWriter;
 
@@ -35,8 +36,6 @@ public class SystemController extends JFrame {
     private final String ITEM_MANAGER_PATH = "src/itemmanager.ser";
     private final String TRADE_MANAGER_PATH = "src/trademanager.ser";
     private final String NOTIF_SYSTEM_PATH = "src/notifsystem.ser";
-
-    private SystemPresenter systemPresenter;
 
     /**
      * Creates a <SystemController></SystemController>.
@@ -107,9 +106,9 @@ public class SystemController extends JFrame {
         tradeManager.clearCancelledUserPairs();
     }
 
-    public ArrayList<Integer> normalUserSignUp(String username, String email, String password,
-                                               String validatePassword){
-        return new SignUpSystem(userManager).validateInput(username, email, password, validatePassword);
+    public ArrayList<Integer> normalUserSignUpCheck(String username, String email, String password,
+                                               String validatePassword, String homeCity){
+        return new SignUpSystem(userManager).validateInputNormal(username, email, password, validatePassword, homeCity);
     }
 
     public void normalUserSignUp(String username, String email, String password, String homeCity, JFrame parent){

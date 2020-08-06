@@ -222,6 +222,7 @@ public class UserManager extends Manager implements Serializable {
 
     /**
      * Checks if a normal user with the given username already exists in the user database.
+     * Needed for checking when admin enters a username in threshold editor.
      *
      * @param username the username being checked for whether it's already taken or not
      * @return true if user with given username exists, false otherwise

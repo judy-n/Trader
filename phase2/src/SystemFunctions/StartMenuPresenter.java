@@ -47,9 +47,9 @@ public class StartMenuPresenter {
             case 1:
                 return ("Please enter an email: ");
             case 2:
-                return ("Email is already associated with an account! Please enter a different email.");
+                return ("Email is already used! Please enter a different email.");
             case 3:
-                return ("That's not an email address! Please enter a valid email.");
+                return ("Invalid email.");
             case 4:
                 return ("<html>Enter an username <br/> (min 3 characters, <br/> numbers/letters <br/> or _. in between)<html> ");
             case 5:
@@ -78,6 +78,10 @@ public class StartMenuPresenter {
                 return ("Password can't be empty!");
             case 17:
                 return ("Please verify your password!");
+            case 18:
+                return ("Home city can't be empty!");
+            case 19:
+                return ("Sign up");
             default:
                 return null;
         }
@@ -104,6 +108,10 @@ public class StartMenuPresenter {
                 return ("Password does not match username/email!");
             case 5:
                 return ("Welcome, you are now logged in.");
+            case 6:
+                return ("Log in");
+            case 7:
+                return ("Log out");
             default:
                 return null;
         }

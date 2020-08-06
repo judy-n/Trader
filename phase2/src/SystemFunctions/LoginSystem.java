@@ -14,7 +14,6 @@ import java.util.ArrayList;
  */
 
 public class LoginSystem {
-    private String validPw;
     private UserManager userManager;
 
     /**
@@ -29,10 +28,11 @@ public class LoginSystem {
         ArrayList<Integer> invalidInput = new ArrayList<>();
         if (!userManager.usernameExists(usernameOrEmail) && !userManager.emailExists(usernameOrEmail)) {
             invalidInput.add(2);
-        }
-        validPw = userManager.getUserPassword(usernameOrEmail);
-        if (!password.equals(validPw)) {
-            invalidInput.add(4);
+        } else {
+            String userPassword = userManager.getUserPassword(usernameOrEmail);
+            if (!password.equals(userPassword)) {
+                invalidInput.add(4);
+            }
         }
         return invalidInput;
     }
