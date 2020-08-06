@@ -4,6 +4,8 @@ import AdminUserFunctions.AdminDashboard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+
 /**
  * JFrame that displays the user's dashboard
  *
@@ -24,6 +26,7 @@ public class DashboardFrame extends JDialog{
     private JPanel notifPanel;
     private JPanel optionalPanel;
     private JButton removeButton;
+    private JPanel removeItemPanel;
 
     private JList<String> listDisplay;
     private JScrollPane scrollablePane;
@@ -153,12 +156,17 @@ public class DashboardFrame extends JDialog{
     private void drawAdminDash(){
         userInputPanel.removeAll();
         JButton catalogEditor = new JButton("Catalog Editor");
+        catalogEditor.addActionListener(e -> {
+            resetEverything();
+            drawUserInputPane(CATALOG_EDITOR);
+            drawListDisplay(adminDashboard.getPendingCatalog());
+        });
+
         JButton freezer = new JButton("Freeze Accounts");
         freezer.addActionListener(e -> {
             resetEverything();
             drawUserInputPane(FREEZE);
             drawListDisplay(adminDashboard.getFreezeList());
-
         });
 
         JButton unfreezer = new JButton("UnFreeze Accounts");
@@ -169,10 +177,14 @@ public class DashboardFrame extends JDialog{
         });
 
         JButton threshold = new JButton("Threshold Editor");
+
         JButton adminCreator = new JButton("Create New Admin");
         adminCreator.addActionListener(e -> {
             resetEverything();
             drawUserInputPane(CREATE);
+            dashboardWindow.remove(scrollablePane);
+            dashboardWindow.repaint();
+            dashboardWindow.setVisible(true);
         });
 
         JButton undo = new JButton("Undo User Activity");
@@ -302,13 +314,10 @@ public class DashboardFrame extends JDialog{
                 JTextField emailInput = new JTextField(10);
                 JTextField passwordInput = new JTextField(10);
                 JButton addAdmin = new JButton("Create");
-                addAdmin.addActionListener(e ->{
-                    if(adminDashboard.validateInput(usernameInput.getText(),
-                            emailInput.getText(), passwordInput.getText()).isEmpty()){
-                        adminDashboard.createNewAdmin(usernameInput.getText(),
-                                emailInput.getText(), passwordInput.getText());
-                    }
-                });
+                addAdmin.addActionListener(e ->
+                    adminDashboard.createNewAdmin(usernameInput.getText(),
+                                emailInput.getText(), passwordInput.getText()));
+
                 userInputPanel.add(username);
                 userInputPanel.add(usernameInput);
                 userInputPanel.add(email);
@@ -316,6 +325,35 @@ public class DashboardFrame extends JDialog{
                 userInputPanel.add(password);
                 userInputPanel.add(passwordInput);
                 initializeButton(addAdmin, 100,20,userInputPanel);
+                break;
+
+            case CATALOG_EDITOR:
+                JToggleButton approveOrDeny = new JToggleButton("Approve Item");
+                approveOrDeny.addChangeListener(e ->{
+                    if(approveOrDeny.isSelected()){
+                        approveOrDeny.setText("Deny Item");
+                    }else {
+                        approveOrDeny.setText("Approve Item");
+                    }} );
+                removeButton.setText("Confirm");
+                removeButton.addActionListener(e -> {
+                    if(!listDisplay.isSelectionEmpty()){
+                        if(approveOrDeny.isSelected()){
+                            //System.out.println("REJECT");
+                            adminDashboard.rejectionPendingCatalog(listDisplay.getSelectedIndex());
+
+                        }else{
+                            //System.out.println("APPROVE");
+                            adminDashboard.approvePendingCatalog(listDisplay.getSelectedIndex());
+                        }
+                    }
+                    listDisplay.clearSelection();
+                    redrawDisplayList(adminDashboard.getPendingCatalog());
+                });
+                userInputPanel.add(approveOrDeny);
+                initializeButton(removeButton, 100,20,userInputPanel);
+
+                break;
         }
         dashboardWindow.repaint();
         dashboardWindow.setVisible(true);
@@ -350,7 +388,6 @@ public class DashboardFrame extends JDialog{
     }
 
     private void redrawDisplayList(String[] displayList){
-
         dashboardWindow.revalidate();
         drawListDisplay(displayList);
         dashboardWindow.repaint();
@@ -366,6 +403,9 @@ public class DashboardFrame extends JDialog{
     }
 
     private void resetEverything(){
+        for(ActionListener actionListener : removeButton.getActionListeners()){
+            removeButton.removeActionListener(actionListener);
+        }
         nothingToDisplay.setText("");
         userInputPanel.removeAll();
         optionalPanel.removeAll();

@@ -96,34 +96,6 @@ public class NormalDashboard extends Dashboard {
         return completedTradesViewer.getTopThreeTraderStrings();
     }
 
-//        String regex = "[0-7]";
-//
-//        // user frozen and on vacation
-//        if ((currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
-//            regex = "[0-8]+[10]";
-//            //systemPresenter.normalDashboard(2);
-//        }
-//
-//        // user frozen and not on vacation
-//        else if ((currentUser.getIsFrozen()) && !(currentUser.getIsOnVacation())) {
-//            regex = "[0-9]";
-//            //systemPresenter.normalDashboard(3);
-//        }
-//
-//        // why is this regex not right?? i dont see it.
-//        // user not frozen and on vacation
-//        else if (!(currentUser.getIsFrozen()) && (currentUser.getIsOnVacation())) {
-//            regex = "[0-7]+[9]";
-//            //systemPresenter.normalDashboard(4);
-//        }
-//
-//        // not frozen and not on vacation
-//        else {
-//            regex = "[0-7]+[9]";
-//            //systemPresenter.normalDashboard(1);
-//        }
-
-
 //        switch (input) {
 //            case 1:
 //                new CatalogViewer(currUsername, itemManager, userManager, tradeManager);

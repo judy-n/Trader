@@ -23,6 +23,7 @@ public class AdminDashboard extends Dashboard {
     private UserManager userManager;
     private AccountFreezer accountFreezer;
     private AccountUnfreezer accountUnfreezer;
+    private CatalogEditor catalogEditor;
 
     /**
      * Creates an <AdminDashboard></AdminDashboard> with the given admin username,
@@ -36,6 +37,7 @@ public class AdminDashboard extends Dashboard {
         this.userManager = userManager;
         accountFreezer = new AccountFreezer(username, userManager);
         accountUnfreezer = new AccountUnfreezer(username, userManager);
+        catalogEditor = new CatalogEditor(username, itemManager, userManager);
 //
 //        String regex = "[0-4]";
 //        int adminID = userManager.getAdminID(currUsername);
@@ -49,18 +51,8 @@ public class AdminDashboard extends Dashboard {
 //        }
 //
 //        switch (input) {
-//            case 1:
-//                new CatalogEditor(currUsername, itemManager, userManager, notifSystem);
-//                break;
-//            case 3:
-//                new AccountUnfreezer(currUsername, itemManager, userManager, notifSystem);
-//                break;
-//
 //            case 4:
 //                new ThresholdEditor(currUsername, itemManager, userManager, notifSystem);
-//                break;
-//            case 5:
-//                new AdminCreator(currUsername, itemManager, userManager, notifSystem);
 //                break;
         //}
     }
@@ -82,11 +74,26 @@ public class AdminDashboard extends Dashboard {
     }
 
     public void createNewAdmin(String inputtedUsername, String inputtedEmail, String inputtedPassword){
-        new AdminCreator(currUsername, userManager).createNewAdmin(inputtedUsername, inputtedEmail, inputtedPassword);
+        boolean isValid = new SignUpSystem(userManager).validateInput(inputtedUsername,
+                inputtedEmail, inputtedPassword, inputtedPassword).isEmpty();
+        if(isValid) {
+            new AdminCreator(currUsername, userManager).createNewAdmin(inputtedUsername, inputtedEmail, inputtedPassword);
+        }
     }
-    public ArrayList<Integer> validateInput(String inputtedUsername, String inputtedEmail, String inputtedPassword){
-        return new SignUpSystem(userManager).validateInput(inputtedUsername, inputtedEmail, inputtedPassword, inputtedPassword);
+
+    public String[] getPendingCatalog(){
+        return catalogEditor.getPendingItemStrings();
     }
+
+    public void approvePendingCatalog(int index){
+        catalogEditor.approveItem(index);
+    }
+
+    public void rejectionPendingCatalog(int index){
+        catalogEditor.rejectItem(index);
+    }
+
+
 
     @Override
     public String getUsername() {
