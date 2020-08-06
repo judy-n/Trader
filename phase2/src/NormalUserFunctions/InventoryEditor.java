@@ -21,7 +21,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-08-03
+ * last modified 2020-08-05
  */
 
 public class InventoryEditor {

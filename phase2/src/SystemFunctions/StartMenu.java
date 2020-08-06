@@ -24,7 +24,7 @@ public class StartMenu extends JPanel {
     private String inputtedPassword;
     private String validateInputtedPassword;
     private String inputtedHomeCity;
-    private StartMenuPresenter startMenuPresenter;
+    private SystemPresenter systemPresenter;
     private final int FIRST_LINE_Y = 100;
     private final int X_POS = 160;
     private final int Y_SPACE = 70;
@@ -38,7 +38,7 @@ public class StartMenu extends JPanel {
     public StartMenu(SystemController systemController, JFrame parent) {
         this.parent = parent;
         this.systemController = systemController;
-        startMenuPresenter = new StartMenuPresenter();
+        systemPresenter = new SystemPresenter();
         invalid = new JLabel();
         this.setPreferredSize(new Dimension(820, 576));
         this.setLayout(null);
@@ -46,17 +46,17 @@ public class StartMenu extends JPanel {
     }
 
     private void mainMenu(){
-        JButton login = new JButton(startMenuPresenter.loginSystem(0));
-        JButton signUp = new JButton(startMenuPresenter.signUpSystem(0));
-        JButton demo = new JButton(startMenuPresenter.startMenu(4));
-        JButton endProgram = new JButton(startMenuPresenter.startMenu(5));
+        JButton login = new JButton(systemPresenter.loginSystem(0));
+        JButton signUp = new JButton(systemPresenter.signUpSystem(0));
+        JButton demo = new JButton(systemPresenter.startMenu(4));
+        JButton endProgram = new JButton(systemPresenter.startMenu(5));
 
         initializeButton(login, 200, 40, 160, 190);
         initializeButton(signUp, 200, 40, 440, 190);
         initializeButton(demo, 200, 40, 310, 250);
         initializeButton(endProgram, 200, 40, 310, 310);
 
-        JLabel welcomeText = new JLabel(startMenuPresenter.startMenu(1));
+        JLabel welcomeText = new JLabel(systemPresenter.startMenu(1));
 
         welcomeText.setFont(font);
         welcomeText.setSize(new Dimension(300,40));
@@ -70,14 +70,14 @@ public class StartMenu extends JPanel {
         {
             this.removeAll();
             this.revalidate();
-            getUserInfo(startMenuPresenter.loginSystem(0));
+            getUserInfo(systemPresenter.loginSystem(0));
             this.repaint();
         });
 
         signUp.addActionListener(e -> {
             this.removeAll();
             this.revalidate();
-            getUserInfo(startMenuPresenter.signUpSystem(0));
+            getUserInfo(systemPresenter.signUpSystem(0));
             this.repaint();
         });
         demo.addActionListener(e -> systemController.demoUser());
@@ -106,7 +106,7 @@ public class StartMenu extends JPanel {
         this.add(titleLabel);
         titleLabel.setLocation(100,50);
 
-        JButton exit = new JButton(startMenuPresenter.startMenu(3));
+        JButton exit = new JButton(systemPresenter.startMenu(3));
         initializeButton(exit, 65, 25, 20, 10);
         exit.addActionListener(e -> {
             this.removeAll();
@@ -115,9 +115,9 @@ public class StartMenu extends JPanel {
             this.repaint();
         });
 
-        JLabel password = new JLabel(startMenuPresenter.signUpSystem(7));
+        JLabel password = new JLabel(systemPresenter.signUpSystem(7));
         JPasswordField passwordInput = new JPasswordField(50);
-        JCheckBox showPassword = new JCheckBox(startMenuPresenter.signUpSystem(14));
+        JCheckBox showPassword = new JCheckBox(systemPresenter.signUpSystem(14));
 
         password.setSize(new Dimension(200,40));
         showPassword.setSize(showPassword.getPreferredSize());
@@ -139,8 +139,8 @@ public class StartMenu extends JPanel {
             }
         });
 
-        if(title.equals(startMenuPresenter.loginSystem(0))){
-            JLabel usernameOrEmail = new JLabel(startMenuPresenter.loginSystem(1));
+        if(title.equals(systemPresenter.loginSystem(0))){
+            JLabel usernameOrEmail = new JLabel(systemPresenter.loginSystem(1));
             JTextField usernameEmailInput = new JTextField(50);
             usernameOrEmail.setSize(new Dimension(200,40));
             usernameOrEmail.setForeground(Color.BLACK);
@@ -149,7 +149,7 @@ public class StartMenu extends JPanel {
             usernameOrEmail.setLocation(X_POS, FIRST_LINE_Y);
             usernameEmailInput.setBounds(330,110,120,25);
 
-            JButton login = new JButton(startMenuPresenter.loginSystem(0));
+            JButton login = new JButton(systemPresenter.loginSystem(0));
             initializeButton(login, 100, 30, 450, 350);
 
             login.addActionListener(e -> {
@@ -165,10 +165,10 @@ public class StartMenu extends JPanel {
                 }
             });
         }else{
-            JLabel username = new JLabel(startMenuPresenter.signUpSystem(4));
-            JLabel email = new JLabel(startMenuPresenter.signUpSystem(1));
-            JLabel validatePassword = new JLabel(startMenuPresenter.signUpSystem(9));
-            JLabel homeCity = new JLabel(startMenuPresenter.signUpSystem(13));
+            JLabel username = new JLabel(systemPresenter.signUpSystem(4));
+            JLabel email = new JLabel(systemPresenter.signUpSystem(1));
+            JLabel validatePassword = new JLabel(systemPresenter.signUpSystem(9));
+            JLabel homeCity = new JLabel(systemPresenter.signUpSystem(13));
 
             JTextField usernameInput = new JTextField(50);
             JTextField emailInput = new JTextField(50);
@@ -205,7 +205,7 @@ public class StartMenu extends JPanel {
             validatePasswordInput.setBounds(330, FIRST_LINE_Y + Y_SPACE*3 + 10, 120, 25);
             homeCityInput.setBounds(330, FIRST_LINE_Y + Y_SPACE*4 + 10, 120, 25);
 
-            JButton SignUpButton = new JButton(startMenuPresenter.signUpSystem(0));
+            JButton SignUpButton = new JButton(systemPresenter.signUpSystem(0));
             initializeButton(SignUpButton, 100, 30, 450, FIRST_LINE_Y + Y_SPACE*5);
 
             SignUpButton.addActionListener(e -> {
@@ -240,7 +240,7 @@ public class StartMenu extends JPanel {
             mainMenu();
             this.repaint();
         });
-        JLabel loggedInMsg = new JLabel(startMenuPresenter.loginSystem(5));
+        JLabel loggedInMsg = new JLabel(systemPresenter.loginSystem(5));
         loggedInMsg.setForeground(Color.BLACK);
         loggedInMsg.setSize(200,40);
         this.add(loggedInMsg);
@@ -251,7 +251,7 @@ public class StartMenu extends JPanel {
     private void makeInvalidInputWarning(ArrayList<Integer> allTypeInvalidInput){
         StringBuilder warnings = new StringBuilder("<html>");
         for(int type : allTypeInvalidInput)
-            warnings.append(startMenuPresenter.signUpSystem(type) + "<br/>");
+            warnings.append(systemPresenter.signUpSystem(type) + "<br/>");
         warnings.append("<html>");
         invalid.setText(warnings.toString());
         invalid.setSize(800,200);

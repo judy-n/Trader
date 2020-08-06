@@ -123,31 +123,10 @@ public class NormalDashboard extends Dashboard {
 //            //systemPresenter.normalDashboard(1);
 //        }
 
-//        try {
-//            String temp = bufferedReader.readLine();
-//            while (!temp.matches(regex)) {
-//                //systemPresenter.invalidInput();
-//                temp = bufferedReader.readLine();
-//            }
-//            input = Integer.parseInt(temp);
-//        } catch (IOException e) {
-//            //systemPresenter.exceptionMessage();
-//        }
 
 //        switch (input) {
-//            case 0:
-//                //systemPresenter.logoutMessage();
-//                break;
 //            case 1:
 //                new CatalogViewer(currUsername, itemManager, userManager, tradeManager);
-//                break;
-//
-//            case 2:
-//                new InventoryEditor(currentUser, itemManager, userManager, tradeManager);
-//                break;
-//
-//            case 3:
-//                new WishlistEditor(currentUser, itemManager, userManager, tradeManager);
 //                break;
 //
 //            case 4:
@@ -158,15 +137,6 @@ public class NormalDashboard extends Dashboard {
 //                new OngoingTradesViewer(currentUser, itemManager, userManager, tradeManager);
 //                break;
 //
-//            case 6:
-//                /* View most recent three completed trades */
-//                new CompletedTradesViewer(currentUser, itemManager, userManager, tradeManager).viewRecentThreeTrades();
-//                break;
-//
-//            case 7:
-//                /* View top three most frequent trading partners (only counts if trades are completed) */
-//                new CompletedTradesViewer(currentUser, itemManager, userManager, tradeManager).viewTopThreeTrader();
-//                break;
 //        }
 
     @Override
