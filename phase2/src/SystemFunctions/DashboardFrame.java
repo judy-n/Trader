@@ -54,6 +54,8 @@ public class DashboardFrame extends JDialog{
         notifPanel.setLayout(new FlowLayout());
         optionalPanel.setLayout(new BoxLayout(optionalPanel, BoxLayout.Y_AXIS));
 
+        optionalPanel.setPreferredSize(new Dimension(300, 576));
+
         dashboardWindow = new JDialog(parent, "Dashboard | " + username, true);
         dashboardWindow.setSize(820, 576);
         dashboardWindow.setResizable(false);
