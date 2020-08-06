@@ -3,7 +3,6 @@ package SystemFunctions;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.util.ArrayList;
 
 /**
  * Lets the user choose to sign up, log in, or exit the program.
@@ -29,7 +28,7 @@ public class StartMenu extends JPanel {
     private final int Y_SPACE = 70;
     private final int X_SPACE = 200;
     private JLabel invalid;
-    private final ArrayList<Integer>[] allTypeInvalidInput = new ArrayList[]{new ArrayList<>()};
+    private Integer[] allTypeInvalidInput;
     private JFrame parent;
 
     /**
@@ -162,9 +161,9 @@ public class StartMenu extends JPanel {
                 StringBuilder warnings = new StringBuilder("<html>");
                 emailOrUsername = usernameEmailInput.getText();
                 inputtedPassword = String.valueOf(passwordInput.getPassword());
-                allTypeInvalidInput[0] = systemController.userLogin(emailOrUsername, inputtedPassword);
-                makeInvalidInputWarning(allTypeInvalidInput[0], "login");
-                if (allTypeInvalidInput[0].isEmpty()) {
+                allTypeInvalidInput = systemController.userLogin(emailOrUsername, inputtedPassword).toArray(new Integer[0]);
+                makeInvalidInputWarning(allTypeInvalidInput, "login");
+                if (allTypeInvalidInput.length == 0) {
                     loggedIn();
                     systemController.userLogin(emailOrUsername, parent);
                     this.setVisible(true);
@@ -221,10 +220,11 @@ public class StartMenu extends JPanel {
                 validateInputtedPassword = String.valueOf(validatePasswordInput.getPassword());
                 inputtedHomeCity = homeCityInput.getText();
                 System.out.println(inputtedHomeCity);
-                allTypeInvalidInput[0] = systemController.normalUserSignUpCheck(inputtedUsername,
-                        inputtedEmail, inputtedPassword, validateInputtedPassword, inputtedHomeCity);
-                makeInvalidInputWarning(allTypeInvalidInput[0], "sign-up");
-                if (allTypeInvalidInput[0].isEmpty()) {
+                allTypeInvalidInput = systemController.normalUserSignUpCheck
+                        (inputtedUsername, inputtedEmail, inputtedPassword,
+                                validateInputtedPassword, inputtedHomeCity).toArray(new Integer[0]);
+                makeInvalidInputWarning(allTypeInvalidInput, "sign-up");
+                if (allTypeInvalidInput.length == 0) {
                     loggedIn();
                     System.out.println(parent.getTitle());
                     systemController.normalUserSignUp(inputtedUsername, inputtedEmail, inputtedPassword,
@@ -255,7 +255,7 @@ public class StartMenu extends JPanel {
         this.repaint();
     }
 
-    private void makeInvalidInputWarning(ArrayList<Integer> allTypeInvalidInput, String loginOrSignup) {
+    private void makeInvalidInputWarning(Integer[] allTypeInvalidInput, String loginOrSignup) {
         StringBuilder warnings = new StringBuilder("<html>");
         for (int type : allTypeInvalidInput)
             if (loginOrSignup.equals("login")) {

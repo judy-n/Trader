@@ -72,9 +72,7 @@ public class SignUpSystem {
 
         if (homeCity.trim().isEmpty()) {
             invalidInputCases.add(18);
-            System.out.println("test1");
         }
-        System.out.println("test2");
         return invalidInputCases;
     }
 
