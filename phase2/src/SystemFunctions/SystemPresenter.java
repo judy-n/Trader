@@ -216,9 +216,9 @@ public class SystemPresenter {
     /**
      * Prompts the user about an item they have chosen from the catalog
      *
-     * @param itemName  the name of the selected item
-     * @param owner the owner of the selected item
-     * @param input the user's input
+     * @param itemName the name of the selected item
+     * @param owner    the owner of the selected item
+     * @param input    the user's input
      */
     public void catalogViewer(String itemName, String owner, int input) {
         switch (input) {
@@ -287,29 +287,22 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents all the usernames of all NormalUsers which can be frozen to the user
+     * Contains the labels for elements on the account freezer screen of the program.
      *
-     * @param usernames the usernames of the NormalUsers
+     * @param input the case corresponding to the label being retrieved
+     * @return the string to display
      */
-    public void accountFreezer(List<String> usernames) {
-        System.out.println("\nHere are the users that need to be frozen:");
-        int index = 1;
-        for (String username : usernames) {
-            System.out.println(index + ". " + username);
-            index++;
+    public String accountFreezer(int input) {
+        switch (input) {
+            case 1:
+                return "Here are the users that need to be frozen:";
+            case 2:
+                return "Would you like to freeze all of the accounts above? (Y/N): ";
+            case 3:
+                return "All frozen!";
+            default:
+                return null;
         }
-        if (usernames.isEmpty()) {
-            emptyListMessage();
-        } else {
-            System.out.print("\nWould you like to freeze all of the accounts above? (Y/N): ");
-        }
-    }
-
-    /**
-     * Presents that the accounts have been frozen
-     */
-    public void accountFreezer() {
-        System.out.println("\nAll frozen!");
     }
 
     /**
@@ -400,7 +393,7 @@ public class SystemPresenter {
     /**
      * Presents text based on input relating to specifics about trades
      *
-     * @param input    the input
+     * @param input     the input
      * @param sender    the user who sent the trade request
      * @param itemNames the name of the items to be traded;
      *                  index 0 - item owned by the sender, index 1 - item owned by the recipient
@@ -432,9 +425,9 @@ public class SystemPresenter {
     /**
      * Presents requested and received trades to a user, based off an input
      *
-     * @param input  the input
-     * @param itemNames  the names of items in the requests
-     * @param users the senders or recipients of the requests
+     * @param input     the input
+     * @param itemNames the names of items in the requests
+     * @param users     the senders or recipients of the requests
      */
     public void tradeRequestViewer(int input, List<String[]> itemNames, List<String> users) {
         switch (input) {
@@ -452,7 +445,7 @@ public class SystemPresenter {
     /**
      * Presents trade requests user has initiated
      *
-     * @param itemNames the names of the items in the initiated trade requests
+     * @param itemNames  the names of the items in the initiated trade requests
      * @param recipients the recipients of the initiated trade requests
      */
     private void presentInitiatedTradeRequests(List<String[]> itemNames, List<String> recipients) {
@@ -475,7 +468,7 @@ public class SystemPresenter {
      * Presents trade requests user has received
      *
      * @param itemNames the names of the items in the received trade requests
-     * @param senders the senders the received trade requests
+     * @param senders   the senders the received trade requests
      */
     private void presentReceivedTradeRequests(List<String[]> itemNames, List<String> senders) {
         int index = 1;
@@ -848,10 +841,10 @@ public class SystemPresenter {
      * Presents the given list of items when making a trade request.
      *
      * @param itemList the list of items to be displayed
-     * @param input the case associated with which list to display
+     * @param input    the case associated with which list to display
      */
     public void tradeRequestSetup(List<Item> itemList, int input) {
-        switch(input) {
+        switch (input) {
             case 1:
                 System.out.println("\nThese are all the items you can currently lend out that the other user might want to borrow:");
                 presentAllItems(itemList, false);
@@ -927,8 +920,8 @@ public class SystemPresenter {
     /**
      * Presents that a list is empty
      */
-    private void emptyListMessage() {
-        System.out.println("nothing here yet!");
+    public String emptyListMessage() {
+        return "Nothing here yet!";
     }
 
     /**
