@@ -1,80 +1,63 @@
 package AdminUserFunctions;
 
-import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
-import SystemManagers.ItemManager;
-import SystemFunctions.SystemPresenter;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
 
 /**
- * Displays a list of usernames that need to be frozen and lets an admin freeze them.
+ * Contains the methods that allow an admin to freeze all users on the list of usernames to freeze.
  *
  * @author Ning Zhang
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
  * last modified 2020-08-05
  */
 public class AccountFreezer {
     private String currUsername;
-    private ItemManager itemManager;
     private UserManager userManager;
-    private NotificationSystem notifSystem;
 
     /**
-     * Creates an <AccountFreezer></AccountFreezer> with the given admin,
-     * item/user managers, and notification system.
-     * Sets all normal users on the list's status to frozen.
+     * Creates an <AccountFreezer></AccountFreezer> with the given admin username and user manager.
      *
      * @param username    the username of the admin currently logged in
-     * @param itemManager the system's item manager
      * @param userManager the system's user manager
-     * @param notifSystem the system's notification manager
      */
-    public AccountFreezer(String username, ItemManager itemManager,
-                          UserManager userManager, NotificationSystem notifSystem) {
+    public AccountFreezer(String username, UserManager userManager) {
         this.currUsername = username;
-        this.itemManager = itemManager;
         this.userManager = userManager;
-        this.notifSystem = notifSystem;
 
-        SystemPresenter systemPresenter = new SystemPresenter();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        // 1. Display list of usernames to freeze:
+        //      systemPresenter.accountFreezer(1) for "Here are the users that need to be frozen:"
+        //      getFreezeList()
+        // 2. Check if list is empty
+        //      > if empty, display "nothing here yet": systemPresenter.emptyListMessage()
+        //      > if NOT empty,
+        //          3. Ask if they want to freeze all (y/n): systemPresenter.accountFreezer(2)
+        //              - maybe just a freeze all button?
 
-        String input;
-        List<String> usernames = userManager.getUsernamesToFreeze();
-
-        systemPresenter.accountFreezer(usernames);
-
-        if (!usernames.isEmpty()) {
-            try {
-                input = bufferedReader.readLine();
-                while (!input.equalsIgnoreCase("y") && !input.equalsIgnoreCase("n")) {
-                    systemPresenter.invalidInput();
-                    input = bufferedReader.readLine();
-                    systemPresenter.accountFreezer();
-                }
-                if (input.equalsIgnoreCase("y")) {
-                    for (String usernameToFreeze : usernames) {
-                        userManager.freezeNormalUser(usernameToFreeze);
-
-                        /* Notify normal user of account being frozen */
-                        userManager.notifyUser(usernameToFreeze).basicUpdate
-                                ("FROZEN", usernameToFreeze, currUsername);
-                    }
-                    userManager.clearUsernamesToFreeze();
-                }
-            } catch (IOException e) {
-                systemPresenter.exceptionMessage();
-            }
-        }
-        close();
+        //              > if they choose to freeze all: freezeAll()
+        //                  4. Display "all frozen!": systemPresenter.accountFreezer()
     }
 
+    /**
+     * Converts the list of usernames to freeze into an array and returns it.
+     *
+     * @return an array containing all the usernames to freeze
+     */
+    public String[] getFreezeList() {
+        return (String[]) userManager.getUsernamesToFreeze().toArray();
+    }
 
-    private void close() {
-        new AdminDashboard(currUsername, itemManager, userManager, notifSystem);
+    /**
+     * Freezes all the users in the list of usernames to freeze.
+     */
+    public void freezeAll() {
+        for (String usernameToFreeze : userManager.getUsernamesToFreeze()) {
+            userManager.freezeNormalUser(usernameToFreeze);
+
+            /* Notify normal user of account being frozen */
+            userManager.notifyUser(usernameToFreeze).basicUpdate
+                    ("FROZEN", usernameToFreeze, currUsername);
+        }
+        userManager.clearUsernamesToFreeze();
     }
 }
