@@ -22,6 +22,8 @@ public class DashboardFrame extends JDialog{
     private JPanel userInputPanel;
     private JPanel notifPanel;
     private JPanel optionalPanel;
+    private JButton removeButton;
+
     private JList<String> listDisplay;
     private JScrollPane scrollablePane;
     private JLabel nothingToDisplay;
@@ -50,6 +52,7 @@ public class DashboardFrame extends JDialog{
         optionalLabel = new JLabel();
         optionalLabelTitle = new JLabel();
         scrollablePane = new JScrollPane();
+        removeButton = new JButton();
 
         userFunctionPanel.setLayout(new BoxLayout(userFunctionPanel, BoxLayout.Y_AXIS));
         userInputPanel.setLayout(new FlowLayout());
@@ -146,7 +149,7 @@ public class DashboardFrame extends JDialog{
     }
 
     private void drawAdminDash(){
-        //userInputPanel.removeAll();
+        userInputPanel.removeAll();
         JButton catalogEditor = new JButton("Catalog Editor");
         JButton freezer = new JButton("Freeze Accounts");
         freezer.addActionListener(e -> {
@@ -174,7 +177,7 @@ public class DashboardFrame extends JDialog{
             dashboardWindow.remove(scrollablePane);
             nothingToDisplay.setText("Nothing here.");
             //dashboardWindow.add(nothingToDisplay, BorderLayout.CENTER);
-            userInputPanel.removeAll();
+            userInputPanel.remove(removeButton);
         }else {
             listDisplay = new JList<>(displayItems);
             //System.out.println(displayItems);
@@ -189,14 +192,15 @@ public class DashboardFrame extends JDialog{
         switch (type) {
             case WISHLIST:
                 userInputPanel.removeAll();
-                JButton remove = new JButton("Remove");
-                initializeButton(remove, 100,20, userInputPanel);
-                userInputPanel.add(remove);
+                removeButton.setText("Remove");
+                initializeButton(removeButton, 100,20, userInputPanel);
+                userInputPanel.add(removeButton);
                 userInputPanel.repaint();
-                remove.addActionListener(e -> {
+                removeButton.addActionListener(e -> {
                     if(!listDisplay.isSelectionEmpty()) {
                         int index = listDisplay.getSelectedIndex();
                         normalDashboard.removeFromWishlist(index);
+                        listDisplay.clearSelection();
                         redrawDisplayList(normalDashboard.getWishlist());
                     }
                 });
@@ -204,7 +208,7 @@ public class DashboardFrame extends JDialog{
 
             case INVENTORY:
                 userInputPanel.removeAll();
-                JButton removeInv = new JButton("Remove");
+                removeButton.setText("Remove");
                 JButton addInv =  new JButton("Add");
                 JLabel name = new JLabel("Name: ");
                 JTextField nameInput = new JTextField(20);
@@ -216,20 +220,24 @@ public class DashboardFrame extends JDialog{
                 userInputPanel.add(descripInput);
                 userInputPanel.repaint();
                 initializeButton(addInv, 100,20, userInputPanel);
-                initializeButton(removeInv, 100,20, userInputPanel);
+                initializeButton(removeButton, 100,20, userInputPanel);
 
                 addInv.addActionListener(e -> {
                     if(!normalDashboard.validateInputInv(nameInput.getText(), descripInput.getText()))
                         normalDashboard.addToInventory(nameInput.getText(), descripInput.getText());
+                    nameInput.setText("");
+                    descripInput.setText("");
                     redrawDisplayList(normalDashboard.getInventory());
+                    drawOptionalPanel(normalDashboard.getPendingInventory(), INVENTORY);
                 });
 
-                removeInv.addActionListener(e -> {
+                removeButton.addActionListener(e -> {
                     if(!listDisplay.isSelectionEmpty()) {
                         int index = listDisplay.getSelectedIndex();
                         if(normalDashboard.validateRemovalInv(listDisplay.getSelectedIndex())) {
                             normalDashboard.removeFromInventory(index);
                         }
+                        listDisplay.clearSelection();
                         redrawDisplayList(normalDashboard.getInventory());
                     }
 
@@ -289,7 +297,7 @@ public class DashboardFrame extends JDialog{
     }
 
     private void redrawDisplayList(String[] displayList){
-        listDisplay.clearSelection();
+
         dashboardWindow.revalidate();
         drawListDisplay(displayList);
         dashboardWindow.repaint();

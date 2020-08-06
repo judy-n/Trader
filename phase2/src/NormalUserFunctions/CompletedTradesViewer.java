@@ -94,7 +94,6 @@ public class CompletedTradesViewer {
      */
     public String[] getTopThreeTraderStrings() {
         String[] topTraders = tradeManager.getFrequentTradePartners(currUsername);
-        System.out.println("\nHere are your top 3 most frequent trade partners:");
         for (int i = 0; i < 3; i++) {
             topTraders[i] = ((i + 1) + ". " + topTraders[i]);
         }

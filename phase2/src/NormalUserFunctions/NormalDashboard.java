@@ -47,7 +47,7 @@ public class NormalDashboard extends Dashboard {
         this.notifSystem = notifSystem;
         currentUser = userManager.getNormalByUsername(username);
         wishlistEditor = new WishlistEditor(currUsername, itemManager, userManager);
-        inventoryEditor = new InventoryEditor(currUsername, itemManager, userManager, tradeManager, notifSystem);
+        inventoryEditor = new InventoryEditor(currUsername, itemManager, userManager, tradeManager);
         completedTradesViewer = new CompletedTradesViewer(currUsername, itemManager, tradeManager);
     }
     public void editUserStatus(){

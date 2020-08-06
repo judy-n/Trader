@@ -5,10 +5,6 @@ import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
 import Entities.Item;
-import SystemFunctions.SystemPresenter;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,42 +25,26 @@ public class InventoryEditor {
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
-    private NotificationSystem notifSystem;
     private List<Item> itemInventory;
     /**
      * Creates an <InventoryEditor></InventoryEditor> with the given normal user,
      * item/user/trade managers, and notification system.
      * Prints to the screen the given user's inventory and options to add/remove/cancel.
      *
-     * @param currUsername  the username of the normal user who's currently logged in
+     * @param currUsername the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
-     * @param notifSystem  the system's notification manager
      */
     public InventoryEditor(String currUsername, ItemManager itemManager, UserManager userManager,
-                           TradeManager tradeManager, NotificationSystem notifSystem) {
+                           TradeManager tradeManager) {
         this.currUsername = currUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
-        this.notifSystem = notifSystem;
-
-        SystemPresenter systemPresenter = new SystemPresenter();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         itemInventory = itemManager.getItemsByIDs(userManager.getNormalUserInventory(currUsername));
-        List<Item> pendingItems = itemManager.getItemsByIDs(userManager.getNormalUserPending(currUsername));
 
-//        systemPresenter.inventoryEditor(itemInventory, pendingItems);
-//        try {
-//            String temp = bufferedReader.readLine();
-//            while (!temp.matches("[1-3]")) {
-//                systemPresenter.invalidInput();
-//                temp = bufferedReader.readLine();
-//            }
-//            int input = Integer.parseInt(temp);
-//
 //            if (input == 1) {           /* add item */
 //                String itemNameInput;
 //                String itemDescriptionInput;
