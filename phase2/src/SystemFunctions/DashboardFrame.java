@@ -1,6 +1,7 @@
 package SystemFunctions;
 import NormalUserFunctions.NormalDashboard;
 import AdminUserFunctions.AdminDashboard;
+
 import javax.swing.*;
 import java.awt.*;
 /**
@@ -39,6 +40,7 @@ public class DashboardFrame extends JDialog{
     private final int FREEZE = 8;
     private final int UNFREEZE = 9;
     private final int UNDO = 10;
+    private final int CREATE = 11;
 
     public DashboardFrame(Dashboard dashboard, JFrame parent) {
         this.dashboard = dashboard;
@@ -168,6 +170,11 @@ public class DashboardFrame extends JDialog{
 
         JButton threshold = new JButton("Threshold Editor");
         JButton adminCreator = new JButton("Create New Admin");
+        adminCreator.addActionListener(e -> {
+            resetEverything();
+            drawUserInputPane(CREATE);
+        });
+
         JButton undo = new JButton("Undo User Activity");
 
         initializeButton(catalogEditor, 200, 40, userFunctionPanel);
@@ -286,8 +293,31 @@ public class DashboardFrame extends JDialog{
                     redrawDisplayList(adminDashboard.getUnfreezeRequests());
                 });
                 break;
-        }
 
+            case CREATE:
+                JLabel username = new JLabel("Username:");
+                JLabel email = new JLabel("Email:");
+                JLabel password = new JLabel("Password:");
+                JTextField usernameInput = new JTextField(10);
+                JTextField emailInput = new JTextField(10);
+                JTextField passwordInput = new JTextField(10);
+                JButton addAdmin = new JButton("Create");
+                addAdmin.addActionListener(e ->{
+                    if(adminDashboard.validateInput(usernameInput.getText(),
+                            emailInput.getText(), passwordInput.getText()).isEmpty()){
+                        adminDashboard.createNewAdmin(usernameInput.getText(),
+                                emailInput.getText(), passwordInput.getText());
+                    }
+                });
+                userInputPanel.add(username);
+                userInputPanel.add(usernameInput);
+                userInputPanel.add(email);
+                userInputPanel.add(emailInput);
+                userInputPanel.add(password);
+                userInputPanel.add(passwordInput);
+                initializeButton(addAdmin, 100,20,userInputPanel);
+        }
+        dashboardWindow.repaint();
         dashboardWindow.setVisible(true);
     }
 

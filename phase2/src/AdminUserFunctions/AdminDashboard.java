@@ -1,9 +1,12 @@
 package AdminUserFunctions;
 
 import SystemFunctions.Dashboard;
+import SystemFunctions.SignUpSystem;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
+
+import java.util.ArrayList;
 
 /**
  * Displays a dashboard once an administrative user logs in.
@@ -78,6 +81,12 @@ public class AdminDashboard extends Dashboard {
         accountUnfreezer.acceptUnfreezeRequest(index);
     }
 
+    public void createNewAdmin(String inputtedUsername, String inputtedEmail, String inputtedPassword){
+        new AdminCreator(currUsername, userManager).createNewAdmin(inputtedUsername, inputtedEmail, inputtedPassword);
+    }
+    public ArrayList<Integer> validateInput(String inputtedUsername, String inputtedEmail, String inputtedPassword){
+        return new SignUpSystem(userManager).validateInput(inputtedUsername, inputtedEmail, inputtedPassword, inputtedPassword);
+    }
 
     @Override
     public String getUsername() {
