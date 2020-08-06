@@ -19,7 +19,27 @@ import java.util.List;
  * last modified 2020-08-03
  */
 public class SystemPresenter {
+    private StartMenuPresenter startMenuPresenter;
+
     private final String choicePrompt = "\nPlease enter your choice here: ";
+
+    public SystemPresenter(){
+        startMenuPresenter = new StartMenuPresenter();
+    }
+
+    public String startMenu(int input){
+        return startMenuPresenter.startMenu(input);
+    }
+
+    public String signUpSystem(int input) {
+        return startMenuPresenter.signUpSystem(input);
+    }
+
+    public String loginSystem(int input) {
+        return startMenuPresenter.loginSystem(input);
+    }
+
+
 
     /**
      * Prompts for if a user would like to edit their inventory

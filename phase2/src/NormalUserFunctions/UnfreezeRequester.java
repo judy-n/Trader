@@ -9,7 +9,7 @@ import SystemManagers.UserManager;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-30
- * last modified 2020-08-04
+ * last modified 2020-08-05
  */
 public class UnfreezeRequester {
     private String currUsername;
@@ -31,9 +31,7 @@ public class UnfreezeRequester {
 
     /* Sends a request to be unfrozen. */
     private void requestUnfreeze() {
-        if (userManager.getUnfreezeRequests().contains(currUsername)) {
-            //systemPresenter.requestUnfreeze(1);
-        } else {
+        if (!userManager.getUnfreezeRequests().contains(currUsername)) {
             userManager.addUnfreezeRequest(currUsername);
             //systemPresenter.requestUnfreeze(2);
         }
