@@ -11,9 +11,9 @@ import java.util.List;
  * The presenter used for the entire program. Prints to text UI.
  *
  * @author Ning Zhang
- * @author Kushagra
  * @author Yingjia Liu
  * @author Judy Naamani
+ * @author Kushagra
  * @version 1.0
  * @since 2020-07-03
  * last modified 2020-08-03

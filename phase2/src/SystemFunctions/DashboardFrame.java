@@ -160,6 +160,12 @@ public class DashboardFrame extends JDialog{
         });
 
         JButton unfreezer = new JButton("UnFreeze Accounts");
+        unfreezer.addActionListener(e -> {
+            resetEverything();
+            drawUserInputPane(UNFREEZE);
+            drawListDisplay(adminDashboard.getUnfreezeRequests());
+        });
+
         JButton threshold = new JButton("Threshold Editor");
         JButton adminCreator = new JButton("Create New Admin");
         JButton undo = new JButton("Undo User Activity");
@@ -259,10 +265,27 @@ public class DashboardFrame extends JDialog{
 
             case FREEZE:
                 userInputPanel.removeAll();
-                JButton freezeAll = new JButton("Freeze All");
-                initializeButton(freezeAll, 100,20, userInputPanel);
-                freezeAll.addActionListener(e -> adminDashboard.freezeAll());
+                removeButton.setText("Freeze All");
+                initializeButton(removeButton, 100,20, userInputPanel);
+                removeButton.addActionListener(e -> {
+                    adminDashboard.freezeAll();
+                    redrawDisplayList(adminDashboard.getFreezeList());
+                });
+                break;
 
+            case UNFREEZE:
+                userInputPanel.removeAll();
+                removeButton.setText("Unfreeze");
+                initializeButton(removeButton, 100,20,userInputPanel);
+                removeButton.addActionListener(e ->{
+                    if(!listDisplay.isSelectionEmpty()){
+                        int index = listDisplay.getSelectedIndex();
+                        adminDashboard.unfreezeUser(index);
+                    }
+                    listDisplay.clearSelection();
+                    redrawDisplayList(adminDashboard.getUnfreezeRequests());
+                });
+                break;
         }
 
         dashboardWindow.setVisible(true);

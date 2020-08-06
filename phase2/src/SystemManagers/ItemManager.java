@@ -9,10 +9,10 @@ import java.util.List;
  * Stores and manages all <Item></Item>s in the system (approved and non-approved).
  * Even if an item has been removed from a user's inventory, it still exists in <ItemManager></ItemManager>.
  *
- * @author Judy Naamani
  * @author Yingjia Liu
  * @author Ning Zhang
  * @author Liam Huff
+ * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
  * last modified 2020-08-05

@@ -9,6 +9,7 @@ import SystemManagers.ItemManager;
  * Displays a dashboard once an administrative user logs in.
  *
  * @author Yingjia Liu
+ * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-05
  * last modified 2020-08-05
@@ -18,6 +19,7 @@ public class AdminDashboard extends Dashboard {
     private String currUsername;
     private UserManager userManager;
     private AccountFreezer accountFreezer;
+    private AccountUnfreezer accountUnfreezer;
 
     /**
      * Creates an <AdminDashboard></AdminDashboard> with the given admin username,
@@ -30,7 +32,7 @@ public class AdminDashboard extends Dashboard {
         this.currUsername = username;
         this.userManager = userManager;
         accountFreezer = new AccountFreezer(username, userManager);
-
+        accountUnfreezer = new AccountUnfreezer(username, userManager);
 //
 //        String regex = "[0-4]";
 //        int adminID = userManager.getAdminID(currUsername);
@@ -66,6 +68,14 @@ public class AdminDashboard extends Dashboard {
 
     public void freezeAll(){
         accountFreezer.freezeAll();
+    }
+
+    public String[] getUnfreezeRequests(){
+        return accountUnfreezer.getUnfreezeRequests();
+    }
+
+    public void unfreezeUser(int index){
+        accountUnfreezer.acceptUnfreezeRequest(index);
     }
 
 

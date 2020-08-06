@@ -5,7 +5,6 @@ import SystemManagers.UserManager;
 /**
  * Lets admins review request to be unfrozen sent by frozen normal users.
  *
- * @author Judy Naamani
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
@@ -87,7 +86,7 @@ public class AccountUnfreezer {
      * @return an array containing all the usernames who requested to be unfrozen
      */
     public String[] getUnfreezeRequests() {
-        return (String[]) userManager.getUnfreezeRequests().toArray();
+        return userManager.getUnfreezeRequests().toArray(new String[userManager.getUnfreezeRequests().size()]);
     }
 
     /**

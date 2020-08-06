@@ -8,7 +8,6 @@ import java.util.*;
 /**
  * Shows the user their wishlist and lets them edit it through user input.
  *
- * @author Judy Naamani
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-01
@@ -18,7 +17,6 @@ public class WishlistEditor {
     private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
-    //private ArrayList<Item> itemWishlist;
     private List<Item> itemWishlist;
 
     /**
@@ -37,15 +35,6 @@ public class WishlistEditor {
         this.currUsername = currUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;
-        //itemWishlist = new ArrayList<>();
-
-        //added for testing until itemManger is fixed
-
-        //Item item1 = new Item("item1", "This is item1", "test");
-        //Item item2 = new Item("item2", "this is item2", "test");
-        //itemWishlist.add(item1);
-        //itemWishlist.add(item2);
-
         itemWishlist= itemManager.getItemsByIDs(userManager.getNormalUserWishlist(currUsername));
 
 
@@ -108,7 +97,6 @@ public class WishlistEditor {
 
     public void removeItem(int indexInput){
         Item selected = itemWishlist.get(indexInput);
-        //itemWishlist.remove(selected);
         userManager.removeFromNormalUserWishlist(selected.getID(), currUsername);
     }
 }

@@ -19,7 +19,6 @@ import java.util.List;
 /**
  * Lets users see their ongoing trades that haven't been cancelled and edit/confirm trade meetings.
  *
- * @author Kushagra Mehta
  * @author Ning Zhang
  * @author Judy Naamani
  * @author Yingjia Liu

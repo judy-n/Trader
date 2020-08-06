@@ -12,7 +12,6 @@ import java.util.List;
  * Shows the user their inventory and lets them edit it through user input.
  * If the user adds an item to their inventory, it will first be sent to an admin for approval.
  *
- * @author Judy Naamani
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0

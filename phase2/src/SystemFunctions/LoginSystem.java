@@ -1,7 +1,6 @@
 package SystemFunctions;
 
 import SystemManagers.UserManager;
-import Entities.User;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +8,6 @@ import java.util.ArrayList;
  *
  * @author Ning Zhang
  * @author Yingjia Liu
- * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
  * last modified 2020-07-30

@@ -10,7 +10,6 @@ import java.util.ArrayList;
  *
  * @author Ning Zhang
  * @author Yingjia Liu
- * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
  * last modified 2020-07-29

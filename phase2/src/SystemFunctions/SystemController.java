@@ -17,6 +17,7 @@ import java.util.List;
  * The master controller.
  *
  * @author Ning Zhang
+ * @author Yingjia Liu
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03

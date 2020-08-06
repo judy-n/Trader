@@ -17,9 +17,9 @@ import java.util.Map;
 /**
  * Stores and manages all <Trade></Trade>s in the system.
  *
- * @author Judy Naamani
  * @author Yingjia Liu
  * @author Ning Zhang
+ * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
  * last modified 2020-08-03

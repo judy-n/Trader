@@ -33,7 +33,6 @@ public class UnfreezeRequester {
     private void requestUnfreeze() {
         if (!userManager.getUnfreezeRequests().contains(currUsername)) {
             userManager.addUnfreezeRequest(currUsername);
-            //systemPresenter.requestUnfreeze(2);
         }
     }
 }
