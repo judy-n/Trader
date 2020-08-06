@@ -233,7 +233,7 @@ public class StartMenu extends JPanel {
         this.removeAll();
         this.revalidate();
         JButton logoutButton = new JButton("Log out");
-        initializeButton(logoutButton, 200,40,50,50);
+        initializeButton(logoutButton, 200,40,X_POS,FIRST_LINE_Y+Y_SPACE);
         logoutButton.addActionListener(e -> {
             this.removeAll();
             this.revalidate();
@@ -242,7 +242,8 @@ public class StartMenu extends JPanel {
         });
         JLabel loggedInMsg = new JLabel(systemPresenter.loginSystem(5));
         loggedInMsg.setForeground(Color.BLACK);
-        loggedInMsg.setSize(200,40);
+        loggedInMsg.setSize(400, 40);
+        loggedInMsg.setFont(font);
         this.add(loggedInMsg);
         loggedInMsg.setLocation(X_POS, FIRST_LINE_Y);
         this.repaint();

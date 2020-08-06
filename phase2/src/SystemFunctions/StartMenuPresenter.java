@@ -103,7 +103,7 @@ public class StartMenuPresenter {
             case 4:
                 return ("Password does not match username/email!");
             case 5:
-                return ("Logged in!");
+                return ("Welcome, you are now logged in.");
             default:
                 return null;
         }

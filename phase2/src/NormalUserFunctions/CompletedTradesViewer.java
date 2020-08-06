@@ -45,11 +45,11 @@ public class CompletedTradesViewer {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         Trade[] recentThree = tradeManager.getRecentThreeTrades(currUsername);
-        String[] tradeStrings = new String[3];
 
         if (recentThree[0] == null) {
-            System.out.println("Nothing here yet!");
+            return new String[0];
         } else {
+            String[] tradeStrings = new String[3];
             for (int i = 0; i < 3; i++) {
 
                 String tradePrint = "empty";
@@ -82,8 +82,9 @@ public class CompletedTradesViewer {
                 }
                 tradeStrings[i] = ((i + 1) + ". " + tradePrint);
             }
+            return tradeStrings;
         }
-        return tradeStrings;
+
     }
 
     /**

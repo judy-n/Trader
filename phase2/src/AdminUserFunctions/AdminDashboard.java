@@ -30,8 +30,7 @@ public class AdminDashboard extends Dashboard {
         this.currUsername = username;
         this.userManager = userManager;
         accountFreezer = new AccountFreezer(username, userManager);
-//        SystemPresenter systemPresenter = new SystemPresenter();
-//        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
 //
 //        String regex = "[0-4]";
 //        int adminID = userManager.getAdminID(currUsername);
@@ -43,27 +42,10 @@ public class AdminDashboard extends Dashboard {
 //            regex = "[0-5]";
 //            systemPresenter.adminDashboard(2);
 //        }
-//        try {
-//            String temp;
-//            temp = bufferedReader.readLine();
-//            while (!temp.matches(regex)) {
-//                systemPresenter.invalidInput();
-//                temp = bufferedReader.readLine();
-//            }
-//            input = Integer.parseInt(temp);
-//        } catch (IOException e) {
-//            systemPresenter.exceptionMessage();
-//        }
 //
 //        switch (input) {
-//            case 0:
-//                systemPresenter.logoutMessage();
-//                break;
 //            case 1:
 //                new CatalogEditor(currUsername, itemManager, userManager, notifSystem);
-//                break;
-//            case 2:
-//                new AccountFreezer(currUsername, itemManager, userManager, notifSystem);
 //                break;
 //            case 3:
 //                new AccountUnfreezer(currUsername, itemManager, userManager, notifSystem);

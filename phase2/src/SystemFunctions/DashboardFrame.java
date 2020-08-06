@@ -26,6 +26,7 @@ public class DashboardFrame extends JDialog{
     private JScrollPane scrollablePane;
     private JLabel nothingToDisplay;
     private JLabel optionalLabel;
+    private JLabel optionalLabelTitle;
     private final int CATALOG_VIEWER = 1;
     private final int INVENTORY = 2;
     private final int WISHLIST = 3;
@@ -47,6 +48,7 @@ public class DashboardFrame extends JDialog{
         optionalPanel = new JPanel();
         nothingToDisplay = new JLabel();
         optionalLabel = new JLabel();
+        optionalLabelTitle = new JLabel();
         scrollablePane = new JScrollPane();
 
         userFunctionPanel.setLayout(new BoxLayout(userFunctionPanel, BoxLayout.Y_AXIS));
@@ -92,7 +94,7 @@ public class DashboardFrame extends JDialog{
             resetEverything();
             drawUserInputPane(INVENTORY);
             drawListDisplay(normalDashboard.getInventory());
-            drawOptionalPanel(normalDashboard.getPendingInventory());
+            drawOptionalPanel(normalDashboard.getPendingInventory(), INVENTORY);
         });
 
         JButton wishlist = new JButton("Wishlist Editor");
@@ -100,7 +102,6 @@ public class DashboardFrame extends JDialog{
             resetEverything();
             drawUserInputPane(WISHLIST);
             drawListDisplay(normalDashboard.getWishlist());
-
         }
         );
 
@@ -113,22 +114,24 @@ public class DashboardFrame extends JDialog{
         completeTrade.addActionListener(e -> {
             resetEverything();
             drawListDisplay(normalDashboard.getRecentThreeTradesStrings());
-            drawOptionalPanel(normalDashboard.getTopThreeTraderStrings());
+            drawOptionalPanel(normalDashboard.getTopThreeTraderStrings(), COMPLETED);
         });
 
         JButton vacation = new JButton("Edit Vacation Status");
         vacation.addActionListener(e -> {
+            normalDashboard.editUserStatus();
             resetEverything();
             dashboardWindow.remove(scrollablePane);
-            normalDashboard.editUserStatus();
+            dashboardWindow.repaint();
             dashboardWindow.setVisible(true);
         });
 
         JButton unfreeze = new JButton("Send Unfreeze Request");
         unfreeze.addActionListener(e -> {
+            normalDashboard.sendUnfreezeRequest();
             resetEverything();
             dashboardWindow.remove(scrollablePane);
-            normalDashboard.sendUnfreezeRequest();
+            dashboardWindow.repaint();
             dashboardWindow.setVisible(true);
         });
 
@@ -257,7 +260,16 @@ public class DashboardFrame extends JDialog{
         dashboardWindow.setVisible(true);
     }
 
-    private void drawOptionalPanel(String[] stringArray){
+    private void drawOptionalPanel(String[] stringArray, int type){
+        switch (type){
+            case INVENTORY:
+                optionalLabelTitle.setText("Pending Inventory");
+                break;
+            case COMPLETED:
+                optionalLabelTitle.setText("Top Three Trade Partners");
+                break;
+                //case
+        }
         optionalLabel.setText("");
         if(stringArray.length == 0) {
             optionalLabel.setText("Nothing here.");
@@ -270,13 +282,14 @@ public class DashboardFrame extends JDialog{
             }
             optionalLabel.setText(stringBuilder.toString());
         }
+        optionalPanel.add(optionalLabelTitle);
         optionalPanel.add(optionalLabel);
+        dashboardWindow.repaint();
         dashboardWindow.setVisible(true);
     }
 
     private void redrawDisplayList(String[] displayList){
         listDisplay.clearSelection();
-        //dashboardWindow.remove(scrollablePane);
         dashboardWindow.revalidate();
         drawListDisplay(displayList);
         dashboardWindow.repaint();

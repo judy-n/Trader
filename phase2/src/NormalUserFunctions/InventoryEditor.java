@@ -168,7 +168,7 @@ public class InventoryEditor {
         List<Item> pendingItems = itemManager.getItemsByIDs(userManager.getNormalUserPending(currUsername));
         int index = 1;
         for(Item item : pendingItems){
-            stringInventory.add(index + ". " + item.toString() + "(pending)");
+            stringInventory.add(index + ". " + item.toString());
             index ++;
         }
         return stringInventory.toArray(new String[pendingItems.size()]);
