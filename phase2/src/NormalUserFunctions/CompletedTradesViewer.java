@@ -1,62 +1,52 @@
 package NormalUserFunctions;
 
-import SystemManagers.NotificationSystem;
-import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
 import Entities.Item;
 import Entities.Trade;
-import SystemFunctions.MenuItem;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Shows the user their three most recently completed trades and their top three most frequent trading partners.
- * A presenter separate from SystemPresenter because reading user input is not required in this class.
+ * Helps show the user their three most recently completed trades and their top three most frequent trading partners
+ * by formatting the information into easy-to-read statements and putting them in order.
  *
  * @author Kushagra Mehta
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-08-03
+ * last modified 2020-08-05
  */
-public class CompletedTradesViewer extends MenuItem {
+public class CompletedTradesViewer {
     private String currUsername;
     private ItemManager itemManager;
-    private UserManager userManager;
     private TradeManager tradeManager;
-    private NotificationSystem notifSystem;
 
     /**
-     * Creates a <CompletedTradesViewer></CompletedTradesViewer> with the given normal user,
-     * item/user/trade managers, and notification system.
-     * Lets a normal user view their three most recent completed trades or three most frequent trade partners.
+     * Creates a <CompletedTradesViewer></CompletedTradesViewer> with the given normal username and item/trade managers.
      *
      * @param currUsername   the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
-     * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
-     * @param notifSystem  the system's notification manager
      */
-    public CompletedTradesViewer(String currUsername, ItemManager itemManager, UserManager userManager,
-                                 TradeManager tradeManager, NotificationSystem notifSystem) {
+    public CompletedTradesViewer(String currUsername, ItemManager itemManager, TradeManager tradeManager) {
         this.currUsername = currUsername;
         this.itemManager = itemManager;
-        this.userManager = userManager;
         this.tradeManager = tradeManager;
-        this.notifSystem = notifSystem;
     }
 
     /**
-     * Displays the three most recent trades for a normal user.
+     * Formats a normal user's three most recent trades into string representations to be displayed.
+     *
+     * @return string representations of the three most recent trades for a normal user
      */
-    public void viewRecentThreeTrades() {
+    public String[] getRecentThreeTradesStrings() {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         Trade[] recentThree = tradeManager.getRecentThreeTrades(currUsername);
+        String[] tradeStrings = new String[3];
 
-        System.out.println("\nHere are your three most recently completed trades:");
         if (recentThree[0] == null) {
             System.out.println("Nothing here yet!");
         } else {
@@ -90,36 +80,23 @@ public class CompletedTradesViewer extends MenuItem {
                                 tempItems[0].getName() + "] for [" + tempItems[1].getName() + "]";
                     }
                 }
-                System.out.println((i + 1) + ". " + tradePrint);
+                tradeStrings[i] = ((i + 1) + ". " + tradePrint);
             }
         }
-        close();
+        return tradeStrings;
     }
 
     /**
-     * Displays the top three frequent trade partners for a normal user.
+     * Formats a normal user's top three frequent trade partners into string representations to be displayed.
+     *
+     * @return string representations of the top three frequent trade partners for a normal user
      */
-    public void viewTopThreeTrader() {
+    public String[] getTopThreeTraderStrings() {
         String[] topTraders = tradeManager.getFrequentTradePartners(currUsername);
         System.out.println("\nHere are your top 3 most frequent trade partners:");
-        int index = 1;
-        if (topTraders[0].equals("empty")) {
-            System.out.println("No one yet!");
-        } else {
-            for (String s : topTraders) {
-                System.out.println(index + ". " + s);
-                index++;
-            }
+        for (int i = 0; i < 3; i++) {
+            topTraders[i] = ((i + 1) + ". " + topTraders[0]);
         }
-        close();
-    }
-
-    private void close() {
-        new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem);
-    }
-
-    @Override
-    public String getTitle() {
-        return "Completed Trades Viewer";
+        return topTraders;
     }
 }
