@@ -2,31 +2,25 @@ package NormalUserFunctions;
 
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
-import Entities.Item;
-import java.util.*;
 
 /**
- * Shows the user their wishlist and lets them edit it through user input.
+ * Helps show the user their wishlist and let them edit it through user input.
  *
  * @author Ning Zhang
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-08-04
+ * last modified 2020-08-06
  */
 public class WishlistEditor {
     private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
-    private List<Item> itemWishlist;
 
     /**
-     * Creates a <WishlistEditor></WishlistEditor> with the given normal user,
-     * item/user/trade managers, and notification system.
-     * Prints to the screen the given user's wishlist and options to remove/cancel using <SystemPresenter></SystemPresenter>.
-     * This class lets the user remove items from their wishlist through user input.
-     * They can only add items to their wishlist when browsing items available for trade.
+     * Creates a <WishlistEditor></WishlistEditor> with the given normal username and item/user managers.
      *
-     * @param currUsername  the normal user who's currently logged in
+     * @param currUsername the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      */
@@ -35,7 +29,6 @@ public class WishlistEditor {
         this.currUsername = currUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;
-        itemWishlist= itemManager.getItemsByIDs(userManager.getNormalUserWishlist(currUsername));
 
 
 //        SystemPresenter systemPresenter = new SystemPresenter();
@@ -85,18 +78,23 @@ public class WishlistEditor {
 //        }
     }
 
-    public String[] getWishlist(){
-        ArrayList<String> stringWishlist = new ArrayList<>();
-        int index = 1;
-        for(Item item : itemWishlist){
-            stringWishlist.add(index + ". " + item.toString());
-            index++;
-        }
-        return stringWishlist.toArray(new String[stringWishlist.size()]);
+    /**
+     * Converts the current user's wishlist into an array of string representations and returns it.
+     *
+     * @return an array containing string representations of all items of the current user's wishlist
+     */
+    public String[] getWishlistStrings() {
+        // Passing second arg as true means each string representation will include the item's owner
+        return itemManager.getItemStringsID(userManager.getNormalUserWishlist(currUsername), true);
     }
 
-    public void removeItem(int indexInput){
-        Item selected = itemWishlist.get(indexInput);
-        userManager.removeFromNormalUserWishlist(selected.getID(), currUsername);
+    /**
+     * Removes the item ID at the given index from the current user's wishlist.
+     *
+     * @param index the index of the item ID being removed
+     */
+    public void removeItem(int index) {
+        long selectedID = userManager.getNormalUserWishlist(currUsername).get(index);
+        userManager.removeFromNormalUserWishlist(selectedID, currUsername);
     }
 }

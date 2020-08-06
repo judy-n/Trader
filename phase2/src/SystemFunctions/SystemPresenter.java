@@ -16,18 +16,18 @@ import java.util.List;
  * @author Kushagra
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-08-03
+ * last modified 2020-08-06
  */
 public class SystemPresenter {
     private StartMenuPresenter startMenuPresenter;
 
     private final String choicePrompt = "\nPlease enter your choice here: ";
 
-    public SystemPresenter(){
+    public SystemPresenter() {
         startMenuPresenter = new StartMenuPresenter();
     }
 
-    public String startMenu(int input){
+    public String startMenu(int input) {
         return startMenuPresenter.startMenu(input);
     }
 
@@ -38,7 +38,6 @@ public class SystemPresenter {
     public String loginSystem(int input) {
         return startMenuPresenter.loginSystem(input);
     }
-
 
 
     /**
@@ -252,42 +251,23 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents pending items
+     * Returns the labels for elements on the screen while reviewing pending items.
      *
-     * @param pendingItems the pending items
+     * @param input the case corresponding the label being retrieved
+     * @return the string to display
      */
-    public void catalogEditor(List<Item> pendingItems) {
-        System.out.println("\nThese are all the items waiting for approval:");
-        presentAllItems(pendingItems, true);
-    }
-
-    /**
-     * takes input from user on which items to approve/reject iff items exist
-     *
-     * @param input the user's input
-     */
-    public void catalogEditor(int input) {
+    public String catalogEditor(int input) {
         switch (input) {
             case 1:
-                System.out.println("\nThere are no items waiting for approval!");
-                break;
-            case 2:
-                System.out.print("\nIs there an item you would like to approve/reject? (0 to quit): ");
-                break;
+                return "These are all the items waiting for approval:";
+            default:
+                return null;
         }
     }
 
-    /**
-     * Prompts the user about whether to approve or reject a chosen item
-     *
-     * @param itemName the name of the chosen item
-     */
-    public void catalogEditor(String itemName) {
-        System.out.println("\nYou have chosen: [" + itemName + "]");
-        System.out.print("Would you like to 1) approve or 2) reject this item? (0 to quit): ");
-    }
-
     /*
+     * Replaced by method getItemStrings() in ItemManager!
+     *
      * Presents all given items in a numbered list.
      * Also presents all items with their owner's username iff withOwner is true.
      */
@@ -307,7 +287,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Contains the labels for elements on the account freezer screen of the program.
+     * Returns the labels for elements on the account freezer screen of the program.
      *
      * @param input the case corresponding to the label being retrieved
      * @return the string to display
@@ -342,7 +322,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Contains the labels for elements on the screen for viewing and accepting unfreeze requests.
+     * Returns the labels for elements on the screen for viewing and accepting unfreeze requests.
      *
      * @param input the case corresponding to the label being retrieved
      * @return the string to display

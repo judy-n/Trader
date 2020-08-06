@@ -59,7 +59,7 @@ public class NormalDashboard extends Dashboard {
     }
 
     public String[] getWishlist(){
-       return wishlistEditor.getWishlist();
+       return wishlistEditor.getWishlistStrings();
     }
 
     public void removeFromWishlist(int index){

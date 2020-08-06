@@ -11,7 +11,7 @@ package SystemFunctions;
 public class StartMenuPresenter {
 
     /**
-     * Contains the labels for elements on the start menu screen of the program.
+     * Returns the labels for elements on the start menu screen of the program.
      *
      * @param input the case corresponding to the label being retrieved
      * @return the string to display
@@ -34,7 +34,7 @@ public class StartMenuPresenter {
     }
 
     /**
-     * Contains the labels for elements on the sign-up screen of the program.
+     * Returns the labels for elements on the sign-up screen of the program.
      * Includes the error messages for invalid user credentials.
      *
      * @param input the case corresponding to the label being retrieved
@@ -85,7 +85,7 @@ public class StartMenuPresenter {
 
 
     /**
-     * Contains the labels for elements on the login screen of the program.
+     * Returns the labels for elements on the login screen of the program.
      *
      * @param input the case corresponding to the label being retrieved
      * @return the string to display

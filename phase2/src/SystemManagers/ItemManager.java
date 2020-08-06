@@ -15,7 +15,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-05
+ * last modified 2020-08-06
  */
 public class ItemManager extends Manager implements Serializable {
     private List<Item> approvedItems;
@@ -227,5 +227,40 @@ public class ItemManager extends Manager implements Serializable {
      */
     public String getItemOwner(long itemID) {
         return getItem(itemID).getOwnerUsername();
+    }
+
+    /**
+     * Takes in a list of items and returns an array of their string representations.
+     *
+     * @param itemList the list of items being converted to strings
+     * @param withOwner whether or not the string representations should include the item owner
+     * @return an array of string representations of the given item list
+     */
+    public String[] getItemStrings(List<Item> itemList, boolean withOwner) {
+
+        List<String> itemStringsList = new ArrayList<>();
+
+        int index = 1;
+        for (Item i : itemList) {
+            StringBuilder itemStringBuilder = new StringBuilder(index + ". " + i);
+            if (withOwner) {
+                itemStringBuilder.append("     added by ").append(i.getOwnerUsername());
+            }
+            itemStringsList.add(itemStringBuilder.toString());
+            index++;
+        }
+        return itemStringsList.toArray(new String[0]);
+    }
+
+    /**
+     * Takes in a list of item IDs and returns an array of their associated items' string representations.
+     *
+     * @param itemListID the list of item IDS being converted to strings
+     * @param withOwner whether or not the string representations should include the item owner
+     * @return an array of string representations of the given item ID list
+     */
+    public String[] getItemStringsID(List<Long> itemListID, boolean withOwner) {
+        List<Item> itemList = getItemsByIDs(itemListID);
+        return getItemStrings(itemList, withOwner);
     }
 }

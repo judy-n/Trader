@@ -3,13 +3,13 @@ package AdminUserFunctions;
 import SystemManagers.UserManager;
 
 /**
- * Contains the methods that allow an admin to freeze all users on the list of usernames to freeze.
+ * Helps let admins freeze all users on the list of usernames to freeze.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-08-05
+ * last modified 2020-08-06
  */
 public class AccountFreezer {
     private String currUsername;
@@ -25,9 +25,8 @@ public class AccountFreezer {
         this.currUsername = username;
         this.userManager = userManager;
 
-        // 1. Display list of usernames to freeze:
-        //      systemPresenter.accountFreezer(1) for "Here are the users that need to be frozen:"
-        //      getFreezeList()
+        // Header: systemPresenter.accountFreezer(1) for "Here are the users that need to be frozen:"
+        // 1. Display list of usernames to freeze: getFreezeList()
         // 2. Check if list is empty
         //      > if empty, display "nothing here yet": systemPresenter.emptyListMessage()
         //      > if NOT empty,
@@ -44,7 +43,7 @@ public class AccountFreezer {
      * @return an array containing all the usernames to freeze
      */
     public String[] getFreezeList() {
-        return userManager.getUsernamesToFreeze().toArray(new String[userManager.getUsernamesToFreeze().size()]);
+        return userManager.getUsernamesToFreeze().toArray(new String[0]);
     }
 
     /**

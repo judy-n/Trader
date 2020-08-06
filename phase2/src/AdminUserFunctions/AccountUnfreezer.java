@@ -3,13 +3,13 @@ package AdminUserFunctions;
 import SystemManagers.UserManager;
 
 /**
- * Lets admins review request to be unfrozen sent by frozen normal users.
+ * Helps let admins review and accept requests to be unfrozen sent by frozen normal users.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-08-05
+ * last modified 2020-08-06
  */
 public class AccountUnfreezer {
     private String currUsername;
@@ -86,7 +86,7 @@ public class AccountUnfreezer {
      * @return an array containing all the usernames who requested to be unfrozen
      */
     public String[] getUnfreezeRequests() {
-        return userManager.getUnfreezeRequests().toArray(new String[userManager.getUnfreezeRequests().size()]);
+        return userManager.getUnfreezeRequests().toArray(new String[0]);
     }
 
     /**

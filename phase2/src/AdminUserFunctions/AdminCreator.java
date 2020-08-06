@@ -3,7 +3,7 @@ package AdminUserFunctions;
 import SystemManagers.UserManager;
 
 /**
- * Lets the initial admin create and add a new admin to the system.
+ * Helps let the initial admin add new admins to the system.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
