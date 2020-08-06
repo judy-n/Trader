@@ -117,31 +117,31 @@ public class CatalogEditor {
         long pendingItemID = itemManager.getPendingItem(index);
         String itemOwnerUsername = itemManager.getItemOwner(pendingItemID);
 
-        itemManager.approveItem(pendingItemID);
-        userManager.addToNormalUserInventory(pendingItemID, itemOwnerUsername);
-
         /* Notify item owner of approval */
         userManager.notifyUser(itemOwnerUsername).itemUpdateWithID
                 ("ITEM APPROVED", itemOwnerUsername, currUsername,
                         itemManager.getItemName(pendingItemID), pendingItemID);
+
+        itemManager.approveItem(pendingItemID);
+        userManager.addToNormalUserInventory(pendingItemID, itemOwnerUsername);
     }
 
     /**
      * Rejects the pending item at the given index in the list of pending items.
      * Notifies the item owner of the rejection.
      *
-     * @param index the index if the item being rejected
+     * @param index the index of the item being rejected
      */
     public void rejectItem(int index) {
         long pendingItemID = itemManager.getPendingItem(index);
         String itemOwnerUsername = itemManager.getItemOwner(pendingItemID);
 
-        itemManager.rejectItem(pendingItemID);
-        userManager.removeFromNormalUserPending(pendingItemID, itemOwnerUsername);
-
         /* Notify item owner of rejection */
         userManager.notifyUser(itemOwnerUsername).itemUpdate
                 ("ITEM REJECTED", itemOwnerUsername, currUsername,
                         itemManager.getItemName(pendingItemID));
+
+        itemManager.rejectItem(pendingItemID);
+        userManager.removeFromNormalUserPending(pendingItemID, itemOwnerUsername);
     }
 }
