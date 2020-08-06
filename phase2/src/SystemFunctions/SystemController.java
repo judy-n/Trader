@@ -60,6 +60,7 @@ public class SystemController extends JFrame {
         itemManager.approveItem(itemID);
         userManager.addToNormalUserPending(itemID, "test");
         userManager.addToNormalUserInventory(itemID, "test");
+        userManager.addToNormalUserWishlist(itemID, "test");
 
         int[] defaultThresholds = tryReadThresholds();
         userManager.setCurrentThresholds(defaultThresholds);

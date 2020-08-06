@@ -195,8 +195,9 @@ public class ItemManager extends Manager implements Serializable {
      * @param itemIDToApprove the ID of the item being approved
      */
     public void approveItem(long itemIDToApprove) {
-        pendingItems.remove(getItem(itemIDToApprove));
-        approvedItems.add(getItem(itemIDToApprove));
+        Item itemToApprove = getItem(itemIDToApprove);
+        pendingItems.remove(itemToApprove);
+        approvedItems.add(itemToApprove);
     }
 
     /**
