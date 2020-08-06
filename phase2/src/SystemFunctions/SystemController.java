@@ -52,15 +52,19 @@ public class SystemController extends JFrame {
 
         if (userManager.getAllUsers().isEmpty()) {
             tryReadAdmin();
+            //for testing
+            userManager.createNormalUser("test", "a@b.com", "p", "homeCity");
+            long itemID = itemManager.createItem("fruit", "it's a strawberry", "test");
+            long itemID2 = itemManager.createItem("AHHH", "OMG", "test");
+            long itemID3 = itemManager.createItem("PEND","INg", "test");
+            itemManager.approveItem(itemID);
+            itemManager.approveItem(itemID2);
+            userManager.addToNormalUserPending(itemID3, "test");
+            userManager.addToNormalUserInventory(itemID, "test");
+            userManager.addToNormalUserWishlist(itemID2, "test");
         }
 
-        //for testing
-        userManager.createNormalUser("test", "a@b.com", "p", "homeCity");
-        long itemID = itemManager.createItem("fruit", "it's a strawberry", "test");
-        itemManager.approveItem(itemID);
-        userManager.addToNormalUserPending(itemID, "test");
-        userManager.addToNormalUserInventory(itemID, "test");
-        userManager.addToNormalUserWishlist(itemID, "test");
+
 
         int[] defaultThresholds = tryReadThresholds();
         userManager.setCurrentThresholds(defaultThresholds);

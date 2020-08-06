@@ -47,6 +47,7 @@ public class DashboardFrame extends JDialog{
         optionalPanel = new JPanel();
         nothingToDisplay = new JLabel();
         optionalLabel = new JLabel();
+        scrollablePane = new JScrollPane();
 
         userFunctionPanel.setLayout(new BoxLayout(userFunctionPanel, BoxLayout.Y_AXIS));
         userInputPanel.setLayout(new FlowLayout());
@@ -76,23 +77,27 @@ public class DashboardFrame extends JDialog{
         dashboardWindow.add(userInputPanel, BorderLayout.SOUTH);
         dashboardWindow.add(notifPanel, BorderLayout.NORTH);
         dashboardWindow.add(optionalPanel, BorderLayout.EAST);
+        dashboardWindow.add(scrollablePane, BorderLayout.CENTER);
+        dashboardWindow.add(nothingToDisplay, BorderLayout.CENTER);
+        scrollablePane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollablePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         dashboardWindow.setVisible(true);
 
     }
     private void drawNormalDash(){
-        userInputPanel.removeAll();
-
         JButton inventory = new JButton("Inventory Editor");
         inventory.addActionListener(e -> {
-            drawUserInputPane(INVENTORY);
+            resetEverything();
             drawListDisplay(normalDashboard.getInventory());
+            drawUserInputPane(INVENTORY);
             drawOptionalPanel(normalDashboard.getPendingInventory());
         });
 
         JButton wishlist = new JButton("Wishlist Editor");
         wishlist.addActionListener(e -> {
-            drawUserInputPane(WISHLIST);
+            resetEverything();
             drawListDisplay(normalDashboard.getWishlist());
+            drawUserInputPane(WISHLIST);
         }
         );
 
@@ -103,15 +108,26 @@ public class DashboardFrame extends JDialog{
 
         JButton completeTrade = new JButton("View Completed Trades");
         completeTrade.addActionListener(e -> {
+            resetEverything();
             drawListDisplay(normalDashboard.getRecentThreeTradesStrings());
             drawOptionalPanel(normalDashboard.getTopThreeTraderStrings());
         });
 
         JButton vacation = new JButton("Edit Vacation Status");
-        vacation.addActionListener(e -> normalDashboard.editUserStatus());
+        vacation.addActionListener(e -> {
+            resetEverything();
+            dashboardWindow.remove(scrollablePane);
+            normalDashboard.editUserStatus();
+            dashboardWindow.setVisible(true);
+        });
 
         JButton unfreeze = new JButton("Send Unfreeze Request");
-        unfreeze.addActionListener(e -> normalDashboard.sendUnfreezeRequest());
+        unfreeze.addActionListener(e -> {
+            resetEverything();
+            dashboardWindow.remove(scrollablePane);
+            normalDashboard.sendUnfreezeRequest();
+            dashboardWindow.setVisible(true);
+        });
 
         initializeButton(inventory, 200, 40, userFunctionPanel);
         initializeButton(wishlist, 200, 40, userFunctionPanel);
@@ -124,7 +140,7 @@ public class DashboardFrame extends JDialog{
     }
 
     private void drawAdminDash(){
-        userInputPanel.removeAll();
+        //userInputPanel.removeAll();
         JButton catalogEditor = new JButton("Catalog Editor");
         JButton freezer = new JButton("Freeze Accounts");
         JButton unfreezer = new JButton("UnFreeze Accounts");
@@ -142,16 +158,16 @@ public class DashboardFrame extends JDialog{
 
     private void drawListDisplay(String[] displayItems){
         if(displayItems.length==0) {
+            dashboardWindow.remove(scrollablePane);
             nothingToDisplay.setText("Nothing here.");
-            dashboardWindow.add(nothingToDisplay, BorderLayout.CENTER);
+            //dashboardWindow.add(nothingToDisplay, BorderLayout.CENTER);
             userInputPanel.removeAll();
         }else {
             userInputPanel.removeAll();
             listDisplay = new JList<>(displayItems);
+            //System.out.println(displayItems);
             listDisplay.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            scrollablePane = new JScrollPane(listDisplay);
-            scrollablePane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-            scrollablePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollablePane.setViewportView(listDisplay);
             dashboardWindow.add(scrollablePane, BorderLayout.CENTER);
         }
         dashboardWindow.setVisible(true);
@@ -159,18 +175,17 @@ public class DashboardFrame extends JDialog{
 
     private void drawUserInputPane(int type){
         switch (type) {
-
             case WISHLIST:
                 userInputPanel.removeAll();
                 JButton remove = new JButton("Remove");
                 initializeButton(remove, 100,20, userInputPanel);
                 userInputPanel.add(remove);
+                userInputPanel.repaint();
                 remove.addActionListener(e -> {
                     if(!listDisplay.isSelectionEmpty()) {
                         int index = listDisplay.getSelectedIndex();
                         normalDashboard.removeFromWishlist(index);
                         redrawDisplayList(normalDashboard.getWishlist());
-
                     }
                 });
                 break;
@@ -187,6 +202,7 @@ public class DashboardFrame extends JDialog{
                 userInputPanel.add(nameInput);
                 userInputPanel.add(description);
                 userInputPanel.add(descripInput);
+                userInputPanel.repaint();
                 initializeButton(addInv, 100,20, userInputPanel);
                 initializeButton(removeInv, 100,20, userInputPanel);
 
@@ -221,12 +237,12 @@ public class DashboardFrame extends JDialog{
                 });
                 break;
         }
-
+        //dashboardWindow.add(userInputPanel);
         dashboardWindow.setVisible(true);
     }
 
-
     private void drawOptionalPanel(String[] stringArray){
+        optionalLabel.setText("");
         if(stringArray.length == 0) {
             optionalLabel.setText("Nothing here.");
         }else {
@@ -242,10 +258,9 @@ public class DashboardFrame extends JDialog{
         dashboardWindow.setVisible(true);
     }
 
-
     private void redrawDisplayList(String[] displayList){
         listDisplay.clearSelection();
-        dashboardWindow.remove(scrollablePane);
+        //dashboardWindow.remove(scrollablePane);
         dashboardWindow.revalidate();
         drawListDisplay(displayList);
         dashboardWindow.repaint();
@@ -260,32 +275,11 @@ public class DashboardFrame extends JDialog{
         panel.add(button);
     }
 
-
-    //For my reference V
-//    private void displayList(String [] arr){
-//        JPanel userInputPanel = new JPanel();
-//        userInputPanel.setLayout(new FlowLayout());
-//
-//        JList<String> catalogDisplayList = new JList<>(arr);
-//        catalogDisplayList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//        JScrollPane scrollableCatalog = new JScrollPane(catalogDisplayList);
-//        scrollableCatalog.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-//        scrollableCatalog.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-//        DashboardWindow.add(scrollableCatalog, BorderLayout.CENTER);
-//        JLabel name = new JLabel("name:");
-//        JTextField nameInput = new JTextField(20);
-//        JLabel descrip = new JLabel("Description");
-//        JTextField descripInput = new JTextField(20);
-//        JButton enter = new JButton("Add");
-//        userInputPanel.add(name);
-//        userInputPanel.add(nameInput);
-//        userInputPanel.add(descrip);
-//        userInputPanel.add(descripInput);
-//        userInputPanel.add(enter);
-//        DashboardWindow.add(userInputPanel, BorderLayout.SOUTH);
-//        DashboardWindow.setVisible(true);
-//
-//    }
+    private void resetEverything(){
+        nothingToDisplay.setText("");
+        userInputPanel.removeAll();
+        optionalPanel.removeAll();
+    }
 
 }
 
