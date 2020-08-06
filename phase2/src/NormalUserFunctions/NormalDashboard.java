@@ -26,6 +26,8 @@ public class NormalDashboard extends Dashboard {
     private TradeManager tradeManager;
     private NotificationSystem notifSystem;
     private WishlistEditor wishlistEditor;
+    private InventoryEditor inventoryEditor;
+    private CompletedTradesViewer completedTradesViewer;
     /**
      * Creates a <NormalDashboard></NormalDashboard> with the given normal user,
      * item/user/trade managers, and notification system.
@@ -45,6 +47,8 @@ public class NormalDashboard extends Dashboard {
         this.notifSystem = notifSystem;
         currentUser = userManager.getNormalByUsername(username);
         wishlistEditor = new WishlistEditor(currUsername, itemManager, userManager);
+        inventoryEditor = new InventoryEditor(currUsername, itemManager, userManager, tradeManager, notifSystem);
+        completedTradesViewer = new CompletedTradesViewer(currUsername, itemManager, tradeManager);
     }
     public void editUserStatus(){
         new StatusEditor(currUsername, userManager);
@@ -62,6 +66,35 @@ public class NormalDashboard extends Dashboard {
         wishlistEditor.removeItem(index);
     }
 
+    public String[] getInventory(){return inventoryEditor.getInventory();}
+
+    public String[] getPendingInventory(){
+        return inventoryEditor.getPendingInventory();
+    }
+
+    public boolean validateRemovalInv(int index){
+        return inventoryEditor.validateRemoval(index);
+    }
+
+    public void removeFromInventory(int index){
+        inventoryEditor.removeInventory(index);
+    }
+
+    public boolean validateInputInv(String nameInput, String descripInput){
+        return inventoryEditor.validateInput(nameInput, descripInput);
+    }
+
+    public void addToInventory(String nameInput, String descripInput){
+        inventoryEditor.addInventory(nameInput, descripInput);
+    }
+
+    public String[] getRecentThreeTradesStrings(){
+        return completedTradesViewer.getRecentThreeTradesStrings();
+    }
+
+    public String[] getTopThreeTraderStrings(){
+        return completedTradesViewer.getTopThreeTraderStrings();
+    }
 
 //        String regex = "[0-7]";
 //

@@ -10,6 +10,7 @@ import SystemFunctions.MenuItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class InventoryEditor extends MenuItem {
     private UserManager userManager;
     private TradeManager tradeManager;
     private NotificationSystem notifSystem;
-
+    private List<Item> itemInventory;
     /**
      * Creates an <InventoryEditor></InventoryEditor> with the given normal user,
      * item/user/trade managers, and notification system.
@@ -53,108 +54,155 @@ public class InventoryEditor extends MenuItem {
         SystemPresenter systemPresenter = new SystemPresenter();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        List<Item> itemInventory = itemManager.getItemsByIDs(userManager.getNormalUserInventory(currUsername));
+        itemInventory = itemManager.getItemsByIDs(userManager.getNormalUserInventory(currUsername));
         List<Item> pendingItems = itemManager.getItemsByIDs(userManager.getNormalUserPendingInventory(currUsername));
 
-        systemPresenter.inventoryEditor(itemInventory, pendingItems);
-        try {
-            String temp = bufferedReader.readLine();
-            while (!temp.matches("[1-3]")) {
-                systemPresenter.invalidInput();
-                temp = bufferedReader.readLine();
-            }
-            int input = Integer.parseInt(temp);
-
-            if (input == 1) {           /* add item */
-                String itemNameInput;
-                String itemDescriptionInput;
-
-                systemPresenter.inventoryAddItem(1);
-                itemNameInput = bufferedReader.readLine().trim();
-                while (itemNameInput.length() < 3) {
-                    systemPresenter.invalidInput();
-                    itemNameInput = bufferedReader.readLine().trim();
-                }   // item name at least 3 char long
-
-                systemPresenter.inventoryAddItem(2);
-                itemDescriptionInput = bufferedReader.readLine().trim();
-                while (!itemDescriptionInput.contains(" ")) {
-                    systemPresenter.invalidInput();
-                    itemDescriptionInput = bufferedReader.readLine().trim();
-                }   // item description at least two words
-
-                systemPresenter.inventoryAddItem(3);
-                systemPresenter.inventoryAddItem(itemNameInput, itemDescriptionInput);
-
-                String confirmInput = bufferedReader.readLine();
-                while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
-                    systemPresenter.invalidInput();
-                    confirmInput = bufferedReader.readLine();
-                }
-                if (confirmInput.equalsIgnoreCase("Y")) {
-                    long newItemID = itemManager.createItem(itemNameInput, itemDescriptionInput, currUsername);
-                    userManager.addNormalUserPendingInventory(newItemID, currUsername);
-
-                    systemPresenter.inventoryAddItem(4);
-                } else {
-                    systemPresenter.cancelled();
-                }
-            } else if (input == 2) {    /* remove item */
-                if (itemInventory.isEmpty()) {
-                    systemPresenter.inventoryRemoveItem(1);
-                } else {
-                    systemPresenter.inventoryRemoveItem(2);
-                    String temp2 = bufferedReader.readLine();
-
-                    /* no (0 to quit) option */
-                    while (!temp2.matches("[0-9]+") ||
-                            Integer.parseInt(temp2) > itemInventory.size() || Integer.parseInt(temp2) < 1) {
-                        systemPresenter.invalidInput();
-                        temp2 = bufferedReader.readLine();
-                    }
-                    int indexInput = Integer.parseInt(temp2);
-                    Item selectedItem = itemInventory.get(indexInput - 1);
-                    long selectedItemID = selectedItem.getID();
-
-                    /*
-                     * Allow removal if item is available + not being asked for in a trade request
-                     * OR if item is in a trade that's been cancelled due to users failing to confirm the transaction
-                     */
-                    if (userManager.isRequestedInTrade(currUsername, selectedItemID)) {
-                        systemPresenter.inventoryRemoveItem(4);
-                    } else if (selectedItem.getAvailability() ||
-                            (!selectedItem.getAvailability() && tradeManager.getItemInCancelledTrade(selectedItemID))) {
-                        systemPresenter.inventoryRemoveItem(selectedItem.getName(), indexInput, 1);
-
-                        String confirmInput = bufferedReader.readLine();
-                        while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
-                            systemPresenter.invalidInput();
-                            confirmInput = bufferedReader.readLine();
-                        }
-                        if (confirmInput.equalsIgnoreCase("Y")) {
-
-                            userManager.removeNormalUserInventory(selectedItemID, currUsername);
-                            itemManager.getItem(selectedItemID).setIsRemoved(true);
-                            // don't remove from ItemManager
-
-                            systemPresenter.inventoryRemoveItem(selectedItem.getName(), 0, 2);
-                        } else {
-                            systemPresenter.cancelled();
-                        }
-                    } else {
-                        systemPresenter.inventoryRemoveItem(3);
-                    }
-                }
-            }
-            close();
-
-        } catch (IOException e) {
-            systemPresenter.exceptionMessage();
-        }
+//        systemPresenter.inventoryEditor(itemInventory, pendingItems);
+//        try {
+//            String temp = bufferedReader.readLine();
+//            while (!temp.matches("[1-3]")) {
+//                systemPresenter.invalidInput();
+//                temp = bufferedReader.readLine();
+//            }
+//            int input = Integer.parseInt(temp);
+//
+//            if (input == 1) {           /* add item */
+//                String itemNameInput;
+//                String itemDescriptionInput;
+//
+//                systemPresenter.inventoryAddItem(1);
+//                itemNameInput = bufferedReader.readLine().trim();
+//                while (itemNameInput.length() < 3) {
+//                    systemPresenter.invalidInput();
+//                    itemNameInput = bufferedReader.readLine().trim();
+//                }   // item name at least 3 char long
+//
+//                systemPresenter.inventoryAddItem(2);
+//                itemDescriptionInput = bufferedReader.readLine().trim();
+//                while (!itemDescriptionInput.contains(" ")) {
+//                    systemPresenter.invalidInput();
+//                    itemDescriptionInput = bufferedReader.readLine().trim();
+//                }   // item description at least two words
+//
+//                systemPresenter.inventoryAddItem(3);
+//                systemPresenter.inventoryAddItem(itemNameInput, itemDescriptionInput);
+//
+//                String confirmInput = bufferedReader.readLine();
+//                while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
+//                    systemPresenter.invalidInput();
+//                    confirmInput = bufferedReader.readLine();
+//                }
+//                if (confirmInput.equalsIgnoreCase("Y")) {
+//                    long newItemID = itemManager.createItem(itemNameInput, itemDescriptionInput, currUsername);
+//                    userManager.addNormalUserPendingInventory(newItemID, currUsername);
+//
+//                    systemPresenter.inventoryAddItem(4);
+//                } else {
+//                    systemPresenter.cancelled();
+//                }
+//            } else if (input == 2) {    /* remove item */
+//                if (itemInventory.isEmpty()) {
+//                    systemPresenter.inventoryRemoveItem(1);
+//                } else {
+//                    systemPresenter.inventoryRemoveItem(2);
+//                    String temp2 = bufferedReader.readLine();
+//
+//                    /* no (0 to quit) option */
+//                    while (!temp2.matches("[0-9]+") ||
+//                            Integer.parseInt(temp2) > itemInventory.size() || Integer.parseInt(temp2) < 1) {
+//                        systemPresenter.invalidInput();
+//                        temp2 = bufferedReader.readLine();
+//                    }
+//                    int indexInput = Integer.parseInt(temp2);
+//                    Item selectedItem = itemInventory.get(indexInput - 1);
+//                    long selectedItemID = selectedItem.getID();
+//
+//                    /*
+//                     * Allow removal if item is available + not being asked for in a trade request
+//                     * OR if item is in a trade that's been cancelled due to users failing to confirm the transaction
+//                     */
+//                    if (userManager.isRequestedInTrade(currUsername, selectedItemID)) {
+//                        systemPresenter.inventoryRemoveItem(4);
+//                    } else if (selectedItem.getAvailability() ||
+//                            (!selectedItem.getAvailability() && tradeManager.getItemInCancelledTrade(selectedItemID))) {
+//                        systemPresenter.inventoryRemoveItem(selectedItem.getName(), indexInput, 1);
+//
+//                        String confirmInput = bufferedReader.readLine();
+//                        while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
+//                            systemPresenter.invalidInput();
+//                            confirmInput = bufferedReader.readLine();
+//                        }
+//                        if (confirmInput.equalsIgnoreCase("Y")) {
+//
+//                            userManager.removeNormalUserInventory(selectedItemID, currUsername);
+//                            itemManager.getItem(selectedItemID).setIsRemoved(true);
+//                            // don't remove from ItemManager
+//
+//                            systemPresenter.inventoryRemoveItem(selectedItem.getName(), 0, 2);
+//                        } else {
+//                            systemPresenter.cancelled();
+//                        }
+//                    } else {
+//                        systemPresenter.inventoryRemoveItem(3);
+//                    }
+//                }
+//            }
+//
+//        } catch (IOException e) {
+//            systemPresenter.exceptionMessage();
+//        }
     }
 
-    private void close() {
-        new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem);
+    public String[] getInventory(){
+        ArrayList<String> stringInventory = new ArrayList<>();
+        itemInventory = itemManager.getItemsByIDs(userManager.getNormalUserInventory(currUsername));
+        int index = 1;
+        for(Item item :itemInventory){
+            stringInventory.add(index + ". "+ item.toString());
+            index++;
+        }
+        return stringInventory.toArray(new String[itemInventory.size()]);
+    }
+
+    public String[] getPendingInventory(){
+        ArrayList<String> stringInventory = new ArrayList<>();
+        List<Item> pendingItems = itemManager.getItemsByIDs(userManager.getNormalUserPendingInventory(currUsername));
+        int index = 1;
+        for(Item item : pendingItems){
+            stringInventory.add(index + ". " + item.toString() + "(pending)");
+            index ++;
+        }
+        return stringInventory.toArray(new String[pendingItems.size()]);
+    }
+
+
+    public boolean validateInput(String itemNameInput, String itemDescriptionInput){
+        return itemNameInput.length() < 3 || !itemDescriptionInput.contains(" ");
+    }
+
+    public boolean validateRemoval(int index){
+        /*
+        *Allow removal if item is available + not being asked for in a trade request
+        * OR if item is in a trade that's been cancelled due to users failing to confirm the transaction
+        */
+        Item selectedItem = itemInventory.get(index);
+        long selectedItemID = selectedItem.getID();
+        if (userManager.isRequestedInTrade(currUsername, selectedItemID)) {
+            return false;
+        }else return selectedItem.getAvailability() ||
+                (!selectedItem.getAvailability() && tradeManager.getItemInCancelledTrade(selectedItemID));
+    }
+
+    public void removeInventory(int index){
+        Item selectedItem = itemInventory.get(index);
+        long selectedItemID = selectedItem.getID();
+        userManager.removeNormalUserInventory(selectedItemID, currUsername);
+        itemManager.getItem(selectedItemID).setIsRemoved(true);
+    }
+
+    public void addInventory(String itemNameInput, String itemDescriptionInput){
+        long newItemID = itemManager.createItem(itemNameInput, itemDescriptionInput, currUsername);
+        userManager.addNormalUserPendingInventory(newItemID, currUsername);
     }
 
     @Override
