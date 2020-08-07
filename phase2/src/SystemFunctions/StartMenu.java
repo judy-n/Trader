@@ -158,7 +158,6 @@ public class StartMenu extends JPanel {
             initializeButton(login, 100, 30, 450, 350);
 
             login.addActionListener(e -> {
-                StringBuilder warnings = new StringBuilder("<html>");
                 emailOrUsername = usernameEmailInput.getText();
                 inputtedPassword = String.valueOf(passwordInput.getPassword());
                 allTypeInvalidInput = systemController.userLogin(emailOrUsername, inputtedPassword).toArray(new Integer[0]);

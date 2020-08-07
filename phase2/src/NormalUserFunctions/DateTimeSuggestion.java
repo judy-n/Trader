@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-08
- * last modified 2020-07-31
+ * last modified 2020-08=06
  */
 public class DateTimeSuggestion {
     private String currUsername;
@@ -68,10 +68,10 @@ public class DateTimeSuggestion {
             time = LocalDateTime.of(getYear(), getMonth(),
                     getDay(), getHour(), getMinute());
             tradesInWeek = tradeManager.getNumMeetingsThisWeek(currUsername, time.toLocalDate());
-            if (tradesInWeek >= userManager.getNormalUserWeeklyTradeMax(currUsername)) {
+            if (tradesInWeek == userManager.getThresholdSystem().getWeeklyTradeMax()) {
                 systemPresenter.failedSuggestion();
             }
-        } while (tradesInWeek >= userManager.getNormalUserWeeklyTradeMax(currUsername));
+        } while (tradesInWeek == userManager.getThresholdSystem().getWeeklyTradeMax());
         return time;
     }
 

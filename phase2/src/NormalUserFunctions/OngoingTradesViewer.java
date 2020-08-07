@@ -130,7 +130,7 @@ public class OngoingTradesViewer {
                             }
 
                             int editCount = selectedTrade.getUserEditCount(currUsername);
-                            int editMax = userManager.getNormalUserMeetingEditMax(currUsername);
+                            int editMax = userManager.getThresholdSystem().getMeetingEditMax();
                             if (editCount < editMax) {
                                 systemPresenter.ongoingTrades(editCount, (editCount + 1 == editMax));
                                 systemPresenter.ongoingTrades(7);
@@ -181,7 +181,7 @@ public class OngoingTradesViewer {
 
                             int weeklyTrade = tradeManager.getNumMeetingsThisWeek
                                     (currUsername, selectedTrade.getFirstMeetingDateTime().toLocalDate());
-                            if (weeklyTrade > userManager.getNormalUserWeeklyTradeMax(currUsername)) {
+                            if (weeklyTrade == userManager.getThresholdSystem().getWeeklyTradeMax()) {
                                 systemPresenter.ongoingTrades(10);
                             } else {
                                 selectedTrade.confirmAgreedMeeting();

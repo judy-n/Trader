@@ -9,7 +9,6 @@ import java.util.Map;
 /**
  * Represents a normal user in our trade program.
  * Normal users are allowed to trade items with other normal users and manage their inventory and wishlist.
- * A normal user has several threshold values that restrict their trade activity and can be modified by an admin.
  *
  * @author Ning Zhang
  * @author Liam Huff
@@ -18,7 +17,7 @@ import java.util.Map;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-05
+ * last modified 2020-08-06
  */
 public class NormalUser extends User implements Serializable {
     private List<Long> inventory;
@@ -36,41 +35,26 @@ public class NormalUser extends User implements Serializable {
     /* number of incomplete trades the user has */
     private int numIncomplete;
 
-    /* the maximum number of transactions this user can schedule in a week */
-    private int weeklyTradeMax;
-
-    /* the maximum number of times this user may edit any of their trade's meeting details */
-    private int meetingEditMax;
-
-    /* to request a trade, this user must have lent at least lendMinimum item(s) more than they have borrowed */
-    private int lendMinimum;
-
-    /* the maximum number of incomplete trades this user can have before their account is at risk of being frozen */
-    private int incompleteMax;
-
     /**
-     * Creates a <NormalUser></NormalUser> with the given username, email, password, home city, and thresholds.
-     * Also initializes default empty inventory, wishlist, and tradeRequests, and account status non-frozen.
+     * Creates a <NormalUser></NormalUser> with the given username, email, password, and home city.
+     * Also initializes default empty inventory, wishlist, and tradeRequests,
+     * and account status non-frozen + not on vacation.
      *
      * @param username the username being assigned to this <NormalUser></NormalUser>
      * @param email    the email address being assigned to this <NormalUser></NormalUser>
      * @param password the password being assigned to this <NormalUser></NormalUser>
      * @param homeCity the homeCity of this <NormalUser></NormalUser>
-     * @param thresholds the default threshold values assigned to this <NormalUser></NormalUser>
      */
-    public NormalUser(String username, String email, String password, String homeCity, int[] thresholds) {
+    public NormalUser(String username, String email, String password, String homeCity) {
         super(username, email, password);
+        this.homeCity  = homeCity;
         inventory = new ArrayList<>();
         pendingInventory = new ArrayList<>();
         wishlist = new ArrayList<>();
         tradeRequests = new HashMap<>();
+        this.homeCity  = homeCity;
         isFrozen = false;
         isOnVacation = false;
-        this.homeCity  = homeCity;
-        weeklyTradeMax = thresholds[0];
-        meetingEditMax = thresholds[1];
-        lendMinimum = thresholds[2];
-        incompleteMax = thresholds[3];
     }
 
     /**
@@ -256,78 +240,6 @@ public class NormalUser extends User implements Serializable {
      */
     public Map<String[], long[]> getTradeRequests() {
         return tradeRequests;
-    }
-
-    /**
-     * Getter for this user's weekly trade limit.
-     *
-     * @return this user's weekly limit for trades
-     */
-    public int getWeeklyTradeMax() {
-        return weeklyTradeMax;
-    }
-
-    /**
-     * Setter for this user's weekly trade limit.
-     *
-     * @param newMax the new weekly trade limit
-     */
-    public void setWeeklyTradeMax(int newMax) {
-        weeklyTradeMax = newMax;
-    }
-
-    /**
-     * Getter for this user's meeting edit limit.
-     *
-     * @return this user's limit on how many times they can edit a meeting
-     */
-    public int getMeetingEditMax() {
-        return meetingEditMax;
-    }
-
-    /**
-     * Setter for this user's meeting edit limit.
-     *
-     * @param newMax the new limit on how many times this user can edit a meeting
-     */
-    public void setMeetingEditMax(int newMax) {
-        meetingEditMax = newMax;
-    }
-
-    /**
-     * Getter for this user's minimum lending over borrowing threshold.
-     *
-     * @return this user's minimum lending over borrowing threshold
-     */
-    public int getLendMinimum() {
-        return lendMinimum;
-    }
-
-    /**
-     * Setter for this user's minimum lending over borrowing threshold.
-     *
-     * @param newMin the new minimum lending over borrowing threshold
-     */
-    public void setLendMinimum(int newMin) {
-        lendMinimum = newMin;
-    }
-
-    /**
-     * Getter for this user's limit on incomplete trades.
-     *
-     * @return this user's limit on incomplete trades
-     */
-    public int getIncompleteMax() {
-        return incompleteMax;
-    }
-
-    /**
-     * Setter for this user's limit on incomplete trades.
-     *
-     * @param newMax the new limit on incomplete trades
-     */
-    public void setIncompleteMax(int newMax) {
-        incompleteMax = newMax;
     }
 
     /**

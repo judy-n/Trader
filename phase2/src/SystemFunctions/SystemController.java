@@ -21,7 +21,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-08-05
+ * last modified 2020-08-06
  */
 public class SystemController extends JFrame {
     private UserManager userManager;
@@ -67,7 +67,8 @@ public class SystemController extends JFrame {
 
 
         int[] defaultThresholds = tryReadThresholds();
-        userManager.setCurrentThresholds(defaultThresholds);
+        assert defaultThresholds != null;
+        userManager.getThresholdSystem().setAllThresholds(defaultThresholds);
 
         handleIncompleteTrades();
     }
@@ -86,7 +87,7 @@ public class SystemController extends JFrame {
             userManager.increaseNormalUserNumIncomplete(usernames[1]);
 
             if (userManager.getNormalUserNumIncomplete(usernames[0]) >
-                    userManager.getNormalUserIncompleteMax(usernames[0])) {
+                    userManager.getThresholdSystem().getIncompleteTradeMax()) {
                 userManager.addUsernamesToFreeze(usernames[0]);
 
                 /* Notify user of exceeding incomplete trade limit */
@@ -95,7 +96,7 @@ public class SystemController extends JFrame {
             }
 
             if (userManager.getNormalUserNumIncomplete(usernames[1]) >
-                    userManager.getNormalUserIncompleteMax(usernames[1])) {
+                    userManager.getThresholdSystem().getIncompleteTradeMax()) {
                 userManager.addUsernamesToFreeze(usernames[1]);
 
                 /* Notify user of exceeding incomplete trade limit */

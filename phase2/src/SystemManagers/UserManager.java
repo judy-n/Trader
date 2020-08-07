@@ -18,17 +18,19 @@ import java.util.Map;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-05
+ * last modified 2020-08-06
  */
 public class UserManager extends Manager implements Serializable {
     private List<NormalUser> allNormals;
     private List<AdminUser> allAdmins;
+    private List<String> allNormalUsernames;
+
     private List<String> usernamesToFreeze;
     private List<String> unfreezeRequests;
     private List<String> usernamesOnVacation;
-    private int[] currDefaultThresholds;
+
     private UserNotificationHelper notifHelper;
-    private List<String> allNormalUsernames;
+    private UserThresholds thresholdSystem;
 
     /**
      * Creates a <UserManager></UserManager>, setting all lists to empty by default.
@@ -36,12 +38,14 @@ public class UserManager extends Manager implements Serializable {
     public UserManager() {
         allNormals = new ArrayList<>();
         allAdmins = new ArrayList<>();
+        allNormalUsernames = new ArrayList<>();
+
         usernamesToFreeze = new ArrayList<>();
         unfreezeRequests = new ArrayList<>();
         usernamesOnVacation = new ArrayList<>();
-        currDefaultThresholds = new int[4];
+
         notifHelper = new UserNotificationHelper();
-        allNormalUsernames = new ArrayList<>();
+        thresholdSystem = new UserThresholds();
     }
 
     /**
@@ -51,10 +55,10 @@ public class UserManager extends Manager implements Serializable {
      * @param username the new user's username
      * @param email    the new user's email
      * @param password the new user's password
-     * @param homeCity the new user's homeCity
+     * @param homeCity the new user's home city
      */
     public void createNormalUser(String username, String email, String password, String homeCity) {
-        allNormals.add(new NormalUser(username, email, password, homeCity, currDefaultThresholds));
+        allNormals.add(new NormalUser(username, email, password, homeCity));
         allNormalUsernames.add(username);
     }
 
@@ -552,157 +556,6 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Getter for the weekly trade limit of the user associated with the given username.
-     *
-     * @param username the username of the user whose weekly trade limit is being retrieved
-     * @return the weekly trade limit of the user associated with the given username
-     */
-    public int getNormalUserWeeklyTradeMax(String username) {
-        return getNormalByUsername(username).getWeeklyTradeMax();
-    }
-
-    /**
-     * Setter for the weekly trade limit of the user associated with the given username.
-     *
-     * @param username  the username of the user whose weekly trade limit is being modified
-     * @param threshold the new weekly trade limit
-     */
-    public void setNormalUserWeeklyTradeMax(String username, int threshold) {
-        getNormalByUsername(username).setWeeklyTradeMax(threshold);
-    }
-
-    /**
-     * Getter for the meeting edit limit of the user associated with the given username.
-     *
-     * @param username the username of the user whose meeting edit limit is being retrieved
-     * @return the meeting edit limit of the user associated with the given username
-     */
-    public int getNormalUserMeetingEditMax(String username) {
-        return getNormalByUsername(username).getMeetingEditMax();
-    }
-
-    /**
-     * Setter for the meeting edit limit of the user associated with the given username.
-     *
-     * @param username  the username of the user whose meeting edit limit is being modified
-     * @param threshold the new meeting edit limit
-     */
-    public void setNormalUserMeetingEditMax(String username, int threshold) {
-        getNormalByUsername(username).setMeetingEditMax(threshold);
-    }
-
-    /**
-     * Getter for the minimum lending over borrowing limit of the user associated with the given username.
-     *
-     * @param username the username of the user whose minimum lending over borrowing limit is being retrieved
-     * @return the minimum lending over borrowing limit of the user associated with the given username
-     */
-    public int getNormalUserLendMinimum(String username) {
-        return getNormalByUsername(username).getLendMinimum();
-    }
-
-    /**
-     * Setter for the minimum lending over borrowing limit of the user associated with the given username.
-     *
-     * @param username  the username of the user whose minimum lending over borrowing limit is being modified
-     * @param threshold the new minimum lending over borrowing limit
-     */
-    public void setNormalUserLendMinimum(String username, int threshold) {
-        getNormalByUsername(username).setLendMinimum(threshold);
-    }
-
-    /**
-     * Getter for the incomplete trade limit of the user associated with the given username.
-     *
-     * @param username the username of the user whose incomplete trade limit is being retrieved
-     * @return the incomplete trade limit of the user associated with the given username
-     */
-    public int getNormalUserIncompleteMax(String username) {
-        return getNormalByUsername(username).getIncompleteMax();
-    }
-
-    /**
-     * Setter for the incomplete trade limit of the user associated with the given username.
-     *
-     * @param username  the username of the user whose incomplete trade limit is being modified
-     * @param threshold the new incomplete trade limit
-     */
-    public void setNormalUserIncompleteMax(String username, int threshold) {
-        getNormalByUsername(username).setIncompleteMax(threshold);
-    }
-
-    /**
-     * Sets all normal user weekly trade max thresholds to the given number.
-     *
-     * @param threshold the new threshold
-     */
-    public void setAllNormalUserWeeklyTradeMax(int threshold) {
-        for (String username : allNormalUsernames) {
-            setNormalUserWeeklyTradeMax(username, threshold);
-        }
-    }
-
-    /**
-     * Sets all normal user incomplete trade max thresholds to the given number.
-     *
-     * @param threshold the new threshold
-     */
-    public void setAllNormalUserIncompleteMax(int threshold) {
-        for (String username : allNormalUsernames) {
-            setNormalUserIncompleteMax(username, threshold);
-        }
-    }
-
-    /**
-     * Sets all normal user minimum lending thresholds to the given number.
-     *
-     * @param threshold the new threshold
-     */
-    public void setAllNormalUserLendMinimum(int threshold) {
-        for (String username : allNormalUsernames) {
-            setNormalUserLendMinimum(username, threshold);
-        }
-    }
-
-    /**
-     * Sets all normal user max meeting edit threshold to the given number.
-     *
-     * @param threshold the new threshold
-     */
-    public void setALlNormalUserMeetingEditMax(int threshold) {
-        for (String username : allNormalUsernames) {
-            setNormalUserMeetingEditMax(username, threshold);
-        }
-    }
-
-    /**
-     * Sets the <currentThresholds></currentThresholds> (the default thresholds for new users) to the given thresholds.
-     *
-     * @param thresholds the new threshold values
-     */
-    public void setCurrentThresholds(int[] thresholds) {
-        currDefaultThresholds = thresholds;
-    }
-
-    /**
-     * Getter for the <currentThresholds></currentThresholds> (default threshold values).
-     *
-     * @return the system's default thresholds
-     */
-    public int[] getCurrentThresholds() {
-        return currDefaultThresholds;
-    }
-
-    /**
-     * Returns the number of threshold values in the program.
-     *
-     * @return the number of threshold values in the program
-     */
-    public int getNumThresholds() {
-        return currDefaultThresholds.length;
-    }
-
-    /**
      * Getter for a user's password given the associated username or email.
      *
      * @param usernameOrEmail the username of the user
@@ -734,6 +587,15 @@ public class UserManager extends Manager implements Serializable {
     public UserNotificationHelper notifyUser(String username) {
         notifHelper.setCurrUserToNotify(getUserByUsername(username));
         return notifHelper;
+    }
+
+    /**
+     * Gets the threshold system which gives access to the methods that help modify the threshold values.
+     *
+     * @return the threshold system
+     */
+    public UserThresholds getThresholdSystem() {
+        return thresholdSystem;
     }
 
     /**

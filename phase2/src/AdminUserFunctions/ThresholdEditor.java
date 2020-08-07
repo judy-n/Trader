@@ -1,16 +1,12 @@
 package AdminUserFunctions;
 
 import SystemFunctions.ReadWriter;
-import SystemManagers.ItemManager;
-import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemFunctions.SystemPresenter;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
- * Lets an admin change a certain threshold value for a certain user.
+ * Helps let an admin change the threshold values for all users of the program.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
@@ -18,187 +14,92 @@ import java.io.InputStreamReader;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-08-05
+ * last modified 2020-08-06
  */
 public class ThresholdEditor {
-    private ItemManager itemManager;
     private UserManager userManager;
-    private NotificationSystem notifSystem;
     private SystemPresenter systemPresenter;
-    private BufferedReader bufferedReader;
     private ReadWriter readWriter;
     private String currUsername;
 
     /**
-     * Creates a <ThresholdEditor></ThresholdEditor> with the given admin username,
-     * item/user managers, and notification system.
-     * Lets an admin change a certain user's threshold values through user input.
+     * Creates a <ThresholdEditor></ThresholdEditor> with the given admin username and user manager.
      *
-     * @param username        the username of the admin who's currently logged in
-     * @param itemManager the system's item manager
+     * @param username    the username of the admin who's currently logged in
      * @param userManager the system's user manager
-     * @param notifSystem the system's notification manager
      */
-    public ThresholdEditor(String username, ItemManager itemManager,
-                           UserManager userManager, NotificationSystem notifSystem) {
+    public ThresholdEditor(String username, UserManager userManager) {
 
         this.currUsername = username;
-        this.itemManager = itemManager;
         this.userManager = userManager;
-        this.notifSystem = notifSystem;
         readWriter = new ReadWriter();
         systemPresenter = new SystemPresenter();
-        bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        String usernameInput;
-        int newThreshold = 0;
-        int maxChoice = userManager.getNumThresholds();
-        systemPresenter.thresholdEditor(0);
-
-        try {
-            String temp1 = bufferedReader.readLine();
-            while (!temp1.matches("[0-2]")) {
-                systemPresenter.invalidInput();
-                temp1 = bufferedReader.readLine();
-            }
-            int allOrOneChoice = Integer.parseInt(temp1);
-
-            if (allOrOneChoice == 1) {
-                systemPresenter.thresholdEditor(1);
-                try {
-                    usernameInput = bufferedReader.readLine();
-                    while (!usernameInput.equals("0") && !userManager.normalUsernameExists(usernameInput)) {
-                        systemPresenter.invalidInput();
-                        usernameInput = bufferedReader.readLine();
-                    }
-
-                    if (!usernameInput.equals("0")) {
-
-                        /* in case the username entered belongs to an admin */
-                        if (userManager.getNormalByUsername(usernameInput) != null) {
-                            systemPresenter.thresholdEditor(3);
-                        } else {
-                            systemPresenter.thresholdEditor(2);
-                            String temp = bufferedReader.readLine();
-                            while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > maxChoice) {
-                                systemPresenter.invalidInput();
-                                temp = bufferedReader.readLine();
-                            }
-                            int choiceInput = Integer.parseInt(temp);
-
-                            switch (choiceInput) {
-                                case 0:
-                                    break;
-                                case 1:
-                                    systemPresenter.thresholdEditor(1, userManager.getNormalUserWeeklyTradeMax(usernameInput));
-                                    newThreshold = thresholdInputCheck();
-                                    userManager.setNormalUserWeeklyTradeMax(usernameInput, newThreshold);
-                                    break;
-                                case 2:
-                                    systemPresenter.thresholdEditor(2, userManager.getNormalUserMeetingEditMax(usernameInput));
-                                    newThreshold = thresholdInputCheck();
-                                    userManager.setNormalUserMeetingEditMax(usernameInput, newThreshold);
-                                    break;
-                                case 3:
-                                    systemPresenter.thresholdEditor(3, userManager.getNormalUserLendMinimum(usernameInput));
-                                    newThreshold = thresholdInputCheck();
-                                    userManager.setNormalUserLendMinimum(usernameInput, newThreshold);
-                                    break;
-                                case 4:
-                                    systemPresenter.thresholdEditor(4, userManager.getNormalUserIncompleteMax(usernameInput));
-                                    newThreshold = thresholdInputCheck();
-                                    userManager.setNormalUserIncompleteMax(usernameInput, newThreshold);
-                                    break;
-                            }
-
-                            if (choiceInput != 0) {
-                                /* Notify user of threshold change */
-                                userManager.notifyUser(usernameInput).thresholdUpdate
-                                        ("THRESHOLD SINGLE USER", usernameInput, currUsername, choiceInput, newThreshold);
-                            }
-                        }
-                    }
-                    close();
-
-                } catch (IOException e) {
-                    systemPresenter.exceptionMessage();
-                }
-
-            } else if (allOrOneChoice == 2) {
-                systemPresenter.thresholdEditor(2);
-                String temp2 = bufferedReader.readLine();
-                while (!temp2.matches("[0-9]+") || Integer.parseInt(temp2) > maxChoice) {
-                    systemPresenter.invalidInput();
-                    temp2 = bufferedReader.readLine();
-                }
-                int choiceInput = Integer.parseInt(temp2);
-
-                switch (choiceInput) {
-                    case 0:
-                        break;
-                    case 1:
-                        // Edits the threshold values for all future users that will be created.
-                        int oldWeeklyTradeMax = userManager.getCurrentThresholds()[0];
-                        systemPresenter.thresholdEditor(1, oldWeeklyTradeMax);
-                        newThreshold = thresholdInputCheck();
-                        editThreshold("weeklyTradeMax:", oldWeeklyTradeMax, newThreshold, 0);
-
-                        // Edits the threshold values for all current registered users.
-                        userManager.setAllNormalUserWeeklyTradeMax(newThreshold);
-                        break;
-                    case 2:
-                        // Edits the threshold values for all future users that will be created.
-                        int oldMeetingEditMax = userManager.getCurrentThresholds()[1];
-                        systemPresenter.thresholdEditor(2, oldMeetingEditMax);
-                        newThreshold = thresholdInputCheck();
-                        editThreshold("meetingEditMax:", oldMeetingEditMax, newThreshold, 1);
-
-                        // Edits the threshold values for all current registered users.
-                        userManager.setALlNormalUserMeetingEditMax(newThreshold);
-                    case 3:
-                        // Edits the threshold values for all future users that will be created.
-                        int oldLendMinimum = userManager.getCurrentThresholds()[2];
-                        systemPresenter.thresholdEditor(3, oldLendMinimum);
-                        newThreshold = thresholdInputCheck();
-                        editThreshold("lendMinimum:", oldLendMinimum, newThreshold, 2);
-
-                        // Edits the threshold values for all current registered users.
-                        userManager.setAllNormalUserLendMinimum(newThreshold);
-                        break;
-                    case 4:
-                        // Edits the threshold values for all future users that will be created.
-                        int oldIncompleteMax = userManager.getCurrentThresholds()[3];
-                        systemPresenter.thresholdEditor(4, oldIncompleteMax);
-                        newThreshold = thresholdInputCheck();
-                        editThreshold("incompleteMax:", oldIncompleteMax, newThreshold, 3);
-
-                        // Edits the threshold values for all current registered users.
-                        userManager.setAllNormalUserIncompleteMax(newThreshold);
-                        break;
-                }
-
-                if (choiceInput != 0) {
-                    /* Notifies all users of threshold change */
-                    for (String normalUsername : userManager.getAllNormalUsernames()) {
-                        /* Notify user of threshold change */
-                        userManager.notifyUser(normalUsername).thresholdUpdate
-                                ("THRESHOLD ALL USER", normalUsername, currUsername, choiceInput, newThreshold);
-                    }
-                }
-            }
-            close();
-        } catch (IOException e) {
-            systemPresenter.exceptionMessage();
-        }
+        // 1. Display the current value of each threshold and have a field where the user can enter a value?
+        //    Lets admins change multiple values at once ig
+        //
+        //      e.g. The current weekly trade max is 5. Change it to: _________
+        //
+        //           The current meeting edit max is 3. Change it to: ---------
+        //
+        //           etc...
+        //
+        //      > getThresholdStrings() for array of labels
+        // 2. If "Set thresholds" button is clicked (label: systemPresenter.thresholdEditor(1)),
+        //      create String array with text from all fields (I'll handle empty strings)
+        //      in the order: weekly trade, meeting edit, lend min, incomplete trade
+        //
+        // 3. Pass String array into thresholdInputValidate() to validate input
+        //      > if returns false, display error message: systemPresenter.thresholdEditor(2);
+        //      > if true, applyThresholdChanges()
     }
 
-    private int thresholdInputCheck() throws IOException {
-        String temp2 = bufferedReader.readLine();
-        while (!temp2.matches("[0-9]+")) {
-            systemPresenter.invalidInput();
-            temp2 = bufferedReader.readLine();
+    /**
+     * Returns the labels for the text fields where the user enters a new threshold value.
+     *
+     * @return an array of labels for the threshold text fields
+     */
+    public String[] getThresholdStrings() {
+        return systemPresenter.getThresholdStrings(userManager.getThresholdSystem().getAllThresholds());
+    }
+
+    /**
+     * Validates the new threshold values input by the user.
+     * Each non-empty input must be a positive integer.
+     *
+     * @param inputThresholds the string representations of the user's threshold inputs
+     * @return true iff all non-empty inputs are valid
+     */
+    public boolean thresholdInputValidate(String[] inputThresholds) {
+        for (String threshold : inputThresholds) {
+            if (!threshold.matches("[\\d]*")) {
+                return false;
+            }
         }
-        return Integer.parseInt(temp2);
+        return true;
+    }
+
+    /**
+     * Sets the default threshold values to the new (valid) values input by the user.
+     * This changes the threshold values for all currently registered users and for future users.
+     * Also notifies all users of the specific thresholds changed.
+     *
+     * @param inputThresholds the string representations of the user's threshold inputs
+     */
+    public void applyThresholdChanges(String[] inputThresholds) {
+        for (int i = 0; i < inputThresholds.length; i++) {
+            if (!inputThresholds[i].isEmpty()) {
+                int newThreshold = Integer.parseInt(inputThresholds[i]);
+                editThreshold(userManager.getThresholdSystem().getThresholdType(i) + ":",
+                        userManager.getThresholdSystem().getAllThresholds()[i], newThreshold, i);
+
+                /* Notify all users of threshold change */
+                for (String normalUsername : userManager.getAllNormalUsernames()) {
+                    userManager.notifyUser(normalUsername).thresholdUpdate
+                            ("THRESHOLD ALL USER", normalUsername, currUsername, i, newThreshold);
+                }
+            }
+        }
     }
 
     private void editThreshold(String thresholdType, int oldThreshold, int newThreshold, int thresholdIndex) {
@@ -211,13 +112,8 @@ public class ThresholdEditor {
         }
 
         // Updates the thresholds for UserManager.
-        int[] newDefault = userManager.getCurrentThresholds();
+        int[] newDefault = userManager.getThresholdSystem().getAllThresholds();
         newDefault[thresholdIndex] = newThreshold;
-        userManager.setCurrentThresholds(newDefault);
-
-    }
-
-    private void close() {
-        new AdminDashboard(currUsername, itemManager, userManager, notifSystem);
+        userManager.getThresholdSystem().setAllThresholds(newDefault);
     }
 }

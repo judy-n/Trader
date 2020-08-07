@@ -62,7 +62,7 @@ public class CatalogViewer {
 
         int timesBorrowed = userManager.getNormalUserTimesBorrowed(currUsername) + tradeManager.getTimesBorrowed(currUsername);
         int timesLent = userManager.getNormalUserTimesLent(currUsername) + tradeManager.getTimesLent(currUsername);
-        int lendMinimum = userManager.getNormalUserLendMinimum(currUsername);
+        int lendMinimum = userManager.getThresholdSystem().getLendMinimum();
 
         systemPresenter.catalogViewer(1);
         try {

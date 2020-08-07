@@ -253,11 +253,6 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
                 activityToRecord = new RevertibleNotification(recordMessage, usernameNotified, subjectValue);
 
                 break;
-            case "THRESHOLD SINGLE USER":
-                mainMessage = "An admin changed your [" + subjectName + "] to " + subjectValue + ".";
-                recordMessage = "Admin " + otherParty + " changed " + usernameNotified + "'s "
-                        + subjectName + " to " + subjectValue + ".";
-                break;
             case "THRESHOLD ALL USERS":
                 mainMessage = "The default " + subjectName + " has been changed to " + subjectValue + " for all users.";
                 recordMessage = "Admin " + otherParty + " changed the default " + subjectName +

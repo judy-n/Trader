@@ -22,7 +22,7 @@ import java.util.Map;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-03
+ * last modified 2020-08-06
  */
 public class TradeManager extends Manager implements Serializable {
     private List<Trade> allTrades;
@@ -305,9 +305,9 @@ public class TradeManager extends Manager implements Serializable {
      */
     public int getNumMeetingsThisWeek(String username, LocalDate date) {
         List<Trade> allTradesThisUser = getAllTrades(username);
-        int dow = date.getDayOfWeek().getValue();
-        LocalDate dayBeforeWeek = date.minusDays(dow);
-        LocalDate dayAfterWeek = date.plusDays(7 - dow + 1);
+        int dayOfWeek = date.getDayOfWeek().getValue();
+        LocalDate dayBeforeWeek = date.minusDays(dayOfWeek);
+        LocalDate dayAfterWeek = date.plusDays(7 - dayOfWeek + 1);
 
         int count = 0;
         for (Trade t : allTradesThisUser) {

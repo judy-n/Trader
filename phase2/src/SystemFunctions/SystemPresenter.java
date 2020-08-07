@@ -690,58 +690,37 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents a threshold editor to the AdminUser, based on an input
+     * Returns the labels for elements on the threshold editor screen.
      *
-     * @param input the input
+     * @param input the case corresponding to the label being retrieved
+     * @return the string to display
      */
-    public void thresholdEditor(int input) {
+    public String thresholdEditor(int input) {
         switch (input) {
-            case 0:
-                System.out.println("\nChoose one of the options: (0 to quit) " +
-                        "\n 1 - Edit the threshold of a specific user" +
-                        "\n 2 - Edit the threshold for all users" + choicePrompt);
-                break;
             case 1:
-                System.out.print("\nPlease enter the username of the user whose threshold you would like to change (0 to quit): ");
-                break;
+                return ("Set thresholds");
             case 2:
-                System.out.print("\nWhich threshold would you like to change? (0 to quit) " +
-                        "\n 1 - Weekly trade maximum " +
-                        "\n 2 - Meeting edit maximum " +
-                        "\n 3 - Lend minimum" +
-                        "\n 4 - Incomplete trade maximum" + choicePrompt);
-                break;
-            case 3:
-                System.out.println("\nUnable to edit threshold values - the username you entered belongs to an admin!");
-                break;
+                return("Invalid threshold value in one or more fields.");
+            default:
+                return null;
         }
     }
 
     /**
-     * Presents information about a user's threshold data to an admin user, based on an input
+     * Returns the labels of the thresholds in an array
      *
-     * @param input        the input
-     * @param oldThreshold the threshold of a user (before edits)
+     * @param currThresholds the current threshold values of the system
      */
-    public void thresholdEditor(int input, int oldThreshold) {
-        switch (input) {
-            case 1:
-                System.out.print("\nThe current weekly trade max is " + oldThreshold +
-                        "\n Change it to: ");
-                break;
-            case 2:
-                System.out.print("\nThe current meeting edit max is " + oldThreshold +
-                        "\n Change it to: ");
-                break;
-            case 3:
-                System.out.print("\nThe current lend min is " + oldThreshold +
-                        "\n Change it to: ");
-                break;
-            case 4:
-                System.out.print("\nThe current incomplete trade max is " + oldThreshold +
-                        "\n Change it to: ");
-                break;
-        }
+    public String[] getThresholdStrings(int[] currThresholds) {
+
+        String[] thresholdStrings = new String[4];
+
+        thresholdStrings[0] = ("The current weekly trade max is " + currThresholds[0] + ". Change it to:");
+        thresholdStrings[1] = ("The current meeting edit max is " + currThresholds[1] + ". Change it to:");
+        thresholdStrings[2] = ("The current lend min is " + currThresholds[2] + ". Change it to:");
+        thresholdStrings[3] = ("The current incomplete trade max is " + currThresholds[3] + ". Change it to:");
+
+        return thresholdStrings;
     }
 
     /**

@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-
 /**
  * ReadWriter reads from and writes to a .ser file that contains a <Manager></Manager>
  *
