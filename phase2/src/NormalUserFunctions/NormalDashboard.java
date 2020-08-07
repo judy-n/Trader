@@ -96,6 +96,15 @@ public class NormalDashboard extends Dashboard {
         return completedTradesViewer.getTopThreeTraderStrings();
     }
 
+    public String getDialogMessage(int input) {
+        switch (input) {
+            case 1:
+                return inventoryEditor.addInvSuccess();
+            default:
+                return null;
+        }
+    }
+
 //        switch (input) {
 //            case 1:
 //                new CatalogViewer(currUsername, itemManager, userManager, tradeManager);

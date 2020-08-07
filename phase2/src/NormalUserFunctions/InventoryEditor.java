@@ -1,5 +1,6 @@
 package NormalUserFunctions;
 
+import SystemFunctions.SystemPresenter;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
@@ -151,7 +152,7 @@ public class InventoryEditor {
      * @return true iff both the name and description are valid
      */
     public boolean validateInput(String itemNameInput, String itemDescriptionInput) {
-        return itemNameInput.length() < 3 || !itemDescriptionInput.contains(" ");
+        return itemNameInput.matches("[\\w]{3,}") && itemDescriptionInput.trim().contains(" ");
     }
 
     /**
@@ -198,5 +199,14 @@ public class InventoryEditor {
     public void addInventory(String itemNameInput, String itemDescriptionInput) {
         long newItemID = itemManager.createItem(itemNameInput, itemDescriptionInput, currUsername);
         userManager.addToNormalUserPending(newItemID, currUsername);
+    }
+
+    /**
+     * Returns a message confirming the addition of an item to inventory.
+     *
+     * @return the string to display
+     */
+    public String addInvSuccess() {
+        return new SystemPresenter().inventoryAddItem();
     }
 }

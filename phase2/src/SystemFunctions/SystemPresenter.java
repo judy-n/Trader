@@ -59,38 +59,12 @@ public class SystemPresenter {
     }
 
     /**
-     * Prompts user for an item they would like to add
+     * Returns a message telling the user they've successfully sent an item for admin approval.
      *
-     * @param input the user's input
+     * @return the string to display
      */
-    public void inventoryAddItem(int input) {
-        switch (input) {
-            case 1:
-                System.out.println("\nEnter the name of the item to add (at least 3 letters):");
-                break;
-
-            case 2:
-                System.out.println("\nEnter a description (at least 2 words):");
-                break;
-
-            case 3:
-                System.out.print("\nAre you sure you want to add this item? (Y/N): ");
-                break;
-
-            case 4:
-                System.out.println("\nYour item has been requested! Please wait for an admin to review it.");
-                break;
-        }
-    }
-
-    /**
-     * Prints details of an item to be added
-     *
-     * @param name        the name of the item
-     * @param description the description of the item
-     */
-    public void inventoryAddItem(String name, String description) {
-        System.out.println(name + " : " + description);
+    public String inventoryAddItem() {
+        return ("Your item has been requested! Please wait for an admin to review it.");
     }
 
     /**
@@ -700,7 +674,7 @@ public class SystemPresenter {
             case 1:
                 return ("Set thresholds");
             case 2:
-                return("Invalid threshold value in one or more fields.");
+                return ("Invalid threshold value in one or more fields.");
             default:
                 return null;
         }
