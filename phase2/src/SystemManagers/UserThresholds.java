@@ -1,14 +1,16 @@
 package SystemManagers;
 
+import java.io.Serializable;
+
 /**
  * Stores and manages the system threshold values used to restrict the actions of all normal users of the program.
  *
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-08-06
- * last modified 2020-08-06
+ * last modified 2020-08-07
  */
-public class UserThresholds {
+public class UserThresholds implements Serializable {
 
     private int numOfThresholds;
 

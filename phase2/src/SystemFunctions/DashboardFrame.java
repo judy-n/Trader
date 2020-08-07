@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-08-01
- * last modified 2020-08-05
+ * last modified 2020-08-07
  */
 
 public class DashboardFrame extends JDialog{
@@ -200,7 +200,7 @@ public class DashboardFrame extends JDialog{
     private void drawListDisplay(String[] displayItems){
         if(displayItems.length==0) {
             dashboardWindow.remove(scrollablePane);
-            nothingToDisplay.setText("Nothing here.");
+            nothingToDisplay.setText("Nothing here yet!");
             //dashboardWindow.add(nothingToDisplay, BorderLayout.CENTER);
             userInputPanel.remove(removeButton);
         }else {

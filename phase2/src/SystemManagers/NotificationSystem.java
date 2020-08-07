@@ -41,17 +41,26 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
     }
 
     /**
-     * Takes in the username of a normal user and returns a list of strings representing all their notifications.
+     * Takes in the username of a normal user and returns an array of strings representing all their notifications.
      *
      * @param username the username of the user whose notifications are being retrieved
-     * @return a list of string representations of all the given user's notifications
+     * @return an array of string representations of all the given user's notifications
      */
-    public List<String> getUserNotifStrings(String username) {
+    public String[] getUserNotifStrings(String username) {
         List<String> notifStrings = new ArrayList<>();
         for (Notification n : userToNotifMap.get(username)) {
             notifStrings.add(n.toString());
         }
-        return notifStrings;
+        return notifStrings.toArray(new String[0]);
+    }
+
+    /**
+     * Clears the notification list of the given username.
+     *
+     * @param username the username of the account whose notification list is being cleared
+     */
+    public void clearNotifsForUser(String username) {
+        userToNotifMap.get(username).clear();
     }
 
     /**

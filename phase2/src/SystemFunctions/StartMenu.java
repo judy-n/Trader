@@ -11,7 +11,7 @@ import java.awt.event.ItemEvent;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-06
+ * last modified 2020-08-07
  */
 public class StartMenu extends JPanel {
     private SystemController systemController;
@@ -30,6 +30,8 @@ public class StartMenu extends JPanel {
     private JLabel invalid;
     private Integer[] allTypeInvalidInput;
     private JFrame parent;
+
+    private String finalUsername;
 
     /**
      * Creates a <StartMenu></StartMenu> with the given system controller and parent frame
@@ -154,7 +156,7 @@ public class StartMenu extends JPanel {
             usernameOrEmail.setLocation(X_POS, FIRST_LINE_Y);
             usernameEmailInput.setBounds(330, 110, 120, 25);
 
-            JButton login = new JButton(systemPresenter.loginSystem(0));
+            JButton login = new JButton(systemPresenter.loginSystem(6));
             initializeButton(login, 100, 30, 450, 350);
 
             login.addActionListener(e -> {
@@ -164,7 +166,7 @@ public class StartMenu extends JPanel {
                 makeInvalidInputWarning(allTypeInvalidInput, "login");
                 if (allTypeInvalidInput.length == 0) {
                     loggedIn();
-                    systemController.userLogin(emailOrUsername, parent);
+                    finalUsername = systemController.userLogin(emailOrUsername, parent);
                     this.setVisible(true);
                 }
             });
@@ -218,14 +220,13 @@ public class StartMenu extends JPanel {
                 inputtedPassword = String.valueOf(passwordInput.getPassword());
                 validateInputtedPassword = String.valueOf(validatePasswordInput.getPassword());
                 inputtedHomeCity = homeCityInput.getText();
-                System.out.println(inputtedHomeCity);
                 allTypeInvalidInput = systemController.normalUserSignUpCheck
                         (inputtedUsername, inputtedEmail, inputtedPassword,
                                 validateInputtedPassword, inputtedHomeCity).toArray(new Integer[0]);
                 makeInvalidInputWarning(allTypeInvalidInput, "sign-up");
                 if (allTypeInvalidInput.length == 0) {
                     loggedIn();
-                    System.out.println(parent.getTitle());
+                    finalUsername = inputtedUsername;
                     systemController.normalUserSignUp(inputtedUsername, inputtedEmail, inputtedPassword,
                             inputtedHomeCity, parent);
                     this.setVisible(true);
@@ -239,7 +240,10 @@ public class StartMenu extends JPanel {
         this.revalidate();
         JButton logoutButton = new JButton(systemPresenter.loginSystem(7));
         initializeButton(logoutButton, 200, 40, X_POS, FIRST_LINE_Y + Y_SPACE);
+
+        // Clears the logged-in user's notification list
         logoutButton.addActionListener(e -> {
+            systemController.clearCurrUserNotifs(finalUsername);
             this.removeAll();
             this.revalidate();
             mainMenu();

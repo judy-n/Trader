@@ -53,7 +53,7 @@ public class SystemController extends JFrame {
         if (userManager.getAllUsers().isEmpty()) {
             tryReadAdmin();
             //for testing
-            userManager.createNormalUser("test", "a@b.com", "p", "homeCity");
+            new SignUpSystem(userManager).createNewNormal("test", "a@b.com", "p", "homeCity", notifSystem);
             long itemID = itemManager.createItem("fruit", "it's a strawberry", "test");
             long itemID2 = itemManager.createItem("AHHH", "OMG", "test");
             long itemID3 = itemManager.createItem("PEND","INg", "test");
@@ -121,13 +121,14 @@ public class SystemController extends JFrame {
         return new LoginSystem(userManager).validateInput(usernameOrEmail, password);
     }
 
-    public void userLogin(String usernameOrEmail, JFrame parent){
+    public String userLogin(String usernameOrEmail, JFrame parent){
         String currUsername = userManager.getUserByUsernameOrEmail(usernameOrEmail).getUsername();
         if (userManager.isAdmin(currUsername)) {
             new DashboardFrame(new AdminDashboard(currUsername, itemManager, userManager, notifSystem), parent);
         } else {
             new DashboardFrame(new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem), parent);
         }
+        return currUsername;
     }
 
 
@@ -135,6 +136,9 @@ public class SystemController extends JFrame {
         new DemoDashboard(itemManager, userManager);
     }
 
+    public void clearCurrUserNotifs(String currUsername) {
+        notifSystem.clearNotifsForUser(currUsername);
+    }
 
     private void tryReadManagers() {
         try {

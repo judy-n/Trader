@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-08-05
+ * last modified 2020-08-07
  */
 public class CompletedTradesViewer {
     private String currUsername;
@@ -26,7 +26,7 @@ public class CompletedTradesViewer {
     /**
      * Creates a <CompletedTradesViewer></CompletedTradesViewer> with the given normal username and item/trade managers.
      *
-     * @param currUsername   the username of the normal user who's currently logged in
+     * @param currUsername the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param tradeManager the system's trade manager
      */
@@ -46,45 +46,41 @@ public class CompletedTradesViewer {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         Trade[] recentThree = tradeManager.getRecentThreeTrades(currUsername);
 
-        if (recentThree[0] == null) {
-            return new String[0];
-        } else {
-            String[] tradeStrings = new String[3];
-            for (int i = 0; i < 3; i++) {
+        String[] tradeStrings = new String[4];
+        tradeStrings[0] = "Three Most Recent Trades:";
+        for (int i = 0; i < 3; i++) {
 
-                String tradePrint = "empty";
+            String tradePrint = "empty";
 
-                if (recentThree[i] != null) {
-                    Trade trade = recentThree[i];
-                    LocalDateTime meeting = trade.getFinalMeetingDateTime();
-                    String otherUsername = trade.getOtherUsername(currUsername);
+            if (recentThree[i] != null) {
+                Trade trade = recentThree[i];
+                LocalDateTime meeting = trade.getFinalMeetingDateTime();
+                String otherUsername = trade.getOtherUsername(currUsername);
 
-                    /*
-                     * tempItemIDs[0] - ID of item lent by current user
-                     * tempItemIDs[1] - ID of item borrowed by current user
-                     */
-                    long[] tempItemIDs = {trade.getLentItemID(currUsername), trade.getLentItemID(otherUsername)};
+                /*
+                 * tempItemIDs[0] - ID of item lent by current user
+                 * tempItemIDs[1] - ID of item borrowed by current user
+                 */
+                long[] tempItemIDs = {trade.getLentItemID(currUsername), trade.getLentItemID(otherUsername)};
 
-                    if (tempItemIDs[0] == 0) {
-                        Item itemBorrowed = itemManager.getItem(tempItemIDs[1]);
-                        tradePrint = meeting.format(formatter) + "   " +
-                                trade.toString(currUsername) + "you borrowed [" + itemBorrowed.getName() + "]";
-                    } else if (tempItemIDs[1] == 0) {
-                        Item itemLent = itemManager.getItem(tempItemIDs[0]);
-                        tradePrint = meeting.format(formatter) + "   " +
-                                trade.toString(currUsername) + "you lent [" + itemLent.getName() + "]";
-                    } else {
-                        Item[] tempItems = {itemManager.getItem(tempItemIDs[0]), itemManager.getItem(tempItemIDs[1])};
-                        tradePrint = meeting.format(formatter) + "   " +
-                                trade.toString(currUsername) + "you lent [" +
-                                tempItems[0].getName() + "] for [" + tempItems[1].getName() + "]";
-                    }
+                if (tempItemIDs[0] == 0) {
+                    Item itemBorrowed = itemManager.getItem(tempItemIDs[1]);
+                    tradePrint = meeting.format(formatter) + "   " +
+                            trade.toString(currUsername) + "you borrowed [" + itemBorrowed.getName() + "]";
+                } else if (tempItemIDs[1] == 0) {
+                    Item itemLent = itemManager.getItem(tempItemIDs[0]);
+                    tradePrint = meeting.format(formatter) + "   " +
+                            trade.toString(currUsername) + "you lent [" + itemLent.getName() + "]";
+                } else {
+                    Item[] tempItems = {itemManager.getItem(tempItemIDs[0]), itemManager.getItem(tempItemIDs[1])};
+                    tradePrint = meeting.format(formatter) + "   " +
+                            trade.toString(currUsername) + "you lent [" +
+                            tempItems[0].getName() + "] for [" + tempItems[1].getName() + "]";
                 }
-                tradeStrings[i] = ((i + 1) + ". " + tradePrint);
             }
-            return tradeStrings;
+            tradeStrings[i + 1] = ((i + 1) + ". " + tradePrint);
         }
-
+        return tradeStrings;
     }
 
     /**
