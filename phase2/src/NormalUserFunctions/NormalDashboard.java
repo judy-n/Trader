@@ -26,6 +26,7 @@ public class NormalDashboard extends Dashboard {
     private NotificationSystem notifSystem;
     private WishlistEditor wishlistEditor;
     private InventoryEditor inventoryEditor;
+    private TradeRequestViewer tradeRequestViewer;
     private CompletedTradesViewer completedTradesViewer;
     private UnfreezeRequester unfreezeRequester;
     private StatusEditor statusEditor;
@@ -53,6 +54,7 @@ public class NormalDashboard extends Dashboard {
         currentUser = userManager.getNormalByUsername(username);
         wishlistEditor = new WishlistEditor(currUsername, itemManager, userManager);
         inventoryEditor = new InventoryEditor(currUsername, itemManager, userManager, tradeManager);
+        tradeRequestViewer = new TradeRequestViewer(currUsername, itemManager, userManager, tradeManager, notifSystem);
         completedTradesViewer = new CompletedTradesViewer(currUsername, itemManager, tradeManager);
         unfreezeRequester = new UnfreezeRequester(currUsername, userManager);
         statusEditor = new StatusEditor(currUsername, userManager);
@@ -132,6 +134,23 @@ public class NormalDashboard extends Dashboard {
             setPopUpMessage(2);
         }
     }
+
+    /**
+     * Returns trade requests the normal user initiated in a String array
+     * @return trade requests the normal user initiated
+     */
+    public String[] getInitiatedTrades(){
+        return tradeRequestViewer.getInitiatedTrades();
+    }
+
+    /**
+     * Returns trade requests the normal user has received in a String array
+     * @return trade requests the normal user has received
+     */
+    public String[] getReceivedTrades(){
+        return tradeRequestViewer.getReceiveTrades();
+    }
+
 
     /**
      * Returns the normal user's three most recent trades in a string array

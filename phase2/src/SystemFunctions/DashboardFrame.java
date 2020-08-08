@@ -122,6 +122,12 @@ public class DashboardFrame extends JDialog {
         });
 
         JButton tradeRequest = new JButton(normalDashboard.setUpDash(3));
+        tradeRequest.addActionListener(e -> {
+            resetEverything();
+            drawUserInputPane(TRADE_REQUEST);
+            drawListDisplay(normalDashboard.getReceivedTrades());
+            drawOptionalPanel(normalDashboard.getInitiatedTrades(), TRADE_REQUEST);
+        });
 
         JButton catalog = new JButton(normalDashboard.setUpDash(4));
 
@@ -292,6 +298,19 @@ public class DashboardFrame extends JDialog {
                 });
                 break;
 
+            case TRADE_REQUEST:
+                JToggleButton acceptOrDeny = new JToggleButton();
+                JToggleButton permOrTemp = new JToggleButton();
+                JLabel initialTime = new JLabel("Suggest Time:");
+                JLabel initialPlace = new JLabel("Suggest Place:");
+                JTextField initialTimeInput = new JTextField(10);
+                JTextField initialPlaceInput = new JTextField(10);
+                removeButton.setText("Confirm");
+                initializeToggleButton(acceptOrDeny, "Accept Request", "Deny Request");
+                initializeToggleButton(permOrTemp, "Permanent", "Temporary");
+
+
+                break;
             case CATALOG_VIEWER:
                 userInputPanel.removeAll();
                 JButton trade = new JButton("Trade");
@@ -354,14 +373,8 @@ public class DashboardFrame extends JDialog {
                 break;
 
             case CATALOG_EDITOR:
-                JToggleButton approveOrDeny = new JToggleButton("Approve Item");
-                approveOrDeny.addChangeListener(e -> {
-                    if (approveOrDeny.isSelected()) {
-                        approveOrDeny.setText("Deny Item");
-                    } else {
-                        approveOrDeny.setText("Approve Item");
-                    }
-                });
+                JToggleButton approveOrDeny = new JToggleButton();
+                initializeToggleButton(approveOrDeny, "Approve Item", "Deny Item");
                 removeButton.setText("Confirm");
                 removeButton.addActionListener(e -> {
                     if (!listDisplay.isSelectionEmpty()) {
@@ -436,6 +449,9 @@ public class DashboardFrame extends JDialog {
             case ONGOING:
                 optionalLabelTitle.setText("Suggest Meeting Details");
                 break;
+            case TRADE_REQUEST:
+                optionalLabelTitle.setText("Initiated Trade Requests");
+                break;
         }
         optionalLabel.setText("");
         if (stringArray.length == 0) {
@@ -481,6 +497,17 @@ public class DashboardFrame extends JDialog {
         panel.add(button);
     }
 
+    private void initializeToggleButton(JToggleButton button, String ogText, String clickedText){
+        button.setText(ogText);
+        button.addChangeListener(e -> {
+            if (button.isSelected()) {
+                button.setText(clickedText);
+            } else {
+                button.setText(ogText);
+            }
+        });
+    }
+
     /**
      * Resets the JFrame
      */
@@ -494,7 +521,7 @@ public class DashboardFrame extends JDialog {
     }
 
     /**
-     * Draw a pop up window containing a warning message if necessary
+     * Draws a pop up window containing a warning message if necessary
      */
     private void drawPopUpMessage(){
         if(!dashboard.getPopUpMessage().isEmpty()) {
