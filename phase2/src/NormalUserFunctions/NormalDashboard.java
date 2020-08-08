@@ -12,10 +12,8 @@ import Entities.NormalUser;
  * Controller for all Normal user's dashboard functions.
  *
  * @author Ning Zhang
- * @author Judy Naamani
  * @author Yingjia Liu
- * @author Kushagra Mehta
- * @version 1.0
+ * @version 2.0
  * @since 2020-06-26
  * last modified 2020-08-07
  */
@@ -30,6 +28,7 @@ public class NormalDashboard extends Dashboard {
     private InventoryEditor inventoryEditor;
     private CompletedTradesViewer completedTradesViewer;
     private UnfreezeRequester unfreezeRequester;
+    private StatusEditor statusEditor;
 
     private String popUpMessage = "";
     private SystemPresenter systemPresenter;
@@ -56,11 +55,19 @@ public class NormalDashboard extends Dashboard {
         inventoryEditor = new InventoryEditor(currUsername, itemManager, userManager, tradeManager);
         completedTradesViewer = new CompletedTradesViewer(currUsername, itemManager, tradeManager);
         unfreezeRequester = new UnfreezeRequester(currUsername, userManager);
-    }
-    public void editUserStatus(){
-        new StatusEditor(currUsername, userManager);
+        statusEditor = new StatusEditor(currUsername, userManager);
     }
 
+    /**
+     * Switches the normal user's vacation status
+     */
+    public void editUserStatus(){
+        statusEditor.switchVacationStatus();
+    }
+
+    /**
+     * Sends an unfreeze Request for admin review
+     */
     public void sendUnfreezeRequest(){
         if(unfreezeRequester.requestUnfreeze()){
             setPopUpMessage(6);
@@ -69,20 +76,40 @@ public class NormalDashboard extends Dashboard {
         }
     }
 
+    /**
+     * Returns the normal user's wishlist in a String array
+     * @return the normal user's wishlist
+     */
     public String[] getWishlist(){
        return wishlistEditor.getWishlistStrings();
     }
 
+    /**
+     * Removes item with index [index] from the normal user's wishlist
+     * @param index the index of the item
+     */
     public void removeFromWishlist(int index){
         wishlistEditor.removeItem(index);
     }
 
+    /**
+     * Returns the normal user's inventory in a String array
+     * @return the normal user's inventory
+     */
     public String[] getInventory(){return inventoryEditor.getInventory();}
 
+    /**
+     * Returns the normal user's pending inventory in a String array
+     * @return the normal user's pending inventory
+     */
     public String[] getPendingInventory(){
         return inventoryEditor.getPendingInventory();
     }
 
+    /**
+     * Removes item with index [index] from the normal user's inventory
+     * @param index the index of the item
+     */
     public void removeFromInventory(int index){
         if(inventoryEditor.validateRemoval(index)) {
             inventoryEditor.removeInventory(index);
@@ -91,6 +118,12 @@ public class NormalDashboard extends Dashboard {
         }
     }
 
+    /**
+     * Adds an item to the normal user's pending inventory if its name and
+     * description is of valid format
+     * @param nameInput the name of the item
+     * @param descripInput the description of the item
+     */
     public void addToInventory(String nameInput, String descripInput){
         if(inventoryEditor.validateInput(nameInput, descripInput)){
             inventoryEditor.addInventory(nameInput, descripInput);
@@ -100,14 +133,26 @@ public class NormalDashboard extends Dashboard {
         }
     }
 
+    /**
+     * Returns the normal user's three most recent trades in a string array
+     * @return the normal user's three most recent trades
+     */
     public String[] getRecentThreeTradesStrings(){
         return completedTradesViewer.getRecentThreeTradesStrings();
     }
 
+    /**
+     * Returns the normal user's three most frequent trade partners in a string array
+     * @return the normal user's three most frequent trade partners
+     */
     public String[] getTopThreeTraderStrings(){
         return completedTradesViewer.getTopThreeTraderStrings();
     }
 
+    /**
+     * Returns true if the normal user is frozen false otherwise
+     * @return if the normal user is frozen
+     */
     public boolean isFrozen(){
         return currentUser.getIsFrozen();
     }

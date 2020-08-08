@@ -3,16 +3,14 @@ package SystemFunctions;
 import Entities.Item;
 import Entities.Trade;
 import Entities.TemporaryTrade;
-import NormalUserFunctions.NormalDashboard;
-import jdk.nashorn.internal.runtime.arrays.ArrayLikeIterator;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**
- * The presenter used for the entire program. Prints to text UI.
+ * The presenter used for the entire program.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
@@ -23,9 +21,9 @@ import java.util.List;
  * last modified 2020-08-07
  */
 public class SystemPresenter {
-    private StartMenuPresenter startMenuPresenter;
-    private NormalDashPresenter normalDashPresenter;
-    private AdminDashPresenter adminDashPresenter;
+    private final StartMenuPresenter startMenuPresenter;
+    private final NormalDashPresenter normalDashPresenter;
+    private final AdminDashPresenter adminDashPresenter;
 
     private final String choicePrompt = "\nPlease enter your choice here: ";
 

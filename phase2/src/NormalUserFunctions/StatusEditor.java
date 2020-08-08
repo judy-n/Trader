@@ -25,11 +25,12 @@ public class StatusEditor {
     public StatusEditor(String username, UserManager userManager) {
         currUsername = username;
         this.userManager = userManager;
-        switchVacationStatus();
     }
 
-    /* Switches the vacation status of the normal user. */
-    private void switchVacationStatus() {
+    /**
+     * Switches the vacation status of the normal user.
+     */
+    public void switchVacationStatus() {
         if (userManager.getNormalUserOnVacation(currUsername)) {
             userManager.removeUsernamesOnVacation(currUsername);
 

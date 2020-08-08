@@ -1,6 +1,6 @@
 package SystemFunctions;
 /**
- * The presenter used for the AdminUser's dashboard, returns strings to display
+ * The presenter used for the AdminUser's dashboard, returns strings to display.
  *
  * @author Ning Zhang
  * @version 1.0
@@ -9,6 +9,12 @@ package SystemFunctions;
  */
 public class AdminDashPresenter {
 
+    /**
+     * Returns the text displayed on JComponents when a normal user's
+     * dashboard is displayed
+     * @param type int indicating type of JComponent
+     * @return the String needed to be displayed
+     */
     public String setUpDash(int type){
         switch (type){
             case 1:
@@ -29,6 +35,11 @@ public class AdminDashPresenter {
         }
     }
 
+    /**
+     * Returns the text displayed on a pop up window
+     * @param type int indicating the type of message
+     * @return the String needed to be displayed
+     */
     public String getPopUpMessage(int type){
         switch (type){
             case 1:

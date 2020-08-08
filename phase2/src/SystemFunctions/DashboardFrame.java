@@ -48,6 +48,12 @@ public class DashboardFrame extends JDialog {
     private final int CREATE = 11;
     private final int THRESHOLD = 12;
 
+    /**
+     * Makes a new modal window that displays the user functions of the user that is
+     * currently logged in
+     * @param dashboard the controller for the dashboard
+     * @param parent    the parent window that made this one
+     */
     public DashboardFrame(Dashboard dashboard, JFrame parent) {
         this.dashboard = dashboard;
         this.parent = parent;
@@ -100,6 +106,9 @@ public class DashboardFrame extends JDialog {
 
     }
 
+    /**
+     * Draws all JComponents for normal user's functions
+     */
     private void drawNormalDash() {
         JButton inventory = new JButton(normalDashboard.setUpDash(1));
         inventory.addActionListener(e -> {
@@ -158,7 +167,9 @@ public class DashboardFrame extends JDialog {
             initializeButton(unfreeze, 200, 40, userFunctionPanel);
         }
     }
-
+    /**
+     * Draws all JComponents for admin user's functions
+     */
     private void drawAdminDash() {
         userInputPanel.removeAll();
         JButton catalogEditor = new JButton(adminDashboard.setUpDash(1));
@@ -208,6 +219,10 @@ public class DashboardFrame extends JDialog {
         initializeButton(undo, 200, 40, userFunctionPanel);
     }
 
+    /**
+     * Draws the JScrollpane in the CENTRE of the JFrame's border layout
+     * @param displayItems the contents of the JScrollpane
+     */
     private void drawListDisplay(String[] displayItems) {
         if (displayItems.length == 0) {
             dashboardWindow.remove(scrollablePane);
@@ -222,6 +237,11 @@ public class DashboardFrame extends JDialog {
         dashboardWindow.setVisible(true);
     }
 
+    /**
+     * Draws all JComponents necessary for the type of function on the SOUTH of the
+     * JFrame's border layout
+     * @param type int indicating the type of function
+     */
     private void drawUserInputPane(int type) {
         switch (type) {
             case WISHLIST:
@@ -404,6 +424,12 @@ public class DashboardFrame extends JDialog {
         dashboardWindow.setVisible(true);
     }
 
+    /**
+     * Draws all JComponents necessary for the type of function on the EAST of the
+     * JFrame's border layout
+     * @param stringArray the content to display
+     * @param type        int indicating the type of function
+     */
     private void drawOptionalPanel(String[] stringArray, int type) {
         switch (type) {
             case INVENTORY:
@@ -434,12 +460,23 @@ public class DashboardFrame extends JDialog {
         dashboardWindow.setVisible(true);
     }
 
+    /**
+     * Updates the JScrollpane once a change has been made to its content
+     * @param displayList the new content to display
+     */
     private void redrawDisplayList(String[] displayList) {
         dashboardWindow.revalidate();
         drawListDisplay(displayList);
         dashboardWindow.repaint();
     }
 
+    /**
+     * Initializes given JButton with width, height, and the panel to draw it on
+     * @param button    the JButton to initialize
+     * @param width     the width of the JButton
+     * @param height    the height of the JButton
+     * @param panel     the panel to draw it on
+     */
     private void initializeButton(JButton button, int width, int height, JPanel panel) {
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
@@ -449,6 +486,9 @@ public class DashboardFrame extends JDialog {
         panel.add(button);
     }
 
+    /**
+     * Resets the JFrame
+     */
     private void resetEverything() {
         for (ActionListener actionListener : removeButton.getActionListeners()) {
             removeButton.removeActionListener(actionListener);
@@ -458,6 +498,9 @@ public class DashboardFrame extends JDialog {
         optionalPanel.removeAll();
     }
 
+    /**
+     * Draw a pop up window containing a warning message if necessary
+     */
     private void drawPopUpMessage(){
         if(!dashboard.getPopUpMessage().isEmpty()) {
             JOptionPane.showMessageDialog(parent, dashboard.getPopUpMessage());
