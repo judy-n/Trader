@@ -1,6 +1,7 @@
 package NormalUserFunctions;
 
 import SystemFunctions.Dashboard;
+import SystemFunctions.SystemPresenter;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
@@ -16,7 +17,7 @@ import Entities.NormalUser;
  * @author Kushagra Mehta
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-03
+ * last modified 2020-08-07
  */
 public class NormalDashboard extends Dashboard {
     private NormalUser currentUser;
@@ -28,6 +29,10 @@ public class NormalDashboard extends Dashboard {
     private WishlistEditor wishlistEditor;
     private InventoryEditor inventoryEditor;
     private CompletedTradesViewer completedTradesViewer;
+    private UnfreezeRequester unfreezeRequester;
+
+    private String popUpMessage = "";
+    private SystemPresenter systemPresenter;
     /**
      * Creates a <NormalDashboard></NormalDashboard> with the given normal user,
      * item/user/trade managers, and notification system.
@@ -45,17 +50,23 @@ public class NormalDashboard extends Dashboard {
         this.userManager = userManager;
         this.tradeManager = tradeManager;
         this.notifSystem = notifSystem;
+        systemPresenter = new SystemPresenter();
         currentUser = userManager.getNormalByUsername(username);
         wishlistEditor = new WishlistEditor(currUsername, itemManager, userManager);
         inventoryEditor = new InventoryEditor(currUsername, itemManager, userManager, tradeManager);
         completedTradesViewer = new CompletedTradesViewer(currUsername, itemManager, tradeManager);
+        unfreezeRequester = new UnfreezeRequester(currUsername, userManager);
     }
     public void editUserStatus(){
         new StatusEditor(currUsername, userManager);
     }
 
     public void sendUnfreezeRequest(){
-        new UnfreezeRequester(currUsername, userManager);
+        if(unfreezeRequester.requestUnfreeze()){
+            setPopUpMessage(6);
+        }else{
+            setPopUpMessage(7);
+        }
     }
 
     public String[] getWishlist(){
@@ -72,20 +83,21 @@ public class NormalDashboard extends Dashboard {
         return inventoryEditor.getPendingInventory();
     }
 
-    public boolean validateRemovalInv(int index){
-        return inventoryEditor.validateRemoval(index);
-    }
-
     public void removeFromInventory(int index){
-        inventoryEditor.removeInventory(index);
-    }
-
-    public boolean validateInputInv(String nameInput, String descripInput){
-        return inventoryEditor.validateInput(nameInput, descripInput);
+        if(inventoryEditor.validateRemoval(index)) {
+            inventoryEditor.removeInventory(index);
+        }else{
+            setPopUpMessage(3);
+        }
     }
 
     public void addToInventory(String nameInput, String descripInput){
-        inventoryEditor.addInventory(nameInput, descripInput);
+        if(inventoryEditor.validateInput(nameInput, descripInput)){
+            inventoryEditor.addInventory(nameInput, descripInput);
+            setPopUpMessage(1);
+        }else{
+            setPopUpMessage(2);
+        }
     }
 
     public String[] getRecentThreeTradesStrings(){
@@ -96,13 +108,18 @@ public class NormalDashboard extends Dashboard {
         return completedTradesViewer.getTopThreeTraderStrings();
     }
 
-    public String getDialogMessage(int input) {
-        switch (input) {
-            case 1:
-                return inventoryEditor.addInvSuccess();
-            default:
-                return null;
-        }
+    public boolean isFrozen(){
+        return currentUser.getIsFrozen();
+    }
+
+    @Override
+    public String setUpDash(int type){
+        return systemPresenter.setUpNormalDash(type);
+    }
+
+    @Override
+    public void setPopUpMessage(int type){
+        popUpMessage = systemPresenter.getNormalPopUpMessage(type);
     }
 
 //        switch (input) {
@@ -128,5 +145,15 @@ public class NormalDashboard extends Dashboard {
     @Override
     public boolean isAdmin() {
         return false;
+    }
+
+    @Override
+    public String getPopUpMessage(){
+        return popUpMessage;
+    }
+
+    @Override
+    public void resetPopUpMessage() {
+        popUpMessage = "";
     }
 }

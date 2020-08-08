@@ -1,4 +1,4 @@
-weekly trade max:2
+weekly trade max:3
 meeting edit max:3
 lend minimum:1
 incomplete trade max:5

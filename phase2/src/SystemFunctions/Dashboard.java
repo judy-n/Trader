@@ -10,6 +10,12 @@ package SystemFunctions;
  */
 
 public abstract class Dashboard{
+    public String popUpMessage;
     public abstract String getUsername();
     public abstract boolean isAdmin();
+    public abstract String setUpDash(int type);
+    public abstract void setPopUpMessage(int type);
+    public abstract String getPopUpMessage();
+    public abstract void resetPopUpMessage();
+
 }

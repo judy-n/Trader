@@ -20,6 +20,7 @@ public class DashboardFrame extends JDialog {
     private Dashboard dashboard;
     private NormalDashboard normalDashboard;
     private AdminDashboard adminDashboard;
+
     private JDialog dashboardWindow;
     private JFrame parent;
     private JPanel userFunctionPanel;
@@ -45,6 +46,7 @@ public class DashboardFrame extends JDialog {
     private final int UNFREEZE = 9;
     private final int UNDO = 10;
     private final int CREATE = 11;
+    private final int THRESHOLD = 12;
 
     public DashboardFrame(Dashboard dashboard, JFrame parent) {
         this.dashboard = dashboard;
@@ -99,7 +101,7 @@ public class DashboardFrame extends JDialog {
     }
 
     private void drawNormalDash() {
-        JButton inventory = new JButton("Inventory Editor");
+        JButton inventory = new JButton(normalDashboard.setUpDash(1));
         inventory.addActionListener(e -> {
             resetEverything();
             drawUserInputPane(INVENTORY);
@@ -107,38 +109,29 @@ public class DashboardFrame extends JDialog {
             drawOptionalPanel(normalDashboard.getPendingInventory(), INVENTORY);
         });
 
-        JButton wishlist = new JButton("Wishlist Editor");
+        JButton wishlist = new JButton(normalDashboard.setUpDash(2));
         wishlist.addActionListener(e -> {
-                    resetEverything();
-                    drawUserInputPane(WISHLIST);
-                    drawListDisplay(normalDashboard.getWishlist());
-                }
-        );
+            resetEverything();
+            drawUserInputPane(WISHLIST);
+            drawListDisplay(normalDashboard.getWishlist());
+        });
 
-        JButton tradeRequest = new JButton("View Trade Requests");
-        JButton catalog = new JButton("View Catalog");
+        JButton tradeRequest = new JButton(normalDashboard.setUpDash(3));
 
-        JButton ongoingTrade = new JButton("View Ongoing Trades");
+        JButton catalog = new JButton(normalDashboard.setUpDash(4));
 
-        JButton completeTrade = new JButton("View Completed Trades");
+        JButton ongoingTrade = new JButton(normalDashboard.setUpDash(5));
+
+        JButton completeTrade = new JButton(normalDashboard.setUpDash(6));
         completeTrade.addActionListener(e -> {
             resetEverything();
             drawListDisplay(normalDashboard.getRecentThreeTradesStrings());
             drawOptionalPanel(normalDashboard.getTopThreeTraderStrings(), COMPLETED);
         });
 
-        JButton vacation = new JButton("Edit Vacation Status");
+        JButton vacation = new JButton(normalDashboard.setUpDash(7));
         vacation.addActionListener(e -> {
             normalDashboard.editUserStatus();
-            resetEverything();
-            dashboardWindow.remove(scrollablePane);
-            dashboardWindow.repaint();
-            dashboardWindow.setVisible(true);
-        });
-
-        JButton unfreeze = new JButton("Send Unfreeze Request");
-        unfreeze.addActionListener(e -> {
-            normalDashboard.sendUnfreezeRequest();
             resetEverything();
             dashboardWindow.remove(scrollablePane);
             dashboardWindow.repaint();
@@ -152,35 +145,51 @@ public class DashboardFrame extends JDialog {
         initializeButton(ongoingTrade, 200, 40, userFunctionPanel);
         initializeButton(completeTrade, 200, 40, userFunctionPanel);
         initializeButton(vacation, 200, 40, userFunctionPanel);
-        initializeButton(unfreeze, 200, 40, userFunctionPanel);
+
+        if(normalDashboard.isFrozen()) {
+            JButton unfreeze = new JButton(normalDashboard.setUpDash(8));
+            unfreeze.addActionListener(e -> {
+                normalDashboard.sendUnfreezeRequest();
+                resetEverything();
+                dashboardWindow.remove(scrollablePane);
+                dashboardWindow.repaint();
+                dashboardWindow.setVisible(true);
+            });
+            initializeButton(unfreeze, 200, 40, userFunctionPanel);
+        }
     }
 
     private void drawAdminDash() {
         userInputPanel.removeAll();
-        JButton catalogEditor = new JButton("Catalog Editor");
+        JButton catalogEditor = new JButton(adminDashboard.setUpDash(1));
         catalogEditor.addActionListener(e -> {
             resetEverything();
             drawUserInputPane(CATALOG_EDITOR);
             drawListDisplay(adminDashboard.getPendingCatalog());
         });
 
-        JButton freezer = new JButton("Freeze Accounts");
+        JButton freezer = new JButton(adminDashboard.setUpDash(2));
         freezer.addActionListener(e -> {
             resetEverything();
             drawUserInputPane(FREEZE);
             drawListDisplay(adminDashboard.getFreezeList());
         });
 
-        JButton unfreezer = new JButton("UnFreeze Accounts");
+        JButton unfreezer = new JButton(adminDashboard.setUpDash(3));
         unfreezer.addActionListener(e -> {
             resetEverything();
             drawUserInputPane(UNFREEZE);
             drawListDisplay(adminDashboard.getUnfreezeRequests());
         });
 
-        JButton threshold = new JButton("Threshold Editor");
+        JButton threshold = new JButton(adminDashboard.setUpDash(4));
+        threshold.addActionListener(e -> {
+            resetEverything();
+            drawUserInputPane(THRESHOLD);
+            drawListDisplay(adminDashboard.getThresholdStrings());
+        });
 
-        JButton adminCreator = new JButton("Create New Admin");
+        JButton adminCreator = new JButton(adminDashboard.setUpDash(5));
         adminCreator.addActionListener(e -> {
             resetEverything();
             drawUserInputPane(CREATE);
@@ -189,7 +198,7 @@ public class DashboardFrame extends JDialog {
             dashboardWindow.setVisible(true);
         });
 
-        JButton undo = new JButton("Undo User Activity");
+        JButton undo = new JButton(adminDashboard.setUpDash(6));
 
         initializeButton(catalogEditor, 200, 40, userFunctionPanel);
         initializeButton(freezer, 200, 40, userFunctionPanel);
@@ -203,11 +212,9 @@ public class DashboardFrame extends JDialog {
         if (displayItems.length == 0) {
             dashboardWindow.remove(scrollablePane);
             nothingToDisplay.setText("Nothing here yet!");
-            //dashboardWindow.add(nothingToDisplay, BorderLayout.CENTER);
             userInputPanel.remove(removeButton);
         } else {
             listDisplay = new JList<>(displayItems);
-            //System.out.println(displayItems);
             listDisplay.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             scrollablePane.setViewportView(listDisplay);
             dashboardWindow.add(scrollablePane, BorderLayout.CENTER);
@@ -250,13 +257,8 @@ public class DashboardFrame extends JDialog {
                 initializeButton(removeButton, 100, 20, userInputPanel);
 
                 addInv.addActionListener(e -> {
-                    if (normalDashboard.validateInputInv(nameInput.getText(), descripInput.getText())) {
-                        normalDashboard.addToInventory(nameInput.getText(), descripInput.getText());
-
-                        // Inform user of successful item addition
-                        JOptionPane.showMessageDialog(parent, normalDashboard.getDialogMessage(1));
-
-                    }
+                    normalDashboard.addToInventory(nameInput.getText(), descripInput.getText());
+                    drawPopUpMessage();
                     nameInput.setText("");
                     descripInput.setText("");
                     redrawDisplayList(normalDashboard.getInventory());
@@ -266,13 +268,11 @@ public class DashboardFrame extends JDialog {
                 removeButton.addActionListener(e -> {
                     if (!listDisplay.isSelectionEmpty()) {
                         int index = listDisplay.getSelectedIndex();
-                        if (normalDashboard.validateRemovalInv(listDisplay.getSelectedIndex())) {
-                            normalDashboard.removeFromInventory(index);
-                        }
+                        normalDashboard.removeFromInventory(index);
+                        drawPopUpMessage();
                         listDisplay.clearSelection();
                         redrawDisplayList(normalDashboard.getInventory());
                     }
-
                 });
                 break;
 
@@ -284,7 +284,6 @@ public class DashboardFrame extends JDialog {
                     if (!listDisplay.isSelectionEmpty()) {
                         int index = listDisplay.getSelectedIndex();
                         //redrawDisplayList();
-
                     }
                 });
                 break;
@@ -347,11 +346,8 @@ public class DashboardFrame extends JDialog {
                 removeButton.addActionListener(e -> {
                     if (!listDisplay.isSelectionEmpty()) {
                         if (approveOrDeny.isSelected()) {
-                            //System.out.println("REJECT");
                             adminDashboard.rejectionPendingCatalog(listDisplay.getSelectedIndex());
-
                         } else {
-                            //System.out.println("APPROVE");
                             adminDashboard.approvePendingCatalog(listDisplay.getSelectedIndex());
                         }
                     }
@@ -361,6 +357,43 @@ public class DashboardFrame extends JDialog {
                 userInputPanel.add(approveOrDeny);
                 initializeButton(removeButton, 100, 20, userInputPanel);
 
+                break;
+
+            case THRESHOLD:
+                JLabel weeklyTrade = new JLabel("Weekly Trade Max:");
+                JLabel meetingEdit = new JLabel("Meeting Edit Max:");
+                JLabel lendMin = new JLabel("Len Minimum:");
+                JLabel incompleteTrade = new JLabel("Incomplete Trade Max:");
+                JTextField weeklyTradeInput = new JTextField(5);
+                JTextField meetingEditInput = new JTextField(5);
+                JTextField lendMinInput = new JTextField(5);
+                JTextField incompleteTradeInput = new JTextField(5);
+                JButton change = new JButton("Confirm");
+                change.addActionListener(e -> {
+                    String[] inputs = {weeklyTradeInput.getText(), meetingEditInput.getText(),
+                            lendMinInput.getText(), incompleteTradeInput.getText()};
+
+                    adminDashboard.changeThresholds(inputs);
+                    drawPopUpMessage();
+                    redrawDisplayList(adminDashboard.getThresholdStrings());
+                    weeklyTradeInput.setText("");
+                    meetingEditInput.setText("");
+                    lendMinInput.setText("");
+                    incompleteTradeInput.setText("");
+                });
+                userInputPanel.add(weeklyTrade);
+                userInputPanel.add(weeklyTradeInput);
+
+                userInputPanel.add(meetingEdit);
+                userInputPanel.add(meetingEditInput);
+
+                userInputPanel.add(lendMin);
+                userInputPanel.add(lendMinInput);
+
+                userInputPanel.add(incompleteTrade);
+                userInputPanel.add(incompleteTradeInput);
+
+                userInputPanel.add(change);
                 break;
         }
         dashboardWindow.repaint();
@@ -417,6 +450,13 @@ public class DashboardFrame extends JDialog {
         nothingToDisplay.setText("");
         userInputPanel.removeAll();
         optionalPanel.removeAll();
+    }
+
+    private void drawPopUpMessage(){
+        if(!dashboard.getPopUpMessage().isEmpty()) {
+            JOptionPane.showMessageDialog(parent, dashboard.getPopUpMessage());
+            dashboard.resetPopUpMessage();
+        }
     }
 
 }

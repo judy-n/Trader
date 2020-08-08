@@ -2,11 +2,11 @@ package AdminUserFunctions;
 
 import SystemFunctions.Dashboard;
 import SystemFunctions.SignUpSystem;
+import SystemFunctions.SystemPresenter;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 
-import java.util.ArrayList;
 
 /**
  * Displays a dashboard once an administrative user logs in.
@@ -24,7 +24,9 @@ public class AdminDashboard extends Dashboard {
     private AccountFreezer accountFreezer;
     private AccountUnfreezer accountUnfreezer;
     private CatalogEditor catalogEditor;
-
+    private ThresholdEditor thresholdEditor;
+    private String popUpMessage = "";
+    private SystemPresenter systemPresenter;
     /**
      * Creates an <AdminDashboard></AdminDashboard> with the given admin username,
      * item/user managers, and notification system.
@@ -35,9 +37,12 @@ public class AdminDashboard extends Dashboard {
 
         this.currUsername = username;
         this.userManager = userManager;
+
+        systemPresenter = new SystemPresenter();
         accountFreezer = new AccountFreezer(username, userManager);
         accountUnfreezer = new AccountUnfreezer(username, userManager);
         catalogEditor = new CatalogEditor(username, itemManager, userManager);
+        thresholdEditor = new ThresholdEditor(username, userManager);
 //
 //        String regex = "[0-4]";
 //        int adminID = userManager.getAdminID(currUsername);
@@ -50,11 +55,7 @@ public class AdminDashboard extends Dashboard {
 //            systemPresenter.adminDashboard(2);
 //        }
 //
-//        switch (input) {
-//            case 4:
-//                new ThresholdEditor(currUsername, itemManager, userManager, notifSystem);
-//                break;
-        //}
+//        NEED TO ADD CASE undo action
     }
 
     public String[] getFreezeList(){
@@ -93,7 +94,17 @@ public class AdminDashboard extends Dashboard {
         catalogEditor.rejectItem(index);
     }
 
+    public String[] getThresholdStrings(){
+        return thresholdEditor.getThresholdStrings();
+    }
 
+    public void changeThresholds(String[] inputs){
+        if(thresholdEditor.thresholdInputValidate(inputs)){
+            thresholdEditor.applyThresholdChanges(inputs);
+        }else{
+            setPopUpMessage(1);
+        }
+    }
 
     @Override
     public String getUsername() {
@@ -104,4 +115,26 @@ public class AdminDashboard extends Dashboard {
     public boolean isAdmin() {
         return true;
     }
+
+    @Override
+    public String setUpDash(int type) {
+        return systemPresenter.setUpAdminDash(type);
+    }
+
+    @Override
+    public void setPopUpMessage(int type) {
+        popUpMessage = systemPresenter.getAdminPopUpMessage(type);
+    }
+
+    @Override
+    public String getPopUpMessage() {
+        return popUpMessage;
+    }
+
+    @Override
+    public void resetPopUpMessage() {
+        popUpMessage = "";
+    }
+
+
 }

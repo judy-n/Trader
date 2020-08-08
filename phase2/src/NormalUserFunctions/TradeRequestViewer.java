@@ -37,6 +37,12 @@ public class TradeRequestViewer {
     private long itemToBorrowID;
     private long itemToLendID;
 
+    private List<String[]> initiatedItemNames;
+    private List<String> initiatedOwners;
+
+    List<String[]> receivedItemNames;
+    List<String> receivedOwners;
+
     private SystemPresenter systemPresenter;
     private BufferedReader bufferedReader;
 
@@ -63,17 +69,17 @@ public class TradeRequestViewer {
 
         systemPresenter = new SystemPresenter();
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        if (userManager.getNormalUserIsFrozen(currUsername)) {
-            caseUserIsFrozen();
-        } else {
+//        if (userManager.getNormalUserIsFrozen(currUsername)) {
+//           // caseUserIsFrozen();
+//        } else {
             caseUserNotFrozen();
-        }
-        close();
+//        }
+//        close();
     }
-
-    private void caseUserIsFrozen() {
-        systemPresenter.tradeRequestViewer(3);
-    }
+//
+//    private void caseUserIsFrozen() {
+//        systemPresenter.tradeRequestViewer(3);
+//    }
 
     private void caseUserNotFrozen() {
         initiatedTrades = new LinkedHashMap<>();
@@ -89,8 +95,8 @@ public class TradeRequestViewer {
         }
 
         /* just displays the trade requests sent by this user, no action required */
-        List<String[]> initiatedItemNames = new ArrayList<>();
-        List<String> initiatedOwners = new ArrayList<>();
+        initiatedItemNames = new ArrayList<>();
+        initiatedOwners = new ArrayList<>();
 
         for (String[] key : initiatedTrades.keySet()) {
 
@@ -107,11 +113,14 @@ public class TradeRequestViewer {
             initiatedItemNames.add(new String[]{itemToLendName, itemToBorrowName});
             initiatedOwners.add(key[1]);
         }
-        systemPresenter.tradeRequestViewer(1, initiatedItemNames, initiatedOwners);
+        //
+        //systemPresenter.tradeRequestViewer(1, initiatedItemNames, initiatedOwners);
+
+
 
         /* display received trade requests */
-        List<String[]> receivedItemNames = new ArrayList<>();
-        List<String> receivedOwners = new ArrayList<>();
+        receivedItemNames = new ArrayList<>();
+        receivedOwners = new ArrayList<>();
 
         for (String[] key : receivedTrades.keySet()) {
 
@@ -128,7 +137,8 @@ public class TradeRequestViewer {
             receivedItemNames.add(new String[]{itemToBorrowName, itemToLendName});
             receivedOwners.add(key[0]);
         }
-        systemPresenter.tradeRequestViewer(2, receivedItemNames, receivedOwners);
+
+        //systemPresenter.tradeRequestViewer(2, receivedItemNames, receivedOwners);
 
         /* doesn't show trade requests from frozen users */
         try {
@@ -266,6 +276,7 @@ public class TradeRequestViewer {
         }
     }
 
+    //return void i guess
     private String[] getTradeHelper(int index) {
         List<String[]> traders = new ArrayList<>();
         List<long[]> itemIDs = new ArrayList<>();
@@ -300,7 +311,12 @@ public class TradeRequestViewer {
         return keyToRemove;
     }
 
-    private void close() {
-        new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem);
+    public String[] getInitiatedTrades(){
+        return systemPresenter.presentInitiatedTradeRequests(initiatedItemNames, initiatedOwners);
     }
+
+    public String[] getReceiveTrades(){
+        return systemPresenter.presentReceivedTradeRequests(receivedItemNames, receivedOwners);
+    }
+
 }
