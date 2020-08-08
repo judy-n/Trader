@@ -65,7 +65,7 @@ public class PermanentTrade extends Trade implements Serializable, Comparable<Tr
      */
     @Override
     public String toString(String currUsername) {
-        return "Permanent trade with < " + getOtherUsername(currUsername) + " > - ";
+        return "Permanent trade with " + getOtherUsername(currUsername) + " - ";
     }
 
     /**

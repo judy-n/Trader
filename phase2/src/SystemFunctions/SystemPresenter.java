@@ -3,8 +3,6 @@ package SystemFunctions;
 import Entities.Item;
 import Entities.Trade;
 import Entities.TemporaryTrade;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -16,7 +14,7 @@ import java.util.List;
  * @author Kushagra
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-08-06
+ * last modified 2020-08-07
  */
 public class SystemPresenter {
     private StartMenuPresenter startMenuPresenter;
@@ -106,50 +104,12 @@ public class SystemPresenter {
     }
 
     /**
-     * Prompts for editing a user's wishlist
+     * Returns message telling user they've successfully removed an item from their wishlist.
      *
-     * @param itemWishlist the user's wishlist
+     * @param name the name of the item removed
      */
-    public void wishlistEditor(List<Item> itemWishlist) {
-        System.out.println("\n-- Your wishlist --");
-        presentAllItems(itemWishlist, true);
-        System.out.println("\n   Choose one of the options:" +
-                "\n   1 - Remove item from wishlist" +
-                "\n   2 - Cancel ");
-        System.out.print(choicePrompt);
-    }
-
-    /**
-     * Prompts user with whether they would like to choose an item to remove from their wishlist
-     *
-     * @param input the the user's input
-     */
-    public void wishlistRemoveItem(int input) {
-        switch (input) {
-            case 1:
-                System.out.println("\nYour wishlist is empty.");
-                break;
-            case 2:
-                System.out.print("\nEnter the index of the item you would like to remove: ");
-                break;
-        }
-    }
-
-    /**
-     * Prompts the user on whether to remove a specific item from their wishlist
-     *
-     * @param name  the name of the item
-     * @param input the user's input
-     */
-    public void wishlistRemoveItem(String name, int input) {
-        switch (input) {
-            case 1:
-                System.out.print("\nRemove [" + name + "] from your wishlist? (Y/N): ");
-                break;
-            case 2:
-                System.out.println("\n[" + name + "] has been removed from your wishlist!");
-                break;
-        }
+    public String wishlistRemoveItem(String name) {
+        return ("[" + name + "] has been removed from your wishlist!");
     }
 
     /**
@@ -444,119 +404,69 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents information relating to a user's ongoing trades, based off an input
+     * Returns the labels for elements on the ongoing trades screen of the program.
      *
-     * @param input the input
+     * @param input the case corresponding to the label being retrieved
+     * @return the string to display
      */
-    public void ongoingTrades(int input) {
+    public String ongoingTrades(int input) {
         switch (input) {
             case 1:
-                System.out.println("\nWhat would you like to do? " +
-                        "\n 1. Edit meeting time and place" +
-                        "\n 2. Confirm this trade's current meeting time and place" +
-                        "\n 3. Confirm the latest meeting took place" +
-                        "\n 4. Cancel this trade" +
-                        "\n 5. Quit" + choicePrompt);
-                break;
+                return ("Edit meeting details");
             case 2:
-                System.out.println("\nThis trade has been cancelled!");
-                break;
+                return ("Confirm suggested meeting");
             case 3:
-                System.out.println("\nThe latest meeting has been confirmed! " +
+                return ("Confirm the latest meeting took place");
+            case 4:
+                return ("Cancel trade");
+            case 5:
+                return ("This trade has been cancelled!");
+            case 6:
+                return ("The latest meeting has been confirmed! " +
                         "\nIf the other user doesn't also confirm within a day of the latest meeting, " +
                         "you're both at risk of having your accounts be frozen.");
-                break;
-            case 4:
-                System.out.println("\nThe trade's meeting time and place has been confirmed!");
-                break;
-            case 5:
-                System.out.println("\nYou and your trade partner have already agreed upon a meeting date/time/location.");
-                break;
-            case 6:
-                System.out.println("\nYou were the last person to suggest the meeting details! " +
-                        "\nPlease wait for the other user to agree or send a suggestion of their own.");
-                break;
             case 7:
-                System.out.print("\nPlease suggest a date and time using the given format (YYYY/MM/DD-hh:mm): ");
-                break;
+                return ("The trade's meeting time and place has been confirmed!");
             case 8:
-                System.out.print("\nPlease suggest a place: ");
-                break;
+                return ("You and your trade partner have already agreed upon a meeting.");
             case 9:
-                System.out.println("\nYou've reached your maximum number of edits!");
-                break;
+                return ("You were the last person to suggest the meeting details! " +
+                        "\nPlease wait for the other user to agree or send a suggestion of their own.");
             case 10:
-                System.out.println("\nSorry, you can't confirm this date and time because you've " +
-                        "reached the maximum number of meetings allowed in the same week.");
-                break;
+                return ("Please suggest a date and time using the given format (YYYY/MM/DD-hh:mm): ");
             case 11:
-                System.out.println("\nSuggestion for meeting details successfully set!");
-                break;
+                return ("Please suggest a place: ");
             case 12:
-                System.out.println("\nThis meeting has already been agreed upon, so you cannot edit it.");
-                break;
+                return ("You've reached your maximum number of edits!");
             case 13:
-                System.out.println("\nYour trade partner has also confirmed the transaction, so this permanent trade is now closed." +
+                return ("Sorry, you can't confirm this date and time because you've " +
+                        "reached the maximum number of meetings allowed in the same week.");
+            case 14:
+                return ("Suggestion for meeting details successfully set!");
+            case 15:
+                return ("This meeting has already been agreed upon, so you cannot edit it.");
+            case 16:
+                return ("Your trade partner has also confirmed the transaction, so this permanent trade is now closed." +
                         "\n The item you lent in this permanent trade has automatically been removed from your inventory," +
                         "\n and if the other user's item was in your wishlist it has been removed.\"");
-                break;
-            case 14:
-                System.out.println("\nYour trade partner has also confirmed the transaction, so this temporary trade is now closed." +
-                        "\n The item you lent is now available for trade again.");
-                break;
-            case 15:
-                System.out.println("\nYour trade partner has also confirmed the transaction, " +
-                        "so your second meeting has been set to exactly 30 days from the first meeting (same time, same place).");
-                break;
-            case 16:
-                System.out.println("\nYou and your trade partner have not yet agreed upon a meeting date/time/location!");
-                break;
             case 17:
-                System.out.println("\nCannot confirm a meeting before it is scheduled to take place.");
-                break;
+                return ("Your trade partner has also confirmed the transaction, so this temporary trade is now closed." +
+                        "\nThe item you lent is now available for trade again.");
             case 18:
-                System.out.println("\nYou've already confirmed that the latest transaction took place!");
-                break;
+                return ("Your trade partner has also confirmed the transaction, " +
+                        "so your second meeting has been set to exactly 30 days from the first meeting (same time, same place).");
             case 19:
-                System.out.println("\nYou may not cancel a trade after the meeting has already been scheduled.");
-                break;
+                return ("You and your trade partner have not yet agreed upon a meeting!");
             case 20:
-                System.out.println("\nThe suggested meeting time has already passed! You'll have to suggest a new time and place.");
-                break;
-        }
-    }
-
-    /**
-     * Presents information regarding an ongoing trade to a user, based off a situation
-     *
-     * @param situation the input situation
-     * @param meeting   the meeting time of the trade
-     * @param trade     the trade
-     */
-    public void ongoingTrades(int situation, LocalDateTime meeting, Trade trade) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String meetingStr = meeting.format(formatter);
-        String date = meetingStr.substring(0, meetingStr.indexOf(" "));
-        String time = meetingStr.substring(meetingStr.indexOf(" ") + 1);
-
-        switch (situation) {
-            case 1:
-                System.out.println("\nMost recent meeting suggestion: " + date + " at " + time +
-                        " - " + trade.getFirstMeetingLocation());
-                break;
-            case 2:
-                if (trade instanceof TemporaryTrade) {
-                    System.out.println("\nFirst meeting: " + date + " at " + time +
-                            " - " + trade.getFirstMeetingLocation());
-                } else {
-                    System.out.println("\nMeeting: " + date + " at " + time +
-                            " - " + trade.getFirstMeetingLocation());
-                }
-                break;
-            case 3:
-                System.out.println("\nSecond meeting: " + date + " at " + time +
-                        " - " + ((TemporaryTrade) trade).getSecondMeetingLocation());
-                break;
+                return ("Cannot confirm a meeting before it is scheduled to take place.");
+            case 21:
+                return ("You've already confirmed that the latest transaction took place!");
+            case 22:
+                return ("You may not cancel a trade after the meeting has already been scheduled.");
+            case 23:
+                return ("The suggested meeting time has already passed! You'll have to suggest a new time and place.");
+            default:
+                return null;
         }
     }
 
@@ -566,25 +476,31 @@ public class SystemPresenter {
      * @param numEdits    the number of edits the user has made
      * @param isFinalEdit true iff this is the user's final edit
      */
-    public void ongoingTrades(int numEdits, boolean isFinalEdit) {
-        System.out.println("\n# of edits you've made so far: " + numEdits);
+    public String ongoingTrades(int numEdits, boolean isFinalEdit) {
         if (isFinalEdit) {
-            System.out.println("Warning: This is the last time you can suggest a meeting.");
+            return ("<html># of edits you've made so far: " + numEdits +
+                    "<br/> Warning: This is the last time you can suggest a meeting.<html>");
+        } else {
+            return ("# of edits you've made so far: " + numEdits);
         }
     }
 
     /**
-     * Presents all ongoing trades to a user
+     * Formats all ongoing trades for a user into an array of string representations and returns it.
      *
-     * @param ongoingTrades the list of ongoing trades
-     * @param tradeItems    the items involved the trades
-     * @param username      the username of the user
+     * @param ongoingTrades   the list of ongoing trades
+     * @param tradeItems      the items involved the trades
+     * @param username        the username of the user
+     * @param dateTimeHandler a <DateTimeHandler></DateTimeHandler> for formatting the dates and times to be displayed
      */
-    public void ongoingTrades(List<Trade> ongoingTrades, List<Item[]> tradeItems, String username) {
-        System.out.println("\nHere are all your ongoing trades:");
-        int index = 1;
+    public String[] getOngoingTradeStrings(List<Trade> ongoingTrades, List<Item[]> tradeItems,
+                                           String username, DateTimeHandler dateTimeHandler) {
+
+        String[] ongoingTradeStrings = new String[ongoingTrades.size()];
+        int index = 0;
+
         for (Trade trade : ongoingTrades) {
-            Item[] tempItems = tradeItems.get(index - 1);
+            Item[] tempItems = tradeItems.get(index);
             long[] tempItemIDs = new long[2];
             if (tempItems[0] != null) {
                 tempItemIDs[0] = tempItems[0].getID();
@@ -592,24 +508,61 @@ public class SystemPresenter {
             if (tempItems[1] != null) {
                 tempItemIDs[1] = tempItems[1].getID();
             }
-            String tradePrint;
+
+            StringBuilder tradePrint = new StringBuilder("<html>");
             if (tempItemIDs[0] == 0) {
-                tradePrint = trade.toString(username) + "you're borrowing [" + tempItems[1].getName() + "]";
+                tradePrint.append(trade.toString(username)).append("you're borrowing [")
+                        .append(tempItems[1].getName()).append("]");
             } else if (tempItemIDs[1] == 0) {
-                tradePrint = trade.toString(username) + "you're lending [" + tempItems[0].getName() + "]";
+                tradePrint.append(trade.toString(username)).append("you're lending [")
+                        .append(tempItems[0].getName()).append("]");
             } else {
-                tradePrint = trade.toString(username) + "you're lending [" +
-                        tempItems[0].getName() + "] for [" + tempItems[1].getName() + "]";
+                tradePrint.append(trade.toString(username)).append("you're lending [")
+                        .append(tempItems[0].getName()).append("] for [")
+                        .append(tempItems[1].getName()).append("]");
             }
-            System.out.println(index + ". " + tradePrint);
+            // New line
+            tradePrint.append("<br/> ");
+
+            String meetingStr = dateTimeHandler.getDateTimeString(trade.getFirstMeetingDateTime());
+            String date = meetingStr.substring(0, meetingStr.indexOf("-"));
+            String time = meetingStr.substring(meetingStr.indexOf("-") + 1);
+            String location = trade.getFirstMeetingLocation();
+
+            if (!trade.getHasAgreedMeeting()) {
+
+                /* display latest meeting suggestion */
+                tradePrint.append("Most recent meeting suggestion: ");
+
+            } else {
+
+                /* display first meeting details */
+                if (trade instanceof TemporaryTrade) {
+                    tradePrint.append("First meeting: ");
+                } else {
+                    tradePrint.append("Meeting: ");
+                }
+            }
+            tradePrint.append(date).append(" at ").append(time).append(" - ").append(location);
+
+            if (trade instanceof TemporaryTrade) {
+                TemporaryTrade tempTrade = (TemporaryTrade) trade;
+                if (tempTrade.hasSecondMeeting()) {
+
+                    /* display second meeting details */
+                    meetingStr = dateTimeHandler.getDateTimeString(tempTrade.getSecondMeetingDateTime());
+                    date = meetingStr.substring(0, meetingStr.indexOf("-"));
+                    time = meetingStr.substring(meetingStr.indexOf("-") + 1);
+
+                    tradePrint.append("<br/> ").append("Second meeting: ").append(date).append(" at ")
+                            .append(time).append(" - ").append(tempTrade.getSecondMeetingLocation());
+                }
+            }
+            tradePrint.append("<html>");
+            ongoingTradeStrings[index] = tradePrint.toString();
             index++;
         }
-
-        if (ongoingTrades.isEmpty()) {
-            emptyListMessage();
-        } else {
-            System.out.print("\nEnter the index of the trade you wish to view (0 to quit): ");
-        }
+        return ongoingTradeStrings;
     }
 
     /**
@@ -689,10 +642,10 @@ public class SystemPresenter {
 
         String[] thresholdStrings = new String[4];
 
-        thresholdStrings[0] = ("The current weekly trade max is " + currThresholds[0] + ". Change it to:");
-        thresholdStrings[1] = ("The current meeting edit max is " + currThresholds[1] + ". Change it to:");
-        thresholdStrings[2] = ("The current lend min is " + currThresholds[2] + ". Change it to:");
-        thresholdStrings[3] = ("The current incomplete trade max is " + currThresholds[3] + ". Change it to:");
+        thresholdStrings[0] = ("The current weekly trade max is " + currThresholds[0] + ". Change it to: ");
+        thresholdStrings[1] = ("The current meeting edit max is " + currThresholds[1] + ". Change it to: ");
+        thresholdStrings[2] = ("The current lend min is " + currThresholds[2] + ". Change it to: ");
+        thresholdStrings[3] = ("The current incomplete trade max is " + currThresholds[3] + ". Change it to: ");
 
         return thresholdStrings;
     }
@@ -750,7 +703,7 @@ public class SystemPresenter {
     }
 
     public void demoCatalogViewer() {
-        System.out.print("\nTrading is unavailable for non-registered users. Enter 1 to sign up, or 0 to return to dashboard:");
+        System.out.print("\nTrading is unavailable for non-registered users. Enter 1 to sign up, or 0 to return to dashboard: ");
     }
 
     /**
@@ -838,17 +791,20 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents that an invalid input was made
+     * Returns message telling user that an invalid input was made.
      */
-    public void invalidInput() {
-        System.out.print("\nInvalid input. Please try again: ");
+    public String invalidInput() {
+        return ("Invalid input. Please try again.");
     }
 
     /**
-     * Presents that a date time suggestion failed due to exceeding maximum meeting threshold for chosen week
+     * Returns message telling user that their date time suggestion failed
+     * due to them exceeding the maximum meeting threshold for chosen week.
+     *
+     * @return the string to display
      */
-    public void failedSuggestion() {
-        System.out.print("\nSorry, you can't suggest this date and time because you've " +
+    public String failedSuggestion() {
+        return ("Sorry, you can't suggest this date and time because you've " +
                 "reached the maximum number of meetings allowed in the same week." +
                 "\nPlease enter a different date and time (not within the same week): ");
     }

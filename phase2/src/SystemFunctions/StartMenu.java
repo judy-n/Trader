@@ -241,9 +241,11 @@ public class StartMenu extends JPanel {
         JButton logoutButton = new JButton(systemPresenter.loginSystem(7));
         initializeButton(logoutButton, 200, 40, X_POS, FIRST_LINE_Y + Y_SPACE);
 
-        // Clears the logged-in user's notification list
+        // Clears the logged-in user's notification list (only if they're a normal user) and returns to start menu
         logoutButton.addActionListener(e -> {
-            systemController.clearCurrUserNotifs(finalUsername);
+            if (!systemController.currUserIsAdmin(finalUsername)) {
+                systemController.clearCurrUserNotifs(finalUsername);
+            }
             this.removeAll();
             this.revalidate();
             mainMenu();

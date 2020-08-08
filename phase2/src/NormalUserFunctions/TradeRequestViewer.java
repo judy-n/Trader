@@ -46,7 +46,7 @@ public class TradeRequestViewer {
      * Prints to the screen all trade requests received/sent by the given normal user and options on actions to take
      * using <SystemPresenter></SystemPresenter>.
      *
-     * @param currUsername   the username of the normal user who's currently logged in
+     * @param currUsername the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
@@ -225,7 +225,7 @@ public class TradeRequestViewer {
 
                             /* suggest time */
                             systemPresenter.tradeRequestViewer(4);
-                            LocalDateTime time = new DateTimeSuggestion(currUsername, userManager, tradeManager).suggestDateTime();
+                            //LocalDateTime time = new DateTimeSuggestion(currUsername, userManager, tradeManager).suggestDateTime();
 
                             /* suggest place */
                             systemPresenter.tradeRequestViewer(2);
@@ -242,11 +242,11 @@ public class TradeRequestViewer {
                             }
 
                             if (permOrTemp.equals("1")) {
-                                tradeManager.createPermTrade(new String[]{currUsername, senderUsername},
-                                        new long[]{itemToLendID, itemToBorrowID}, time, place);
+                                //tradeManager.createPermTrade(new String[]{currUsername, senderUsername},
+                                //new long[]{itemToLendID, itemToBorrowID}, time, place);
                             } else {
-                                tradeManager.createTempTrade(new String[]{currUsername, senderUsername},
-                                        new long[]{itemToLendID, itemToBorrowID}, time, place);
+                                //tradeManager.createTempTrade(new String[]{currUsername, senderUsername},
+                                //new long[]{itemToLendID, itemToBorrowID}, time, place);
                             }
 
                             /* Notify sender of accepted trade request */

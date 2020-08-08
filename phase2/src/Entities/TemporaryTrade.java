@@ -135,7 +135,7 @@ public class TemporaryTrade extends Trade implements Serializable, Comparable<Tr
      */
     @Override
     public String toString(String currUsername) {
-        return "Temporary trade with < " + getOtherUsername(currUsername) + " > - ";
+        return "Temporary trade with " + getOtherUsername(currUsername) + " - ";
     }
 
     /**

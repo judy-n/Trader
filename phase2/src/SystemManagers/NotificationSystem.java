@@ -2,6 +2,7 @@ package SystemManagers;
 
 import Entities.Notification;
 import Entities.RevertibleNotification;
+import SystemFunctions.DateTimeHandler;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import java.util.Observer;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-30
- * last modified 2020-08-05
+ * last modified 2020-08-07
  */
 public class NotificationSystem extends Manager implements Observer, Serializable {
 
@@ -40,6 +41,12 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
         userToNotifMap = new HashMap<>();
     }
 
+    private String getNotifString(Notification notifToConvert) {
+        DateTimeHandler dateTimeHandler = new DateTimeHandler();
+        return dateTimeHandler.getDateTimeString(notifToConvert.getDateTime())
+                + String.format("%5s", notifToConvert.getMessage());
+    }
+
     /**
      * Takes in the username of a normal user and returns an array of strings representing all their notifications.
      *
@@ -49,7 +56,7 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
     public String[] getUserNotifStrings(String username) {
         List<String> notifStrings = new ArrayList<>();
         for (Notification n : userToNotifMap.get(username)) {
-            notifStrings.add(n.toString());
+            notifStrings.add(getNotifString(n));
         }
         return notifStrings.toArray(new String[0]);
     }

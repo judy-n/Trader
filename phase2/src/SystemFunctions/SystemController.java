@@ -140,6 +140,10 @@ public class SystemController extends JFrame {
         notifSystem.clearNotifsForUser(currUsername);
     }
 
+    public boolean currUserIsAdmin(String currUsername) {
+        return userManager.isAdmin(currUsername);
+    }
+
     private void tryReadManagers() {
         try {
             userManager = (UserManager) readWriter.readFromFile(USER_MANAGER_PATH, 1);

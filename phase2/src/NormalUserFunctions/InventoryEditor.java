@@ -152,7 +152,8 @@ public class InventoryEditor {
      * @return true iff both the name and description are valid
      */
     public boolean validateInput(String itemNameInput, String itemDescriptionInput) {
-        return itemNameInput.matches("[\\w]{3,}") && itemDescriptionInput.trim().contains(" ");
+        return itemNameInput.length() >= 3 && itemNameInput.matches("[\\w]+([\\s][\\w]+)*")
+                && itemDescriptionInput.trim().contains(" ");
     }
 
     /**
