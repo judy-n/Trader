@@ -150,7 +150,7 @@ public class NormalDashboard extends Dashboard {
      * @return trade requests the normal user has received
      */
     public String[] getReceivedTrades(){
-        return tradeRequestViewer.getReceiveTrades();
+        return tradeRequestViewer.getReceivedTrades();
     }
 
 

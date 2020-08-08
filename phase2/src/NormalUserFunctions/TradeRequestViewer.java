@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-29
- * last modified 2020-08-05
+ * last modified 2020-08-08
  */
 public class TradeRequestViewer {
     private String currUsername;
@@ -50,7 +50,7 @@ public class TradeRequestViewer {
      * Prints to the screen all trade requests received/sent by the given normal user and options on actions to take
      * using <SystemPresenter></SystemPresenter>.
      *
-     * @param currUsername   the username of the normal user who's currently logged in
+     * @param currUsername the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
@@ -68,56 +68,12 @@ public class TradeRequestViewer {
         systemPresenter = new SystemPresenter();
 
         initiatedTrades = new LinkedHashMap<>();
-        receivedTrades = new LinkedHashMap<>();
-
-        /* separate into initiated trades and received trades */
-        for (String[] key : userManager.getNormalUserTradeRequests(currUsername).keySet()) {
-            if (currUsername.equals(key[0])) {
-                initiatedTrades.put(key, userManager.getNormalUserTradeRequests(currUsername).get(key));
-            } else if (!userManager.getNormalUserIsFrozen(key[1])) {
-                receivedTrades.put(key, userManager.getNormalUserTradeRequests(currUsername).get(key));
-            }
-        }
-
-        /* just displays the trade requests sent by this user, no action required */
         initiatedItemNames = new ArrayList<>();
         initiatedOwners = new ArrayList<>();
 
-        for (String[] key : initiatedTrades.keySet()) {
-
-            String itemToBorrowName;
-            String itemToLendName = "";
-
-            if (initiatedTrades.get(key)[0] != 0) {
-                Item itemToLend = itemManager.getItem(initiatedTrades.get(key)[0]);
-                itemToLendName = itemToLend.getName();
-            }
-            Item itemToBorrow = itemManager.getItem(initiatedTrades.get(key)[1]);
-            itemToBorrowName = itemToBorrow.getName();
-
-            initiatedItemNames.add(new String[]{itemToLendName, itemToBorrowName});
-            initiatedOwners.add(key[1]);
-        }
-
-        /* display received trade requests */
+        receivedTrades = new LinkedHashMap<>();
         receivedItemNames = new ArrayList<>();
         receivedOwners = new ArrayList<>();
-
-        for (String[] key : receivedTrades.keySet()) {
-
-            String itemToBorrowName = "";
-            String itemToLendName;
-
-            if (receivedTrades.get(key)[0] != 0) {
-                Item itemToBorrow = itemManager.getItem(receivedTrades.get(key)[0]);
-                itemToBorrowName = itemToBorrow.getName();
-            }
-            Item itemToLend = itemManager.getItem(receivedTrades.get(key)[1]);
-            itemToLendName = itemToLend.getName();
-
-            receivedItemNames.add(new String[]{itemToBorrowName, itemToLendName});
-            receivedOwners.add(key[0]);
-        }
     }
 //
 //    private void caseUserIsFrozen() {
@@ -131,39 +87,13 @@ public class TradeRequestViewer {
 
         /* doesn't show trade requests from frozen users */
 //        try {
-//            if (receivedTrades.isEmpty() && !initiatedTrades.isEmpty()) {
-//                // let user quit with 0 after viewing their initiated trades
-//                systemPresenter.tradeRequestViewer(1);
-//                String quitInput = bufferedReader.readLine();
-//                while (!quitInput.equals("0")) {
-//                    systemPresenter.invalidInput();
-//                    quitInput = bufferedReader.readLine();
-//                }
-//            } else if (!receivedTrades.isEmpty()) {
-//
-//                /* pick a request to accept/reject (0 to quit) */
-//                String temp = bufferedReader.readLine();
-//                while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > receivedTrades.size()) {
-//                    systemPresenter.invalidInput();
-//                    temp = bufferedReader.readLine();
-//                }
-//                int input = Integer.parseInt(temp);
+//             if (!receivedTrades.isEmpty()) {
 //
 //                /* input is selected request index */
 //                if (input != 0) {
 //                    String[] senderAndItemNames = getTradeHelper(input);
 //                    String senderUsername = senderAndItemNames[0];
 //                    String[] tradeItemNames = {senderAndItemNames[1], senderAndItemNames[2]};
-//
-//                    /* 1) accept, or 2) reject ? */
-//                    systemPresenter.tradeRequestViewer(3, senderUsername, tradeItemNames);
-//
-//                    String temp2 = bufferedReader.readLine();
-//                    while (!temp2.matches("[1-2]")) {
-//                        systemPresenter.invalidInput();
-//                        temp2 = bufferedReader.readLine();
-//                    }
-//                    int acceptReject = Integer.parseInt(temp2);
 //
 //                    if (acceptReject == 2) {        /* reject request */
 //
@@ -265,23 +195,89 @@ public class TradeRequestViewer {
 //        }
     }
 
-    public void acceptTradeRequest(int index, boolean isPerm){
+
+    public String[] getInitiatedTrades() {
+
+        initiatedTrades.clear();
+        initiatedItemNames.clear();
+        initiatedOwners.clear();
+
+        for (String[] key : userManager.getNormalUserTradeRequests(currUsername).keySet()) {
+            if (currUsername.equals(key[0])) {
+                initiatedTrades.put(key, userManager.getNormalUserTradeRequests(currUsername).get(key));
+            }
+        }
+        for (String[] key : initiatedTrades.keySet()) {
+
+            String itemToBorrowName;
+            String itemToLendName = "";
+
+            if (initiatedTrades.get(key)[0] != 0) {
+                Item itemToLend = itemManager.getItem(initiatedTrades.get(key)[0]);
+                itemToLendName = itemToLend.getName();
+            }
+            Item itemToBorrow = itemManager.getItem(initiatedTrades.get(key)[1]);
+            itemToBorrowName = itemToBorrow.getName();
+
+            initiatedItemNames.add(new String[]{itemToLendName, itemToBorrowName});
+            initiatedOwners.add(key[1]);
+        }
+        return systemPresenter.presentInitiatedTradeRequests(initiatedItemNames, initiatedOwners);
+    }
+
+    public String[] getReceivedTrades() {
+
+        receivedTrades.clear();
+        receivedItemNames.clear();
+        receivedOwners.clear();
+
+        for (String[] key : userManager.getNormalUserTradeRequests(currUsername).keySet()) {
+            if (!userManager.getNormalUserIsFrozen(key[1])) {
+                receivedTrades.put(key, userManager.getNormalUserTradeRequests(currUsername).get(key));
+            }
+        }
+        for (String[] key : receivedTrades.keySet()) {
+
+            String itemToBorrowName = "";
+            String itemToLendName;
+
+            if (receivedTrades.get(key)[0] != 0) {
+                Item itemToBorrow = itemManager.getItem(receivedTrades.get(key)[0]);
+                itemToBorrowName = itemToBorrow.getName();
+            }
+            Item itemToLend = itemManager.getItem(receivedTrades.get(key)[1]);
+            itemToLendName = itemToLend.getName();
+
+            receivedItemNames.add(new String[]{itemToBorrowName, itemToLendName});
+            receivedOwners.add(key[0]);
+        }
+        return systemPresenter.presentReceivedTradeRequests(receivedItemNames, receivedOwners);
+    }
+
+    //isPerm not needed, unless you wanna create the trade in this method?
+    public void acceptTradeRequest(int index, boolean isPerm) {
         String[] senderAndItemNames = getTradeHelper(index);
         String senderUsername = senderAndItemNames[0];
         String[] tradeItemNames = {senderAndItemNames[1], senderAndItemNames[2]};
         userManager.removeTradeRequests(getKeyToRemove(), currUsername);
         userManager.removeTradeRequests(getKeyToRemove(), senderUsername);
 
+        /* Notify sender of accepted trade request */
+        userManager.notifyUser(senderUsername).itemUpdate
+                ("TRADE REQUEST ACCEPTED", senderUsername, currUsername,
+                        itemManager.getItemName(itemToLendID));
     }
 
 
-    public void rejectTradeRequest(int index){
+    public void rejectTradeRequest(int index) {
         String[] senderAndItemNames = getTradeHelper(index);
         String senderUsername = senderAndItemNames[0];
-        String[] tradeItemNames = {senderAndItemNames[1], senderAndItemNames[2]};
+
+        /* Notify sender of rejected trade request */
         userManager.notifyUser(senderUsername).itemUpdate
-                                    ("TRADE REQUEST REJECTED", senderUsername, currUsername,
-                                            itemManager.getItemName(itemToLendID));
+                ("TRADE REQUEST REJECTED", senderUsername, currUsername,
+                        itemManager.getItemName(itemToLendID));
+
         userManager.removeTradeRequests(getKeyToRemove(), currUsername);
         userManager.removeTradeRequests(getKeyToRemove(), senderUsername);
     }
@@ -320,13 +316,4 @@ public class TradeRequestViewer {
     private String[] getKeyToRemove() {
         return keyToRemove;
     }
-
-    public String[] getInitiatedTrades(){
-        return systemPresenter.presentInitiatedTradeRequests(initiatedItemNames, initiatedOwners);
-    }
-
-    public String[] getReceiveTrades(){
-        return systemPresenter.presentReceivedTradeRequests(receivedItemNames, receivedOwners);
-    }
-
 }
