@@ -9,7 +9,7 @@ import SystemManagers.ItemManager;
 
 
 /**
- * Displays a dashboard once an administrative user logs in.
+ * Controller for all administrative user's dashboard functions.
  *
  * @author Yingjia Liu
  * @author Ning Zhang
@@ -25,6 +25,7 @@ public class AdminDashboard extends Dashboard {
     private AccountUnfreezer accountUnfreezer;
     private CatalogEditor catalogEditor;
     private ThresholdEditor thresholdEditor;
+    private AdminCreator adminCreator;
     private String popUpMessage = "";
     private SystemPresenter systemPresenter;
     /**
@@ -43,7 +44,7 @@ public class AdminDashboard extends Dashboard {
         accountUnfreezer = new AccountUnfreezer(username, userManager);
         catalogEditor = new CatalogEditor(username, itemManager, userManager);
         thresholdEditor = new ThresholdEditor(username, userManager);
-//
+        adminCreator = new AdminCreator(username, userManager);
 //        String regex = "[0-4]";
 //        int adminID = userManager.getAdminID(currUsername);
 //
@@ -78,7 +79,10 @@ public class AdminDashboard extends Dashboard {
         boolean isValid = new SignUpSystem(userManager).validateInput(inputtedUsername,
                 inputtedEmail, inputtedPassword, inputtedPassword).isEmpty();
         if(isValid) {
-            new AdminCreator(currUsername, userManager).createNewAdmin(inputtedUsername, inputtedEmail, inputtedPassword);
+            adminCreator.createNewAdmin(inputtedUsername, inputtedEmail, inputtedPassword);
+            setPopUpMessage(3);
+        }else{
+            setPopUpMessage(2);
         }
     }
 

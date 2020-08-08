@@ -9,7 +9,7 @@ import SystemManagers.TradeManager;
 import Entities.NormalUser;
 
 /**
- * Displays a dashboard once a normal user logs in.
+ * Controller for all Normal user's dashboard functions.
  *
  * @author Ning Zhang
  * @author Judy Naamani

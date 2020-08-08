@@ -33,6 +33,10 @@ public class AdminDashPresenter {
         switch (type){
             case 1:
                 return ("Thresholds must be numbers!");
+            case 2:
+                return ("Input format is invalid!");
+            case 3:
+                return ("New admin created!");
             default:
                 return null;
         }

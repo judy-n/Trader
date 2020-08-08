@@ -258,9 +258,9 @@ public class DashboardFrame extends JDialog {
 
                 addInv.addActionListener(e -> {
                     normalDashboard.addToInventory(nameInput.getText(), descripInput.getText());
-                    drawPopUpMessage();
                     nameInput.setText("");
                     descripInput.setText("");
+                    drawPopUpMessage();
                     redrawDisplayList(normalDashboard.getInventory());
                     drawOptionalPanel(normalDashboard.getPendingInventory(), INVENTORY);
                 });
@@ -320,10 +320,14 @@ public class DashboardFrame extends JDialog {
                 JTextField emailInput = new JTextField(10);
                 JTextField passwordInput = new JTextField(10);
                 JButton addAdmin = new JButton("Create");
-                addAdmin.addActionListener(e ->
-                        adminDashboard.createNewAdmin(usernameInput.getText(),
-                                emailInput.getText(), passwordInput.getText()));
-
+                addAdmin.addActionListener(e ->{
+                    adminDashboard.createNewAdmin(usernameInput.getText(),
+                            emailInput.getText(), passwordInput.getText());
+                    usernameInput.setText("");
+                    emailInput.setText("");
+                    passwordInput.setText("");
+                    drawPopUpMessage();
+                });
                 userInputPanel.add(username);
                 userInputPanel.add(usernameInput);
                 userInputPanel.add(email);
@@ -374,12 +378,12 @@ public class DashboardFrame extends JDialog {
                             lendMinInput.getText(), incompleteTradeInput.getText()};
 
                     adminDashboard.changeThresholds(inputs);
-                    drawPopUpMessage();
                     redrawDisplayList(adminDashboard.getThresholdStrings());
                     weeklyTradeInput.setText("");
                     meetingEditInput.setText("");
                     lendMinInput.setText("");
                     incompleteTradeInput.setText("");
+                    drawPopUpMessage();
                 });
                 userInputPanel.add(weeklyTrade);
                 userInputPanel.add(weeklyTradeInput);
@@ -408,7 +412,9 @@ public class DashboardFrame extends JDialog {
             case COMPLETED:
                 optionalLabelTitle.setText("Top Three Trade Partners");
                 break;
-            //case
+            case ONGOING:
+                optionalLabelTitle.setText("Suggest Meeting Details");
+                break;
         }
         optionalLabel.setText("");
         if (stringArray.length == 0) {

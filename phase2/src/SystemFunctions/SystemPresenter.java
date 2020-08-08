@@ -246,20 +246,6 @@ public class SystemPresenter {
         }
     }
 
-    /**
-     * Returns the labels for elements on the screen while reviewing pending items.
-     *
-     * @param input the case corresponding the label being retrieved
-     * @return the string to display
-     */
-    public String catalogEditor(int input) {
-        switch (input) {
-            case 1:
-                return "These are all the items waiting for approval:";
-            default:
-                return null;
-        }
-    }
 
     /*
      * Replaced by method getItemStrings() in ItemManager!
