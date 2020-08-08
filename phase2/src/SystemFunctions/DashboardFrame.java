@@ -111,7 +111,7 @@ public class DashboardFrame extends JDialog {
             resetEverything();
             drawUserInputPane(INVENTORY);
             drawListDisplay(normalDashboard.getInventory());
-            drawOptionalPanel(normalDashboard.getPendingInventory(), INVENTORY);
+            drawOptionalDisplayPanel(normalDashboard.getPendingInventory(), INVENTORY);
         });
 
         JButton wishlist = new JButton(normalDashboard.setUpDash(2));
@@ -126,18 +126,24 @@ public class DashboardFrame extends JDialog {
             resetEverything();
             drawUserInputPane(TRADE_REQUEST);
             drawListDisplay(normalDashboard.getReceivedTrades());
-            drawOptionalPanel(normalDashboard.getInitiatedTrades(), TRADE_REQUEST);
+            drawOptionalDisplayPanel(normalDashboard.getInitiatedTrades(), TRADE_REQUEST);
         });
 
         JButton catalog = new JButton(normalDashboard.setUpDash(4));
 
         JButton ongoingTrade = new JButton(normalDashboard.setUpDash(5));
+        ongoingTrade.addActionListener(e -> {
+            resetEverything();
+            drawUserInputPane(ONGOING);
+            drawListDisplay(normalDashboard.getOngoingTrades());
+            drawOptionalInputPanel(ONGOING);
+        });
 
         JButton completeTrade = new JButton(normalDashboard.setUpDash(6));
         completeTrade.addActionListener(e -> {
             resetEverything();
             drawListDisplay(normalDashboard.getRecentThreeTradesStrings());
-            drawOptionalPanel(normalDashboard.getTopThreeTraderStrings(), COMPLETED);
+            drawOptionalDisplayPanel(normalDashboard.getTopThreeTraderStrings(), COMPLETED);
         });
 
         JButton vacation = new JButton(normalDashboard.setUpDash(7));
@@ -284,7 +290,7 @@ public class DashboardFrame extends JDialog {
                     descripInput.setText("");
                     drawPopUpMessage();
                     redrawDisplayList(normalDashboard.getInventory());
-                    drawOptionalPanel(normalDashboard.getPendingInventory(), INVENTORY);
+                    drawOptionalDisplayPanel(normalDashboard.getPendingInventory(), INVENTORY);
                 });
 
                 removeButton.addActionListener(e -> {
@@ -438,7 +444,7 @@ public class DashboardFrame extends JDialog {
      * @param stringArray the content to display
      * @param type        int indicating the type of function
      */
-    private void drawOptionalPanel(String[] stringArray, int type) {
+    private void drawOptionalDisplayPanel(String[] stringArray, int type) {
         switch (type) {
             case INVENTORY:
                 optionalLabelTitle.setText("Pending Inventory");
@@ -470,6 +476,24 @@ public class DashboardFrame extends JDialog {
         dashboardWindow.repaint();
         dashboardWindow.setVisible(true);
     }
+
+    private void drawOptionalInputPanel(int type){
+        switch (type){
+            case ONGOING:
+                optionalLabelTitle.setText("Suggest Meeting Details");
+                JLabel timeSuggestion = new JLabel("Time:");
+                JLabel placeSuggestion = new JLabel("Place:");
+                JTextField timeSuggestionInput = new JTextField(10);
+                JTextField placeSuggestionInput = new JTextField(10);
+                JButton suggest = new JButton("Suggest");
+                //suggest.addActionListener();
+
+                break;
+            case CATALOG_VIEWER:
+                break;
+        }
+    }
+
 
     /**
      * Updates the JScrollpane once a change has been made to its content

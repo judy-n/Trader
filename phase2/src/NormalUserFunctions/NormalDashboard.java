@@ -27,6 +27,7 @@ public class NormalDashboard extends Dashboard {
     private WishlistEditor wishlistEditor;
     private InventoryEditor inventoryEditor;
     private TradeRequestViewer tradeRequestViewer;
+    private OngoingTradesViewer ongoingTradesViewer;
     private CompletedTradesViewer completedTradesViewer;
     private UnfreezeRequester unfreezeRequester;
     private StatusEditor statusEditor;
@@ -54,6 +55,7 @@ public class NormalDashboard extends Dashboard {
         currentUser = userManager.getNormalByUsername(username);
         wishlistEditor = new WishlistEditor(currUsername, itemManager, userManager);
         inventoryEditor = new InventoryEditor(currUsername, itemManager, userManager, tradeManager);
+        ongoingTradesViewer = new OngoingTradesViewer(currUsername, itemManager, userManager, tradeManager);
         tradeRequestViewer = new TradeRequestViewer(currUsername, itemManager, userManager, tradeManager, notifSystem);
         completedTradesViewer = new CompletedTradesViewer(currUsername, itemManager, tradeManager);
         unfreezeRequester = new UnfreezeRequester(currUsername, userManager);
@@ -175,6 +177,16 @@ public class NormalDashboard extends Dashboard {
     public boolean isFrozen(){
         return currentUser.getIsFrozen();
     }
+
+
+    /**
+     * Returns normal user's ongoing trades in a String array
+     * @return normal user's ongoing trades
+     */
+    public String[] getOngoingTrades(){
+        return ongoingTradesViewer.getOngoingTrades();
+    }
+
 
     @Override
     public String setUpDash(int type){
