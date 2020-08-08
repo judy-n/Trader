@@ -6,7 +6,7 @@ import Entities.TemporaryTrade;
 import java.util.List;
 
 /**
- * The presenter used for the entire program. Prints to text UI.
+ * The presenter used for the entire program.
  *
  * @author Ning Zhang
  * @author Yingjia Liu
@@ -17,12 +17,16 @@ import java.util.List;
  * last modified 2020-08-07
  */
 public class SystemPresenter {
-    private StartMenuPresenter startMenuPresenter;
+    private final StartMenuPresenter startMenuPresenter;
+    private final NormalDashPresenter normalDashPresenter;
+    private final AdminDashPresenter adminDashPresenter;
 
     private final String choicePrompt = "\nPlease enter your choice here: ";
 
     public SystemPresenter() {
         startMenuPresenter = new StartMenuPresenter();
+        normalDashPresenter = new NormalDashPresenter();
+        adminDashPresenter = new AdminDashPresenter();
     }
 
     public String startMenu(int input) {
@@ -37,7 +41,21 @@ public class SystemPresenter {
         return startMenuPresenter.loginSystem(input);
     }
 
+    public String getNormalPopUpMessage(int type){
+        return normalDashPresenter.getPopUpMessage(type);
+    }
 
+    public String setUpNormalDash(int type){
+        return normalDashPresenter.setUpDash(type);
+    }
+
+    public String setUpAdminDash(int type){
+        return adminDashPresenter.setUpDash(type);
+    }
+
+    public String getAdminPopUpMessage(int type){
+        return adminDashPresenter.getPopUpMessage(type);
+    }
     /**
      * Prompts for if a user would like to edit their inventory
      *
@@ -348,11 +366,11 @@ public class SystemPresenter {
         switch (input) {
             case 1:
                 System.out.println("\nHere are all the trade requests you sent:");
-                presentInitiatedTradeRequests(itemNames, users);
+                //presentInitiatedTradeRequests(itemNames, users);
                 break;
             case 2:
                 System.out.println("\nHere are all the trade requests you received:");
-                presentReceivedTradeRequests(itemNames, users);
+                //presentReceivedTradeRequests(itemNames, users);
                 break;
         }
     }
@@ -363,20 +381,8 @@ public class SystemPresenter {
      * @param itemNames  the names of the items in the initiated trade requests
      * @param recipients the recipients of the initiated trade requests
      */
-    private void presentInitiatedTradeRequests(List<String[]> itemNames, List<String> recipients) {
-        int index = 1;
-        for (String[] i : itemNames) {
-            if (i[0].equals("")) {
-                System.out.println(index + ". One-way trade for [" + i[1] + "] sent to " + recipients.get(index - 1));
-            } else {
-                System.out.println(index + ". Two-way trade lending [" + i[0] +
-                        "] for [" + i[1] + "] sent to " + recipients.get(index - 1));
-            }
-            index++;
-        }
-        if (itemNames.isEmpty()) {
-            System.out.println("You don't have any sent trade requests waiting for approval.");
-        }
+    public String[] presentInitiatedTradeRequests(List<String[]> itemNames, List<String> recipients) {
+        return normalDashPresenter.presentInitiatedTradeRequests(itemNames, recipients);
     }
 
     /**
@@ -385,22 +391,8 @@ public class SystemPresenter {
      * @param itemNames the names of the items in the received trade requests
      * @param senders   the senders the received trade requests
      */
-    private void presentReceivedTradeRequests(List<String[]> itemNames, List<String> senders) {
-        int index = 1;
-        for (String[] i : itemNames) {
-            if (i[0].equals("")) {
-                System.out.println(index + ". One-way trade asking for [" + i[1] + "] sent from " + senders.get(index - 1));
-            } else {
-                System.out.println(index + ". Two-way trade asking for [" + i[1] +
-                        "] in return for [" + i[0] + "] sent from " + senders.get(index - 1));
-            }
-            index++;
-        }
-        if (itemNames.isEmpty()) {
-            System.out.println("You haven't received any trade requests yet");
-        } else {
-            System.out.print("\nWould you like to accept/reject any of these requests? Enter the request's index (0 to quit): ");
-        }
+    public String[] presentReceivedTradeRequests(List<String[]> itemNames, List<String> senders) {
+        return normalDashPresenter.presentReceivedTradeRequests(itemNames, senders);
     }
 
     /**
@@ -642,10 +634,10 @@ public class SystemPresenter {
 
         String[] thresholdStrings = new String[4];
 
-        thresholdStrings[0] = ("The current weekly trade max is " + currThresholds[0] + ". Change it to: ");
-        thresholdStrings[1] = ("The current meeting edit max is " + currThresholds[1] + ". Change it to: ");
-        thresholdStrings[2] = ("The current lend min is " + currThresholds[2] + ". Change it to: ");
-        thresholdStrings[3] = ("The current incomplete trade max is " + currThresholds[3] + ". Change it to: ");
+        thresholdStrings[0] = ("The current weekly trade max is " + currThresholds[0]);
+        thresholdStrings[1] = ("The current meeting edit max is " + currThresholds[1]);
+        thresholdStrings[2] = ("The current lend min is " + currThresholds[2]);
+        thresholdStrings[3] = ("The current incomplete trade max is " + currThresholds[3]);
 
         return thresholdStrings;
     }

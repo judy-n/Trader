@@ -20,6 +20,7 @@ public class DashboardFrame extends JDialog {
     private Dashboard dashboard;
     private NormalDashboard normalDashboard;
     private AdminDashboard adminDashboard;
+
     private JDialog dashboardWindow;
     private JFrame parent;
     private JPanel userFunctionPanel;
@@ -27,7 +28,6 @@ public class DashboardFrame extends JDialog {
     private JPanel notifPanel;
     private JPanel optionalPanel;
     private JButton removeButton;
-    private JPanel removeItemPanel;
 
     private JList<String> listDisplay;
     private JScrollPane scrollablePane;
@@ -45,7 +45,14 @@ public class DashboardFrame extends JDialog {
     private final int UNFREEZE = 9;
     private final int UNDO = 10;
     private final int CREATE = 11;
+    private final int THRESHOLD = 12;
 
+    /**
+     * Makes a new modal window that displays the user functions of the user that is
+     * currently logged in
+     * @param dashboard the controller for the dashboard
+     * @param parent    the parent window that made this one
+     */
     public DashboardFrame(Dashboard dashboard, JFrame parent) {
         this.dashboard = dashboard;
         this.parent = parent;
@@ -64,9 +71,7 @@ public class DashboardFrame extends JDialog {
         userInputPanel.setLayout(new FlowLayout());
         notifPanel.setLayout(new FlowLayout());
         optionalPanel.setLayout(new BoxLayout(optionalPanel, BoxLayout.Y_AXIS));
-
         optionalPanel.setPreferredSize(new Dimension(300, 576));
-
         dashboardWindow = new JDialog(parent, "Dashboard | " + username, true);
         dashboardWindow.setSize(820, 576);
         dashboardWindow.setResizable(false);
@@ -95,11 +100,13 @@ public class DashboardFrame extends JDialog {
         scrollablePane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollablePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         dashboardWindow.setVisible(true);
-
     }
 
+    /**
+     * Draws all JComponents for normal user's functions
+     */
     private void drawNormalDash() {
-        JButton inventory = new JButton("Inventory Editor");
+        JButton inventory = new JButton(normalDashboard.setUpDash(1));
         inventory.addActionListener(e -> {
             resetEverything();
             drawUserInputPane(INVENTORY);
@@ -107,38 +114,35 @@ public class DashboardFrame extends JDialog {
             drawOptionalPanel(normalDashboard.getPendingInventory(), INVENTORY);
         });
 
-        JButton wishlist = new JButton("Wishlist Editor");
+        JButton wishlist = new JButton(normalDashboard.setUpDash(2));
         wishlist.addActionListener(e -> {
-                    resetEverything();
-                    drawUserInputPane(WISHLIST);
-                    drawListDisplay(normalDashboard.getWishlist());
-                }
-        );
+            resetEverything();
+            drawUserInputPane(WISHLIST);
+            drawListDisplay(normalDashboard.getWishlist());
+        });
 
-        JButton tradeRequest = new JButton("View Trade Requests");
-        JButton catalog = new JButton("View Catalog");
+        JButton tradeRequest = new JButton(normalDashboard.setUpDash(3));
+        tradeRequest.addActionListener(e -> {
+            resetEverything();
+            drawUserInputPane(TRADE_REQUEST);
+            drawListDisplay(normalDashboard.getReceivedTrades());
+            drawOptionalPanel(normalDashboard.getInitiatedTrades(), TRADE_REQUEST);
+        });
 
-        JButton ongoingTrade = new JButton("View Ongoing Trades");
+        JButton catalog = new JButton(normalDashboard.setUpDash(4));
 
-        JButton completeTrade = new JButton("View Completed Trades");
+        JButton ongoingTrade = new JButton(normalDashboard.setUpDash(5));
+
+        JButton completeTrade = new JButton(normalDashboard.setUpDash(6));
         completeTrade.addActionListener(e -> {
             resetEverything();
             drawListDisplay(normalDashboard.getRecentThreeTradesStrings());
             drawOptionalPanel(normalDashboard.getTopThreeTraderStrings(), COMPLETED);
         });
 
-        JButton vacation = new JButton("Edit Vacation Status");
+        JButton vacation = new JButton(normalDashboard.setUpDash(7));
         vacation.addActionListener(e -> {
             normalDashboard.editUserStatus();
-            resetEverything();
-            dashboardWindow.remove(scrollablePane);
-            dashboardWindow.repaint();
-            dashboardWindow.setVisible(true);
-        });
-
-        JButton unfreeze = new JButton("Send Unfreeze Request");
-        unfreeze.addActionListener(e -> {
-            normalDashboard.sendUnfreezeRequest();
             resetEverything();
             dashboardWindow.remove(scrollablePane);
             dashboardWindow.repaint();
@@ -152,35 +156,53 @@ public class DashboardFrame extends JDialog {
         initializeButton(ongoingTrade, 200, 40, userFunctionPanel);
         initializeButton(completeTrade, 200, 40, userFunctionPanel);
         initializeButton(vacation, 200, 40, userFunctionPanel);
-        initializeButton(unfreeze, 200, 40, userFunctionPanel);
-    }
 
+        if(normalDashboard.isFrozen()) {
+            JButton unfreeze = new JButton(normalDashboard.setUpDash(8));
+            unfreeze.addActionListener(e -> {
+                normalDashboard.sendUnfreezeRequest();
+                resetEverything();
+                dashboardWindow.remove(scrollablePane);
+                dashboardWindow.repaint();
+                dashboardWindow.setVisible(true);
+            });
+            initializeButton(unfreeze, 200, 40, userFunctionPanel);
+        }
+    }
+    /**
+     * Draws all JComponents for admin user's functions
+     */
     private void drawAdminDash() {
         userInputPanel.removeAll();
-        JButton catalogEditor = new JButton("Catalog Editor");
+        JButton catalogEditor = new JButton(adminDashboard.setUpDash(1));
         catalogEditor.addActionListener(e -> {
             resetEverything();
             drawUserInputPane(CATALOG_EDITOR);
             drawListDisplay(adminDashboard.getPendingCatalog());
         });
 
-        JButton freezer = new JButton("Freeze Accounts");
+        JButton freezer = new JButton(adminDashboard.setUpDash(2));
         freezer.addActionListener(e -> {
             resetEverything();
             drawUserInputPane(FREEZE);
             drawListDisplay(adminDashboard.getFreezeList());
         });
 
-        JButton unfreezer = new JButton("UnFreeze Accounts");
+        JButton unfreezer = new JButton(adminDashboard.setUpDash(3));
         unfreezer.addActionListener(e -> {
             resetEverything();
             drawUserInputPane(UNFREEZE);
             drawListDisplay(adminDashboard.getUnfreezeRequests());
         });
 
-        JButton threshold = new JButton("Threshold Editor");
+        JButton threshold = new JButton(adminDashboard.setUpDash(4));
+        threshold.addActionListener(e -> {
+            resetEverything();
+            drawUserInputPane(THRESHOLD);
+            drawListDisplay(adminDashboard.getThresholdStrings());
+        });
 
-        JButton adminCreator = new JButton("Create New Admin");
+        JButton adminCreator = new JButton(adminDashboard.setUpDash(5));
         adminCreator.addActionListener(e -> {
             resetEverything();
             drawUserInputPane(CREATE);
@@ -189,7 +211,7 @@ public class DashboardFrame extends JDialog {
             dashboardWindow.setVisible(true);
         });
 
-        JButton undo = new JButton("Undo User Activity");
+        JButton undo = new JButton(adminDashboard.setUpDash(6));
 
         initializeButton(catalogEditor, 200, 40, userFunctionPanel);
         initializeButton(freezer, 200, 40, userFunctionPanel);
@@ -199,15 +221,17 @@ public class DashboardFrame extends JDialog {
         initializeButton(undo, 200, 40, userFunctionPanel);
     }
 
+    /**
+     * Draws the JScrollpane in the CENTRE of the JFrame's border layout
+     * @param displayItems the contents of the JScrollpane
+     */
     private void drawListDisplay(String[] displayItems) {
         if (displayItems.length == 0) {
             dashboardWindow.remove(scrollablePane);
             nothingToDisplay.setText("Nothing here yet!");
-            //dashboardWindow.add(nothingToDisplay, BorderLayout.CENTER);
             userInputPanel.remove(removeButton);
         } else {
             listDisplay = new JList<>(displayItems);
-            //System.out.println(displayItems);
             listDisplay.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             scrollablePane.setViewportView(listDisplay);
             dashboardWindow.add(scrollablePane, BorderLayout.CENTER);
@@ -215,6 +239,11 @@ public class DashboardFrame extends JDialog {
         dashboardWindow.setVisible(true);
     }
 
+    /**
+     * Draws all JComponents necessary for the type of function on the SOUTH of the
+     * JFrame's border layout
+     * @param type int indicating the type of function
+     */
     private void drawUserInputPane(int type) {
         switch (type) {
             case WISHLIST:
@@ -250,15 +279,10 @@ public class DashboardFrame extends JDialog {
                 initializeButton(removeButton, 100, 20, userInputPanel);
 
                 addInv.addActionListener(e -> {
-                    if (normalDashboard.validateInputInv(nameInput.getText(), descripInput.getText())) {
-                        normalDashboard.addToInventory(nameInput.getText(), descripInput.getText());
-
-                        // Inform user of successful item addition
-                        JOptionPane.showMessageDialog(parent, normalDashboard.getDialogMessage(1));
-
-                    }
+                    normalDashboard.addToInventory(nameInput.getText(), descripInput.getText());
                     nameInput.setText("");
                     descripInput.setText("");
+                    drawPopUpMessage();
                     redrawDisplayList(normalDashboard.getInventory());
                     drawOptionalPanel(normalDashboard.getPendingInventory(), INVENTORY);
                 });
@@ -266,16 +290,27 @@ public class DashboardFrame extends JDialog {
                 removeButton.addActionListener(e -> {
                     if (!listDisplay.isSelectionEmpty()) {
                         int index = listDisplay.getSelectedIndex();
-                        if (normalDashboard.validateRemovalInv(listDisplay.getSelectedIndex())) {
-                            normalDashboard.removeFromInventory(index);
-                        }
+                        normalDashboard.removeFromInventory(index);
+                        drawPopUpMessage();
                         listDisplay.clearSelection();
                         redrawDisplayList(normalDashboard.getInventory());
                     }
-
                 });
                 break;
 
+            case TRADE_REQUEST:
+                JToggleButton acceptOrDeny = new JToggleButton();
+                JToggleButton permOrTemp = new JToggleButton();
+                JLabel initialTime = new JLabel("Suggest Time:");
+                JLabel initialPlace = new JLabel("Suggest Place:");
+                JTextField initialTimeInput = new JTextField(10);
+                JTextField initialPlaceInput = new JTextField(10);
+                removeButton.setText("Confirm");
+                initializeToggleButton(acceptOrDeny, "Accept Request", "Deny Request");
+                initializeToggleButton(permOrTemp, "Permanent", "Temporary");
+
+
+                break;
             case CATALOG_VIEWER:
                 userInputPanel.removeAll();
                 JButton trade = new JButton("Trade");
@@ -284,7 +319,6 @@ public class DashboardFrame extends JDialog {
                     if (!listDisplay.isSelectionEmpty()) {
                         int index = listDisplay.getSelectedIndex();
                         //redrawDisplayList();
-
                     }
                 });
                 break;
@@ -321,10 +355,14 @@ public class DashboardFrame extends JDialog {
                 JTextField emailInput = new JTextField(10);
                 JTextField passwordInput = new JTextField(10);
                 JButton addAdmin = new JButton("Create");
-                addAdmin.addActionListener(e ->
-                        adminDashboard.createNewAdmin(usernameInput.getText(),
-                                emailInput.getText(), passwordInput.getText()));
-
+                addAdmin.addActionListener(e ->{
+                    adminDashboard.createNewAdmin(usernameInput.getText(),
+                            emailInput.getText(), passwordInput.getText());
+                    usernameInput.setText("");
+                    emailInput.setText("");
+                    passwordInput.setText("");
+                    drawPopUpMessage();
+                });
                 userInputPanel.add(username);
                 userInputPanel.add(usernameInput);
                 userInputPanel.add(email);
@@ -335,23 +373,14 @@ public class DashboardFrame extends JDialog {
                 break;
 
             case CATALOG_EDITOR:
-                JToggleButton approveOrDeny = new JToggleButton("Approve Item");
-                approveOrDeny.addChangeListener(e -> {
-                    if (approveOrDeny.isSelected()) {
-                        approveOrDeny.setText("Deny Item");
-                    } else {
-                        approveOrDeny.setText("Approve Item");
-                    }
-                });
+                JToggleButton approveOrDeny = new JToggleButton();
+                initializeToggleButton(approveOrDeny, "Approve Item", "Deny Item");
                 removeButton.setText("Confirm");
                 removeButton.addActionListener(e -> {
                     if (!listDisplay.isSelectionEmpty()) {
                         if (approveOrDeny.isSelected()) {
-                            //System.out.println("REJECT");
                             adminDashboard.rejectionPendingCatalog(listDisplay.getSelectedIndex());
-
                         } else {
-                            //System.out.println("APPROVE");
                             adminDashboard.approvePendingCatalog(listDisplay.getSelectedIndex());
                         }
                     }
@@ -360,13 +389,55 @@ public class DashboardFrame extends JDialog {
                 });
                 userInputPanel.add(approveOrDeny);
                 initializeButton(removeButton, 100, 20, userInputPanel);
+                break;
 
+            case THRESHOLD:
+                JLabel weeklyTrade = new JLabel("Weekly Trade Max:");
+                JLabel meetingEdit = new JLabel("Meeting Edit Max:");
+                JLabel lendMin = new JLabel("Len Minimum:");
+                JLabel incompleteTrade = new JLabel("Incomplete Trade Max:");
+                JTextField weeklyTradeInput = new JTextField(5);
+                JTextField meetingEditInput = new JTextField(5);
+                JTextField lendMinInput = new JTextField(5);
+                JTextField incompleteTradeInput = new JTextField(5);
+                JButton change = new JButton("Confirm");
+                change.addActionListener(e -> {
+                    String[] inputs = {weeklyTradeInput.getText(), meetingEditInput.getText(),
+                            lendMinInput.getText(), incompleteTradeInput.getText()};
+
+                    adminDashboard.changeThresholds(inputs);
+                    redrawDisplayList(adminDashboard.getThresholdStrings());
+                    weeklyTradeInput.setText("");
+                    meetingEditInput.setText("");
+                    lendMinInput.setText("");
+                    incompleteTradeInput.setText("");
+                    drawPopUpMessage();
+                });
+                userInputPanel.add(weeklyTrade);
+                userInputPanel.add(weeklyTradeInput);
+
+                userInputPanel.add(meetingEdit);
+                userInputPanel.add(meetingEditInput);
+
+                userInputPanel.add(lendMin);
+                userInputPanel.add(lendMinInput);
+
+                userInputPanel.add(incompleteTrade);
+                userInputPanel.add(incompleteTradeInput);
+
+                userInputPanel.add(change);
                 break;
         }
         dashboardWindow.repaint();
         dashboardWindow.setVisible(true);
     }
 
+    /**
+     * Draws all JComponents necessary for the type of function on the EAST of the
+     * JFrame's border layout
+     * @param stringArray the content to display
+     * @param type        int indicating the type of function
+     */
     private void drawOptionalPanel(String[] stringArray, int type) {
         switch (type) {
             case INVENTORY:
@@ -375,7 +446,12 @@ public class DashboardFrame extends JDialog {
             case COMPLETED:
                 optionalLabelTitle.setText("Top Three Trade Partners");
                 break;
-            //case
+            case ONGOING:
+                optionalLabelTitle.setText("Suggest Meeting Details");
+                break;
+            case TRADE_REQUEST:
+                optionalLabelTitle.setText("Initiated Trade Requests");
+                break;
         }
         optionalLabel.setText("");
         if (stringArray.length == 0) {
@@ -395,12 +471,23 @@ public class DashboardFrame extends JDialog {
         dashboardWindow.setVisible(true);
     }
 
+    /**
+     * Updates the JScrollpane once a change has been made to its content
+     * @param displayList the new content to display
+     */
     private void redrawDisplayList(String[] displayList) {
         dashboardWindow.revalidate();
         drawListDisplay(displayList);
         dashboardWindow.repaint();
     }
 
+    /**
+     * Initializes given JButton with width, height, and the panel to draw it on
+     * @param button    the JButton to initialize
+     * @param width     the width of the JButton
+     * @param height    the height of the JButton
+     * @param panel     the panel to draw it on
+     */
     private void initializeButton(JButton button, int width, int height, JPanel panel) {
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
@@ -410,6 +497,20 @@ public class DashboardFrame extends JDialog {
         panel.add(button);
     }
 
+    private void initializeToggleButton(JToggleButton button, String ogText, String clickedText){
+        button.setText(ogText);
+        button.addChangeListener(e -> {
+            if (button.isSelected()) {
+                button.setText(clickedText);
+            } else {
+                button.setText(ogText);
+            }
+        });
+    }
+
+    /**
+     * Resets the JFrame
+     */
     private void resetEverything() {
         for (ActionListener actionListener : removeButton.getActionListeners()) {
             removeButton.removeActionListener(actionListener);
@@ -419,6 +520,14 @@ public class DashboardFrame extends JDialog {
         optionalPanel.removeAll();
     }
 
+    /**
+     * Draws a pop up window containing a warning message if necessary
+     */
+    private void drawPopUpMessage(){
+        if(!dashboard.getPopUpMessage().isEmpty()) {
+            JOptionPane.showMessageDialog(parent, dashboard.getPopUpMessage());
+            dashboard.resetPopUpMessage();
+        }
+    }
+
 }
-
-

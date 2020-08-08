@@ -24,13 +24,14 @@ public class UnfreezeRequester {
     public UnfreezeRequester(String currUsername, UserManager userManager) {
         this.currUsername = currUsername;
         this.userManager = userManager;
-        requestUnfreeze();
     }
 
     /* Sends a request to be unfrozen. */
-    private void requestUnfreeze() {
+    public boolean requestUnfreeze() {
         if (!userManager.getUnfreezeRequests().contains(currUsername)) {
             userManager.addUnfreezeRequest(currUsername);
+            return true;
         }
+        return false;
     }
 }
