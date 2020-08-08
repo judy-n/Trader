@@ -62,6 +62,50 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
     }
 
     /**
+     * Returns an array of string representations of the list of revertible notifications.
+     *
+     * @return an array of string representations of the list of revertible notifications
+     */
+    public String[] getRevertibleNotifs() {
+        List<String> revertibleNotifStrings = new ArrayList<>();
+        for (RevertibleNotification rn : revertibleActivityLog) {
+            revertibleNotifStrings.add(getNotifString(rn));
+        }
+        return revertibleNotifStrings.toArray(new String[0]);
+    }
+
+    /**
+     * Takes in the index of the revertible notification and returns an array combining the username
+     * of the user who will be affected by the revert and the subject of the activity being reverted.
+     *
+     * @param index the index of the revertible notification
+     * @return an array combining the affected username and subject of the activity being reverted
+     */
+    public String[] getUndoDetails(int index) {
+        return new String[]{revertibleActivityLog.get(index).getRevertedUsername(),
+                revertibleActivityLog.get(index).getSubject()};
+    }
+
+    /**
+     * Takes in the index of the revertible notification and returns its type.
+     *
+     * @param index the index of the revertible notification
+     * @return the revertible notification type
+     */
+    public String getUndoType(int index) {
+        return revertibleActivityLog.get(index).getType();
+    }
+
+    /**
+     * Removes the revertible notification at the given index.
+     *
+     * @param index the index of the revertible notification being removed
+     */
+    public void removeRevertibleNotif(int index) {
+        revertibleActivityLog.remove(index);
+    }
+
+    /**
      * Clears the notification list of the given username.
      *
      * @param username the username of the account whose notification list is being cleared
@@ -136,7 +180,8 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
                 recordMessage = otherParty + " sent a trade request to " + usernameNotified + " .";
 
                 // Trade requests can be undone by an admin.
-                activityToRecord = new RevertibleNotification(recordMessage, otherParty, usernameNotified);
+                activityToRecord = new RevertibleNotification
+                        (recordMessage, otherParty, usernameNotified, "TRADE REQUEST");
 
                 break;
             case "NEW SUGGESTION":
@@ -266,7 +311,8 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
                         usernameNotified + " .";
 
                 // Item approval can be undone by an admin.
-                activityToRecord = new RevertibleNotification(recordMessage, usernameNotified, subjectValue);
+                activityToRecord = new RevertibleNotification
+                        (recordMessage, usernameNotified, subjectValue, "ITEM APPROVAL");
 
                 break;
             case "THRESHOLD ALL USERS":
