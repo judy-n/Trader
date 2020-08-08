@@ -28,7 +28,6 @@ public class DashboardFrame extends JDialog {
     private JPanel notifPanel;
     private JPanel optionalPanel;
     private JButton removeButton;
-    private JPanel removeItemPanel;
 
     private JList<String> listDisplay;
     private JScrollPane scrollablePane;
@@ -72,9 +71,7 @@ public class DashboardFrame extends JDialog {
         userInputPanel.setLayout(new FlowLayout());
         notifPanel.setLayout(new FlowLayout());
         optionalPanel.setLayout(new BoxLayout(optionalPanel, BoxLayout.Y_AXIS));
-
         optionalPanel.setPreferredSize(new Dimension(300, 576));
-
         dashboardWindow = new JDialog(parent, "Dashboard | " + username, true);
         dashboardWindow.setSize(820, 576);
         dashboardWindow.setResizable(false);
@@ -103,7 +100,6 @@ public class DashboardFrame extends JDialog {
         scrollablePane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollablePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         dashboardWindow.setVisible(true);
-
     }
 
     /**
@@ -380,7 +376,6 @@ public class DashboardFrame extends JDialog {
                 });
                 userInputPanel.add(approveOrDeny);
                 initializeButton(removeButton, 100, 20, userInputPanel);
-
                 break;
 
             case THRESHOLD:
@@ -509,5 +504,3 @@ public class DashboardFrame extends JDialog {
     }
 
 }
-
-
