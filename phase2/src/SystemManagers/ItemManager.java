@@ -15,7 +15,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-06
+ * last modified 2020-08-09
  */
 public class ItemManager extends Manager implements Serializable {
     private List<Item> approvedItems;
@@ -262,5 +262,24 @@ public class ItemManager extends Manager implements Serializable {
     public String[] getItemStringsID(List<Long> itemListID, boolean withOwner) {
         List<Item> itemList = getItemsByIDs(itemListID);
         return getItemStrings(itemList, withOwner);
+    }
+
+    /**
+     * Sets the status of the item associated with the given item ID to removed from inventory.
+     *
+     * @param itemID the ID of the item being removed
+     */
+    public void setItemIsRemoved(long itemID) {
+        getItem(itemID).setIsRemoved(true);
+    }
+
+    /**
+     * Sets the availability status of the item associated with the given item ID.
+     *
+     * @param itemID the ID of the item whose availability status is being changed
+     * @param newAvailability the new availability status to set for the item
+     */
+    public void setItemAvailability(long itemID, boolean newAvailability) {
+        getItem(itemID).setAvailability(newAvailability);
     }
 }

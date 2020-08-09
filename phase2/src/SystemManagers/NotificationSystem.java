@@ -18,7 +18,7 @@ import java.util.Observer;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-30
- * last modified 2020-08-07
+ * last modified 2020-08-09
  */
 public class NotificationSystem extends Manager implements Observer, Serializable {
 
@@ -66,7 +66,7 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
      *
      * @return an array of string representations of the list of revertible notifications
      */
-    public String[] getRevertibleNotifs() {
+    public String[] getRevertibleNotifStrings() {
         List<String> revertibleNotifStrings = new ArrayList<>();
         for (RevertibleNotification rn : revertibleActivityLog) {
             revertibleNotifStrings.add(getNotifString(rn));

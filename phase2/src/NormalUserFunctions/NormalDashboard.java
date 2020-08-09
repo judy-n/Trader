@@ -6,7 +6,6 @@ import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
-import Entities.NormalUser;
 
 /**
  * Controller for all Normal user's dashboard functions.
@@ -15,10 +14,9 @@ import Entities.NormalUser;
  * @author Yingjia Liu
  * @version 2.0
  * @since 2020-06-26
- * last modified 2020-08-07
+ * last modified 2020-08-09
  */
 public class NormalDashboard extends Dashboard {
-    private NormalUser currentUser;
     private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
@@ -52,7 +50,6 @@ public class NormalDashboard extends Dashboard {
         this.tradeManager = tradeManager;
         this.notifSystem = notifSystem;
         systemPresenter = new SystemPresenter();
-        currentUser = userManager.getNormalByUsername(username);
         wishlistEditor = new WishlistEditor(currUsername, itemManager, userManager);
         inventoryEditor = new InventoryEditor(currUsername, itemManager, userManager, tradeManager);
         ongoingTradesViewer = new OngoingTradesViewer(currUsername, itemManager, userManager, tradeManager);
@@ -175,7 +172,7 @@ public class NormalDashboard extends Dashboard {
      * @return if the normal user is frozen
      */
     public boolean isFrozen(){
-        return currentUser.getIsFrozen();
+        return userManager.getNormalUserIsFrozen(currUsername);
     }
 
 

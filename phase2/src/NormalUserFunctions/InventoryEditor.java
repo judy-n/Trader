@@ -13,7 +13,7 @@ import Entities.Item;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-08-06
+ * last modified 2020-08-09
  */
 public class InventoryEditor {
     private String currUsername;
@@ -99,9 +99,8 @@ public class InventoryEditor {
      */
     public void removeInventory(int index) {
         long selectedItemID = userManager.getNormalUserInventory(currUsername).get(index);
-        Item selectedItem = itemManager.getItem(selectedItemID);
         userManager.removeFromNormalUserInventory(selectedItemID, currUsername);
-        selectedItem.setIsRemoved(true);
+        itemManager.setItemIsRemoved(selectedItemID);
     }
 
     /**

@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-08-02
- * last modified 2020-08-05
+ * last modified 2020-08-09
  */
 public class UserNotificationHelper implements Serializable {
     private User currUserToNotify;
@@ -60,7 +60,7 @@ public class UserNotificationHelper implements Serializable {
         notifyUser(notifArg);
     }
 
-    public void extraUsernameUpdate(String action, String usernameNotified, String otherParty, String adminUsername) {
+    public void threeUsernameUpdate(String action, String usernameNotified, String otherParty, String adminUsername) {
         String[] notifArg = {action, usernameNotified, otherParty, adminUsername};
         notifyUser(notifArg);
     }

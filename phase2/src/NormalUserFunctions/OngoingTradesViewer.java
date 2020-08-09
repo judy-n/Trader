@@ -4,7 +4,6 @@ import SystemFunctions.DateTimeHandler;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
-import Entities.Item;
 import Entities.Trade;
 import Entities.TemporaryTrade;
 import Entities.PermanentTrade;
@@ -21,7 +20,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-08-07
+ * last modified 2020-08-09
  */
 public class OngoingTradesViewer {
     private String currUsername;
@@ -57,15 +56,26 @@ public class OngoingTradesViewer {
      */
     public String[] getOngoingTrades() {
         List<Trade> ongoingTrades = tradeManager.getOngoingTrades(currUsername);
-        List<Item[]> tradeItems = new ArrayList<>();
+        List<String[]> tradeItemNames = new ArrayList<>();
+        List<long[]> tradeItemIDs = new ArrayList<>();
 
         for (Trade t : ongoingTrades) {
             String otherUsername = t.getOtherUsername(currUsername);
             long[] tempItemIDs = {t.getLentItemID(currUsername), t.getLentItemID(otherUsername)};
-            Item[] tempItems = {itemManager.getItem(tempItemIDs[0]), itemManager.getItem(tempItemIDs[1])};
-            tradeItems.add(tempItems);
+
+            String[] tempItemNames = new String[2];
+            if (tempItemIDs[0] != 0) {
+                tempItemNames[0] = itemManager.getItemName(tempItemIDs[0]);
+            }
+            if (tempItemIDs[1] != 0) {
+                tempItemNames[1] = itemManager.getItemName(tempItemIDs[1]);
+            }
+
+            tradeItemNames.add(tempItemNames);
+            tradeItemIDs.add(tempItemIDs);
         }
-        return systemPresenter.getOngoingTradeStrings(ongoingTrades, tradeItems, currUsername, dateTimeHandler);
+        return systemPresenter.getOngoingTradeStrings
+                (ongoingTrades, tradeItemIDs, tradeItemNames, currUsername, dateTimeHandler);
     }
 
     /**
@@ -334,12 +344,10 @@ public class OngoingTradesViewer {
         // Therefore, we can automatically make their items available for trade again.
         long[] itemIDs = selectedTrade.getInvolvedItemIDs();
         if (itemIDs[0] != 0) {
-            Item tempItem1 = itemManager.getItem(itemIDs[0]);
-            tempItem1.setAvailability(true);
+            itemManager.setItemAvailability(itemIDs[0], true);
         }
         if (itemIDs[1] != 0) {
-            Item tempItem2 = itemManager.getItem(itemIDs[1]);
-            tempItem2.setAvailability(true);
+            itemManager.setItemAvailability(itemIDs[1], true);
         }
 
         selectedTrade.setIsCancelled();

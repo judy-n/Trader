@@ -2,7 +2,6 @@ package NormalUserFunctions;
 
 import SystemManagers.ItemManager;
 import Entities.TemporaryTrade;
-import Entities.Item;
 
 /**
  * Confirms and closes temporary trades.
@@ -31,12 +30,10 @@ public class ConfirmAndCloseTempTrade {
             long[] itemIDs = tempTrade.getInvolvedItemIDs();
 
             if (itemIDs[0] != 0) {
-                Item tempItem1 = itemManager.getItem(itemIDs[0]);
-                tempItem1.setAvailability(true);
+                itemManager.setItemAvailability(itemIDs[0], true);
             }
             if (itemIDs[1] != 0) {
-                Item tempItem2 = itemManager.getItem(itemIDs[1]);
-                tempItem2.setAvailability(true);
+                itemManager.setItemAvailability(itemIDs[1], true);
             }
         }
     }

@@ -16,7 +16,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-28
- * last modified 2020-08-05
+ * last modified 2020-08-09
  */
 public class TradeRequestSetup {
     private String currUsername;
@@ -118,7 +118,7 @@ public class TradeRequestSetup {
             } while (!selectionSuccessful);
 
             userManager.addTradeRequestBothUsers(traders, items);
-            if (!userManager.getNormalUserWishlist(currUsername).contains(selectedItem.getID())) {
+            if (!userManager.isInNormalUserWishlist(selectedItem.getID(), currUsername)) {
                 userManager.addToNormalUserWishlist(selectedItem.getID(), currUsername);
             }
 

@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-06
+ * last modified 2020-08-09
  */
 public class UserManager extends Manager implements Serializable {
     private List<NormalUser> allNormals;
@@ -534,6 +534,17 @@ public class UserManager extends Manager implements Serializable {
      */
     public void removeFromNormalUserWishlist(long itemID, String username) {
         getNormalByUsername(username).removeWishlist(itemID);
+    }
+
+    /**
+     * Takes in an item ID and returns whether or not it's in the given user's wishlist
+     *
+     * @param itemID the item ID to query
+     * @param username the username of the account whose wishlist is being searched
+     * @return true iff the given item ID is in the given user's wishlist
+     */
+    public boolean isInNormalUserWishlist(long itemID, String username) {
+        return getNormalUserWishlist(username).contains(itemID);
     }
 
     /**

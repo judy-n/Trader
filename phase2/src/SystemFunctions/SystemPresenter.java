@@ -14,7 +14,7 @@ import java.util.List;
  * @author Kushagra
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-08-07
+ * last modified 2020-08-09
  */
 public class SystemPresenter {
     private final StartMenuPresenter startMenuPresenter;
@@ -41,21 +41,22 @@ public class SystemPresenter {
         return startMenuPresenter.loginSystem(input);
     }
 
-    public String getNormalPopUpMessage(int type){
+    public String getNormalPopUpMessage(int type) {
         return normalDashPresenter.getPopUpMessage(type);
     }
 
-    public String setUpNormalDash(int type){
+    public String setUpNormalDash(int type) {
         return normalDashPresenter.setUpDash(type);
     }
 
-    public String setUpAdminDash(int type){
+    public String setUpAdminDash(int type) {
         return adminDashPresenter.setUpDash(type);
     }
 
-    public String getAdminPopUpMessage(int type){
+    public String getAdminPopUpMessage(int type) {
         return adminDashPresenter.getPopUpMessage(type);
     }
+
     /**
      * Prompts for if a user would like to edit their inventory
      *
@@ -481,37 +482,33 @@ public class SystemPresenter {
      * Formats all ongoing trades for a user into an array of string representations and returns it.
      *
      * @param ongoingTrades   the list of ongoing trades
-     * @param tradeItems      the items involved the trades
-     * @param username        the username of the user
+     * @param tradeItemIDs    the IDs of the items involved in the trades
+     * @param tradeItemNames  the names of the items involved in the trades
+     * @param username        the username of the current user
      * @param dateTimeHandler a <DateTimeHandler></DateTimeHandler> for formatting the dates and times to be displayed
      */
-    public String[] getOngoingTradeStrings(List<Trade> ongoingTrades, List<Item[]> tradeItems,
+    public String[] getOngoingTradeStrings(List<Trade> ongoingTrades,
+                                           List<long[]> tradeItemIDs, List<String[]> tradeItemNames,
                                            String username, DateTimeHandler dateTimeHandler) {
 
         String[] ongoingTradeStrings = new String[ongoingTrades.size()];
         int index = 0;
 
         for (Trade trade : ongoingTrades) {
-            Item[] tempItems = tradeItems.get(index);
-            long[] tempItemIDs = new long[2];
-            if (tempItems[0] != null) {
-                tempItemIDs[0] = tempItems[0].getID();
-            }
-            if (tempItems[1] != null) {
-                tempItemIDs[1] = tempItems[1].getID();
-            }
+            String[] tempItemNames = tradeItemNames.get(index);
+            long[] tempItemIDs = tradeItemIDs.get(index);
 
             StringBuilder tradePrint = new StringBuilder("<html>");
             if (tempItemIDs[0] == 0) {
                 tradePrint.append(trade.toString(username)).append("you're borrowing [")
-                        .append(tempItems[1].getName()).append("]");
+                        .append(tempItemNames[1]).append("]");
             } else if (tempItemIDs[1] == 0) {
                 tradePrint.append(trade.toString(username)).append("you're lending [")
-                        .append(tempItems[0].getName()).append("]");
+                        .append(tempItemNames[0]).append("]");
             } else {
                 tradePrint.append(trade.toString(username)).append("you're lending [")
-                        .append(tempItems[0].getName()).append("] for [")
-                        .append(tempItems[1].getName()).append("]");
+                        .append(tempItemNames[0]).append("] for [")
+                        .append(tempItemNames[1]).append("]");
             }
             // New line
             tradePrint.append("<br/> ");

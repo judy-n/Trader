@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-29
- * last modified 2020-08-08
+ * last modified 2020-08-09
  */
 public class TradeRequestViewer {
     private String currUsername;
@@ -165,9 +165,9 @@ public class TradeRequestViewer {
 //                            }
 //
 //                            /* set item statuses to unavailable */
-//                            itemManager.getItem(itemToLendID).setAvailability(false);
+//                            itemManager.setItemAvailability(itemToLendID, false);
 //                            if (itemToBorrowID != 0) {
-//                                itemManager.getItem(itemToBorrowID).setAvailability(false);
+//                                itemManager.setItemAvailability(itemToBorrowID, false);
 //                            }
 //
 //                            if (permOrTemp.equals("1")) {

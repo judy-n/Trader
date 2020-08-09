@@ -21,7 +21,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-05
+ * last modified 2020-08-09
  */
 public class CatalogViewer {
     private String currUsername;
@@ -133,12 +133,11 @@ public class CatalogViewer {
                         new TradeRequestSetup(currUsername, itemManager, userManager, mustLend).makeTradeRequest(selectedItem);
                     }
                 }
-                List<Long> currentUserWishlist = userManager.getNormalUserWishlist(currUsername);
 
-                if (tradeOrWishlist == 2 && !currentUserWishlist.contains(itemID)) {
+                if (tradeOrWishlist == 2 && !userManager.isInNormalUserWishlist(itemID, currUsername)) {
                     userManager.addToNormalUserWishlist(itemID, currUsername);
                     systemPresenter.catalogViewer(4);
-                } else if (tradeOrWishlist == 2 && currentUserWishlist.contains(itemID)) {
+                } else if (tradeOrWishlist == 2 && userManager.isInNormalUserWishlist(itemID, currUsername)) {
                     systemPresenter.catalogViewer(5);
                 }
             }
