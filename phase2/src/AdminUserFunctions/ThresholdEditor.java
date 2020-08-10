@@ -96,7 +96,7 @@ public class ThresholdEditor {
                 /* Notify all users of threshold change */
                 for (String normalUsername : userManager.getAllNormalUsernames()) {
                     userManager.notifyUser(normalUsername).thresholdUpdate
-                            ("THRESHOLD ALL USER", normalUsername, currUsername, i, newThreshold);
+                            ("THRESHOLD ALL USERS", normalUsername, currUsername, i, newThreshold);
                 }
             }
         }

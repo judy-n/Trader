@@ -1,14 +1,16 @@
 package Entities;
 
+import java.io.Serializable;
+
 /**
  * Represents an action that can be reverted by an admin.
  *
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-08-01
- * last modified 2020-08-07
+ * last modified 2020-08-09
  */
-public class RevertibleNotification extends Notification {
+public class RevertibleNotification extends Notification implements Serializable {
     String revertUsername;
     String subject;
     String type;

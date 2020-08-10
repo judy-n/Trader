@@ -26,7 +26,7 @@ import java.io.ObjectOutputStream;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-17
- * last modified 2020-08-03
+ * last modified 2020-08-09
  */
 
 public class ReadWriter {
@@ -71,6 +71,8 @@ public class ReadWriter {
                     return notifSystem;
             }
         }
+
+        // If the file for the manager hasn't been created yet:
         if (type == 1) {
             return new UserManager();
         } else if (type == 2) {
@@ -78,6 +80,7 @@ public class ReadWriter {
         } else if (type == 3) {
             return new TradeManager();
         } else {
+            System.out.println("new notif system");
             return new NotificationSystem();
         }
     }

@@ -218,7 +218,7 @@ public class DashboardFrame extends JDialog {
         undo.addActionListener(e -> {
             resetEverything();
             drawUserInputPane(UNDO);
-            drawListDisplay(adminDashboard.getRevertibleNotfis());
+            drawListDisplay(adminDashboard.getRevertibleNotifs());
         });
 
         initializeButton(catalogEditor, 200, 40, userFunctionPanel);
@@ -402,7 +402,7 @@ public class DashboardFrame extends JDialog {
             case THRESHOLD:
                 JLabel weeklyTrade = new JLabel("Weekly Trade Max:");
                 JLabel meetingEdit = new JLabel("Meeting Edit Max:");
-                JLabel lendMin = new JLabel("Len Minimum:");
+                JLabel lendMin = new JLabel("Lend Minimum:");
                 JLabel incompleteTrade = new JLabel("Incomplete Trade Max:");
                 JTextField weeklyTradeInput = new JTextField(5);
                 JTextField meetingEditInput = new JTextField(5);

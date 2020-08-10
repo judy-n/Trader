@@ -627,10 +627,10 @@ public class SystemPresenter {
 
         String[] thresholdStrings = new String[4];
 
-        thresholdStrings[0] = ("The current weekly trade max is " + currThresholds[0]);
-        thresholdStrings[1] = ("The current meeting edit max is " + currThresholds[1]);
-        thresholdStrings[2] = ("The current lend min is " + currThresholds[2]);
-        thresholdStrings[3] = ("The current incomplete trade max is " + currThresholds[3]);
+        thresholdStrings[0] = ("The current weekly trade max is: " + currThresholds[0]);
+        thresholdStrings[1] = ("The current meeting edit max is: " + currThresholds[1]);
+        thresholdStrings[2] = ("The current lend minimum is: " + currThresholds[2]);
+        thresholdStrings[3] = ("The current incomplete trade max is: " + currThresholds[3]);
 
         return thresholdStrings;
     }

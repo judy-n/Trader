@@ -11,7 +11,7 @@ import SystemManagers.UserManager;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-08-07
- * last modified 2020-08-09
+ * last modified 2020-08-10
  */
 public class ActionReverter {
     private String currUsername;
@@ -67,7 +67,7 @@ public class ActionReverter {
             userManager.notifyUser(sender).threeUsernameUpdate
                     ("TRADE REQUEST UNSENT", sender, recipient, currUsername);
 
-        } else if (actionType.equals("APPROVAL UNDONE")) {
+        } else if (actionType.equals("ITEM APPROVAL")) {
 
             // Owner of item at index 0, item ID at index 1
             String[] usernameAndItem = notifSystem.getUndoDetails(index);

@@ -73,5 +73,6 @@ public class UserNotificationHelper implements Serializable {
     private void notifyUser(String[] notifArg) {
         currUserToNotify.setChangedUser();
         currUserToNotify.notifyObservers(notifArg);
+        currUserToNotify.clearChangedUser();
     }
 }

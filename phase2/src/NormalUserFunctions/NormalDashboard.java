@@ -53,7 +53,7 @@ public class NormalDashboard extends Dashboard {
         wishlistEditor = new WishlistEditor(currUsername, itemManager, userManager);
         inventoryEditor = new InventoryEditor(currUsername, itemManager, userManager, tradeManager);
         ongoingTradesViewer = new OngoingTradesViewer(currUsername, itemManager, userManager, tradeManager);
-        tradeRequestViewer = new TradeRequestViewer(currUsername, itemManager, userManager, tradeManager, notifSystem);
+        tradeRequestViewer = new TradeRequestViewer(currUsername, itemManager, userManager, tradeManager);
         completedTradesViewer = new CompletedTradesViewer(currUsername, itemManager, tradeManager);
         unfreezeRequester = new UnfreezeRequester(currUsername, userManager);
         statusEditor = new StatusEditor(currUsername, userManager);
@@ -67,7 +67,7 @@ public class NormalDashboard extends Dashboard {
     }
 
     /**
-     * Sends an unfreeze Request for admin review
+     * Sends an unfreeze request for admin review
      */
     public void sendUnfreezeRequest(){
         if(unfreezeRequester.requestUnfreeze()){

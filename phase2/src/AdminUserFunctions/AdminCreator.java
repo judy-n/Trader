@@ -24,9 +24,6 @@ public class AdminCreator {
     public AdminCreator(String currUsername, UserManager userManager) {
         this.currUsername = currUsername;
         this.userManager = userManager;
-
-        //systemPresenter.adminCreator() for successful admin creation message
-
     }
 
     /**

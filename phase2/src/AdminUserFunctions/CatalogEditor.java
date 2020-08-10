@@ -10,7 +10,7 @@ import SystemManagers.ItemManager;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-08-06
+ * last modified 2020-08-10
  */
 public class CatalogEditor {
     private String currUsername;
@@ -35,66 +35,6 @@ public class CatalogEditor {
         // 2. Approve or reject items
         //      > approve: pass index into approveItem()
         //      > reject: pass index into rejectItem()
-
-
-//        OLD CODE
-//        ----------------------
-//        int input;
-//        try {
-//            do {
-//                int max = itemManager.getNumPendingItems();
-//
-//                if (itemManager.getPendingItems().isEmpty()) {
-//                    systemPresenter.catalogEditor(1);
-//                    break;
-//                } else {
-//                    systemPresenter.catalogEditor(itemManager.getPendingItems());
-//                }
-//                systemPresenter.catalogEditor(2);
-//                String temp = bufferedReader.readLine();
-//                while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > max) {
-//                    systemPresenter.invalidInput();
-//                    temp = bufferedReader.readLine();
-//                }
-//                input = Integer.parseInt(temp);
-//
-//                if (input != 0) {
-//                    long pendingItemID = itemManager.getPendingItem(input - 1);
-//                    String itemOwnerUsername = itemManager.getItemOwner(pendingItemID);
-
-//                    systemPresenter.catalogEditor(itemManager.getItemName(pendingItemID));
-//                    String temp2 = bufferedReader.readLine();
-//                    while (!temp2.matches("[0-2]")) {
-//                        systemPresenter.invalidInput();
-//                        temp2 = bufferedReader.readLine();
-//                    }
-//                    int actionInput = Integer.parseInt(temp2);
-//                    if (actionInput == 1) {
-//                        itemManager.approveItem(pendingItemID);
-//                        userManager.addToNormalUserInventory(pendingItemID, itemOwnerUsername);
-//
-//                        /* Notify item owner of approval */
-//                        userManager.notifyUser(itemOwnerUsername).itemUpdateWithID
-//                                ("ITEM APPROVED", itemOwnerUsername, currUsername,
-//                                        itemManager.getItemName(pendingItemID), pendingItemID);
-//
-//                    } else if (actionInput == 2) {
-//                        itemManager.rejectItem(pendingItemID);
-//                        userManager.removeFromNormalUserPending(pendingItemID, itemOwnerUsername);
-//
-//                        /* Notify item owner of rejection */
-//                        userManager.notifyUser(itemOwnerUsername).itemUpdate
-//                                ("ITEM REJECTED", itemOwnerUsername, currUsername,
-//                                        itemManager.getItemName(pendingItemID));
-//
-//                    } else {
-//                        break;
-//                    }
-//                }
-//            } while (input != 0);
-//        } catch (IOException e) {
-//            systemPresenter.exceptionMessage();
-//        }
     }
 
     /**

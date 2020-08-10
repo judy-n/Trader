@@ -9,7 +9,7 @@ import SystemManagers.UserManager;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-06
- * last modified 2020-08-06
+ * last modified 2020-08-10
  */
 public class AccountUnfreezer {
     private String currUsername;
@@ -24,60 +24,6 @@ public class AccountUnfreezer {
     public AccountUnfreezer(String username, UserManager userManager) {
         this.currUsername = username;
         this.userManager = userManager;
-
-        // Header: systemPresenter.accountUnfreezer(1) for "Here are the users that requested to be unfrozen:"
-        //          systemPresenter.accountUnfreezer(2) for "Select the unfreeze request you'd like to accept:"
-
-        // 1. Display list of unfreeze requests: getUnfreezeRequests()
-        //      > if empty, systemPresenter.emptyListMessage()
-        // 2. Pass selected index into acceptUnfreezeRequest() to unfreeze
-        // 3. Let user know unfreeze was successful: systemPresenter.accountUnfreezer(3);
-        //      - swing dialog window? :o
-
-//        OLD CODE
-//        -----------------------
-//        int indexInput = 0;
-//        List<String> usernames;
-//        do {
-//            usernames = userManager.getUnfreezeRequests();
-//            systemPresenter.adminGetUnfreezeRequests(usernames);
-//            if (!usernames.isEmpty()) {
-//                try {
-//                    String input = bufferedReader.readLine();
-//                    while (!input.equalsIgnoreCase("y") && !input.equalsIgnoreCase("n")) {
-//                        systemPresenter.invalidInput();
-//                        input = bufferedReader.readLine();
-//                    }
-//                    if (input.equalsIgnoreCase("y")) {
-//                        systemPresenter.adminGetUnfreezeRequests(1);
-//
-//                        int max = userManager.getNumUnfreezeRequest();
-//                        String temp = bufferedReader.readLine();
-//                        while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > max) {
-//                            systemPresenter.invalidInput();
-//                            temp = bufferedReader.readLine();
-//                        }
-//                        indexInput = Integer.parseInt(temp);
-//
-//                        if (indexInput != 0) {
-//                            String unfreezeUsername = userManager.getUnfreezeUsername(indexInput - 1);
-//                            userManager.removeUnfreezeRequest(indexInput - 1);
-//
-//                            /* Notify normal user of account being unfrozen */
-//                            userManager.notifyUser(unfreezeUsername).basicUpdate
-//                                    ("UNFROZEN", unfreezeUsername, currUsername);
-//
-//                            systemPresenter.adminGetUnfreezeRequests(2);
-//                        }
-//                    }
-//                    systemPresenter.adminGetUnfreezeRequests(3);
-//                } catch (IOException e) {
-//                    systemPresenter.exceptionMessage();
-//                }
-//            } else {
-//                break;
-//            }
-//        } while (indexInput != 0);
     }
 
     /**

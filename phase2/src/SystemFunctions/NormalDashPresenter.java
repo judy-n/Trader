@@ -9,7 +9,7 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-08-07
- * last modified 2020-08-07
+ * last modified 2020-08-10
  */
 public class NormalDashPresenter {
 
@@ -64,7 +64,7 @@ public class NormalDashPresenter {
             case 6:
                 return ("View Completed Trades");
             case 7:
-                return ("Edit Vacation Status");
+                return ("Change Vacation Status");
             case 8:
                 return ("Send Unfreeze Request");
             default:

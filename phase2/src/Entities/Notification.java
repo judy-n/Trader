@@ -1,5 +1,6 @@
 package Entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -8,9 +9,9 @@ import java.time.LocalDateTime;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-30
- * last modified 2020-08-07
+ * last modified 2020-08-09
  */
-public class Notification {
+public class Notification implements Serializable {
 
     private final String MESSAGE;
     private final LocalDateTime DATE_TIME;

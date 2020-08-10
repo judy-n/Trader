@@ -1,5 +1,6 @@
 package SystemFunctions;
 
+import Entities.NormalUser;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
@@ -56,14 +57,13 @@ public class SystemController extends JFrame {
             new SignUpSystem(userManager).createNewNormal("test", "a@b.com", "p", "homeCity", notifSystem);
             long itemID = itemManager.createItem("fruit", "it's a strawberry", "test");
             long itemID2 = itemManager.createItem("AHHH", "OMG", "test");
-            long itemID3 = itemManager.createItem("PEND","INg", "test");
+            long itemID3 = itemManager.createItem("PEND", "INg", "test");
             itemManager.approveItem(itemID);
             itemManager.approveItem(itemID2);
             userManager.addToNormalUserPending(itemID3, "test");
             userManager.addToNormalUserInventory(itemID, "test");
             userManager.addToNormalUserWishlist(itemID2, "test");
         }
-
 
 
         int[] defaultThresholds = tryReadThresholds();
@@ -108,20 +108,20 @@ public class SystemController extends JFrame {
     }
 
     public ArrayList<Integer> normalUserSignUpCheck(String username, String email, String password,
-                                               String validatePassword, String homeCity){
+                                                    String validatePassword, String homeCity) {
         return new SignUpSystem(userManager).validateInputNormal(username, email, password, validatePassword, homeCity);
     }
 
-    public void normalUserSignUp(String username, String email, String password, String homeCity, JFrame parent){
+    public void normalUserSignUp(String username, String email, String password, String homeCity, JFrame parent) {
         new SignUpSystem(userManager).createNewNormal(username, email, password, homeCity, notifSystem);
         new DashboardFrame(new NormalDashboard(username, itemManager, userManager, tradeManager, notifSystem), parent);
     }
 
-    public ArrayList<Integer> userLogin(String usernameOrEmail, String password){
+    public ArrayList<Integer> userLogin(String usernameOrEmail, String password) {
         return new LoginSystem(userManager).validateInput(usernameOrEmail, password);
     }
 
-    public String userLogin(String usernameOrEmail, JFrame parent){
+    public String userLogin(String usernameOrEmail, JFrame parent) {
         String currUsername = userManager.getUserByUsernameOrEmail(usernameOrEmail).getUsername();
         if (userManager.isAdmin(currUsername)) {
             new DashboardFrame(new AdminDashboard(currUsername, itemManager, userManager, notifSystem), parent);
@@ -132,7 +132,7 @@ public class SystemController extends JFrame {
     }
 
 
-    public void demoUser(){
+    public void demoUser() {
         new DemoDashboard(itemManager, userManager);
     }
 
@@ -171,6 +171,17 @@ public class SystemController extends JFrame {
 
         try {
             notifSystem = (NotificationSystem) readWriter.readFromFile(NOTIF_SYSTEM_PATH, 4);
+
+            /*
+             * Adds the notification system as an observer to all normal users in the system and the
+             * initial admin, since it gets lost during serialization.
+             */
+            for (NormalUser u : userManager.getAllNormals()) {
+                u.addObserver(notifSystem);
+            }
+            if (!userManager.getAllAdmins().isEmpty()) {
+                userManager.getAllAdmins().get(0).addObserver(notifSystem);
+            }
         } catch (IOException e) {
             systemPresenter.exceptionMessage(1, "Reading", "NotificationSystem");
         } catch (ClassNotFoundException e) {

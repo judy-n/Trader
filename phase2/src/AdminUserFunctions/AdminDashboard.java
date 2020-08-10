@@ -147,7 +147,7 @@ public class AdminDashboard extends Dashboard {
         }
     }
 
-    public String[] getRevertibleNotfis(){
+    public String[] getRevertibleNotifs(){
         return actionReverter.getRevertibleNotifs();
     }
 

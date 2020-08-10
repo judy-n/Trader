@@ -43,8 +43,8 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
 
     private String getNotifString(Notification notifToConvert) {
         DateTimeHandler dateTimeHandler = new DateTimeHandler();
-        return dateTimeHandler.getDateTimeString(notifToConvert.getDateTime())
-                + String.format("%5s", notifToConvert.getMessage());
+        String dateTimeStr = dateTimeHandler.getDateTimeString(notifToConvert.getDateTime());
+        return String.format("%1$s  %2$s", dateTimeStr, notifToConvert.getMessage());
     }
 
     /**
@@ -134,8 +134,14 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
     @Override
     public void update(Observable user, Object arg) {
         String[] notifArg = (String[]) arg;
-        String usernameNotified = notifArg[0];
+        String usernameNotified;
         String mainMessage = "";
+
+        if (notifArg.length == 1) {
+            usernameNotified = notifArg[0];
+        } else {
+            usernameNotified = notifArg[1];
+        }
 
         if (notifArg.length == 1) {
             recordAdminCreation(notifArg[0]);
@@ -151,6 +157,15 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
 
         if (!mainMessage.equals("")) {
             Notification mainNotif = new Notification(mainMessage);
+
+            // TODO: delete this code after notifs can be displayed
+            System.out.println(getNotifString(mainNotif));
+            System.out.println("    notif for user: " + usernameNotified);
+
+            if (userToNotifMap.isEmpty()) {
+                System.out.println("usernotifmap empty??");
+            }
+
             userToNotifMap.get(usernameNotified).add(mainNotif);
         }
     }
