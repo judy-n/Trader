@@ -14,7 +14,7 @@ import java.util.List;
  * @author Kushagra
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-08-09
+ * last modified 2020-08-10
  */
 public class SystemPresenter {
     private final StartMenuPresenter startMenuPresenter;
@@ -145,61 +145,37 @@ public class SystemPresenter {
      * Tells a user that they are borrowing more than their threshold.
      *
      * @param lendMinimum the lending minimum of the current user
+     * @return the string to display
      */
-    public void catalogViewerLendWarning(int lendMinimum) {
-        System.out.println("\nYou're borrowing too much! You need to lend AT LEAST " + lendMinimum + " more item(s) than you've borrowed.");
+    public String lendWarning(int lendMinimum) {
+        return ("You're borrowing too much! You need to lend AT LEAST " + lendMinimum + " more item(s) than you've borrowed.");
     }
 
     /**
-     * Prompts user about items in the catalog.
+     * Returns the labels for elements on the catalog viewer screen of the program.
      *
-     * @param input the user's input
+     * @param input the case corresponding to the label being retrieved
+     * @return the string to display
      */
-    public void catalogViewer(int input) {
+    public String catalogViewer(int input) {
         switch (input) {
             case 1:
-                System.out.print("\nIs there an item you would like to trade for or add to your wishlist?" +
-                        "\nPlease enter your choice here (0 to quit): ");
-                break;
-            case 2:
-                System.out.println("\nYou cannot initiate any trades at the moment due to your account being frozen." +
+                return ("You cannot initiate any trades at the moment due to your account being frozen." +
                         "\nHowever, you may still add items to your wishlist.");
-                break;
-            case 3:
-                System.out.print("\nSorry, this item is currently not available for trade." +
-                        "\nWould you like to add it to your wishlist? (Y/N): ");
-                break;
-            case 4:
-                System.out.println("\nItem has been added to your wishlist!");
-                break;
-            case 5:
-                System.out.println("\nThis item is already in your wishlist!");
-                break;
-            case 6:
-                System.out.println("\nYou've already sent a request to borrow this item!");
-                break;
-            case 7:
-                System.out.println("\nThis item's owner is currently frozen!" +
-                        "\nWould you like to add it to your wishlist instead? (Y/N): ");
-                break;
-        }
-    }
-
-    /**
-     * Prompts the user about an item they have chosen from the catalog
-     *
-     * @param itemName the name of the selected item
-     * @param owner    the owner of the selected item
-     * @param input    the user's input
-     */
-    public void catalogViewer(String itemName, String owner, int input) {
-        switch (input) {
-            case 1:
-                System.out.print("\nYou have chosen: [" + itemName + "]\n Would you like to 1) trade or 2) wishlist this item? (0 to cancel): ");
-                break;
             case 2:
-                System.out.print("\nAre you sure you want to trade for this item with user " + owner + "? (Y/N): ");
-                break;
+                return ("Sorry, this item is currently not available for trade." +
+                        "\nHowever, you may still add it to your wishlist.: ");
+            case 3:
+                return ("Item has been added to your wishlist!");
+            case 4:
+                return ("This item is already in your wishlist!");
+            case 5:
+                return ("You've already sent a request to borrow this item!");
+            case 6:
+                return ("This item's owner is currently frozen!" +
+                        "\nHowever, you may still add this item to your wishlist. ");
+            default:
+                return null;
         }
     }
 
@@ -692,42 +668,23 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents prompts and other info for <TradeRequestSetup></TradeRequestSetup>.
+     * Returns the labels for elements when making a trade request.
      *
-     * @param input the case associated with the string to display
+     * @param input the case associated with which list to display
      */
-    public void tradeRequestSetup(int input) {
+    public String tradeRequestSetup(int input) {
         switch (input) {
             case 1:
-                System.out.print("\nWould you like us to suggest items to lend to the other user? (Y/N): ");
-                break;
+                return ("Suggested items to lend in this trade request:");
             case 2:
-                System.out.println("\nUh oh! We couldn't find any items that the other user might want to borrow from you :(");
-                break;
+                return ("Uh oh! We couldn't find any items that the other user might want to borrow from you :(");
             case 3:
-                System.out.println("\nSorry, to maintain the balance of how many more items you've lent than you've borrowed," +
+                return ("Sorry, to maintain the balance of how many more items you've lent than you've borrowed," +
                         "you must choose an item to lend to the other user.");
-                break;
-        }
-    }
-
-    /**
-     * Presents the given list of items when making a trade request.
-     *
-     * @param itemList the list of items to be displayed
-     * @param input    the case associated with which list to display
-     */
-    public void tradeRequestSetup(List<Item> itemList, int input) {
-        switch (input) {
-            case 1:
-                System.out.println("\nThese are all the items you can currently lend out that the other user might want to borrow:");
-                presentAllItems(itemList, false);
-                break;
-            case 2:
-                System.out.println("\nHere are all your items currently available for trade:");
-                presentAllItems(itemList, false);
-                System.out.print("Enter the index of the item you'd like to lend (0 to not lend anything): ");
-                break;
+            case 4:
+                return ("Your first trade request must be a two-way trade!");
+            default:
+                return null;
         }
     }
 
@@ -737,8 +694,7 @@ public class SystemPresenter {
      * @param username the username of recipient of the trade request
      */
     public void tradeRequestSetup(String username) {
-        System.out.println("\nYour request to trade has been sent to " + username + "!" +
-                "\nIf this item was not already in your wishlist, it has automatically been added.");
+        System.out.println("\nYour request to trade has been sent to " + username + "!");
     }
 
     /**

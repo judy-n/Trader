@@ -1,19 +1,15 @@
 package NormalUserFunctions;
 
-import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
 import Entities.Item;
 import SystemFunctions.SystemPresenter;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Shows all items available for trade from all users' inventories except for the user who's currently logged in.
+ * Helps show all items available for trade from all users' inventories except for the user who's currently logged in.
  * Allows users to initiate trades and add items to their wishlist.
  *
  * @author Ning Zhang
@@ -21,130 +17,227 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-09
+ * last modified 2020-08-10
  */
 public class CatalogViewer {
     private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
-    private NotificationSystem notifSystem;
     private SystemPresenter systemPresenter;
-    private BufferedReader bufferedReader;
+
+    private List<Item> allItemsOtherUsers;
+    private List<Item> catalogToView;
+    private List<Long> fullInventory;
+    private List<Long> availableInventory;
+    private int timesBorrowed;
+    private int timesLent;
+    private int lendMinimum;
 
     /**
-     * Creates an <CatalogViewer></CatalogViewer> with the given normal user username,
-     * item/user/trade managers, and notification system.
-     * Displays all items available for trade (excluding the current user's items).
+     * Creates an <CatalogViewer></CatalogViewer> with the given normal user username and item/user/trade managers.
      *
      * @param username     the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
-     * @param notifSystem  the system's notification manager
      */
-    public CatalogViewer(String username, ItemManager itemManager, UserManager userManager,
-                         TradeManager tradeManager, NotificationSystem notifSystem) {
+    public CatalogViewer(String username, ItemManager itemManager, UserManager userManager, TradeManager tradeManager) {
         currUsername = username;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
-        this.notifSystem = notifSystem;
-
         systemPresenter = new SystemPresenter();
-        bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    }
 
-        List<Item> allItemsOtherUsers = itemManager.getApprovedItems(currUsername);
-        List<Item> catalogToView = filterItemsNotOnVacation(filterItemsHomeCity(allItemsOtherUsers));
-        int maxIndex = catalogToView.size();
+    /**
+     * Filters the catalog to only show items that:
+     * a) belong to other users,
+     * b) belong to users located in the same home city as the user currently viewing the catalog, and
+     * c) belong to users that aren't currently on vacation.
+     * Returns an array of string representations of the catalog items.
+     *
+     * @return an array of string representations of the catalog items
+     */
+    public String[] getCatalogStrings() {
+        allItemsOtherUsers = itemManager.getApprovedItems(currUsername);
+        catalogToView = filterItemsNotOnVacation(filterItemsHomeCity(allItemsOtherUsers));
 
-        systemPresenter.catalogViewer(catalogToView);
+        return itemManager.getItemStrings(catalogToView, true);
+    }
 
-        int timesBorrowed = userManager.getNormalUserTimesBorrowed(currUsername) + tradeManager.getTimesBorrowed(currUsername);
-        int timesLent = userManager.getNormalUserTimesLent(currUsername) + tradeManager.getTimesLent(currUsername);
-        int lendMinimum = userManager.getThresholdSystem().getLendMinimum();
+    /**
+     * Adds the catalog item at the given index to the current user's wishlist iff
+     * it isn't already in their wishlist.
+     * Returns whether or not the item was successfully added to the user's wishlist.
+     *
+     * @param index the index of the catalog item being added to wishlist
+     * @return true iff the given item isn't already in the current user's wishlist
+     */
+    public boolean addToWishlist(int index) {
 
-        systemPresenter.catalogViewer(1);
-        try {
-            String temp = bufferedReader.readLine();
-            while (!temp.matches("[0-9]+") || Integer.parseInt(temp) > maxIndex) {
-                systemPresenter.invalidInput();
-                temp = bufferedReader.readLine();
-            }
-            int input = Integer.parseInt(temp);
-            if (input != 0) {
-                Item selectedItem = catalogToView.get(input - 1);
-                long itemID = selectedItem.getID();
+        long itemToWishlistID = catalogToView.get(index).getID();
 
-                systemPresenter.catalogViewer(selectedItem.getName(), selectedItem.getOwnerUsername(), 1);
-
-                String temp2 = bufferedReader.readLine();
-                while (!temp2.matches("[0-2]")) {
-                    systemPresenter.invalidInput();
-                    temp2 = bufferedReader.readLine();
-                }
-                int tradeOrWishlist = Integer.parseInt(temp2);
-
-                if (tradeOrWishlist == 1 && (!itemManager.getItemAvailability(itemID)) ||
-                        userManager.getNormalUserIsFrozen(itemManager.getItemOwner(itemID))) {
-
-                    if (!itemManager.getItemAvailability(itemID)) {
-                        systemPresenter.catalogViewer(3);
-                    } else {
-                        systemPresenter.catalogViewer(7);
-                    }
-
-                    //option to add unavailable item or item belonging to frozen user to wishlist
-                    String confirmInput = bufferedReader.readLine();
-                    while (!confirmInput.equalsIgnoreCase("Y") && !confirmInput.equalsIgnoreCase("N")) {
-                        systemPresenter.invalidInput();
-                        confirmInput = bufferedReader.readLine();
-                    }
-
-                    if (confirmInput.equalsIgnoreCase("Y")) {
-                        tradeOrWishlist = 2;
-                    }
-
-                } else if (tradeOrWishlist == 1) {
-                    if (userManager.getNormalUserIsFrozen(currUsername)) {
-                        systemPresenter.catalogViewer(2);
-                    } else if (userManager.isRequestedInTrade(currUsername, itemID)) {
-                        systemPresenter.catalogViewer(6);
-                    } else if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < lendMinimum)) {
-                        systemPresenter.catalogViewerLendWarning(lendMinimum);
-                    } else {
-
-                        /*
-                         * If this code is reached, then the user is allowed to set up a trade since they've
-                         * lent at least lendMinimum more items than they've borrowed, or it's the user's
-                         * first time initiating a trade request/all their past requests were rejected.
-                         *
-                         * However, if the difference between the number of items they've lent and the number of
-                         * items they've borrowed is exactly equal to lendMinimum, then the user must offer to
-                         * lend an item in order to keep the balance.
-                         *
-                         * Additionally, if it's the user's first time initiating a trade request
-                         * or all their past requests were rejected, then they must request a two-way trade.
-                         */
-                        boolean mustLend = false;
-                        if (timesBorrowed == 0 || (timesLent - timesBorrowed) == lendMinimum) {
-                            mustLend = true;
-                        }
-                        new TradeRequestSetup(currUsername, itemManager, userManager, mustLend).makeTradeRequest(selectedItem);
-                    }
-                }
-
-                if (tradeOrWishlist == 2 && !userManager.isInNormalUserWishlist(itemID, currUsername)) {
-                    userManager.addToNormalUserWishlist(itemID, currUsername);
-                    systemPresenter.catalogViewer(4);
-                } else if (tradeOrWishlist == 2 && userManager.isInNormalUserWishlist(itemID, currUsername)) {
-                    systemPresenter.catalogViewer(5);
-                }
-            }
-        } catch (IOException e) {
-            systemPresenter.exceptionMessage();
+        if (!userManager.isInNormalUserWishlist(itemToWishlistID, currUsername)) {
+            userManager.addToNormalUserWishlist(itemToWishlistID, currUsername);
+            return true;
+            // systemPresenter.catalogViewer(3); "Item has been added to your wishlist!"
+        } else {
+            return false;
+            //systemPresenter.catalogViewer(4); "This item is already in your wishlist!"
         }
-        close();
+    }
+
+    /**
+     * Checks if the catalog item at the given index can be requested in a trade.
+     * An item cannot be requested in a trade if:
+     * - the user requesting is currently frozen
+     * - the owner of the item is currently frozen
+     * - the item is currently involved in a trade
+     * - the user already has sent a trade request for it that the recipient hasn't yet responded to
+     * - the user hasn't lent enough items more than they've borrowed
+     *
+     * @param index the index of the catalog item being checked
+     * @return an error message iff item is not available for trade or owner is frozen, an empty string otherwise
+     */
+    public String canTradeRequestItem(int index) {
+
+        long itemToRequestID = catalogToView.get(index).getID();
+
+        timesBorrowed = userManager.getNormalUserTimesBorrowed(currUsername) + tradeManager.getTimesBorrowed(currUsername);
+        timesLent = userManager.getNormalUserTimesLent(currUsername) + tradeManager.getTimesLent(currUsername);
+        lendMinimum = userManager.getThresholdSystem().getLendMinimum();
+
+        if (userManager.getNormalUserIsFrozen(currUsername)) {
+            return systemPresenter.catalogViewer(1);
+        } else if (userManager.getNormalUserIsFrozen(itemManager.getItemOwner(itemToRequestID))) {
+            return systemPresenter.catalogViewer(6);
+        } else if (!itemManager.getItemAvailability(itemToRequestID)) {
+            return systemPresenter.catalogViewer(2);
+        } else if (userManager.isRequestedInTrade(currUsername, itemToRequestID)) {
+            return systemPresenter.catalogViewer(5);
+        } else if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < lendMinimum)) {
+            return systemPresenter.lendWarning(lendMinimum);
+        } else {
+            return ("");
+        }
+    }
+
+    /**
+     * Returns an array of string representations for all the items in the current user's inventory
+     * that are available for trade.
+     *
+     * @return an array of string representations for the current user's available inventory
+     */
+    public String[] getCurrUserInventory() {
+        fullInventory = userManager.getNormalUserInventory(currUsername);
+        availableInventory = itemManager.getAvailableItems(fullInventory);
+        return itemManager.getItemStringsID(availableInventory, false);
+    }
+
+    /**
+     * Returns an array of string representations for the
+     * suggested items to lend for the current user's trade request.
+     *
+     * @param index the index of the selected catalog item for which a trade request is being set up
+     * @return an array of string representations for the suggested items
+     */
+    public String[] getSuggestedItems(int index) {
+
+        long itemToRequest = catalogToView.get(index).getID();
+
+        fullInventory = userManager.getNormalUserInventory(currUsername);
+        availableInventory = itemManager.getAvailableItems(fullInventory);
+
+        String traderUsername = itemManager.getItemOwner(itemToRequest);
+        List<Long> otherUserWishlist = userManager.getNormalUserWishlist(traderUsername);
+        List<Long> suggestedItems = new ArrayList<>();
+
+        // the questionable item suggestion algorithm
+        for (long wishlistID : otherUserWishlist) {
+            for (long availableItemID : availableInventory) {
+                if ((availableItemID == wishlistID ||
+                        itemManager.getItemName(wishlistID)
+                                .equalsIgnoreCase(itemManager.getItemName(availableItemID)))
+                        && !suggestedItems.contains(availableItemID)) {
+                    suggestedItems.add(availableItemID);
+                }
+            }
+        }
+
+        String[] suggestedItemStrings ;
+
+        if (suggestedItems.isEmpty()) {
+            suggestedItemStrings  = new String[2];
+            suggestedItemStrings [0] = systemPresenter.tradeRequestSetup(1);
+            suggestedItemStrings [1] = systemPresenter.tradeRequestSetup(2);
+        } else {
+            suggestedItemStrings  = new String[suggestedItems.size() + 1];
+            suggestedItemStrings [0] = systemPresenter.tradeRequestSetup(1);
+            String[] tempSuggestions = itemManager.getItemStringsID(suggestedItems, false);
+
+            System.arraycopy(tempSuggestions, 0, suggestedItemStrings, 1, suggestedItemStrings.length);
+        }
+
+        return suggestedItemStrings;
+    }
+
+    /**
+     * Creates a trade request for a two-way trade using the given index of a catalog item
+     * and an item from the current user's inventory.
+     *
+     * @param indexOfItemRequested the index of the catalog item being requested in a two-way trade
+     * @param indexOfItemToLend the index of the inventory item that the user is choosing to lend
+     */
+    public void requestItemInTwoWayTrade(int indexOfItemRequested, int indexOfItemToLend) {
+
+        long itemToLendID = availableInventory.get(indexOfItemToLend);
+        long itemToBorrowID = catalogToView.get(indexOfItemRequested).getID();
+
+        sendTradeRequest(itemToLendID, itemToBorrowID);
+    }
+
+    /**
+     * Checks if the current user is allowed to initiate a one-way trade.
+     * If allowed, creates a trade request for a one-way trade using the given index of a catalog item.
+     *
+     * @param indexOfItemRequested the index of the catalog item being requested in a one-way trade
+     * @return an error message iff the user is not allowed to initiate a one-way trade, an empty string otherwise
+     */
+    public String requestItemInOneWayTrade(int indexOfItemRequested) {
+        /*
+         * If this code is reached, then the user is allowed to set up a trade since they've
+         * lent at least lendMinimum more items than they've borrowed, or it's the user's
+         * first time initiating a trade request/all their past requests were rejected.
+         *
+         * However, if the difference between the number of items they've lent and the number of
+         * items they've borrowed is exactly equal to lendMinimum, then the user must offer to
+         * lend an item in order to keep the balance.
+         *
+         * Additionally, if it's the user's first time initiating a trade request
+         * or all their past requests were rejected, then they must request a two-way trade.
+         */
+        if (timesBorrowed == 0) {
+            return systemPresenter.tradeRequestSetup(4);
+        } else if ((timesLent - timesBorrowed) == lendMinimum) {
+            return systemPresenter.tradeRequestSetup(3);
+        } else {
+            long itemToBorrowID = catalogToView.get(indexOfItemRequested).getID();
+            sendTradeRequest(0, itemToBorrowID);
+            return ("");
+        }
+    }
+
+    private void sendTradeRequest(long itemToLendID, long itemToBorrowID) {
+        String traderUsername = itemManager.getItemOwner(itemToBorrowID);
+        long[] tradeItems = {itemToLendID, itemToBorrowID};
+        String[] traderUsernames = {currUsername, traderUsername};
+
+        userManager.addTradeRequestBothUsers(traderUsernames, tradeItems);
+
+        /* Notify other user of new trade request */
+        userManager.notifyUser(traderUsername).basicUpdate
+                ("TRADE REQUEST RECEIVED", traderUsername, currUsername);
     }
 
     /*
@@ -172,9 +265,5 @@ public class CatalogViewer {
         }
         return itemsNotOnVacation;
 
-    }
-
-    private void close() {
-        new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem);
     }
 }

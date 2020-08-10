@@ -15,7 +15,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-09
+ * last modified 2020-08-10
  */
 public class ItemManager extends Manager implements Serializable {
     private List<Item> approvedItems;
@@ -137,19 +137,19 @@ public class ItemManager extends Manager implements Serializable {
     }
 
     /**
-     * Takes in a list of items and returns a list that only includes the items that are available for trade.
+     * Takes in a list of item IDs and returns a list that only includes the IDs of items that are available for trade.
      *
-     * @param items a list of items of which the available ones are being retrieved
-     * @return a list of items that only includes the available items from the given list
+     * @param itemIDs a list of item IDs of which the available ones are being retrieved
+     * @return a list of item IDs that only includes the available items from the given list
      */
-    public List<Item> getAvailableItems(List<Item> items) {
-        List<Item> availableItems = new ArrayList<>();
-        for (Item i : items) {
-            if (i.getAvailability()) {
-                availableItems.add(i);
+    public List<Long> getAvailableItems(List<Long> itemIDs) {
+        List<Long> availableItemIDs = new ArrayList<>();
+        for (long id : itemIDs) {
+            if (getItemAvailability(id)) {
+                availableItemIDs.add(id);
             }
         }
-        return availableItems;
+        return availableItemIDs;
     }
 
     /**
