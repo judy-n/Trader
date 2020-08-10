@@ -82,12 +82,11 @@ public class InventoryEditor {
          * OR if item is in a trade that's been cancelled due to users failing to confirm the transaction
          */
         long selectedItemID = userManager.getNormalUserInventory(currUsername).get(index);
-        Item selectedItem = itemManager.getItem(selectedItemID);
         if (userManager.isRequestedInTrade(currUsername, selectedItemID)) {
             return false;
         } else {
-            return selectedItem.getAvailability() ||
-                    (!selectedItem.getAvailability() && tradeManager.getItemInCancelledTrade(selectedItemID));
+            return itemManager.getItemAvailability(selectedItemID) ||
+                    (!itemManager.getItemAvailability(selectedItemID) && tradeManager.getItemInCancelledTrade(selectedItemID));
         }
     }
 

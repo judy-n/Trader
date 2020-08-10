@@ -294,33 +294,29 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents user with trade request related text based off an input
+     * Returns the labels for elements on the trade request viewer screen.
      *
-     * @param input the input
+     * @param input the case corresponding to the label being retrieved
+     * @return the string to display
      */
-    public void tradeRequestViewer(int input) {
+    public String tradeRequestViewer(int input) {
         switch (input) {
             case 1:
-                System.out.print("\nOnce you're done viewing your initiated trades, enter 0 to quit: ");
-                break;
+                return ("Once you're done viewing your initiated trades, enter 0 to quit: ");
             case 2:
-                System.out.print("\nPlease suggest a place: ");
-                break;
+                return ("Please suggest a place: ");
             case 3:
-                System.out.println("\nSorry, you can't view any trade requests because your account is currently frozen.");
-                break;
+                return ("Sorry, you can't view any trade requests because your account is currently frozen.");
             case 4:
-                System.out.print("\nPlease suggest a date and time using the given format (YYYY/MM/DD-hh:mm): ");
-                break;
+                return ("Please suggest a date and time using the given format (YYYY/MM/DD-hh:mm): ");
             case 6:
-                System.out.print("\nWould you like to make this a 1) permanent or 2) temporary trade?: ");
-                break;
+                return ("Would you like to make this a 1) permanent or 2) temporary trade?: ");
             case 8:
-                System.out.println("\nOne of the items involved in this request is currently being lent to someone else!");
-                break;
+                return ("One of the items involved in this request is currently being lent to someone else!");
             case 9:
-                System.out.println("\nTrade request has been rejected.");
-                break;
+                return ("Trade request has been rejected.");
+            default:
+                return null;
         }
     }
 

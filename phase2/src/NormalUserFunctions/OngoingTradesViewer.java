@@ -123,29 +123,16 @@ public class OngoingTradesViewer {
     }
 
     /**
-     * Checks if the date and time suggested by the user are valid.
-     * The date/time suggested must be in valid format and in the future.
-     * The suggestion must also not fall in a week during which the user has
-     * already scheduled the maximum number of meetings allowed.
+     * Checks if the date/time and location suggested by the user are valid.
      *
      * @param suggestedDateTime the date and time suggested by the user
-     * @return an error message iff the date/time is not valid, an empty string otherwise
+     * @param suggestedLocation the location suggested by the user
+     * @return an error message iff the date/time or location is not valid, an empty string otherwise
      */
-    public String validateSuggestion(String suggestedDateTime) {
-
-        boolean dateTimeIsValid = dateTimeHandler.checkDateTime(suggestedDateTime);
-
-        if (dateTimeIsValid) {
-            int tradesInWeek = tradeManager.getNumMeetingsThisWeek
-                    (currUsername, dateTimeHandler.getLocalDateTime(suggestedDateTime).toLocalDate());
-            if (tradesInWeek == userManager.getThresholdSystem().getWeeklyTradeMax()) {
-                return systemPresenter.failedSuggestion();
-            } else {
-                return ("");
-            }
-        } else {
-            return systemPresenter.invalidInput();
-        }
+    public String validateSuggestion(String suggestedDateTime, String suggestedLocation) {
+        return new TradeMeetingSuggestionValidator
+                (currUsername, userManager, tradeManager, dateTimeHandler, systemPresenter)
+                .validateSuggestion(suggestedDateTime, suggestedLocation);
     }
 
     /**

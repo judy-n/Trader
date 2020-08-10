@@ -85,10 +85,10 @@ public class CatalogViewer {
                 }
                 int tradeOrWishlist = Integer.parseInt(temp2);
 
-                if (tradeOrWishlist == 1 && (!selectedItem.getAvailability()) ||
+                if (tradeOrWishlist == 1 && (!itemManager.getItemAvailability(itemID)) ||
                         userManager.getNormalUserIsFrozen(itemManager.getItemOwner(itemID))) {
 
-                    if (!selectedItem.getAvailability()) {
+                    if (!itemManager.getItemAvailability(itemID)) {
                         systemPresenter.catalogViewer(3);
                     } else {
                         systemPresenter.catalogViewer(7);

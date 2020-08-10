@@ -1,13 +1,11 @@
 package NormalUserFunctions;
 
-import SystemManagers.NotificationSystem;
+import SystemFunctions.DateTimeHandler;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
 import Entities.Item;
 import SystemFunctions.SystemPresenter;
-
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
@@ -27,7 +25,6 @@ public class TradeRequestViewer {
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
-    private NotificationSystem notifSystem;
 
     private LinkedHashMap<String[], long[]> initiatedTrades;
     private LinkedHashMap<String[], long[]> receivedTrades;
@@ -41,30 +38,27 @@ public class TradeRequestViewer {
     List<String[]> receivedItemNames;
     List<String> receivedOwners;
 
+    private DateTimeHandler dateTimeHandler;
     private SystemPresenter systemPresenter;
 
-
     /**
-     * Creates an <TradeRequestViewer></TradeRequestViewer> with the given normal user,
-     * item/user/trade managers, and notification system.
-     * Prints to the screen all trade requests received/sent by the given normal user and options on actions to take
-     * using <SystemPresenter></SystemPresenter>.
+     * Creates an <TradeRequestViewer></TradeRequestViewer> with the given normal user and
+     * item/user/trade managers.
      *
      * @param currUsername the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
-     * @param notifSystem  the system's notification manager
      */
     public TradeRequestViewer(String currUsername, ItemManager itemManager, UserManager userManager,
-                              TradeManager tradeManager, NotificationSystem notifSystem) {
+                              TradeManager tradeManager) {
 
         this.currUsername = currUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
-        this.notifSystem = notifSystem;
 
+        dateTimeHandler = new DateTimeHandler();
         systemPresenter = new SystemPresenter();
 
         initiatedTrades = new LinkedHashMap<>();
@@ -80,68 +74,16 @@ public class TradeRequestViewer {
 //        systemPresenter.tradeRequestViewer(3);
 //    }
 
-    private void caseUserNotFrozen() {
+//    private void caseUserNotFrozen() {
 
+    /* doesn't show trade requests from frozen users */
 
-        //systemPresenter.tradeRequestViewer(2, receivedItemNames, receivedOwners);
-
-        /* doesn't show trade requests from frozen users */
-//        try {
-//             if (!receivedTrades.isEmpty()) {
-//
-//                /* input is selected request index */
-//                if (input != 0) {
-//                    String[] senderAndItemNames = getTradeHelper(input);
-//                    String senderUsername = senderAndItemNames[0];
-//                    String[] tradeItemNames = {senderAndItemNames[1], senderAndItemNames[2]};
-//
-//                    if (acceptReject == 2) {        /* reject request */
-//
-//                        /* sure you want to reject? */
-//                        systemPresenter.tradeRequestViewer(4, senderUsername, tradeItemNames);
-//                        String inputConfirm = bufferedReader.readLine();
-//                        while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-//                            systemPresenter.invalidInput();
-//                            inputConfirm = bufferedReader.readLine();
-//                        }
-//
-//                        /* confirm rejection */
-//                        if (inputConfirm.equalsIgnoreCase("y")) {
-//                            /* Notify sender of rejected trade request */
-//                            userManager.notifyUser(senderUsername).itemUpdate
-//                                    ("TRADE REQUEST REJECTED", senderUsername, currUsername,
-//                                            itemManager.getItemName(itemToLendID));
-//
-//                            userManager.removeTradeRequests(getKeyToRemove(), currUsername);
-//                            userManager.removeTradeRequests(getKeyToRemove(), senderUsername);
-//
-//                            systemPresenter.tradeRequestViewer(9);
-//                        } else {
-//                            systemPresenter.cancelled();
-//                        }
-//                    } else if (acceptReject == 1 &&
-//                            itemManager.getItem(itemToLendID).getAvailability() &&
-//                            itemManager.getItem(itemToBorrowID).getAvailability()) {
+    // check if items in trade are all available for trade (canAcceptRequest())
 //
 //                        /*
 //                         * Accept request.
 //                         * Only allow trade if both items being requested or offered are available for trade.
 //                         */
-//
-//                        /* trade with xx person? */
-//                        systemPresenter.tradeRequestViewer(1, senderUsername, tradeItemNames);
-//                        String inputConfirm = bufferedReader.readLine();
-//                        while (!inputConfirm.equalsIgnoreCase("y") && !inputConfirm.equalsIgnoreCase("n")) {
-//                            systemPresenter.invalidInput();
-//                            inputConfirm = bufferedReader.readLine();
-//                        }
-//
-//                        /* confirm trade */
-//                        if (inputConfirm.equalsIgnoreCase("y")) {
-//
-//                            /* remove the trade request from both parties once its been accepted */
-//                            userManager.removeTradeRequests(getKeyToRemove(), currUsername);
-//                            userManager.removeTradeRequests(getKeyToRemove(), senderUsername);
 //
 //                            /* permanent or temporary? */
 //                            systemPresenter.tradeRequestViewer(2, senderUsername, tradeItemNames);
@@ -163,39 +105,13 @@ public class TradeRequestViewer {
 //                                systemPresenter.invalidInput();
 //                                place = bufferedReader.readLine();
 //                            }
-//
-//                            /* set item statuses to unavailable */
-//                            itemManager.setItemAvailability(itemToLendID, false);
-//                            if (itemToBorrowID != 0) {
-//                                itemManager.setItemAvailability(itemToBorrowID, false);
-//                            }
-//
-//                            if (permOrTemp.equals("1")) {
-//                                tradeManager.createPermTrade(new String[]{currUsername, senderUsername},
-//                                        new long[]{itemToLendID, itemToBorrowID}, time, place);
-//                            } else {
-//                                tradeManager.createTempTrade(new String[]{currUsername, senderUsername},
-//                                        new long[]{itemToLendID, itemToBorrowID}, time, place);
-//                            }
-//
-//                            /* Notify sender of accepted trade request */
-//                            userManager.notifyUser(senderUsername).itemUpdate
-//                                    ("TRADE REQUEST ACCEPTED", senderUsername, currUsername,
-//                                            itemManager.getItemName(itemToLendID));
-//                        } else {
-//                            systemPresenter.cancelled();
-//                        }
-//                    } else {
-//                        systemPresenter.tradeRequestViewer(8);
-//                    }
-//                }
-//            }
-//        } catch (IOException e) {
-//            systemPresenter.exceptionMessage();
-//        }
-    }
+//    }
 
-
+    /**
+     * Returns an array of string representations of the trade requests initiated by the current user.
+     *
+     * @return an array of string representations of the trade requests initiated by the current user
+     */
     public String[] getInitiatedTrades() {
 
         initiatedTrades.clear();
@@ -225,6 +141,11 @@ public class TradeRequestViewer {
         return systemPresenter.presentInitiatedTradeRequests(initiatedItemNames, initiatedOwners);
     }
 
+    /**
+     * Returns an array of string representations of the trade requests received by the current user.
+     *
+     * @return an array of string representations of the trade requests received by the current user
+     */
     public String[] getReceivedTrades() {
 
         receivedTrades.clear();
@@ -254,34 +175,93 @@ public class TradeRequestViewer {
         return systemPresenter.presentReceivedTradeRequests(receivedItemNames, receivedOwners);
     }
 
-    //isPerm not needed, unless you wanna create the trade in this method?
-    public void acceptTradeRequest(int index, boolean isPerm) {
+    /**
+     * Checks if the trade request at the given index can be accepted.
+     *
+     * @param index the index of the trade request selected by the user
+     * @return an error message iff the trade request cannot be accepted, an empty string otherwise
+     */
+    public String canAcceptRequest(int index) {
+        getTradeHelper(index);
+        if (itemToBorrowID != 0 && !itemManager.getItemAvailability(itemToBorrowID)) {
+            return systemPresenter.tradeRequestViewer(8);
+        } else if (!itemManager.getItemAvailability(itemToLendID)) {
+            return systemPresenter.tradeRequestViewer(8);
+        } else {
+            return ("");
+        }
+    }
+
+    /**
+     * Checks if the date/time and location suggested by the user are valid.
+     *
+     * @param suggestedDateTime the date and time suggested by the user
+     * @param suggestedLocation the location suggested by the user
+     * @return an error message iff the date/time or location is not valid, an empty string otherwise
+     */
+    public String validateSuggestion(String suggestedDateTime, String suggestedLocation) {
+        return new TradeMeetingSuggestionValidator
+                (currUsername, userManager, tradeManager, dateTimeHandler, systemPresenter)
+                .validateSuggestion(suggestedDateTime, suggestedLocation);
+    }
+
+    /**
+     * Accepts the trade request at the given index and creates a new <Trade></Trade> based on
+     * the details given by the user.
+     * Notifies the sender of the acceptance.
+     *
+     * @param index         the index of the trade request being accepted
+     * @param isPerm        whether or not the user chose to make it a permanent trade
+     * @param validDateTime a valid date/time suggested by the user
+     * @param validLocation a valid location suggested by the user
+     */
+    public void acceptTradeRequest(int index, boolean isPerm, String validDateTime, String validLocation) {
         String[] senderAndItemNames = getTradeHelper(index);
         String senderUsername = senderAndItemNames[0];
         String[] tradeItemNames = {senderAndItemNames[1], senderAndItemNames[2]};
-        userManager.removeTradeRequests(getKeyToRemove(), currUsername);
-        userManager.removeTradeRequests(getKeyToRemove(), senderUsername);
+
+        /* set item statuses to unavailable */
+        itemManager.setItemAvailability(itemToLendID, false);
+        if (itemToBorrowID != 0) {
+            itemManager.setItemAvailability(itemToBorrowID, false);
+        }
+
+        if (isPerm) {
+            tradeManager.createPermTrade(new String[]{currUsername, senderUsername},
+                    new long[]{itemToLendID, itemToBorrowID},
+                    dateTimeHandler.getLocalDateTime(validDateTime), validLocation);
+        } else {
+            tradeManager.createTempTrade(new String[]{currUsername, senderUsername},
+                    new long[]{itemToLendID, itemToBorrowID},
+                    dateTimeHandler.getLocalDateTime(validDateTime), validLocation);
+        }
 
         /* Notify sender of accepted trade request */
         userManager.notifyUser(senderUsername).itemUpdate
-                ("TRADE REQUEST ACCEPTED", senderUsername, currUsername,
-                        itemManager.getItemName(itemToLendID));
-    }
-
-
-    public void rejectTradeRequest(int index) {
-        String[] senderAndItemNames = getTradeHelper(index);
-        String senderUsername = senderAndItemNames[0];
-
-        /* Notify sender of rejected trade request */
-        userManager.notifyUser(senderUsername).itemUpdate
-                ("TRADE REQUEST REJECTED", senderUsername, currUsername,
-                        itemManager.getItemName(itemToLendID));
+                ("TRADE REQUEST ACCEPTED", senderUsername, currUsername, tradeItemNames[1]);
 
         userManager.removeTradeRequests(getKeyToRemove(), currUsername);
         userManager.removeTradeRequests(getKeyToRemove(), senderUsername);
     }
 
+    /**
+     * Rejects the trade request at the given index.
+     * Notifies the sender of the rejection.
+     *
+     * @param index the index of the trade request being rejected
+     */
+    public void rejectTradeRequest(int index) {
+        String[] senderAndItemNames = getTradeHelper(index);
+        String senderUsername = senderAndItemNames[0];
+        String[] tradeItemNames = {senderAndItemNames[1], senderAndItemNames[2]};
+
+        /* Notify sender of rejected trade request */
+        userManager.notifyUser(senderUsername).itemUpdate
+                ("TRADE REQUEST REJECTED", senderUsername, currUsername, tradeItemNames[1]);
+
+        userManager.removeTradeRequests(getKeyToRemove(), currUsername);
+        userManager.removeTradeRequests(getKeyToRemove(), senderUsername);
+    }
 
     private String[] getTradeHelper(int index) {
         List<String[]> traders = new ArrayList<>();

@@ -34,9 +34,9 @@ public class ItemManager extends Manager implements Serializable {
      * Creates a new <Item></Item> with the given name and description,
      * then adds it to the list of pending items.
      *
-     * @param name the new item's name
+     * @param name        the new item's name
      * @param description the new item's description
-     * @param owner the username of the new item's owner
+     * @param owner       the username of the new item's owner
      * @return the newly created <Item></Item>
      */
     public long createItem(String name, String description, String owner) {
@@ -232,7 +232,7 @@ public class ItemManager extends Manager implements Serializable {
     /**
      * Takes in a list of items and returns an array of their string representations.
      *
-     * @param itemList the list of items being converted to strings
+     * @param itemList  the list of items being converted to strings
      * @param withOwner whether or not the string representations should include the item owner
      * @return an array of string representations of the given item list
      */
@@ -256,7 +256,7 @@ public class ItemManager extends Manager implements Serializable {
      * Takes in a list of item IDs and returns an array of their associated items' string representations.
      *
      * @param itemListID the list of item IDS being converted to strings
-     * @param withOwner whether or not the string representations should include the item owner
+     * @param withOwner  whether or not the string representations should include the item owner
      * @return an array of string representations of the given item ID list
      */
     public String[] getItemStringsID(List<Long> itemListID, boolean withOwner) {
@@ -274,9 +274,19 @@ public class ItemManager extends Manager implements Serializable {
     }
 
     /**
+     * Gets the availability of the item associated with the given item ID.
+     *
+     * @param itemID the ID of the item whose availability is being retrieved
+     * @return true iff the given item is available for trade
+     */
+    public boolean getItemAvailability(long itemID) {
+        return getItem(itemID).getAvailability();
+    }
+
+    /**
      * Sets the availability status of the item associated with the given item ID.
      *
-     * @param itemID the ID of the item whose availability status is being changed
+     * @param itemID          the ID of the item whose availability status is being changed
      * @param newAvailability the new availability status to set for the item
      */
     public void setItemAvailability(long itemID, boolean newAvailability) {
