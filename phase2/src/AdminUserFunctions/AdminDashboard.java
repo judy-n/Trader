@@ -25,6 +25,7 @@ public class AdminDashboard extends Dashboard {
     private CatalogEditor catalogEditor;
     private ThresholdEditor thresholdEditor;
     private AdminCreator adminCreator;
+    private ActionReverter actionReverter;
     private String popUpMessage = "";
     private SystemPresenter systemPresenter;
 
@@ -48,6 +49,7 @@ public class AdminDashboard extends Dashboard {
         catalogEditor = new CatalogEditor(username, itemManager, userManager);
         thresholdEditor = new ThresholdEditor(username, userManager);
         adminCreator = new AdminCreator(username, userManager);
+        actionReverter = new ActionReverter(username, itemManager, userManager, notifSystem);
 
 //        NEED TO ADD CASE undo action
     }
@@ -143,6 +145,14 @@ public class AdminDashboard extends Dashboard {
         }else{
             setPopUpMessage(1);
         }
+    }
+
+    public String[] getRevertibleNotfis(){
+        return actionReverter.getRevertibleNotifs();
+    }
+
+    public void revertUserAction(int index){
+        actionReverter.revertAction(index);
     }
 
     @Override

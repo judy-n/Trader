@@ -102,9 +102,6 @@ public class DashboardFrame extends JDialog {
         dashboardWindow.setVisible(true);
     }
 
-    /**
-     * Draws all JComponents for normal user's functions
-     */
     private void drawNormalDash() {
         JButton inventory = new JButton(normalDashboard.setUpDash(1));
         inventory.addActionListener(e -> {
@@ -178,7 +175,7 @@ public class DashboardFrame extends JDialog {
     /**
      * Draws all JComponents for admin user's functions
      */
-    private void drawAdminDash() {
+    public void drawAdminDash() {
         userInputPanel.removeAll();
         JButton catalogEditor = new JButton(adminDashboard.setUpDash(1));
         catalogEditor.addActionListener(e -> {
@@ -218,6 +215,11 @@ public class DashboardFrame extends JDialog {
         });
 
         JButton undo = new JButton(adminDashboard.setUpDash(6));
+        undo.addActionListener(e -> {
+            resetEverything();
+            drawUserInputPane(UNDO);
+            drawListDisplay(adminDashboard.getRevertibleNotfis());
+        });
 
         initializeButton(catalogEditor, 200, 40, userFunctionPanel);
         initializeButton(freezer, 200, 40, userFunctionPanel);
@@ -231,7 +233,7 @@ public class DashboardFrame extends JDialog {
      * Draws the JScrollpane in the CENTRE of the JFrame's border layout
      * @param displayItems the contents of the JScrollpane
      */
-    private void drawListDisplay(String[] displayItems) {
+    public void drawListDisplay(String[] displayItems) {
         if (displayItems.length == 0) {
             dashboardWindow.remove(scrollablePane);
             nothingToDisplay.setText("Nothing here yet!");
@@ -250,7 +252,7 @@ public class DashboardFrame extends JDialog {
      * JFrame's border layout
      * @param type int indicating the type of function
      */
-    private void drawUserInputPane(int type) {
+    public void drawUserInputPane(int type) {
         switch (type) {
             case WISHLIST:
                 userInputPanel.removeAll();
@@ -340,7 +342,7 @@ public class DashboardFrame extends JDialog {
                 break;
 
             case UNFREEZE:
-                userInputPanel.removeAll();
+                //userInputPanel.removeAll();
                 removeButton.setText("Unfreeze");
                 initializeButton(removeButton, 100, 20, userInputPanel);
                 removeButton.addActionListener(e -> {
@@ -433,6 +435,19 @@ public class DashboardFrame extends JDialog {
 
                 userInputPanel.add(change);
                 break;
+
+            case UNDO:
+                userInputPanel.removeAll();
+                removeButton.setText("Undo");
+                initializeButton(removeButton, 100, 20, userInputPanel);
+                removeButton.addActionListener(e ->{
+                    if(!listDisplay.isSelectionEmpty()){
+                        adminDashboard.revertUserAction(listDisplay.getSelectedIndex());
+                    }
+                    listDisplay.clearSelection();
+                    redrawDisplayList(adminDashboard.getUnfreezeRequests());
+                });
+                break;
         }
         dashboardWindow.repaint();
         dashboardWindow.setVisible(true);
@@ -444,7 +459,7 @@ public class DashboardFrame extends JDialog {
      * @param stringArray the content to display
      * @param type        int indicating the type of function
      */
-    private void drawOptionalDisplayPanel(String[] stringArray, int type) {
+    public void drawOptionalDisplayPanel(String[] stringArray, int type) {
         switch (type) {
             case INVENTORY:
                 optionalLabelTitle.setText("Pending Inventory");
@@ -477,7 +492,7 @@ public class DashboardFrame extends JDialog {
         dashboardWindow.setVisible(true);
     }
 
-    private void drawOptionalInputPanel(int type){
+    public void drawOptionalInputPanel(int type){
         switch (type){
             case ONGOING:
                 optionalLabelTitle.setText("Suggest Meeting Details");
@@ -494,12 +509,11 @@ public class DashboardFrame extends JDialog {
         }
     }
 
-
     /**
      * Updates the JScrollpane once a change has been made to its content
      * @param displayList the new content to display
      */
-    private void redrawDisplayList(String[] displayList) {
+    public void redrawDisplayList(String[] displayList) {
         dashboardWindow.revalidate();
         drawListDisplay(displayList);
         dashboardWindow.repaint();
@@ -512,7 +526,7 @@ public class DashboardFrame extends JDialog {
      * @param height    the height of the JButton
      * @param panel     the panel to draw it on
      */
-    private void initializeButton(JButton button, int width, int height, JPanel panel) {
+    public void initializeButton(JButton button, int width, int height, JPanel panel) {
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
         button.setMaximumSize(new Dimension(width, height));
@@ -521,7 +535,7 @@ public class DashboardFrame extends JDialog {
         panel.add(button);
     }
 
-    private void initializeToggleButton(JToggleButton button, String ogText, String clickedText){
+    public void initializeToggleButton(JToggleButton button, String ogText, String clickedText){
         button.setText(ogText);
         button.addChangeListener(e -> {
             if (button.isSelected()) {
@@ -535,7 +549,7 @@ public class DashboardFrame extends JDialog {
     /**
      * Resets the JFrame
      */
-    private void resetEverything() {
+    public void resetEverything() {
         for (ActionListener actionListener : removeButton.getActionListeners()) {
             removeButton.removeActionListener(actionListener);
         }
@@ -547,7 +561,7 @@ public class DashboardFrame extends JDialog {
     /**
      * Draws a pop up window containing a warning message if necessary
      */
-    private void drawPopUpMessage(){
+    public void drawPopUpMessage(){
         if(!dashboard.getPopUpMessage().isEmpty()) {
             JOptionPane.showMessageDialog(parent, dashboard.getPopUpMessage());
             dashboard.resetPopUpMessage();
