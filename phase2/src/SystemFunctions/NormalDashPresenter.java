@@ -96,12 +96,14 @@ public class NormalDashPresenter {
                 return ("Invalid input. Please try again.");
             case 31:
                 return ("You've already sent a request to borrow this item!");
-
+            case 32:
+                return ("Your first trade request must be a two-way trade!");
+            case 33:
+                return ("Sorry, to maintain the balance of how many more items you've lent than you've borrowed," +
+                        "you must choose an item to lend to the other user.");
             default:
                 return ("");
-
         }
-
     }
 
     /**
@@ -128,6 +130,8 @@ public class NormalDashPresenter {
                 return ("Change Vacation Status");
             case 8:
                 return ("Send Unfreeze Request");
+            case 9:
+                return ("View Notifications");
             default:
                 return null;
         }
@@ -186,7 +190,7 @@ public class NormalDashPresenter {
             return ("<html># of edits you've made so far: " + numEdits +
                     "<br/> Warning: This is the last time you can suggest a meeting.<html>");
         } else {
-            return ("# of edits you've made so far: " + numEdits);
+            return ("Number of edits you've made so far: " + numEdits);
         }
     }
 
@@ -276,8 +280,6 @@ public class NormalDashPresenter {
      */
     public String tradeRequestSetup(int input) {
         switch (input) {
-            case 1:
-                return ("Suggested items to lend in this trade request:");
             case 2:
                 return ("Uh oh! We couldn't find any items that the other user might want to borrow from you :(");
             case 3:

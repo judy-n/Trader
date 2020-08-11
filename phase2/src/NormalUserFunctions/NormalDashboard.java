@@ -14,7 +14,7 @@ import SystemManagers.TradeManager;
  * @author Yingjia Liu
  * @version 2.0
  * @since 2020-06-26
- * last modified 2020-08-10
+ * last modified 2020-08-11
  */
 public class NormalDashboard extends Dashboard {
     private String currUsername;
@@ -30,6 +30,7 @@ public class NormalDashboard extends Dashboard {
     private CompletedTradesViewer completedTradesViewer;
     private UnfreezeRequester unfreezeRequester;
     private StatusEditor statusEditor;
+    private NotificationViewer notificationViewer;
 
     private String popUpMessage = "";
     private SystemPresenter systemPresenter;
@@ -59,6 +60,7 @@ public class NormalDashboard extends Dashboard {
         completedTradesViewer = new CompletedTradesViewer(currUsername, itemManager, tradeManager);
         unfreezeRequester = new UnfreezeRequester(currUsername, userManager);
         statusEditor = new StatusEditor(currUsername, userManager);
+        notificationViewer = new NotificationViewer(currUsername, notifSystem);
     }
 
     /**
@@ -144,45 +146,79 @@ public class NormalDashboard extends Dashboard {
         return catalogViewer.getCatalogStrings();
     }
 
+    /**
+     * Adds item from catalog viewer to the normal user's wishlist
+     * @param index the index of the item
+     */
     public void addToWishlist(int index){
         if(!catalogViewer.addToWishlist(index)){
             setPopUpMessage(11);
         }
     }
 
+    /**
+     * Sends a two way trade request to the item owner
+     * @param index index of the item to lend
+     */
     public void requestItemInTwoWayTrade(int index){
-        catalogViewer.requestItemInTwoWayTrade(index);
+        if(canSendTradeRequest(catalogViewer.getIndexOfItemRequested())) {
+            catalogViewer.requestItemInTwoWayTrade(index);
+        }
     }
 
+    /**
+     * Sends a one way trade request to the item owner
+     */
     public void requestItemInOneWayTrade(){
-        catalogViewer.requestItemInOneWayTrade();
+        if(canSendTradeRequest(catalogViewer.getIndexOfItemRequested())) {
+            if(catalogViewer.requestItemInOneWayTrade() != 0){
+                setPopUpMessage(catalogViewer.requestItemInOneWayTrade());
+            }
+        }
     }
 
+    /**
+     * Returns the system's suggestion of items to lend in a String array
+     * @param index the index of the item the normal user wants to borrow
+     * @return suggested items in exchange of the selected item
+     */
     public String[] getSuggestedItems(int index){
         return catalogViewer.getSuggestedItems(index);
     }
 
+    /**
+     * Returns the normal user's current inventory
+     * @return the normal user's current inventory
+     */
     public String[] currentUserInventoryInCatalog(){
         return catalogViewer.getCurrUserInventory();
     }
 
-    public void setTradeLendItemIndex(int index){
+    /**
+     * Sets the index of the item the normal user wants to borrow
+     * @param index the index of the item
+     */
+    public void setIndexOfItemRequested(int index){
         catalogViewer.setIndexOfItemRequested(index);
     }
 
-
-//    public void sendTradeRequest(int index, boolean isTwoWay){
-//        if(catalogViewer.canTradeRequestItem()!=0){
-//            setPopUpMessage(systemPresenter.lendWarning(catalogViewer.canTradeRequestItem()));
-//        }else{
-//            if(catalogViewer.canTradeRequestItem(index)!=0){
-//                setPopUpMessage(catalogViewer.canTradeRequestItem(index));
-//            }else{
-//
-//            }
-//        }
-//
-//    }
+    /**
+     * Checks if the normal user can send a trade request for the selected item
+     * @param index the index of the item
+     * @return true if the normal user can send a trade request, false otherwise
+     */
+    public boolean canSendTradeRequest(int index){
+        if(catalogViewer.canTradeRequestItem()!=0){
+            setPopUpMessage(systemPresenter.lendWarning(catalogViewer.canTradeRequestItem()));
+        }else{
+            if(catalogViewer.canTradeRequestItem(index)!=0){
+                setPopUpMessage(catalogViewer.canTradeRequestItem(index));
+            }else{
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Returns trade requests the normal user initiated in a String array
@@ -243,7 +279,6 @@ public class NormalDashboard extends Dashboard {
             }
         }
     }
-
 
     /**
      * Rejects the selected trade request
@@ -319,6 +354,26 @@ public class NormalDashboard extends Dashboard {
         }
     }
 
+    /**
+     * Returns all notifications the normal user has received in a String array
+     * @return all notifications the normal user has received
+     */
+    public String[] getNotifStrings(){
+        return notificationViewer.getNotifStrings();
+    }
+
+    /**
+     * Marks the selected notification as read
+     * @param index the index of the notification
+     */
+    public void markNotifAsRead(int index){
+        notificationViewer.markNotifAsRead(index);
+    }
+
+    /**
+     * Set the pop up message (special case)
+     * @param popUpMessage the new pop up message
+     */
     public void setPopUpMessage(String popUpMessage){
         this.popUpMessage = popUpMessage;
     }

@@ -17,7 +17,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-10
+ * last modified 2020-08-11
  */
 public class CatalogViewer {
     private String currUsername;
@@ -94,7 +94,6 @@ public class CatalogViewer {
      * - the owner of the item is currently frozen
      * - the item is currently involved in a trade
      * - the user already has sent a trade request for it that the recipient hasn't yet responded to
-     * - the user hasn't lent enough items more than they've borrowed
      *
      * @param index the index of the catalog item being checked
      * @return an error message iff item is not available for trade or owner is frozen, an empty string otherwise
@@ -119,6 +118,11 @@ public class CatalogViewer {
         }
     }
 
+    /**
+     * Checks if the catalog item at the given index can be requested in a trade.
+     * - the user hasn't lent enough items more than they've borrowed
+     * @return the lend minimum if the user violated this rule
+     */
     public int canTradeRequestItem() {
         lendMinimum = userManager.getThresholdSystem().getLendMinimum();
         if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < lendMinimum)) {
@@ -172,12 +176,10 @@ public class CatalogViewer {
         String[] suggestedItemStrings ;
 
         if (suggestedItems.isEmpty()) {
-            suggestedItemStrings  = new String[2];
-            suggestedItemStrings [0] = systemPresenter.tradeRequestSetup(1);
-            suggestedItemStrings [1] = systemPresenter.tradeRequestSetup(2);
+            suggestedItemStrings  = new String[1];
+            suggestedItemStrings [0] = systemPresenter.tradeRequestSetup(2);
         } else {
             suggestedItemStrings  = new String[suggestedItems.size() + 1];
-            suggestedItemStrings [0] = systemPresenter.tradeRequestSetup(1);
             String[] tempSuggestions = itemManager.getItemStringsID(suggestedItems, false);
 
             System.arraycopy(tempSuggestions, 0, suggestedItemStrings, 1, suggestedItemStrings.length);
@@ -186,8 +188,20 @@ public class CatalogViewer {
         return suggestedItemStrings;
     }
 
+    /**
+     * Sets the index of the item requested
+     * @param indexOfItemRequested the index of the item requested
+     */
     public void setIndexOfItemRequested(int indexOfItemRequested){
         this.indexOfItemRequested = indexOfItemRequested;
+    }
+
+    /**
+     * Returns the index of the item requested
+     * @return the index of the item requested
+     */
+    public int getIndexOfItemRequested(){
+        return indexOfItemRequested;
     }
 
     /**
@@ -210,7 +224,7 @@ public class CatalogViewer {
      *
      * @return an error message iff the user is not allowed to initiate a one-way trade, an empty string otherwise
      */
-    public String requestItemInOneWayTrade() {
+    public int requestItemInOneWayTrade() {
         /*
          * If this code is reached, then the user is allowed to set up a trade since they've
          * lent at least lendMinimum more items than they've borrowed, or it's the user's
@@ -224,13 +238,15 @@ public class CatalogViewer {
          * or all their past requests were rejected, then they must request a two-way trade.
          */
         if (timesBorrowed == 0) {
-            return systemPresenter.tradeRequestSetup(4);
+            return 32;
+            //return systemPresenter.tradeRequestSetup(4);
         } else if ((timesLent - timesBorrowed) == lendMinimum) {
-            return systemPresenter.tradeRequestSetup(3);
+            return 33;
+            //return systemPresenter.tradeRequestSetup(3);
         } else {
             long itemToBorrowID = catalogToView.get(indexOfItemRequested).getID();
             sendTradeRequest(0, itemToBorrowID);
-            return ("");
+            return 0;
         }
     }
 

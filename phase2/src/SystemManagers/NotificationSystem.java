@@ -163,12 +163,6 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
 
         if (!mainMessage.equals("")) {
             Notification mainNotif = new Notification(mainMessage);
-
-            // TODO: delete this code after notifs can be displayed
-            System.out.println(getNotifString(mainNotif));
-            System.out.println("    notif for user: " + usernameNotified);
-
-
             userToNotifMap.get(usernameNotified).add(0, mainNotif);
         }
     }
