@@ -55,6 +55,7 @@ public class SystemController extends JFrame {
             tryReadAdmin();
             //for testing
             new SignUpSystem(userManager).createNewNormal("test", "a@b.com", "p", "homeCity", notifSystem);
+            new SignUpSystem(userManager).createNewNormal("t","b@c.v","p","homeCity", notifSystem);
             long itemID = itemManager.createItem("fruit", "it's a strawberry", "test");
             long itemID2 = itemManager.createItem("AHHH", "OMG", "test");
             long itemID3 = itemManager.createItem("PEND", "INg", "test");
@@ -132,8 +133,8 @@ public class SystemController extends JFrame {
     }
 
 
-    public void demoUser() {
-        new DemoDashboard(itemManager, userManager);
+    public void demoUser(JFrame parent) {
+        new DashboardFrame(new DemoDashboard(itemManager), parent);
     }
 
     public void clearCurrUserNotifs(String currUsername) {

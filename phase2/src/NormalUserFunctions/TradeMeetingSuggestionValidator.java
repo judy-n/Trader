@@ -1,7 +1,6 @@
 package NormalUserFunctions;
 
 import SystemFunctions.DateTimeHandler;
-import SystemFunctions.SystemPresenter;
 import SystemManagers.TradeManager;
 import SystemManagers.UserManager;
 
@@ -18,7 +17,6 @@ public class TradeMeetingSuggestionValidator {
     private UserManager userManager;
     private TradeManager tradeManager;
     private DateTimeHandler dateTimeHandler;
-    private SystemPresenter systemPresenter;
 
     /**
      * Creates a new <TradeMeetingSuggestionValidator></TradeMeetingSuggestionValidator>
@@ -28,16 +26,13 @@ public class TradeMeetingSuggestionValidator {
      * @param userManager     the system's user manager
      * @param tradeManager    the system's trade manager
      * @param dateTimeHandler the system's date and time handler
-     * @param systemPresenter the system's presenter
      */
     public TradeMeetingSuggestionValidator(String username, UserManager userManager,
-                                           TradeManager tradeManager, DateTimeHandler dateTimeHandler,
-                                           SystemPresenter systemPresenter) {
+                                           TradeManager tradeManager, DateTimeHandler dateTimeHandler) {
         currUsername = username;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
         this.dateTimeHandler = dateTimeHandler;
-        this.systemPresenter = systemPresenter;
     }
 
     /**
@@ -52,30 +47,30 @@ public class TradeMeetingSuggestionValidator {
      *
      * @param suggestedDateTime the date and time suggested by the user
      * @param suggestedLocation the location suggested by the user
-     * @return an error message iff the date/time or location is not valid, an empty string otherwise
+     * @return an int representing an error type if the date/time or location is not valid
      */
-    public String validateSuggestion(String suggestedDateTime, String suggestedLocation) {
+    public int validateSuggestion(String suggestedDateTime, String suggestedLocation) {
 
         boolean dateTimeIsValid = dateTimeHandler.checkDateTime(suggestedDateTime);
-        String errorMessage;
+        int errorType;
 
         if (dateTimeIsValid) {
             int tradesInWeek = tradeManager.getNumMeetingsThisWeek
                     (currUsername, dateTimeHandler.getLocalDateTime(suggestedDateTime).toLocalDate());
             if (tradesInWeek == userManager.getThresholdSystem().getWeeklyTradeMax()) {
-                errorMessage = systemPresenter.failedSuggestion();
+                errorType = 13;
             } else {
-                errorMessage = "";
+                errorType = 0;
             }
         } else {
-            errorMessage = systemPresenter.invalidInput();
+            errorType = 30;
         }
 
-        if (errorMessage.isEmpty() &&
+        if (errorType == 0 &&
                 !suggestedLocation.matches("[A-Za-z0-9]+([\\s][A-Za-z0-9.]+)*")) {
-            errorMessage = systemPresenter.invalidInput();
+            errorType = 30;
         }
 
-        return errorMessage;
+        return errorType;
     }
 }

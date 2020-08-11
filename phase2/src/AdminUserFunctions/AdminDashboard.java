@@ -161,8 +161,8 @@ public class AdminDashboard extends Dashboard {
     }
 
     @Override
-    public boolean isAdmin() {
-        return true;
+    public int getType() {
+        return 0;
     }
 
     @Override

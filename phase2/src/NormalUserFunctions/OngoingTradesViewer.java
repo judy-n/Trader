@@ -84,27 +84,26 @@ public class OngoingTradesViewer {
      * @param index the index of the ongoing trade selected by the user
      * @return an error message iff the user is not allowed to edit the meeting details, an empty string otherwise
      */
-    public String canEditMeeting(int index) {
+    public int canEditMeeting(int index) {
         Trade selectedTrade = tradeManager.getOngoingTrades(currUsername).get(index);
 
         /* can't edit if already agreed upon */
         if (selectedTrade.getHasAgreedMeeting()) {
-            return systemPresenter.ongoingTrades(15);
+            return 15;
         }
 
         /* can't edit if latest suggestion is yours */
         if (selectedTrade.getLastEditor().equals(currUsername)) {
-            return systemPresenter.ongoingTrades(9);
+            return 9;
         }
 
         /* can't edit if you've reached the max # of edits allowed */
         int editCount = selectedTrade.getUserEditCount(currUsername);
         int editMax = userManager.getThresholdSystem().getMeetingEditMax();
         if (editCount == editMax) {
-            return systemPresenter.ongoingTrades(12);
+            return 12;
         }
-
-        return ("");
+        return 0;
     }
 
     /**
@@ -129,9 +128,9 @@ public class OngoingTradesViewer {
      * @param suggestedLocation the location suggested by the user
      * @return an error message iff the date/time or location is not valid, an empty string otherwise
      */
-    public String validateSuggestion(String suggestedDateTime, String suggestedLocation) {
+    public int validateSuggestion(String suggestedDateTime, String suggestedLocation) {
         return new TradeMeetingSuggestionValidator
-                (currUsername, userManager, tradeManager, dateTimeHandler, systemPresenter)
+                (currUsername, userManager, tradeManager, dateTimeHandler)
                 .validateSuggestion(suggestedDateTime, suggestedLocation);
     }
 
@@ -164,23 +163,23 @@ public class OngoingTradesViewer {
      * @param index the index of the ongoing trade selected by the user
      * @return an error message iff the user is not allowed to agree with the meeting, an empty string otherwise
      */
-    public String agreeMeeting(int index) {
+    public int agreeMeeting(int index) {
         Trade selectedTrade = tradeManager.getOngoingTrades(currUsername).get(index);
         String traderUsername = selectedTrade.getOtherUsername(currUsername);
 
         /* can't agree with meeting if already agreed upon */
         if (selectedTrade.getHasAgreedMeeting()) {
-            return systemPresenter.ongoingTrades(8);
+            return 24;
         }
 
         /* can't agree with your own suggestion */
         if (selectedTrade.getLastEditor().equals(currUsername)) {
-            return systemPresenter.ongoingTrades(9);
+            return 9;
         }
 
         /* can't agree with a meeting time that has already passed */
         if (LocalDateTime.now().isAfter(selectedTrade.getFirstMeetingDateTime())) {
-            return systemPresenter.ongoingTrades(23);
+            return 25;
         }
 
         int weeklyTrade = tradeManager.getNumMeetingsThisWeek
@@ -188,7 +187,7 @@ public class OngoingTradesViewer {
 
         /* can't agree with meeting that falls in week that already has max number of meetings allowed */
         if (weeklyTrade == userManager.getThresholdSystem().getWeeklyTradeMax()) {
-            return systemPresenter.ongoingTrades(13);
+            return 26;
         }
 
         selectedTrade.confirmAgreedMeeting();
@@ -197,7 +196,7 @@ public class OngoingTradesViewer {
         userManager.notifyUser(traderUsername).basicUpdate
                 ("MEETING AGREED", traderUsername, currUsername);
 
-        return ("");
+        return 0;
     }
 
     /**
@@ -208,13 +207,13 @@ public class OngoingTradesViewer {
      * @return an error message iff the user is not allowed to confirm the latest transaction,
      * an empty string otherwise
      */
-    public String canConfirmLatestTransaction(int index) {
+    public int canConfirmLatestTransaction(int index) {
         Trade selectedTrade = tradeManager.getOngoingTrades(currUsername).get(index);
         String traderUsername = selectedTrade.getOtherUsername(currUsername);
 
         /* can't confirm transaction if no agreed meeting */
         if (!selectedTrade.getHasAgreedMeeting()) {
-            return systemPresenter.ongoingTrades(19);
+            return 19;
         }
 
         /* can't confirm more than once */
@@ -222,28 +221,25 @@ public class OngoingTradesViewer {
                 ((TemporaryTrade) selectedTrade).hasSecondMeeting() &&
                 ((TemporaryTrade) selectedTrade).getUserSecondTransactionConfirmation(currUsername)) ||
                 selectedTrade.getUserFirstTransactionConfirmation(currUsername)) {
-            return systemPresenter.ongoingTrades(21);
+            return 21;
         }
 
         LocalDateTime now = LocalDateTime.now();
         if (selectedTrade instanceof TemporaryTrade && ((TemporaryTrade) selectedTrade).hasSecondMeeting() &&
                 now.compareTo(((TemporaryTrade) selectedTrade).getSecondMeetingDateTime()) > 0) {
-
-            return ("");
+            return 0;
 
         } else if (selectedTrade instanceof TemporaryTrade && selectedTrade.getHasAgreedMeeting() &&
                 now.compareTo(selectedTrade.getFirstMeetingDateTime()) > 0) {
-
-            return ("");
+            return 0;
 
         } else if (selectedTrade instanceof PermanentTrade && selectedTrade.getHasAgreedMeeting() &&
                 now.compareTo(selectedTrade.getFirstMeetingDateTime()) > 0) {
-
-            return ("");
+            return 0;
 
         } else {
             /* can't confirm transaction before its scheduled time */
-            return systemPresenter.ongoingTrades(20);
+            return 20;
         }
     }
 
@@ -255,7 +251,7 @@ public class OngoingTradesViewer {
      * @param index the index of the ongoing trade selected by the user
      * @return a message letting the user know the results of their confirmation
      */
-    public String confirmLatestTransaction(int index) {
+    public int confirmLatestTransaction(int index) {
         Trade selectedTrade = tradeManager.getOngoingTrades(currUsername).get(index);
         String traderUsername = selectedTrade.getOtherUsername(currUsername);
 
@@ -269,8 +265,7 @@ public class OngoingTradesViewer {
                 /* Notify other user of temp trade closing */
                 userManager.notifyUser(traderUsername).basicUpdate
                         ("CONFIRM TEMP TRADE SECOND TRANSACTION AFTER", traderUsername, currUsername);
-
-                return systemPresenter.ongoingTrades(17);
+                return 17;
             }
         } else if (selectedTrade instanceof TemporaryTrade) {
 
@@ -281,8 +276,7 @@ public class OngoingTradesViewer {
                 /* Notify other user of temp trade first transaction closing */
                 userManager.notifyUser(traderUsername).basicUpdate
                         ("CONFIRM TEMP TRADE FIRST TRANSACTION AFTER", traderUsername, currUsername);
-
-                return systemPresenter.ongoingTrades(18);
+                return 18;
             }
         } else {
 
@@ -294,8 +288,7 @@ public class OngoingTradesViewer {
                 /* Notify other user of perm trade closing */
                 userManager.notifyUser(traderUsername).basicUpdate
                         ("CONFIRM PERM TRADE AFTER", traderUsername, currUsername);
-
-                return systemPresenter.ongoingTrades(16);
+                return 16;
             }
         }
 
@@ -306,7 +299,7 @@ public class OngoingTradesViewer {
         userManager.notifyUser(traderUsername).basicUpdate
                 ("CONFIRM BEFORE", traderUsername, currUsername);
 
-        return systemPresenter.ongoingTrades(3);
+        return 23;
     }
 
     /**
@@ -317,13 +310,13 @@ public class OngoingTradesViewer {
      * @param index the index of the ongoing trade selected by the user
      * @return an error message iff the user is not allowed to cancel the trade, an empty string otherwise
      */
-    public String cancelTrade(int index) {
+    public boolean cancelTrade(int index) {
         Trade selectedTrade = tradeManager.getOngoingTrades(currUsername).get(index);
         String traderUsername = selectedTrade.getOtherUsername(currUsername);
 
         /* can't cancel if meeting already scheduled */
         if (selectedTrade.getHasAgreedMeeting()) {
-            return systemPresenter.ongoingTrades(22);
+            return false;
         }
 
         // Since the trade is cancelled before the first meeting is scheduled,
@@ -349,6 +342,6 @@ public class OngoingTradesViewer {
         userManager.notifyUser(traderUsername).itemUpdate
                 ("TRADE CANCELLED", traderUsername, currUsername, itemName);
 
-        return ("");
+        return true;
     }
 }

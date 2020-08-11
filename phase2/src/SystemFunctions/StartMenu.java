@@ -86,7 +86,7 @@ public class StartMenu extends JPanel {
             this.repaint();
         });
 
-        demo.addActionListener(e -> systemController.demoUser());
+        demo.addActionListener(e -> systemController.demoUser(parent));
 
         endProgram.addActionListener(e -> {
             systemController.tryWriteManagers();

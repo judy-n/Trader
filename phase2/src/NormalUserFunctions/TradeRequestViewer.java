@@ -16,9 +16,9 @@ import java.util.ArrayList;
  *
  * @author Ning Zhang
  * @author Yingjia Liu
- * @version 1.0
+ * @version 2.0
  * @since 2020-06-29
- * last modified 2020-08-09
+ * last modified 2020-08-10
  */
 public class TradeRequestViewer {
     private String currUsername;
@@ -69,43 +69,6 @@ public class TradeRequestViewer {
         receivedItemNames = new ArrayList<>();
         receivedOwners = new ArrayList<>();
     }
-//
-//    private void caseUserIsFrozen() {
-//        systemPresenter.tradeRequestViewer(3);
-//    }
-
-//    private void caseUserNotFrozen() {
-
-    /* doesn't show trade requests from frozen users */
-
-    // check if items in trade are all available for trade (canAcceptRequest())
-//
-//                        /*
-//                         * Accept request.
-//                         * Only allow trade if both items being requested or offered are available for trade.
-//                         */
-//
-//                            /* permanent or temporary? */
-//                            systemPresenter.tradeRequestViewer(2, senderUsername, tradeItemNames);
-//                            systemPresenter.tradeRequestViewer(6);
-//                            String permOrTemp = bufferedReader.readLine();
-//                            while (!permOrTemp.equals("1") && !(permOrTemp.equals("2"))) {
-//                                systemPresenter.invalidInput();
-//                                permOrTemp = bufferedReader.readLine();
-//                            }
-//
-//                            /* suggest time */
-//                            systemPresenter.tradeRequestViewer(4);
-//                            LocalDateTime time = new DateTimeSuggestion(currUsername, userManager, tradeManager).suggestDateTime();
-//
-//                            /* suggest place */
-//                            systemPresenter.tradeRequestViewer(2);
-//                            String place = bufferedReader.readLine();
-//                            while (place.trim().isEmpty()) {
-//                                systemPresenter.invalidInput();
-//                                place = bufferedReader.readLine();
-//                            }
-//    }
 
     /**
      * Returns an array of string representations of the trade requests initiated by the current user.
@@ -181,15 +144,11 @@ public class TradeRequestViewer {
      * @param index the index of the trade request selected by the user
      * @return an error message iff the trade request cannot be accepted, an empty string otherwise
      */
-    public String canAcceptRequest(int index) {
+    public boolean canAcceptRequest(int index) {
         getTradeHelper(index);
         if (itemToBorrowID != 0 && !itemManager.getItemAvailability(itemToBorrowID)) {
-            return systemPresenter.tradeRequestViewer(8);
-        } else if (!itemManager.getItemAvailability(itemToLendID)) {
-            return systemPresenter.tradeRequestViewer(8);
-        } else {
-            return ("");
-        }
+            return false;
+        } else return itemManager.getItemAvailability(itemToLendID);
     }
 
     /**
@@ -199,9 +158,9 @@ public class TradeRequestViewer {
      * @param suggestedLocation the location suggested by the user
      * @return an error message iff the date/time or location is not valid, an empty string otherwise
      */
-    public String validateSuggestion(String suggestedDateTime, String suggestedLocation) {
+    public int validateSuggestion(String suggestedDateTime, String suggestedLocation) {
         return new TradeMeetingSuggestionValidator
-                (currUsername, userManager, tradeManager, dateTimeHandler, systemPresenter)
+                (currUsername, userManager, tradeManager, dateTimeHandler)
                 .validateSuggestion(suggestedDateTime, suggestedLocation);
     }
 

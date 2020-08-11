@@ -1,64 +1,65 @@
 package NormalUserFunctions;
 
-import SystemManagers.UserManager;
+import SystemFunctions.Dashboard;
 import SystemManagers.ItemManager;
-import SystemFunctions.SystemPresenter;
-import SystemFunctions.SystemController;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  * Displays a dashboard for a user choosing to demo the program.
  *
  * @author Judy Naamani
- * @version 1.0
+ * @author Ning Zhang
+ * @version 2.0
  * @since 2020-07-19
- * last modified 2020-07-31
+ * last modified 2020-08-10
  */
 
-public class DemoDashboard {
-
+public class DemoDashboard extends Dashboard {
     private ItemManager itemManager;
-    private UserManager userManager;
-    private int input;
+    private String username;
 
     /**
      * Creates a <DemoDashboard></DemoDashboard> with the given item/user managers.
      *
      * @param itemManager the system's item manager
-     * @param userManager the system's user manager
      */
-    public DemoDashboard(ItemManager itemManager, UserManager userManager) {
+    public DemoDashboard(ItemManager itemManager) {
         this.itemManager = itemManager;
-        this.userManager = userManager;
+        username = "Demo";
+    }
 
-        SystemPresenter systemPresenter = new SystemPresenter();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    /**
+     * Returns all items available in the system for trade in a String array
+     * @return all items available in the system for trade
+     */
+    public String[] getDemoCatalog(){
+        return itemManager.getItemStrings(itemManager.getApprovedItems(), true);
+    }
 
-        systemPresenter.demoDashboard();
+    @Override
+    public String getUsername() {
+        return username;
+    }
 
-        try {
-            String temp;
-            temp = bufferedReader.readLine();
-            while (!temp.matches("[0-2]")) {
-                systemPresenter.invalidInput();
-                temp = bufferedReader.readLine();
-            }
-            input = Integer.parseInt(temp);
-        } catch (IOException e) {
-            systemPresenter.exceptionMessage();
-        }
+    @Override
+    public int getType() {
+        return 2;
+    }
 
-        switch (input) {
-            case 0:
-                systemPresenter.exitProgram();
-                System.exit(0);
-            case 1:
-                new DemoCatalogViewer(itemManager, userManager);
-                break;
-            case 2:
-                new SystemController();
-        }
+    @Override
+    public String setUpDash(int type) {
+        return null;
+    }
+
+    @Override
+    public void setPopUpMessage(int type) {
+    }
+
+    @Override
+    public String getPopUpMessage() {
+        return null;
+    }
+
+    @Override
+    public void resetPopUpMessage() {
     }
 }

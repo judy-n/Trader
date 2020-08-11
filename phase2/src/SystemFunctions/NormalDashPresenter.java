@@ -1,5 +1,8 @@
 package SystemFunctions;
 
+import Entities.TemporaryTrade;
+import Entities.Trade;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +17,8 @@ import java.util.List;
 public class NormalDashPresenter {
 
     /**
-     * Returns the text displayed on JComponents when a admin user's
-     * dashboard is displayed
-     * @param type int indicating type of JComponent
+     * Returns the text displayed on a pop up window
+     * @param type int indicating the type of message
      * @return the String needed to be displayed
      */
     public String getPopUpMessage(int type){
@@ -34,19 +36,76 @@ public class NormalDashPresenter {
             case 5:
                 return ("You have set your status to: not on vacation!");
             case 6:
-                return ("You have sent an unfreeze request! Please wait for an admin to review it.");
+                return ("Your request has been sent in! Please allow some time for an admin to review it.");
             case 7:
-                return ("You already sent an unfreeze request!");
+                return ("You already sent an unfreeze request, please wait for an admin to review it.");
+            case 9:
+                return ("You were the last person to suggest the meeting details! " +
+                        "\nPlease wait for the other user to agree or send a suggestion of their own.");
+            case 10:
+                return ("One of the items involved in this request is currently being lent to someone else!");
+            case 11:
+                return ("This item is already in your wishlist!");
+            case 12:
+                return ("You've reached your maximum number of edits!");
+            case 13:
+                return ("Sorry, you can't suggest this date and time because you've " +
+                        "reached the maximum number of meetings allowed in the same week." +
+                        "\nPlease enter a different date and time (not within the same week): ");
+            case 15:
+                return ("This meeting has already been agreed upon, so you cannot edit it.");
+            case 16:
+                return ("Your trade partner has also confirmed the transaction, so this permanent trade is now closed." +
+                        "\n The item you lent in this permanent trade has automatically been removed from your inventory," +
+                        "\n and if the other user's item was in your wishlist it has been removed.\"");
+            case 17:
+                return ("Your trade partner has also confirmed the transaction, so this temporary trade is now closed." +
+                        "\nThe item you lent is now available for trade again.");
+            case 18:
+                return ("Your trade partner has also confirmed the transaction, " +
+                        "so your second meeting has been set to exactly 30 days from the first meeting (same time, same place).");
+            case 19:
+                return ("You and your trade partner have not yet agreed upon a meeting!");
+            case 20:
+                return ("Cannot confirm a meeting before it is scheduled to take place.");
+            case 21:
+                return ("You've already confirmed that the latest transaction took place!");
+            case 22:
+                return ("You may not cancel a trade after the meeting has already been scheduled.");
+            case 23:
+                return ("Confirm the latest meeting took place");
+            case 24:
+                return ("You and your trade partner have already agreed upon a meeting.");
+            case 25:
+                return ("The suggested meeting time has already passed! You'll have to suggest a new time and place.");
+            case 26:
+                return ("Sorry, you can't confirm this date and time because you've " +
+                        "reached the maximum number of meetings allowed in the same week.");
+            case 27:
+                return ("<html>You cannot initiate any trades at the moment due to your account being frozen." +
+                        "<br/>>However, you may still add items to your wishlist.<html>");
+            case 28:
+                return ("<html>This item's owner is currently frozen!" +
+                        "<br/>However, you may still add this item to your wishlist.<html>");
+            case 29:
+                return ("<html>Sorry, this item is currently not available for trade." +
+                        "<br/>However, you may still add it to your wishlist.: <html>");
+            case 30:
+                return ("Invalid input. Please try again.");
+            case 31:
+                return ("You've already sent a request to borrow this item!");
+
             default:
-                return null;
+                return ("");
 
         }
 
     }
 
     /**
-     * Returns the text displayed on a pop up window
-     * @param type int indicating the type of message
+     * Returns the text displayed on JComponents when a admin user's
+     * dashboard is displayed
+     * @param type int indicating type of JComponent
      * @return the String needed to be displayed
      */
     public String setUpDash(int type){
@@ -71,8 +130,6 @@ public class NormalDashPresenter {
                 return null;
         }
     }
-
-
 
     /**
      * Presents trade requests user has initiated
@@ -113,11 +170,122 @@ public class NormalDashPresenter {
             }
             index++;
         }
-//        if (itemNames.isEmpty()) {
-//            System.out.println("You haven't received any trade requests yet");
-//        } else {
-//            System.out.print("\nWould you like to accept/reject any of these requests? Enter the request's index (0 to quit): ");
-//        }
         return receivedTradeStrings.toArray(new String[0]);
     }
+
+    /**
+     * Presents the number of edits a user has made, and if they are on their final edit
+     *
+     * @param numEdits    the number of edits the user has made
+     * @param isFinalEdit true iff this is the user's final edit
+     */
+    public String ongoingTrades(int numEdits, boolean isFinalEdit) {
+        if (isFinalEdit) {
+            return ("<html># of edits you've made so far: " + numEdits +
+                    "<br/> Warning: This is the last time you can suggest a meeting.<html>");
+        } else {
+            return ("# of edits you've made so far: " + numEdits);
+        }
+    }
+
+    public String lendWarning(int lendMinimum) {
+        return ("You're borrowing too much! You need to lend AT LEAST " + lendMinimum + " more item(s) than you've borrowed.");
+    }
+    /**
+     * Formats all ongoing trades for a user into an array of string representations and returns it.
+     *
+     * @param ongoingTrades   the list of ongoing trades
+     * @param tradeItemIDs    the IDs of the items involved in the trades
+     * @param tradeItemNames  the names of the items involved in the trades
+     * @param username        the username of the current user
+     * @param dateTimeHandler a <DateTimeHandler></DateTimeHandler> for formatting the dates and times to be displayed
+     */
+    public String[] getOngoingTradeStrings(List<Trade> ongoingTrades,
+                                           List<long[]> tradeItemIDs, List<String[]> tradeItemNames,
+                                           String username, DateTimeHandler dateTimeHandler) {
+
+        String[] ongoingTradeStrings = new String[ongoingTrades.size()];
+        int index = 0;
+
+        for (Trade trade : ongoingTrades) {
+            String[] tempItemNames = tradeItemNames.get(index);
+            long[] tempItemIDs = tradeItemIDs.get(index);
+
+            StringBuilder tradePrint = new StringBuilder("<html>");
+            if (tempItemIDs[0] == 0) {
+                tradePrint.append(trade.toString(username)).append("you're borrowing [")
+                        .append(tempItemNames[1]).append("]");
+            } else if (tempItemIDs[1] == 0) {
+                tradePrint.append(trade.toString(username)).append("you're lending [")
+                        .append(tempItemNames[0]).append("]");
+            } else {
+                tradePrint.append(trade.toString(username)).append("you're lending [")
+                        .append(tempItemNames[0]).append("] for [")
+                        .append(tempItemNames[1]).append("]");
+            }
+            // New line
+            tradePrint.append("<br/> ");
+
+            String meetingStr = dateTimeHandler.getDateTimeString(trade.getFirstMeetingDateTime());
+            String date = meetingStr.substring(0, meetingStr.indexOf("-"));
+            String time = meetingStr.substring(meetingStr.indexOf("-") + 1);
+            String location = trade.getFirstMeetingLocation();
+
+            if (!trade.getHasAgreedMeeting()) {
+
+                /* display latest meeting suggestion */
+                tradePrint.append("Most recent meeting suggestion: ");
+
+            } else {
+
+                /* display first meeting details */
+                if (trade instanceof TemporaryTrade) {
+                    tradePrint.append("First meeting: ");
+                } else {
+                    tradePrint.append("Meeting: ");
+                }
+            }
+            tradePrint.append(date).append(" at ").append(time).append(" - ").append(location);
+
+            if (trade instanceof TemporaryTrade) {
+                TemporaryTrade tempTrade = (TemporaryTrade) trade;
+                if (tempTrade.hasSecondMeeting()) {
+
+                    /* display second meeting details */
+                    meetingStr = dateTimeHandler.getDateTimeString(tempTrade.getSecondMeetingDateTime());
+                    date = meetingStr.substring(0, meetingStr.indexOf("-"));
+                    time = meetingStr.substring(meetingStr.indexOf("-") + 1);
+
+                    tradePrint.append("<br/> ").append("Second meeting: ").append(date).append(" at ")
+                            .append(time).append(" - ").append(tempTrade.getSecondMeetingLocation());
+                }
+            }
+            tradePrint.append("<html>");
+            ongoingTradeStrings[index] = tradePrint.toString();
+            index++;
+        }
+        return ongoingTradeStrings;
+    }
+
+    /**
+     * Returns the labels for elements when making a trade request.
+     *
+     * @param input the case associated with which list to display
+     */
+    public String tradeRequestSetup(int input) {
+        switch (input) {
+            case 1:
+                return ("Suggested items to lend in this trade request:");
+            case 2:
+                return ("Uh oh! We couldn't find any items that the other user might want to borrow from you :(");
+            case 3:
+                return ("Sorry, to maintain the balance of how many more items you've lent than you've borrowed," +
+                        "you must choose an item to lend to the other user.");
+            case 4:
+                return ("Your first trade request must be a two-way trade!");
+            default:
+                return null;
+        }
+    }
+
 }

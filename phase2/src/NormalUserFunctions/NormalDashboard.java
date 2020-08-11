@@ -14,7 +14,7 @@ import SystemManagers.TradeManager;
  * @author Yingjia Liu
  * @version 2.0
  * @since 2020-06-26
- * last modified 2020-08-09
+ * last modified 2020-08-10
  */
 public class NormalDashboard extends Dashboard {
     private String currUsername;
@@ -22,6 +22,7 @@ public class NormalDashboard extends Dashboard {
     private UserManager userManager;
     private TradeManager tradeManager;
     private NotificationSystem notifSystem;
+    private CatalogViewer catalogViewer;
     private WishlistEditor wishlistEditor;
     private InventoryEditor inventoryEditor;
     private TradeRequestViewer tradeRequestViewer;
@@ -50,6 +51,7 @@ public class NormalDashboard extends Dashboard {
         this.tradeManager = tradeManager;
         this.notifSystem = notifSystem;
         systemPresenter = new SystemPresenter();
+        catalogViewer = new CatalogViewer(currUsername, itemManager, userManager, tradeManager);
         wishlistEditor = new WishlistEditor(currUsername, itemManager, userManager);
         inventoryEditor = new InventoryEditor(currUsername, itemManager, userManager, tradeManager);
         ongoingTradesViewer = new OngoingTradesViewer(currUsername, itemManager, userManager, tradeManager);
@@ -135,6 +137,54 @@ public class NormalDashboard extends Dashboard {
     }
 
     /**
+     * Returns all available Items in the catalog as a String array
+     * @return all available Items in the catalog
+     */
+    public String[] getCatalog(){
+        return catalogViewer.getCatalogStrings();
+    }
+
+    public void addToWishlist(int index){
+        if(!catalogViewer.addToWishlist(index)){
+            setPopUpMessage(11);
+        }
+    }
+
+    public void requestItemInTwoWayTrade(int index){
+        catalogViewer.requestItemInTwoWayTrade(index);
+    }
+
+    public void requestItemInOneWayTrade(){
+        catalogViewer.requestItemInOneWayTrade();
+    }
+
+    public String[] getSuggestedItems(int index){
+        return catalogViewer.getSuggestedItems(index);
+    }
+
+    public String[] currentUserInventoryInCatalog(){
+        return catalogViewer.getCurrUserInventory();
+    }
+
+    public void setTradeLendItemIndex(int index){
+        catalogViewer.setIndexOfItemRequested(index);
+    }
+
+
+//    public void sendTradeRequest(int index, boolean isTwoWay){
+//        if(catalogViewer.canTradeRequestItem()!=0){
+//            setPopUpMessage(systemPresenter.lendWarning(catalogViewer.canTradeRequestItem()));
+//        }else{
+//            if(catalogViewer.canTradeRequestItem(index)!=0){
+//                setPopUpMessage(catalogViewer.canTradeRequestItem(index));
+//            }else{
+//
+//            }
+//        }
+//
+//    }
+
+    /**
      * Returns trade requests the normal user initiated in a String array
      * @return trade requests the normal user initiated
      */
@@ -175,6 +225,33 @@ public class NormalDashboard extends Dashboard {
         return userManager.getNormalUserIsFrozen(currUsername);
     }
 
+    /**
+     * Accepts the selected trade request
+     * @param index the index of the trade request
+     * @param timeDate the initial time and date
+     * @param place the initial place
+     * @param isPerm true if it's a permanent trade false if it's a temporary trade
+     */
+    public void acceptTradeRequest(int index, String timeDate, String place, boolean isPerm){
+        if(!tradeRequestViewer.canAcceptRequest(index)){
+            setPopUpMessage(10);
+        }else{
+            if(tradeRequestViewer.validateSuggestion(timeDate, place)!=0){
+                setPopUpMessage(tradeRequestViewer.validateSuggestion(timeDate, place));
+            }else{
+                tradeRequestViewer.acceptTradeRequest(index, isPerm, timeDate, place);
+            }
+        }
+    }
+
+
+    /**
+     * Rejects the selected trade request
+     * @param index the index of the trade request
+     */
+    public void rejectTradeRequest(int index){
+        tradeRequestViewer.rejectTradeRequest(index);
+    }
 
     /**
      * Returns normal user's ongoing trades in a String array
@@ -184,6 +261,67 @@ public class NormalDashboard extends Dashboard {
         return ongoingTradesViewer.getOngoingTrades();
     }
 
+    /**
+     * Returns normal user's current number of edits made on a ongoing trade
+     * of index [index]
+     * @param index the index of the ongoing trade
+     * @return number of edits or a warning if it is the last edit
+     */
+    public String getNumEdits(int index){
+        return ongoingTradesViewer.displayNumOfEdits(index);
+    }
+
+    /**
+     * Cancels the ongoing trade with index [index] if it can be cancelled
+     * @param index the index of the ongoing trade
+     */
+    public void cancelTrade(int index){
+        if(!ongoingTradesViewer.cancelTrade(index)){
+            setPopUpMessage(22);
+        }
+    }
+
+    /**
+     * Agrees to an ongoing trade's trade details
+     * @param index the index of the ongoing trade
+     */
+    public void agreeTrade(int index){
+        setPopUpMessage(ongoingTradesViewer.agreeMeeting(index));
+    }
+
+    /**
+     * Confirms that an ongoing trade is completed
+     * @param index the index of the ongoing trade
+     */
+    public void confirmTrade(int index){
+        if(ongoingTradesViewer.canConfirmLatestTransaction(index)!=0){
+            setPopUpMessage(ongoingTradesViewer.canConfirmLatestTransaction(index));
+        }else{
+            setPopUpMessage(ongoingTradesViewer.confirmLatestTransaction(index));
+        }
+    }
+
+    /**
+     * Change the selected ongoing trade's trade details
+     * @param index the index of the ongoing trade
+     * @param timeDate the new date time
+     * @param place the new place
+     */
+    public void editOngoingTrade(int index, String timeDate, String place){
+        if(ongoingTradesViewer.canEditMeeting(index) == 0){
+            if(ongoingTradesViewer.validateSuggestion(timeDate, place) == 0){
+                ongoingTradesViewer.setMeeting(index, timeDate, place);
+            }else{
+                setPopUpMessage(ongoingTradesViewer.validateSuggestion(timeDate, place));
+            }
+        }else {
+            setPopUpMessage(ongoingTradesViewer.canEditMeeting(index));
+        }
+    }
+
+    public void setPopUpMessage(String popUpMessage){
+        this.popUpMessage = popUpMessage;
+    }
 
     @Override
     public String setUpDash(int type){
@@ -195,29 +333,14 @@ public class NormalDashboard extends Dashboard {
         popUpMessage = systemPresenter.getNormalPopUpMessage(type);
     }
 
-//        switch (input) {
-//            case 1:
-//                new CatalogViewer(currUsername, itemManager, userManager, tradeManager);
-//                break;
-//
-//            case 4:
-//                new TradeRequestViewer(currentUser, itemManager, userManager, tradeManager);
-//                break;
-//
-//            case 5:
-//                new OngoingTradesViewer(currentUser, itemManager, userManager, tradeManager);
-//                break;
-//
-//        }
-
     @Override
     public String getUsername() {
         return currUsername;
     }
 
     @Override
-    public boolean isAdmin() {
-        return false;
+    public int getType() {
+        return 1;
     }
 
     @Override

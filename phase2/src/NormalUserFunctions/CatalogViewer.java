@@ -33,6 +33,7 @@ public class CatalogViewer {
     private int timesBorrowed;
     private int timesLent;
     private int lendMinimum;
+    private int indexOfItemRequested;
 
     /**
      * Creates an <CatalogViewer></CatalogViewer> with the given normal user username and item/user/trade managers.
@@ -81,10 +82,8 @@ public class CatalogViewer {
         if (!userManager.isInNormalUserWishlist(itemToWishlistID, currUsername)) {
             userManager.addToNormalUserWishlist(itemToWishlistID, currUsername);
             return true;
-            // systemPresenter.catalogViewer(3); "Item has been added to your wishlist!"
         } else {
             return false;
-            //systemPresenter.catalogViewer(4); "This item is already in your wishlist!"
         }
     }
 
@@ -100,27 +99,32 @@ public class CatalogViewer {
      * @param index the index of the catalog item being checked
      * @return an error message iff item is not available for trade or owner is frozen, an empty string otherwise
      */
-    public String canTradeRequestItem(int index) {
+    public int canTradeRequestItem(int index) {
 
         long itemToRequestID = catalogToView.get(index).getID();
 
         timesBorrowed = userManager.getNormalUserTimesBorrowed(currUsername) + tradeManager.getTimesBorrowed(currUsername);
         timesLent = userManager.getNormalUserTimesLent(currUsername) + tradeManager.getTimesLent(currUsername);
-        lendMinimum = userManager.getThresholdSystem().getLendMinimum();
 
         if (userManager.getNormalUserIsFrozen(currUsername)) {
-            return systemPresenter.catalogViewer(1);
+            return 27;
         } else if (userManager.getNormalUserIsFrozen(itemManager.getItemOwner(itemToRequestID))) {
-            return systemPresenter.catalogViewer(6);
+            return 28;
         } else if (!itemManager.getItemAvailability(itemToRequestID)) {
-            return systemPresenter.catalogViewer(2);
+            return 29;
         } else if (userManager.isRequestedInTrade(currUsername, itemToRequestID)) {
-            return systemPresenter.catalogViewer(5);
-        } else if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < lendMinimum)) {
-            return systemPresenter.lendWarning(lendMinimum);
+            return 31;
         } else {
-            return ("");
+            return 0;
         }
+    }
+
+    public int canTradeRequestItem() {
+        lendMinimum = userManager.getThresholdSystem().getLendMinimum();
+        if (timesBorrowed > 0 && ((timesLent - timesBorrowed) < lendMinimum)) {
+            return lendMinimum;
+        }
+        return 0;
     }
 
     /**
@@ -182,14 +186,17 @@ public class CatalogViewer {
         return suggestedItemStrings;
     }
 
+    public void setIndexOfItemRequested(int indexOfItemRequested){
+        this.indexOfItemRequested = indexOfItemRequested;
+    }
+
     /**
      * Creates a trade request for a two-way trade using the given index of a catalog item
      * and an item from the current user's inventory.
      *
-     * @param indexOfItemRequested the index of the catalog item being requested in a two-way trade
      * @param indexOfItemToLend the index of the inventory item that the user is choosing to lend
      */
-    public void requestItemInTwoWayTrade(int indexOfItemRequested, int indexOfItemToLend) {
+    public void requestItemInTwoWayTrade(int indexOfItemToLend) {
 
         long itemToLendID = availableInventory.get(indexOfItemToLend);
         long itemToBorrowID = catalogToView.get(indexOfItemRequested).getID();
@@ -201,10 +208,9 @@ public class CatalogViewer {
      * Checks if the current user is allowed to initiate a one-way trade.
      * If allowed, creates a trade request for a one-way trade using the given index of a catalog item.
      *
-     * @param indexOfItemRequested the index of the catalog item being requested in a one-way trade
      * @return an error message iff the user is not allowed to initiate a one-way trade, an empty string otherwise
      */
-    public String requestItemInOneWayTrade(int indexOfItemRequested) {
+    public String requestItemInOneWayTrade() {
         /*
          * If this code is reached, then the user is allowed to set up a trade since they've
          * lent at least lendMinimum more items than they've borrowed, or it's the user's

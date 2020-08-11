@@ -52,4 +52,21 @@ public class AdminDashPresenter {
         }
     }
 
+    /**
+     * Returns the labels of the thresholds in an array
+     *
+     * @param currThresholds the current threshold values of the system
+     */
+    public String[] getThresholdStrings(int[] currThresholds) {
+
+        String[] thresholdStrings = new String[4];
+
+        thresholdStrings[0] = ("The current weekly trade max is: " + currThresholds[0]);
+        thresholdStrings[1] = ("The current meeting edit max is: " + currThresholds[1]);
+        thresholdStrings[2] = ("The current lend minimum is: " + currThresholds[2]);
+        thresholdStrings[3] = ("The current incomplete trade max is: " + currThresholds[3]);
+
+        return thresholdStrings;
+    }
+
 }
