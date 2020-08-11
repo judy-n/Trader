@@ -12,7 +12,7 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-08-07
- * last modified 2020-08-10
+ * last modified 2020-08-11
  */
 public class NormalDashPresenter {
 
@@ -24,24 +24,24 @@ public class NormalDashPresenter {
     public String getPopUpMessage(int type){
         switch (type){
             case 1:
-                return ("Your item has been requested! Please wait for an admin to review it.");
+                return ("<html>Your item has been requested!<br/>Please wait for an admin to review it.<html>");
             case 2:
-                return ("Item registration failed! Make sure the item name is " +
-                        "at least 3 characters and item description is at least 2 words.");
+                return ("<html>Item registration failed!<br/>Make sure the item name is " +
+                        "at least 3 characters and item description is at least 2 words.<html>");
             case 3:
-                return ("You may not remove this item as it is currently " +
-                        "involved in a trade, or it is involved in one or more trade requests.");
+                return ("<html>You may not remove this item as it is currently " +
+                        "involved in a trade,<br/>or it is involved in one or more trade requests.<html>");
             case 4:
                 return ("You have set your status to: on vacation!");
             case 5:
                 return ("You have set your status to: not on vacation!");
             case 6:
-                return ("Your request has been sent in! Please allow some time for an admin to review it.");
+                return ("<html>Your request has been sent in!<br/>Please allow some time for an admin to review it.<html>");
             case 7:
-                return ("You already sent an unfreeze request, please wait for an admin to review it.");
+                return ("<html>You already sent an unfreeze request.<br/>Please wait for an admin to review it.<html>");
             case 9:
-                return ("You were the last person to suggest the meeting details! " +
-                        "\nPlease wait for the other user to agree or send a suggestion of their own.");
+                return ("<html>You were the last person to suggest the meeting details! " +
+                        "<br/>Please wait for the other user to agree or send a suggestion of their own.<html>");
             case 10:
                 return ("One of the items involved in this request is currently being lent to someone else!");
             case 11:
@@ -49,21 +49,22 @@ public class NormalDashPresenter {
             case 12:
                 return ("You've reached your maximum number of edits!");
             case 13:
-                return ("Sorry, you can't suggest this date and time because you've " +
-                        "reached the maximum number of meetings allowed in the same week." +
-                        "\nPlease enter a different date and time (not within the same week): ");
+                return ("<html>Sorry, you can't suggest this date and time because you've" +
+                        "<br/>reached the maximum number of meetings allowed in the same week." +
+                        "<br/>Please enter a different date and time (not within the same week).<html>");
             case 15:
                 return ("This meeting has already been agreed upon, so you cannot edit it.");
             case 16:
-                return ("Your trade partner has also confirmed the transaction, so this permanent trade is now closed." +
-                        "\n The item you lent in this permanent trade has automatically been removed from your inventory," +
-                        "\n and if the other user's item was in your wishlist it has been removed.\"");
+                return ("<html>Your trade partner has also confirmed the transaction, so this permanent trade is now closed." +
+                        "<br/>The item you lent in this permanent trade has automatically been removed from your inventory," +
+                        "<br/>and if the other user's item was in your wishlist it has been removed.<html>");
             case 17:
-                return ("Your trade partner has also confirmed the transaction, so this temporary trade is now closed." +
-                        "\nThe item you lent is now available for trade again.");
+                return ("<html>Your trade partner has also confirmed the transaction, so this temporary trade is now closed." +
+                        "<br/>The item you lent is now available for trade again.<html>");
             case 18:
-                return ("Your trade partner has also confirmed the transaction, " +
-                        "so your second meeting has been set to exactly 30 days from the first meeting (same time, same place).");
+                return ("<html>Your trade partner has also confirmed the transaction, " +
+                        "<br/>so your second meeting has been set to exactly 30 days" +
+                        "<br/>from the first meeting (same time, same place).<html>");
             case 19:
                 return ("You and your trade partner have not yet agreed upon a meeting!");
             case 20:
@@ -77,19 +78,20 @@ public class NormalDashPresenter {
             case 24:
                 return ("You and your trade partner have already agreed upon a meeting.");
             case 25:
-                return ("The suggested meeting time has already passed! You'll have to suggest a new time and place.");
+                return ("<html>The suggested meeting time has already passed!" +
+                        "<br/>You'll have to suggest a new time and place.<html>");
             case 26:
-                return ("Sorry, you can't confirm this date and time because you've " +
-                        "reached the maximum number of meetings allowed in the same week.");
+                return ("<html>Sorry, you can't confirm this date and time because you've " +
+                        "<br/>reached the maximum number of meetings allowed in the same week.<html>");
             case 27:
                 return ("<html>You cannot initiate any trades at the moment due to your account being frozen." +
-                        "<br/>>However, you may still add items to your wishlist.<html>");
+                        "<br/>However, you may still add items to your wishlist.<html>");
             case 28:
                 return ("<html>This item's owner is currently frozen!" +
                         "<br/>However, you may still add this item to your wishlist.<html>");
             case 29:
                 return ("<html>Sorry, this item is currently not available for trade." +
-                        "<br/>However, you may still add it to your wishlist.: <html>");
+                        "<br/>However, you may still add it to your wishlist.<html>");
             case 30:
                 return ("Invalid input. Please try again.");
             case 31:

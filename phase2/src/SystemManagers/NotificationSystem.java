@@ -15,8 +15,7 @@ import java.util.Observer;
  * Stores and manages all <Notification></Notification>s in the system.
  * Observes all <NormalUser></NormalUser>s and the initial admin in order to create notifications
  * based on actions taken by each user.
- * Notifications are stored in chronological order from oldest to most recently generated,
- * but are displayed in the opposite order.
+ * Notifications are stored in chronological order from most recently generated to oldest.
  *
  * @author Yingjia Liu
  * @version 1.0
@@ -52,19 +51,29 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
 
     /**
      * Takes in the username of a normal user and returns an array of strings representing
-     * all their notifications in reverse order, from most recent to oldest.
+     * all their notifications, from most recent to oldest.
      *
      * @param username the username of the user whose notifications are being retrieved
      * @return an array of string representations of all the given user's notifications
      */
     public String[] getUserNotifStrings(String username) {
         List<String> notifStrings = new ArrayList<>();
-        List<Notification> userNotifs = userToNotifMap.get(username);
 
-        for (int i = (userNotifs.size() - 1); i >= 0; i--) {
-            notifStrings.add(getNotifString(userNotifs.get(i)));
+        for (Notification n : userToNotifMap.get(username)) {
+            notifStrings.add(getNotifString(n));
         }
         return notifStrings.toArray(new String[0]);
+    }
+
+    /**
+     * Takes in the username of a normal user and the index of one of the notifications in
+     * their list, then removes that notification (marked as read by the user).
+     *
+     * @param username the username of the user who marked a notification as read
+     * @param index the index of the notification being removed
+     */
+    public void removeUserNotif(String username, int index) {
+        userToNotifMap.get(username).remove(index);
     }
 
     /**
@@ -109,15 +118,6 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
      */
     public void removeRevertibleNotif(int index) {
         revertibleActivityLog.remove(index);
-    }
-
-    /**
-     * Clears the notification list of the given username.
-     *
-     * @param username the username of the account whose notification list is being cleared
-     */
-    public void clearNotifsForUser(String username) {
-        userToNotifMap.get(username).clear();
     }
 
     /**
@@ -169,7 +169,7 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
             System.out.println("    notif for user: " + usernameNotified);
 
 
-            userToNotifMap.get(usernameNotified).add(mainNotif);
+            userToNotifMap.get(usernameNotified).add(0, mainNotif);
         }
     }
 
@@ -240,7 +240,7 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
                 // Notify the other user as well.
                 String mirrorMessage = "You and your trade partner " + usernameNotified + " failed to both confirm a transaction " +
                         "within 24 hours of its scheduled time. Your trade with them has been marked as incomplete.";
-                userToNotifMap.get(otherParty).add(new Notification(mirrorMessage));
+                userToNotifMap.get(otherParty).add(0, new Notification(mirrorMessage));
                 break;
             case "FREEZE WARNING":
                 mainMessage = "You've exceeded the maximum allowed number of incomplete trades. " +
@@ -303,7 +303,7 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
 
                 // Notify the other user as well.
                 String mirrorMessage = "A trade request sent to you from " + usernameNotified + " was removed by an admin.";
-                userToNotifMap.get(otherParty).add(new Notification(mirrorMessage));
+                userToNotifMap.get(otherParty).add(0, new Notification(mirrorMessage));
                 break;
             default:
                 mainMessage = "Unknown notification type! :(";
@@ -352,11 +352,11 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
     private void recordActivity(Notification activityToRecord, String recordMessage) {
 
         if (activityToRecord instanceof RevertibleNotification) {
-            revertibleActivityLog.add((RevertibleNotification) activityToRecord);
+            revertibleActivityLog.add(0, (RevertibleNotification) activityToRecord);
         } else {
             activityToRecord = new Notification(recordMessage);
         }
-        fullActivityLog.add(activityToRecord);
+        fullActivityLog.add(0, activityToRecord);
     }
 
 }

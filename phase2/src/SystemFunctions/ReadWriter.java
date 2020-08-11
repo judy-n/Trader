@@ -80,7 +80,6 @@ public class ReadWriter {
         } else if (type == 3) {
             return new TradeManager();
         } else {
-            System.out.println("new notif system");
             return new NotificationSystem();
         }
     }

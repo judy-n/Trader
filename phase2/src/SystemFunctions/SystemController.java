@@ -22,7 +22,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-08-06
+ * last modified 2020-08-11
  */
 public class SystemController extends JFrame {
     private UserManager userManager;
@@ -122,27 +122,17 @@ public class SystemController extends JFrame {
         return new LoginSystem(userManager).validateInput(usernameOrEmail, password);
     }
 
-    public String userLogin(String usernameOrEmail, JFrame parent) {
+    public void userLogin(String usernameOrEmail, JFrame parent) {
         String currUsername = userManager.getUserByUsernameOrEmail(usernameOrEmail).getUsername();
         if (userManager.isAdmin(currUsername)) {
             new DashboardFrame(new AdminDashboard(currUsername, itemManager, userManager, notifSystem), parent);
         } else {
             new DashboardFrame(new NormalDashboard(currUsername, itemManager, userManager, tradeManager, notifSystem), parent);
         }
-        return currUsername;
     }
-
 
     public void demoUser(JFrame parent) {
         new DashboardFrame(new DemoDashboard(itemManager), parent);
-    }
-
-    public void clearCurrUserNotifs(String currUsername) {
-        notifSystem.clearNotifsForUser(currUsername);
-    }
-
-    public boolean currUserIsAdmin(String currUsername) {
-        return userManager.isAdmin(currUsername);
     }
 
     private void tryReadManagers() {

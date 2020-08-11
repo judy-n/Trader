@@ -8,10 +8,9 @@ import java.awt.event.ItemEvent;
  * Lets the user choose to sign up, log in, or exit the program.
  *
  * @author Ning Zhang
- * @author Yingjia Liu
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-07
+ * last modified 2020-08-11
  */
 public class StartMenu extends JPanel {
     private SystemController systemController;
@@ -30,8 +29,6 @@ public class StartMenu extends JPanel {
     private JLabel invalid;
     private Integer[] allTypeInvalidInput;
     private JFrame parent;
-
-    private String finalUsername;
 
     /**
      * Creates a <StartMenu></StartMenu> with the given system controller and parent frame
@@ -166,7 +163,7 @@ public class StartMenu extends JPanel {
                 makeInvalidInputWarning(allTypeInvalidInput, "login");
                 if (allTypeInvalidInput.length == 0) {
                     loggedIn();
-                    finalUsername = systemController.userLogin(emailOrUsername, parent);
+                    systemController.userLogin(emailOrUsername, parent);
                     this.setVisible(true);
                 }
             });
@@ -226,7 +223,6 @@ public class StartMenu extends JPanel {
                 makeInvalidInputWarning(allTypeInvalidInput, "sign-up");
                 if (allTypeInvalidInput.length == 0) {
                     loggedIn();
-                    finalUsername = inputtedUsername;
                     systemController.normalUserSignUp(inputtedUsername, inputtedEmail, inputtedPassword,
                             inputtedHomeCity, parent);
                     this.setVisible(true);
@@ -241,11 +237,7 @@ public class StartMenu extends JPanel {
         JButton logoutButton = new JButton(systemPresenter.loginSystem(7));
         initializeButton(logoutButton, 200, 40, X_POS, FIRST_LINE_Y + Y_SPACE);
 
-        // Clears the logged-in user's notification list (only if they're a normal user) and returns to start menu
         logoutButton.addActionListener(e -> {
-            if (!systemController.currUserIsAdmin(finalUsername)) {
-                systemController.clearCurrUserNotifs(finalUsername);
-            }
             this.removeAll();
             this.revalidate();
             mainMenu();
