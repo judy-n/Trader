@@ -13,7 +13,10 @@ import java.util.Observer;
 
 /**
  * Stores and manages all <Notification></Notification>s in the system.
- * Observes all <NormalUser></NormalUser>s in order to create notifications based on actions taken by each user.
+ * Observes all <NormalUser></NormalUser>s and the initial admin in order to create notifications
+ * based on actions taken by each user.
+ * Notifications are stored in chronological order from oldest to most recently generated,
+ * but are displayed in the opposite order.
  *
  * @author Yingjia Liu
  * @version 1.0
@@ -48,15 +51,18 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
     }
 
     /**
-     * Takes in the username of a normal user and returns an array of strings representing all their notifications.
+     * Takes in the username of a normal user and returns an array of strings representing
+     * all their notifications in reverse order, from most recent to oldest.
      *
      * @param username the username of the user whose notifications are being retrieved
      * @return an array of string representations of all the given user's notifications
      */
     public String[] getUserNotifStrings(String username) {
         List<String> notifStrings = new ArrayList<>();
-        for (Notification n : userToNotifMap.get(username)) {
-            notifStrings.add(getNotifString(n));
+        List<Notification> userNotifs = userToNotifMap.get(username);
+
+        for (int i = (userNotifs.size() - 1); i >= 0; i--) {
+            notifStrings.add(getNotifString(userNotifs.get(i)));
         }
         return notifStrings.toArray(new String[0]);
     }
@@ -129,7 +135,7 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
      * Called when a change is observed in an instance of <NormalUser></NormalUser>.
      *
      * @param user the user object in which a change is observed
-     * @param arg the String array containing all the necessary info to create a notification of specific type
+     * @param arg  the String array containing all the necessary info to create a notification of specific type
      */
     @Override
     public void update(Observable user, Object arg) {
@@ -162,15 +168,12 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
             System.out.println(getNotifString(mainNotif));
             System.out.println("    notif for user: " + usernameNotified);
 
-            if (userToNotifMap.isEmpty()) {
-                System.out.println("usernotifmap empty??");
-            }
 
             userToNotifMap.get(usernameNotified).add(mainNotif);
         }
     }
 
-    private void recordAdminCreation (String newUsername) {
+    private void recordAdminCreation(String newUsername) {
         recordActivity(null, "Initial admin created new admin " + newUsername + " .");
     }
 
@@ -314,7 +317,7 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
     }
 
     private String createNotif(String notifType, String usernameNotified, String otherParty,
-                            String subjectName, String subjectValue) {
+                               String subjectName, String subjectValue) {
         Notification activityToRecord = null;
         String mainMessage;
         String recordMessage = "";
