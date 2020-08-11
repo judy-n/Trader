@@ -18,7 +18,7 @@ import java.util.Observer;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-30
- * last modified 2020-08-09
+ * last modified 2020-08-11
  */
 public class NotificationSystem extends Manager implements Observer, Serializable {
 
