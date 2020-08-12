@@ -70,7 +70,7 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
      * their list, then removes that notification (marked as read by the user).
      *
      * @param username the username of the user who marked a notification as read
-     * @param index the index of the notification being removed
+     * @param index    the index of the notification being removed
      */
     public void removeUserNotif(String username, int index) {
         userToNotifMap.get(username).remove(index);
@@ -118,6 +118,30 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
      */
     public void removeRevertibleNotif(int index) {
         revertibleActivityLog.remove(index);
+    }
+
+    /**
+     * Removes the revertible notification of type "ITEM APPROVAL" involving the given item ID.
+     *
+     * @param itemID the ID of the item involved in the revertible notification being removed
+     */
+    public void removeRevertibleNotif(long itemID) {
+        revertibleActivityLog.removeIf(rn -> rn.getType().equals("ITEM APPROVAL") &&
+                rn.getSubject().equals(String.valueOf(itemID)));
+    }
+
+    /**
+     * Returns an array of string representations of the full activity log.
+     *
+     * @return an array of string representations of the full activity log
+     */
+    public String[] getFullActivityLogStrings() {
+        List<String> activityLogStrings = new ArrayList<>();
+
+        for (Notification n : fullActivityLog) {
+            activityLogStrings.add(getNotifString(n));
+        }
+        return activityLogStrings.toArray(new String[0]);
     }
 
     /**

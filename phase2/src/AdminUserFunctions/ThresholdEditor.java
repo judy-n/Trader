@@ -111,7 +111,7 @@ public class ThresholdEditor {
             systemPresenter.exceptionMessage(1, "Writing", "threshold values");
         }
 
-        // Updates the thresholds for UserManager.
+        // Updates the thresholds for UserThresholds.
         int[] newDefault = userManager.getThresholdSystem().getAllThresholds();
         newDefault[thresholdIndex] = newThreshold;
         userManager.getThresholdSystem().setAllThresholds(newDefault);

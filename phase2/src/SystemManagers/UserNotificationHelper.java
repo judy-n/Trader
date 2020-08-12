@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-08-02
- * last modified 2020-08-09
+ * last modified 2020-08-11
  */
 public class UserNotificationHelper implements Serializable {
     private User currUserToNotify;
@@ -39,16 +39,16 @@ public class UserNotificationHelper implements Serializable {
                                 int thresholdTypeInt, int newValue) {
         String thresholdType;
         switch (thresholdTypeInt) {
-            case 1:
+            case 0:
                 thresholdType = "maximum number of weekly trade meetings";
                 break;
-            case 2:
+            case 1:
                 thresholdType = "maximum number of edits you can make to a trade's meeting details";
                 break;
-            case 3:
+            case 2:
                 thresholdType = "minimum number of items more you must lend than items borrowed";
                 break;
-            case 4:
+            case 3:
                 thresholdType = "maximum number of incomplete trades you can have " +
                         "before being at risk of getting frozen by an admin";
                 break;

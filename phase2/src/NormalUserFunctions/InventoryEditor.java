@@ -1,9 +1,9 @@
 package NormalUserFunctions;
 
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
-import Entities.Item;
 
 /**
  * Helps show the user their inventory and let them edit it through user input.
@@ -13,28 +13,32 @@ import Entities.Item;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-01
- * last modified 2020-08-09
+ * last modified 2020-08-11
  */
 public class InventoryEditor {
     private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
+    private NotificationSystem notifSystem;
 
     /**
-     * Creates an <InventoryEditor></InventoryEditor> with the given normal user and item/user/trade managers.
+     * Creates an <InventoryEditor></InventoryEditor> with the given normal user,
+     * item/user/trade managers, and notification system.
      *
      * @param currUsername the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
+     * @param notifSystem the system's notification manager
      */
     public InventoryEditor(String currUsername, ItemManager itemManager, UserManager userManager,
-                           TradeManager tradeManager) {
+                           TradeManager tradeManager, NotificationSystem notifSystem) {
         this.currUsername = currUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
+        this.notifSystem = notifSystem;
     }
 
     /**
@@ -100,6 +104,7 @@ public class InventoryEditor {
         long selectedItemID = userManager.getNormalUserInventory(currUsername).get(index);
         userManager.removeFromNormalUserInventory(selectedItemID, currUsername);
         itemManager.setItemIsRemoved(selectedItemID);
+        //notifSystem.removeRevertibleNotif();
     }
 
     /**
