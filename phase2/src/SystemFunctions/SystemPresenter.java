@@ -1,6 +1,8 @@
 package SystemFunctions;
 
 import Entities.Trade;
+import SystemManagers.ExceptionPresenter;
+
 import java.util.List;
 
 /**
@@ -16,37 +18,74 @@ public class SystemPresenter {
     private final StartMenuPresenter startMenuPresenter;
     private final NormalDashPresenter normalDashPresenter;
     private final AdminDashPresenter adminDashPresenter;
+    private final ExceptionPresenter exceptionPresenter;
 
-    private final String choicePrompt = "\nPlease enter your choice here: ";
-
+    /**
+     * The system's presenter
+     */
     public SystemPresenter() {
         startMenuPresenter = new StartMenuPresenter();
         normalDashPresenter = new NormalDashPresenter();
         adminDashPresenter = new AdminDashPresenter();
+        exceptionPresenter = new ExceptionPresenter();
     }
 
+    /**
+     * Returns Strings used for display on the start menu
+     * @param input the type of String needed
+     * @return the String used for display
+     */
     public String startMenu(int input) {
         return startMenuPresenter.startMenu(input);
     }
 
+    /**
+     * Returns Strings used for display on the sign up page
+     * @param input the type of String needed
+     * @return the String used for display
+     */
     public String signUpSystem(int input) {
         return startMenuPresenter.signUpSystem(input);
     }
-
+    /**
+     * Returns Strings used for display on the log in page
+     * @param input the type of String needed
+     * @return the String used for display
+     */
     public String loginSystem(int input) { return startMenuPresenter.loginSystem(input);}
 
+    /**
+     * Returns a pop up message for display on a normal user's dashboard
+     * @param type the type of pop up message
+     * @return the pop up message for display
+     */
     public String getNormalPopUpMessage(int type) {
         return normalDashPresenter.getPopUpMessage(type);
     }
 
+    /**
+     * Returns Strings used for JComponents on a normal user's dashboard
+     * @param type the type of string needed
+     * @return the string for display
+     */
     public String setUpNormalDash(int type) {
         return normalDashPresenter.setUpDash(type);
     }
 
+    /**
+     * Returns Strings used for JComponents on an admin user's dashboard
+     * @param type the type of string needed
+     * @return the string for display
+     */
     public String setUpAdminDash(int type) {
         return adminDashPresenter.setUpDash(type);
     }
 
+    /**
+     * Returns a pop up message for display on an admin user's dashboard
+     * @param type the type of pop up message
+     * @return the pop up message for display
+     */
     public String getAdminPopUpMessage(int type) {
         return adminDashPresenter.getPopUpMessage(type);
     }
@@ -132,35 +171,7 @@ public class SystemPresenter {
      * @param type    the type of error
      */
     public void exceptionMessage(int input, String process, String type) {
-        switch (input) {
-            case 1:
-                System.out.println("\n" + process + " error for " + type + "!");
-                break;
-            case 2:
-                System.out.println("\nMissing files for deserialization of " + type + "!");
-                break;
-        }
-        System.exit(-1);
+        exceptionPresenter.exceptionMessage(input, process, type);
     }
 
-    /**
-     * Presents that a list is empty
-     */
-    public String emptyListMessage() {
-        return "Nothing here yet!";
-    }
-
-    /**
-     * Presents a logout message when a user logs out of their account.
-     */
-    public void logoutMessage() {
-        System.out.println("\nLogging out of your account now. See ya!");
-    }
-
-    /**
-     * Presents an exit message when user exits the program
-     */
-    public void exitProgram() {
-        System.out.println("\nExiting... Thank you for using our program!");
-    }
 }
