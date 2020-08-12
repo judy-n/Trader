@@ -1,4 +1,4 @@
-package NormalUserFunctions;
+package DemoUserFunctions;
 
 import SystemFunctions.Dashboard;
 import SystemFunctions.SystemPresenter;

@@ -1,4 +1,4 @@
-package NormalUserFunctions;
+package DemoUserFunctions;
 /**
  * The presenter used for demo dashboard.
  *

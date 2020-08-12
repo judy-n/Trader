@@ -1,7 +1,9 @@
 package SystemFunctions;
 
 import Entities.Trade;
-import NormalUserFunctions.DemoDashPresenter;
+import DemoUserFunctions.DemoDashPresenter;
+import NormalUserFunctions.NormalDashPresenter;
+import AdminUserFunctions.AdminDashPresenter;
 import SystemManagers.ExceptionPresenter;
 
 import java.util.List;
