@@ -13,8 +13,7 @@ import java.util.Observer;
 
 /**
  * Stores and manages all <Notification></Notification>s in the system.
- * Observes all <NormalUser></NormalUser>s and the initial admin in order to create notifications
- * based on actions taken by each user.
+ * Observes all <User></User>s in order to create notifications based on actions taken by each user.
  * Notifications are stored in chronological order from most recently generated to oldest.
  *
  * @author Yingjia Liu
@@ -374,10 +373,17 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
                         (recordMessage, usernameNotified, subjectValue, "ITEM APPROVAL");
 
                 break;
-            case "THRESHOLD ALL USERS":
-                mainMessage = "The default " + subjectName + " has been changed to " + subjectValue + " for all users.";
-                recordMessage = "Admin " + otherParty + " changed the default " + subjectName +
+            case "THRESHOLD CHANGE":
+                mainMessage = "The " + subjectName + " has been changed to " + subjectValue + ".";
+                break;
+            case "LOG THRESHOLD CHANGE VIA PROGRAM":
+                mainMessage = "";
+                recordMessage = "Admin " + otherParty + " changed the " + subjectName +
                         " to " + subjectValue + " for all users.";
+                break;
+            case "LOG THRESHOLD CHANGE VIA FILE":
+                mainMessage = "";
+                recordMessage = "The " + subjectName + " was changed to " + subjectValue + " for all users via text file.";
                 break;
             default:
                 mainMessage = "Unknown notification type! :(";

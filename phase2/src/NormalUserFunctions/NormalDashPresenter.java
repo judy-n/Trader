@@ -19,11 +19,12 @@ public class NormalDashPresenter {
 
     /**
      * Returns the text displayed on a pop up window
+     *
      * @param type int indicating the type of message
      * @return the String needed to be displayed
      */
-    public String getPopUpMessage(int type){
-        switch (type){
+    public String getPopUpMessage(int type) {
+        switch (type) {
             case 1:
                 return ("<html>Your item has been requested!<br/>Please wait for an admin to review it.<html>");
             case 2:
@@ -102,6 +103,12 @@ public class NormalDashPresenter {
             case 33:
                 return ("Sorry, to maintain the balance of how many more items you've lent than you've borrowed," +
                         "you must choose an item to lend to the other user.");
+            case 34:
+                return ("Item successfully added to your wishlist!");
+            case 35:
+                return ("<html>To request a two-way trade, select an item from your inventory (shown on left) " +
+                        "to lend and press \"Send Trade Request\"." +
+                        "<br/>To make it one-way, don't select anything and press the button.");
             default:
                 return ("");
         }
@@ -110,11 +117,12 @@ public class NormalDashPresenter {
     /**
      * Returns the text displayed on JComponents when a admin user's
      * dashboard is displayed
+     *
      * @param type int indicating type of JComponent
      * @return the String needed to be displayed
      */
-    public String setUpDash(int type){
-        switch (type){
+    public String setUpDash(int type) {
+        switch (type) {
             case 1:
                 return ("Inventory Editor");
             case 2:
@@ -164,11 +172,11 @@ public class NormalDashPresenter {
             case 24:
                 return ("Cancel");
             case 25:
-                return ("Agree");
+                return ("Agree To Meeting");
             case 26:
                 return ("Confirm Transaction");
             case 27:
-                return ("Edit Trade");
+                return ("Suggest Trade Meeting");
             case 28:
                 return ("Mark as Read");
             default:
@@ -177,8 +185,8 @@ public class NormalDashPresenter {
     }
 
 
-    public String setUpNormalDashTitles(int type){
-        switch (type){
+    public String setUpNormalDashTitles(int type) {
+        switch (type) {
             case 1:
                 return ("Pending Inventory");
             case 2:
@@ -260,6 +268,7 @@ public class NormalDashPresenter {
     public String lendWarning(int lendMinimum) {
         return ("You're borrowing too much! You need to lend AT LEAST " + lendMinimum + " more item(s) than you've borrowed.");
     }
+
     /**
      * Formats all ongoing trades for a user into an array of string representations and returns it.
      *
@@ -342,16 +351,10 @@ public class NormalDashPresenter {
      * @param input the case associated with which list to display
      */
     public String tradeRequestSetup(int input) {
-        switch (input) {
-            case 2:
-                return ("Uh oh! We couldn't find any items that the other user might want to borrow from you :(");
-            case 3:
-                return ("Sorry, to maintain the balance of how many more items you've lent than you've borrowed," +
-                        "you must choose an item to lend to the other user.");
-            case 4:
-                return ("Your first trade request must be a two-way trade!");
-            default:
-                return null;
+        if (input == 1) {
+            return ("Uh oh! We couldn't find any items that the other user might want to borrow from you :(");
+        } else {
+            return null;
         }
     }
 

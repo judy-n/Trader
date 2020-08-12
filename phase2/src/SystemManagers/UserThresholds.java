@@ -28,6 +28,16 @@ public class UserThresholds implements Serializable {
     private int incompleteTradeMax;
 
     /**
+     * Creates a <UserThresholds></UserThresholds> and sets the thresholds to default values.
+     */
+    public UserThresholds() {
+        weeklyTradeMax = 3;
+        meetingEditMax = 3;
+        lendMinimum = 1;
+        incompleteTradeMax = 5;
+    }
+
+    /**
      * Sets the current default threshold values to the given values.
      *
      * @param thresholds the new threshold values

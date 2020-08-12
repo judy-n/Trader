@@ -1,5 +1,6 @@
 package AdminUserFunctions;
 
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 
 /**
@@ -9,21 +10,24 @@ import SystemManagers.UserManager;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-05
- * last modified 2020-08-05
+ * last modified 2020-08-11
  */
 public class AdminCreator {
     private String currUsername;
     private UserManager userManager;
+    private NotificationSystem notifSystem;
 
     /**
-     * Creates an <AdminCreator></AdminCreator> with the given admin username and user manager.
+     * Creates an <AdminCreator></AdminCreator> with the given admin username, user manager, and notification system.
      *
      * @param currUsername the initial admin's username
      * @param userManager  the system's user manager
+     * @param notifSystem  the system's notification manager
      */
-    public AdminCreator(String currUsername, UserManager userManager) {
+    public AdminCreator(String currUsername, UserManager userManager, NotificationSystem notifSystem) {
         this.currUsername = currUsername;
         this.userManager = userManager;
+        this.notifSystem = notifSystem;
     }
 
     /**
@@ -36,8 +40,9 @@ public class AdminCreator {
      */
     public void createNewAdmin(String newAdminUsername, String newAdminEmail, String newAdminPass) {
         userManager.createAdminUser(newAdminUsername, newAdminEmail, newAdminPass);
+        userManager.getAdminByUsername(newAdminUsername).addObserver(notifSystem);
+
         /* Record admin creation in activity log */
-        // Notify through initial admin (the only observed admin)
         userManager.notifyUser(currUsername).recordAdminCreation(newAdminUsername);
     }
 }

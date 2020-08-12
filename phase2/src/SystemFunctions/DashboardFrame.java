@@ -13,7 +13,7 @@ import java.awt.*;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-08-01
- * last modified 2020-08-11
+ * last modified 2020-08-12
  */
 public class DashboardFrame extends JDialog {
     private Dashboard dashboard;
@@ -50,11 +50,12 @@ public class DashboardFrame extends JDialog {
     private final int THRESHOLD = 12;
     private final int NOTIF = 13;
 
-    private final String NOTHING_MESSAGE = "Nothing here yet!";
+    private final String NOTHING_MESSAGE = "    Nothing here yet!";
 
     /**
      * Makes a new modal window that displays the user functions of the user that is
      * currently logged in
+     *
      * @param dashboard the controller for the dashboard
      * @param parent    the parent window that made this one
      */
@@ -92,10 +93,10 @@ public class DashboardFrame extends JDialog {
         if (dashboard.getType() == 0) {
             adminDashboard = (AdminDashboard) dashboard;
             drawAdminDash();
-        } else if(dashboard.getType() == 1) {
+        } else if (dashboard.getType() == 1) {
             normalDashboard = (NormalDashboard) dashboard;
             drawNormalDash();
-        }else{
+        } else {
             demoDashboard = (DemoDashboard) dashboard;
             drawDemoDash();
         }
@@ -160,14 +161,14 @@ public class DashboardFrame extends JDialog {
             normalDashboard.editUserStatus();
             resetEverything();
             dashboardWindow.remove(scrollablePane);
-            if(normalDashboard.isOnVacation()){
+            if (normalDashboard.isOnVacation()) {
                 inventory.setEnabled(false);
                 wishlist.setEnabled(false);
                 tradeRequest.setEnabled(false);
                 catalog.setEnabled(false);
                 ongoingTrade.setEnabled(false);
                 completeTrade.setEnabled(false);
-            }else{
+            } else {
                 inventory.setEnabled(true);
                 wishlist.setEnabled(true);
                 tradeRequest.setEnabled(true);
@@ -205,7 +206,7 @@ public class DashboardFrame extends JDialog {
         initializeButton(vacation, 200, 35, userFunctionPanel);
         initializeButton(notifications, 200, 35, userFunctionPanel);
 
-        if(normalDashboard.isOnVacation()){
+        if (normalDashboard.isOnVacation()) {
             inventory.setEnabled(false);
             wishlist.setEnabled(false);
             tradeRequest.setEnabled(false);
@@ -213,7 +214,7 @@ public class DashboardFrame extends JDialog {
             ongoingTrade.setEnabled(false);
             completeTrade.setEnabled(false);
         }
-        if(normalDashboard.isFrozen()) {
+        if (normalDashboard.isFrozen()) {
 
             initializeButton(unfreeze, 200, 35, userFunctionPanel);
         }
@@ -274,16 +275,17 @@ public class DashboardFrame extends JDialog {
         initializeButton(freezer, 200, 40, userFunctionPanel);
         initializeButton(unfreezer, 200, 40, userFunctionPanel);
         initializeButton(threshold, 200, 40, userFunctionPanel);
-        initializeButton(adminCreator, 200, 40, userFunctionPanel);
         initializeButton(undo, 200, 40, userFunctionPanel);
 
-        if(adminDashboard.getAdminID()==1){
+        // Only the initial admin can add new admins to the system and view the full activity log.
+        if (adminDashboard.getAdminID() == 1) {
+            initializeButton(adminCreator, 200, 40, userFunctionPanel);
             initializeButton(fullActivity, 200, 40, userFunctionPanel);
         }
 
     }
 
-    private void drawDemoDash(){
+    private void drawDemoDash() {
         JButton demoCatalog = new JButton(demoDashboard.setUpDash(1));
         demoCatalog.addActionListener(e -> {
             resetEverything();
@@ -307,11 +309,14 @@ public class DashboardFrame extends JDialog {
     }
 
     private void drawUserInputPane(int type) {
+
+        optionalPanel.setVisible(false);
+
         switch (type) {
             case DEMO:
                 JButton fakeTrade = new JButton(demoDashboard.setUpDash(2));
                 fakeTrade.addActionListener(e -> JOptionPane.showMessageDialog(parent, demoDashboard.setUpDash(3)));
-                initializeButton(fakeTrade, 100,40, userInputPanel);
+                initializeButton(fakeTrade, 100, 40, userInputPanel);
                 break;
 
             case WISHLIST:
@@ -365,10 +370,10 @@ public class DashboardFrame extends JDialog {
                 JTextField initialPlaceInput = new JTextField(10);
                 JButton confirm = new JButton(normalDashboard.setUpDash(12));
                 confirm.addActionListener(e -> {
-                    if(!listDisplay.isSelectionEmpty()){
-                        if(acceptOrDeny.isSelected()){
+                    if (!listDisplay.isSelectionEmpty()) {
+                        if (acceptOrDeny.isSelected()) {
                             normalDashboard.rejectTradeRequest(listDisplay.getSelectedIndex());
-                        }else{
+                        } else {
                             normalDashboard.acceptTradeRequest(listDisplay.getSelectedIndex(),
                                     initialTimeInput.getText(), initialPlaceInput.getText(), permOrTemp.isSelected());
 
@@ -391,31 +396,35 @@ public class DashboardFrame extends JDialog {
                 sendTrade.setEnabled(false);
                 trade.addActionListener(e -> {
                     if (!listDisplay.isSelectionEmpty()) {
-                        if(wishlistOrTrade.isSelected()){
+                        if (wishlistOrTrade.isSelected()) {
                             normalDashboard.addToWishlist(listDisplay.getSelectedIndex());
                             drawPopUpMessage();
-                        }else{
+                        } else {
                             normalDashboard.setIndexOfItemRequested(listDisplay.getSelectedIndex());
-                            drawOptionalDisplayPanel(normalDashboard.getSuggestedItems(listDisplay.getSelectedIndex()),CATALOG_VIEWER);
+                            drawPopUpMessage();
+                            drawOptionalDisplayPanel(normalDashboard.getSuggestedItems(listDisplay.getSelectedIndex()), CATALOG_VIEWER);
                             listDisplay.clearSelection();
                             redrawDisplayList(normalDashboard.currentUserInventoryInCatalog());
                             sendTrade.setEnabled(true);
                             trade.setEnabled(false);
+                            wishlistOrTrade.setEnabled(false);
                         }
                     }
                 });
 
                 sendTrade.addActionListener(e -> {
-                    if(!listDisplay.isSelectionEmpty()){
+                    if (!listDisplay.isSelectionEmpty()) {
                         normalDashboard.requestItemInTwoWayTrade(listDisplay.getSelectedIndex());
-                    }else{
+                    } else {
                         normalDashboard.requestItemInOneWayTrade();
                     }
                     drawPopUpMessage();
                     listDisplay.clearSelection();
+                    optionalPanel.setVisible(false);
                     redrawDisplayList(normalDashboard.getCatalog());
                     sendTrade.setEnabled(false);
                     trade.setEnabled(true);
+                    wishlistOrTrade.setEnabled(true);
                 });
 
                 initializeToggleButton(wishlistOrTrade, normalDashboard.setUpDash(21),
@@ -431,7 +440,7 @@ public class DashboardFrame extends JDialog {
                 editTrade = new JButton(normalDashboard.setUpDash(27));
 
                 cancelTrade.addActionListener(e -> {
-                    if(!listDisplay.isSelectionEmpty()){
+                    if (!listDisplay.isSelectionEmpty()) {
                         normalDashboard.cancelTrade(listDisplay.getSelectedIndex());
                         listDisplay.clearSelection();
                         redrawDisplayList(normalDashboard.getOngoingTrades());
@@ -439,7 +448,7 @@ public class DashboardFrame extends JDialog {
                 });
 
                 confirmTransaction.addActionListener(e -> {
-                    if(!listDisplay.isSelectionEmpty()){
+                    if (!listDisplay.isSelectionEmpty()) {
                         normalDashboard.confirmTrade(listDisplay.getSelectedIndex());
                         listDisplay.clearSelection();
                         redrawDisplayList(normalDashboard.getOngoingTrades());
@@ -447,7 +456,7 @@ public class DashboardFrame extends JDialog {
                 });
 
                 agreeTrade.addActionListener(e -> {
-                    if(!listDisplay.isSelectionEmpty()){
+                    if (!listDisplay.isSelectionEmpty()) {
                         normalDashboard.agreeTrade(listDisplay.getSelectedIndex());
                         listDisplay.clearSelection();
                         redrawDisplayList(normalDashboard.getOngoingTrades());
@@ -455,8 +464,8 @@ public class DashboardFrame extends JDialog {
                 });
 
                 editTrade.addActionListener(e -> {
-                    if(!listDisplay.isSelectionEmpty()){
-                    editTrade.setEnabled(false);
+                    if (!listDisplay.isSelectionEmpty()) {
+                        editTrade.setEnabled(false);
                         new JOptionPane(normalDashboard.getNumEdits(listDisplay.getSelectedIndex()));
                         drawOptionalInputPanel(ONGOING);
                     }
@@ -469,10 +478,11 @@ public class DashboardFrame extends JDialog {
                 break;
 
             case NOTIF:
+                optionalPanel.setVisible(false);
                 JButton markAsRead = new JButton(normalDashboard.setUpDash(28));
                 initializeButton(markAsRead, 100, 20, userInputPanel);
                 markAsRead.addActionListener(e -> {
-                    if(!listDisplay.isSelectionEmpty()){
+                    if (!listDisplay.isSelectionEmpty()) {
                         normalDashboard.markNotifAsRead(listDisplay.getSelectedIndex());
                         listDisplay.clearSelection();
                         redrawDisplayList(normalDashboard.getNotifStrings());
@@ -510,7 +520,7 @@ public class DashboardFrame extends JDialog {
                 JTextField emailInput = new JTextField(10);
                 JTextField passwordInput = new JTextField(10);
                 JButton addAdmin = new JButton(adminDashboard.setUpDash(12));
-                addAdmin.addActionListener(e ->{
+                addAdmin.addActionListener(e -> {
                     adminDashboard.createNewAdmin(usernameInput.getText(),
                             emailInput.getText(), passwordInput.getText());
                     usernameInput.setText("");
@@ -574,8 +584,8 @@ public class DashboardFrame extends JDialog {
             case UNDO:
                 JButton undo = new JButton(adminDashboard.setUpDash(20));
                 initializeButton(undo, 100, 20, userInputPanel);
-                undo.addActionListener(e ->{
-                    if(!listDisplay.isSelectionEmpty()){
+                undo.addActionListener(e -> {
+                    if (!listDisplay.isSelectionEmpty()) {
                         adminDashboard.revertUserAction(listDisplay.getSelectedIndex());
                     }
                     listDisplay.clearSelection();
@@ -588,6 +598,9 @@ public class DashboardFrame extends JDialog {
     }
 
     private void drawOptionalDisplayPanel(String[] stringArray, int type) {
+
+        optionalPanel.setVisible(true);
+
         switch (type) {
             case INVENTORY:
                 optionalLabelTitle.setText(normalDashboard.setUpDashTitles(1));
@@ -620,15 +633,18 @@ public class DashboardFrame extends JDialog {
         dashboardWindow.setVisible(true);
     }
 
-    private void drawOptionalInputPanel(int type){
-        switch (type){
+    private void drawOptionalInputPanel(int type) {
+
+        optionalPanel.setVisible(true);
+
+        switch (type) {
             case ONGOING:
                 optionalLabelTitle.setText(normalDashboard.setUpDashTitles(3));
                 JTextField timeSuggestionInput = new JTextField(20);
                 JTextField placeSuggestionInput = new JTextField(20);
                 JButton suggest = new JButton(normalDashboard.setUpDashTitles(6));
                 suggest.addActionListener(e -> {
-                    if(!listDisplay.isSelectionEmpty()) {
+                    if (!listDisplay.isSelectionEmpty()) {
                         normalDashboard.editOngoingTrade(listDisplay.getSelectedIndex(),
                                 timeSuggestionInput.getText(), placeSuggestionInput.getText());
                         drawPopUpMessage();
@@ -645,7 +661,7 @@ public class DashboardFrame extends JDialog {
                 initializeLabelledTextField(placeSuggestionInput, normalDashboard.setUpDashTitles(8), optionalPanel);
                 placeSuggestionInput.setMaximumSize(placeSuggestionInput.getPreferredSize());
 
-                initializeButton(suggest,100,30, optionalPanel);
+                initializeButton(suggest, 100, 30, optionalPanel);
                 dashboardWindow.repaint();
                 dashboardWindow.setVisible(true);
                 break;
@@ -670,7 +686,7 @@ public class DashboardFrame extends JDialog {
         panel.add(button);
     }
 
-    private void initializeToggleButton(JToggleButton button, String ogText, String clickedText, JPanel panel){
+    private void initializeToggleButton(JToggleButton button, String ogText, String clickedText, JPanel panel) {
         button.setText(ogText);
         button.setForeground(Color.BLACK);
         button.setBackground(Color.WHITE);
@@ -684,7 +700,7 @@ public class DashboardFrame extends JDialog {
         panel.add(button);
     }
 
-    private void initializeLabelledTextField(JTextField textField, String text, JPanel panel){
+    private void initializeLabelledTextField(JTextField textField, String text, JPanel panel) {
         JLabel label = new JLabel(text);
         panel.add(label);
         panel.add(textField);
@@ -696,8 +712,8 @@ public class DashboardFrame extends JDialog {
         optionalPanel.removeAll();
     }
 
-    private void drawPopUpMessage(){
-        if(!dashboard.getPopUpMessage().isEmpty()) {
+    private void drawPopUpMessage() {
+        if (!dashboard.getPopUpMessage().isEmpty()) {
             JOptionPane.showMessageDialog(parent, dashboard.getPopUpMessage());
             dashboard.resetPopUpMessage();
         }

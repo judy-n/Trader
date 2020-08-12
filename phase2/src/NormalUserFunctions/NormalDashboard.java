@@ -34,6 +34,7 @@ public class NormalDashboard extends Dashboard {
 
     private String popUpMessage = "";
     private SystemPresenter systemPresenter;
+
     /**
      * Creates a <NormalDashboard></NormalDashboard> with the given normal user,
      * item/user/trade managers, and notification system.
@@ -66,59 +67,66 @@ public class NormalDashboard extends Dashboard {
     /**
      * Switches the normal user's vacation status
      */
-    public void editUserStatus(){
+    public void editUserStatus() {
         statusEditor.switchVacationStatus();
     }
 
     /**
      * Sends an unfreeze request for admin review
      */
-    public void sendUnfreezeRequest(){
-        if(unfreezeRequester.requestUnfreeze()){
+    public void sendUnfreezeRequest() {
+        if (unfreezeRequester.requestUnfreeze()) {
             setPopUpMessage(6);
-        }else{
+        } else {
             setPopUpMessage(7);
         }
     }
 
     /**
      * Returns the normal user's wishlist in a String array
+     *
      * @return the normal user's wishlist
      */
-    public String[] getWishlist(){
-       return wishlistEditor.getWishlistStrings();
+    public String[] getWishlist() {
+        return wishlistEditor.getWishlistStrings();
     }
 
     /**
      * Removes item with index [index] from the normal user's wishlist
+     *
      * @param index the index of the item
      */
-    public void removeFromWishlist(int index){
+    public void removeFromWishlist(int index) {
         wishlistEditor.removeItem(index);
     }
 
     /**
      * Returns the normal user's inventory in a String array
+     *
      * @return the normal user's inventory
      */
-    public String[] getInventory(){return inventoryEditor.getInventory();}
+    public String[] getInventory() {
+        return inventoryEditor.getInventory();
+    }
 
     /**
      * Returns the normal user's pending inventory in a String array
+     *
      * @return the normal user's pending inventory
      */
-    public String[] getPendingInventory(){
+    public String[] getPendingInventory() {
         return inventoryEditor.getPendingInventory();
     }
 
     /**
      * Removes item with index [index] from the normal user's inventory
+     *
      * @param index the index of the item
      */
-    public void removeFromInventory(int index){
-        if(inventoryEditor.validateRemoval(index)) {
+    public void removeFromInventory(int index) {
+        if (inventoryEditor.validateRemoval(index)) {
             inventoryEditor.removeInventory(index);
-        }else{
+        } else {
             setPopUpMessage(3);
         }
     }
@@ -126,42 +134,48 @@ public class NormalDashboard extends Dashboard {
     /**
      * Adds an item to the normal user's pending inventory if its name and
      * description is of valid format
-     * @param nameInput the name of the item
+     *
+     * @param nameInput    the name of the item
      * @param descripInput the description of the item
      */
-    public void addToInventory(String nameInput, String descripInput){
-        if(inventoryEditor.validateInput(nameInput, descripInput)){
+    public void addToInventory(String nameInput, String descripInput) {
+        if (inventoryEditor.validateInput(nameInput, descripInput)) {
             inventoryEditor.addInventory(nameInput, descripInput);
             setPopUpMessage(1);
-        }else{
+        } else {
             setPopUpMessage(2);
         }
     }
 
     /**
      * Returns all available Items in the catalog as a String array
+     *
      * @return all available Items in the catalog
      */
-    public String[] getCatalog(){
+    public String[] getCatalog() {
         return catalogViewer.getCatalogStrings();
     }
 
     /**
      * Adds item from catalog viewer to the normal user's wishlist
+     *
      * @param index the index of the item
      */
-    public void addToWishlist(int index){
-        if(!catalogViewer.addToWishlist(index)){
+    public void addToWishlist(int index) {
+        if (!catalogViewer.addToWishlist(index)) {
             setPopUpMessage(11);
+        } else {
+            setPopUpMessage(34);
         }
     }
 
     /**
      * Sends a two way trade request to the item owner
+     *
      * @param index index of the item to lend
      */
-    public void requestItemInTwoWayTrade(int index){
-        if(canSendTradeRequest(catalogViewer.getIndexOfItemRequested())) {
+    public void requestItemInTwoWayTrade(int index) {
+        if (canSendTradeRequest(catalogViewer.getIndexOfItemRequested())) {
             catalogViewer.requestItemInTwoWayTrade(index);
         }
     }
@@ -169,9 +183,9 @@ public class NormalDashboard extends Dashboard {
     /**
      * Sends a one way trade request to the item owner
      */
-    public void requestItemInOneWayTrade(){
-        if(canSendTradeRequest(catalogViewer.getIndexOfItemRequested())) {
-            if(catalogViewer.requestItemInOneWayTrade() != 0){
+    public void requestItemInOneWayTrade() {
+        if (canSendTradeRequest(catalogViewer.getIndexOfItemRequested())) {
+            if (catalogViewer.requestItemInOneWayTrade() != 0) {
                 setPopUpMessage(catalogViewer.requestItemInOneWayTrade());
             }
         }
@@ -179,41 +193,46 @@ public class NormalDashboard extends Dashboard {
 
     /**
      * Returns the system's suggestion of items to lend in a String array
+     *
      * @param index the index of the item the normal user wants to borrow
      * @return suggested items in exchange of the selected item
      */
-    public String[] getSuggestedItems(int index){
+    public String[] getSuggestedItems(int index) {
         return catalogViewer.getSuggestedItems(index);
     }
 
     /**
      * Returns the normal user's current inventory
+     *
      * @return the normal user's current inventory
      */
-    public String[] currentUserInventoryInCatalog(){
+    public String[] currentUserInventoryInCatalog() {
         return catalogViewer.getCurrUserInventory();
     }
 
     /**
      * Sets the index of the item the normal user wants to borrow
+     *
      * @param index the index of the item
      */
-    public void setIndexOfItemRequested(int index){
+    public void setIndexOfItemRequested(int index) {
         catalogViewer.setIndexOfItemRequested(index);
+        setPopUpMessage(35);
     }
 
     /**
      * Checks if the normal user can send a trade request for the selected item
+     *
      * @param index the index of the item
      * @return true if the normal user can send a trade request, false otherwise
      */
-    public boolean canSendTradeRequest(int index){
-        if(catalogViewer.canTradeRequestItem()!=0){
+    public boolean canSendTradeRequest(int index) {
+        if (catalogViewer.canTradeRequestItem() != 0) {
             setPopUpMessage(systemPresenter.lendWarning(catalogViewer.canTradeRequestItem()));
-        }else{
-            if(catalogViewer.canTradeRequestItem(index)!=0){
+        } else {
+            if (catalogViewer.canTradeRequestItem(index) != 0) {
                 setPopUpMessage(catalogViewer.canTradeRequestItem(index));
-            }else{
+            } else {
                 return true;
             }
         }
@@ -222,66 +241,74 @@ public class NormalDashboard extends Dashboard {
 
     /**
      * Returns trade requests the normal user initiated in a String array
+     *
      * @return trade requests the normal user initiated
      */
-    public String[] getInitiatedTrades(){
+    public String[] getInitiatedTrades() {
         return tradeRequestViewer.getInitiatedTrades();
     }
 
     /**
      * Returns trade requests the normal user has received in a String array
+     *
      * @return trade requests the normal user has received
      */
-    public String[] getReceivedTrades(){
+    public String[] getReceivedTrades() {
         return tradeRequestViewer.getReceivedTrades();
     }
 
 
     /**
      * Returns the normal user's three most recent trades in a string array
+     *
      * @return the normal user's three most recent trades
      */
-    public String[] getRecentThreeTradesStrings(){
+    public String[] getRecentThreeTradesStrings() {
         return completedTradesViewer.getRecentThreeTradesStrings();
     }
 
     /**
      * Returns the normal user's three most frequent trade partners in a string array
+     *
      * @return the normal user's three most frequent trade partners
      */
-    public String[] getTopThreeTraderStrings(){
+    public String[] getTopThreeTraderStrings() {
         return completedTradesViewer.getTopThreeTraderStrings();
     }
 
     /**
      * Returns true if the normal user is frozen, false otherwise
+     *
      * @return if the normal user is frozen
      */
-    public boolean isFrozen(){
+    public boolean isFrozen() {
         return userManager.getNormalUserIsFrozen(currUsername);
     }
 
     /**
      * Returns true if the normal user is on vacation, false otherwise
+     *
      * @return if the normal use is on vacation
      */
-    public boolean isOnVacation(){
+    public boolean isOnVacation() {
         return userManager.getNormalUserOnVacation(currUsername);
     }
+
     /**
      * Accepts the selected trade request
-     * @param index the index of the trade request
+     *
+     * @param index    the index of the trade request
      * @param timeDate the initial time and date
-     * @param place the initial place
-     * @param isPerm true if it's a permanent trade false if it's a temporary trade
+     * @param place    the initial place
+     * @param isPerm   true if it's a permanent trade false if it's a temporary trade
      */
-    public void acceptTradeRequest(int index, String timeDate, String place, boolean isPerm){
-        if(!tradeRequestViewer.canAcceptRequest(index)){
+    public void acceptTradeRequest(int index, String timeDate, String place, boolean isPerm) {
+        if (!tradeRequestViewer.canAcceptRequest(index)) {
             setPopUpMessage(10);
-        }else{
-            if(tradeRequestViewer.validateSuggestion(timeDate, place)!=0){
+        } else {
+            if (tradeRequestViewer.validateSuggestion(timeDate, place) != 0) {
                 setPopUpMessage(tradeRequestViewer.validateSuggestion(timeDate, place));
-            }else{
+            } else {
                 tradeRequestViewer.acceptTradeRequest(index, isPerm, timeDate, place);
             }
         }
@@ -289,113 +316,123 @@ public class NormalDashboard extends Dashboard {
 
     /**
      * Rejects the selected trade request
+     *
      * @param index the index of the trade request
      */
-    public void rejectTradeRequest(int index){
+    public void rejectTradeRequest(int index) {
         tradeRequestViewer.rejectTradeRequest(index);
     }
 
     /**
      * Returns normal user's ongoing trades in a String array
+     *
      * @return normal user's ongoing trades
      */
-    public String[] getOngoingTrades(){
+    public String[] getOngoingTrades() {
         return ongoingTradesViewer.getOngoingTrades();
     }
 
     /**
      * Returns normal user's current number of edits made on a ongoing trade
      * of index [index]
+     *
      * @param index the index of the ongoing trade
      * @return number of edits or a warning if it is the last edit
      */
-    public String getNumEdits(int index){
+    public String getNumEdits(int index) {
         return ongoingTradesViewer.displayNumOfEdits(index);
     }
 
     /**
      * Cancels the ongoing trade with index [index] if it can be cancelled
+     *
      * @param index the index of the ongoing trade
      */
-    public void cancelTrade(int index){
-        if(!ongoingTradesViewer.cancelTrade(index)){
+    public void cancelTrade(int index) {
+        if (!ongoingTradesViewer.cancelTrade(index)) {
             setPopUpMessage(22);
         }
     }
 
     /**
      * Agrees to an ongoing trade's trade details
+     *
      * @param index the index of the ongoing trade
      */
-    public void agreeTrade(int index){
+    public void agreeTrade(int index) {
         setPopUpMessage(ongoingTradesViewer.agreeMeeting(index));
     }
 
     /**
      * Confirms that an ongoing trade is completed
+     *
      * @param index the index of the ongoing trade
      */
-    public void confirmTrade(int index){
-        if(ongoingTradesViewer.canConfirmLatestTransaction(index)!=0){
+    public void confirmTrade(int index) {
+        if (ongoingTradesViewer.canConfirmLatestTransaction(index) != 0) {
             setPopUpMessage(ongoingTradesViewer.canConfirmLatestTransaction(index));
-        }else{
+        } else {
             setPopUpMessage(ongoingTradesViewer.confirmLatestTransaction(index));
         }
     }
 
     /**
      * Change the selected ongoing trade's trade details
-     * @param index the index of the ongoing trade
+     *
+     * @param index    the index of the ongoing trade
      * @param timeDate the new date time
-     * @param place the new place
+     * @param place    the new place
      */
-    public void editOngoingTrade(int index, String timeDate, String place){
-        if(ongoingTradesViewer.canEditMeeting(index) == 0){
-            if(ongoingTradesViewer.validateSuggestion(timeDate, place) == 0){
+    public void editOngoingTrade(int index, String timeDate, String place) {
+        if (ongoingTradesViewer.canEditMeeting(index) == 0) {
+            if (ongoingTradesViewer.validateSuggestion(timeDate, place) == 0) {
                 ongoingTradesViewer.setMeeting(index, timeDate, place);
-            }else{
+            } else {
                 setPopUpMessage(ongoingTradesViewer.validateSuggestion(timeDate, place));
             }
-        }else {
+        } else {
             setPopUpMessage(ongoingTradesViewer.canEditMeeting(index));
         }
     }
 
     /**
      * Returns all notifications the normal user has received in a String array
+     *
      * @return all notifications the normal user has received
      */
-    public String[] getNotifStrings(){
+    public String[] getNotifStrings() {
         return notificationViewer.getNotifStrings();
     }
 
     /**
      * Marks the selected notification as read
+     *
      * @param index the index of the notification
      */
-    public void markNotifAsRead(int index){
+    public void markNotifAsRead(int index) {
         notificationViewer.markNotifAsRead(index);
     }
 
-    public String setUpDashTitles(int type){
+    public String setUpDashTitles(int type) {
         return systemPresenter.setUpNormalDashTitles(type);
     }
 
     /**
      * Set the pop up message (special case)
+     *
      * @param popUpMessage the new pop up message
      */
-    public void setPopUpMessage(String popUpMessage){
+    public void setPopUpMessage(String popUpMessage) {
         this.popUpMessage = popUpMessage;
     }
 
     @Override
-    public String setUpDash(int type){
+    public String setUpDash(int type) {
         return systemPresenter.setUpNormalDash(type);
     }
 
     @Override
-    public void setPopUpMessage(int type){
+    public void setPopUpMessage(int type) {
         popUpMessage = systemPresenter.getNormalPopUpMessage(type);
     }
 
@@ -410,7 +447,7 @@ public class NormalDashboard extends Dashboard {
     }
 
     @Override
-    public String getPopUpMessage(){
+    public String getPopUpMessage() {
         return popUpMessage;
     }
 

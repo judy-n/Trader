@@ -177,12 +177,9 @@ public class CatalogViewer {
 
         if (suggestedItems.isEmpty()) {
             suggestedItemStrings  = new String[1];
-            suggestedItemStrings [0] = systemPresenter.tradeRequestSetup(2);
+            suggestedItemStrings[0] = systemPresenter.tradeRequestSetup(1);
         } else {
-            suggestedItemStrings  = new String[suggestedItems.size() + 1];
-            String[] tempSuggestions = itemManager.getItemStringsID(suggestedItems, false);
-
-            System.arraycopy(tempSuggestions, 0, suggestedItemStrings, 1, suggestedItemStrings.length);
+            suggestedItemStrings = itemManager.getItemStringsID(suggestedItems, false);
         }
 
         return suggestedItemStrings;
@@ -239,10 +236,8 @@ public class CatalogViewer {
          */
         if (timesBorrowed == 0) {
             return 32;
-            //return systemPresenter.tradeRequestSetup(4);
         } else if ((timesLent - timesBorrowed) == lendMinimum) {
             return 33;
-            //return systemPresenter.tradeRequestSetup(3);
         } else {
             long itemToBorrowID = catalogToView.get(indexOfItemRequested).getID();
             sendTradeRequest(0, itemToBorrowID);

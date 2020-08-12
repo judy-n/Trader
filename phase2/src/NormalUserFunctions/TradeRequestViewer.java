@@ -96,11 +96,9 @@ public class TradeRequestViewer {
             String itemToLendName = "";
 
             if (initiatedTrades.get(key)[0] != 0) {
-                Item itemToLend = itemManager.getItem(initiatedTrades.get(key)[0]);
-                itemToLendName = itemToLend.getName();
+                itemToLendName = itemManager.getItemName(initiatedTrades.get(key)[0]);
             }
-            Item itemToBorrow = itemManager.getItem(initiatedTrades.get(key)[1]);
-            itemToBorrowName = itemToBorrow.getName();
+            itemToBorrowName = itemManager.getItemName(initiatedTrades.get(key)[1]);
 
             initiatedItemNames.add(new String[]{itemToLendName, itemToBorrowName});
             initiatedOwners.add(key[1]);
@@ -120,7 +118,7 @@ public class TradeRequestViewer {
         receivedOwners.clear();
 
         for (String[] key : userManager.getNormalUserTradeRequests(currUsername).keySet()) {
-            if (!userManager.getNormalUserIsFrozen(key[1])) {
+            if (!userManager.getNormalUserIsFrozen(key[0]) && currUsername.equals(key[1])) {
                 receivedTrades.put(key, userManager.getNormalUserTradeRequests(currUsername).get(key));
             }
         }
@@ -130,11 +128,9 @@ public class TradeRequestViewer {
             String itemToLendName;
 
             if (receivedTrades.get(key)[0] != 0) {
-                Item itemToBorrow = itemManager.getItem(receivedTrades.get(key)[0]);
-                itemToBorrowName = itemToBorrow.getName();
+                itemToBorrowName = itemManager.getItemName(receivedTrades.get(key)[0]);
             }
-            Item itemToLend = itemManager.getItem(receivedTrades.get(key)[1]);
-            itemToLendName = itemToLend.getName();
+            itemToLendName = itemManager.getItemName(receivedTrades.get(key)[1]);
 
             receivedItemNames.add(new String[]{itemToBorrowName, itemToLendName});
             receivedOwners.add(key[0]);

@@ -6,7 +6,7 @@ package SystemFunctions;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-07-29
- * last modified 2020-08-05
+ * last modified 2020-08-11
  */
 public class StartMenuPresenter {
 
@@ -45,41 +45,41 @@ public class StartMenuPresenter {
             case 0:
                 return ("Sign-up");
             case 1:
-                return ("Please enter an email: ");
+                return ("Enter an email: ");
             case 2:
                 return ("Email is already used! Please enter a different email.");
             case 3:
                 return ("Invalid email.");
             case 4:
-                return ("<html>Enter an username <br/> (min 3 characters, <br/> numbers/letters <br/> or _. in between)<html> ");
+                return ("<html>Enter an username: <br/> (min 3 characters, <br/> numbers/letters <br/> or _. in between)<html> ");
             case 5:
                 return ("Username already exists! Please enter a different username.");
             case 6:
                 return ("Invalid username.");
             case 7:
-                return ("<html>Please enter a password <br/> (6-20 characters)<html>");
+                return ("<html>Enter a password: <br/> (6-20 characters)<html>");
             case 8:
                 return ("Invalid password.");
             case 9:
-                return ("Please verify your password.");
+                return ("Verify your password: ");
             case 10:
                 return ("Passwords do not match.");
             case 11:
                 return ("Thank you for signing up! You are now logged in.");
             case 12:
-                return ("Username can't be empty!");
+                return ("Please enter a username.");
             case 13:
-                return ("Please enter a home city: ");
+                return ("Enter a home city: ");
             case 14:
                 return ("Show password");
             case 15:
-                return ("Email can't be empty!");
+                return ("Please enter an email.");
             case 16:
-                return ("Password can't be empty!");
+                return ("Please enter a password.");
             case 17:
-                return ("Please verify your password!");
+                return ("Please verify your password.");
             case 18:
-                return ("Home city can't be empty!");
+                return ("Please enter a home city.");
             case 19:
                 return ("Sign up");
             default:
@@ -102,8 +102,6 @@ public class StartMenuPresenter {
                 return ("Enter username or email: ");
             case 2:
                 return ("Username/email does not exist in our database!");
-            case 3:
-                return ("Please enter your password: ");
             case 4:
                 return ("Password does not match username/email!");
             case 5:

@@ -33,10 +33,11 @@ public class AdminDashboard extends Dashboard {
     /**
      * Creates an <AdminDashboard></AdminDashboard> with the given admin username,
      * item/user managers, and notification system.
-     * @param username      the username of the normal user who's currently logged in
-     * @param itemManager   the system's item manager
-     * @param userManager   the system's user manager
-     * @param notifSystem   the system's notification system
+     *
+     * @param username    the username of the normal user who's currently logged in
+     * @param itemManager the system's item manager
+     * @param userManager the system's user manager
+     * @param notifSystem the system's notification system
      */
     public AdminDashboard(String username, ItemManager itemManager,
                           UserManager userManager, NotificationSystem notifSystem) {
@@ -48,132 +49,145 @@ public class AdminDashboard extends Dashboard {
         accountUnfreezer = new AccountUnfreezer(username, userManager);
         catalogEditor = new CatalogEditor(username, itemManager, userManager);
         thresholdEditor = new ThresholdEditor(username, userManager);
-        adminCreator = new AdminCreator(username, userManager);
+        adminCreator = new AdminCreator(username, userManager, notifSystem);
         actionReverter = new ActionReverter(username, itemManager, userManager, notifSystem);
     }
 
     /**
      * Returns all normal users that needs to be frozen in a String array
+     *
      * @return all normal users that needs to be frozen
      */
-    public String[] getFreezeList(){
+    public String[] getFreezeList() {
         return accountFreezer.getFreezeList();
     }
 
     /**
      * Freeze all normal users that needs to be frozen
      */
-    public void freezeAll(){
+    public void freezeAll() {
         accountFreezer.freezeAll();
     }
 
     /**
      * Returns all unfreeze request sent by normal users in a String array
+     *
      * @return all unfreeze requests
      */
-    public String[] getUnfreezeRequests(){
+    public String[] getUnfreezeRequests() {
         return accountUnfreezer.getUnfreezeRequests();
     }
 
     /**
      * Unfreeze a normal user of index [index] in the list of unfreeze requests
+     *
      * @param index the index of the normal user
      */
-    public void unfreezeUser(int index){
+    public void unfreezeUser(int index) {
         accountUnfreezer.acceptUnfreezeRequest(index);
     }
 
     /**
      * Creates a new admin user if the given username, email ,and password are of the correct
      * format
+     *
      * @param inputtedUsername inputted username
-     * @param inputtedEmail inputted email
+     * @param inputtedEmail    inputted email
      * @param inputtedPassword inputted password
      */
-    public void createNewAdmin(String inputtedUsername, String inputtedEmail, String inputtedPassword){
+    public void createNewAdmin(String inputtedUsername, String inputtedEmail, String inputtedPassword) {
         boolean isValid = new SignUpSystem(userManager).validateInput(inputtedUsername,
                 inputtedEmail, inputtedPassword, inputtedPassword).isEmpty();
-        if(isValid) {
+        if (isValid) {
             adminCreator.createNewAdmin(inputtedUsername, inputtedEmail, inputtedPassword);
             setPopUpMessage(3);
-        }else{
+        } else {
             setPopUpMessage(2);
         }
     }
 
     /**
      * Returns all items in all normal user's pending inventory in a String array
+     *
      * @return all items in all normal user's pending inventory
      */
-    public String[] getPendingCatalog(){
+    public String[] getPendingCatalog() {
         return catalogEditor.getPendingItemStrings();
     }
 
     /**
      * Approves an item of index [index] in the list of items in pending catalog
+     *
      * @param index the index of the item
      */
-    public void approvePendingCatalog(int index){
+    public void approvePendingCatalog(int index) {
         catalogEditor.approveItem(index);
     }
 
     /**
      * Rejects an item of index [index] in the list of items in pending catalog
+     *
      * @param index the index of the item
      */
-    public void rejectionPendingCatalog(int index){
+    public void rejectionPendingCatalog(int index) {
         catalogEditor.rejectItem(index);
     }
 
     /**
      * Returns the program's current threshold values in a String array
+     *
      * @return the program's current threshold values
      */
-    public String[] getThresholdStrings(){
+    public String[] getThresholdStrings() {
         return thresholdEditor.getThresholdStrings();
     }
 
     /**
      * Change the program's current threshold values if the inputs are of correct format
+     *
      * @param inputs the new threshold value inputs
      */
-    public void changeThresholds(String[] inputs){
-        if(thresholdEditor.thresholdInputValidate(inputs)){
+    public void changeThresholds(String[] inputs) {
+        if (thresholdEditor.thresholdInputValidate(inputs)) {
             thresholdEditor.applyThresholdChanges(inputs);
-        }else{
+        } else {
             setPopUpMessage(1);
         }
     }
 
     /**
      * Returns all revertible notifications in the system in a String array
+     *
      * @return all revertible notifications
      */
-    public String[] getRevertibleNotifs(){
+    public String[] getRevertibleNotifs() {
         return actionReverter.getRevertibleNotifs();
     }
 
     /**
      * Reverts a selected user action
+     *
      * @param index the index of the action
      */
-    public void revertUserAction(int index){
+    public void revertUserAction(int index) {
         actionReverter.revertAction(index);
     }
 
     /**
      * Returns all the activity log in the system in a String array
+     *
      * @return all the activity log in the system
      */
-    public String[] getFullActivityLogStrings(){
+    public String[] getFullActivityLogStrings() {
         return notifSystem.getFullActivityLogStrings();
     }
 
     /**
      * Returns the ID of the current admin user
+     *
      * @return the ID of the current admin user
      */
-    public int getAdminID(){
+    public int getAdminID() {
         return userManager.getAdminID(currUsername);
     }
 

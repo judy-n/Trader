@@ -1,6 +1,6 @@
 package SystemFunctions;
 
-import Entities.NormalUser;
+import Entities.User;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
@@ -32,7 +32,6 @@ public class SystemController extends JFrame {
     private SystemPresenter systemPresenter;
 
     private ReadWriter readWriter;
-
     private final String USER_MANAGER_PATH = "src/usermanager.ser";
     private final String ITEM_MANAGER_PATH = "src/itemmanager.ser";
     private final String TRADE_MANAGER_PATH = "src/trademanager.ser";
@@ -66,12 +65,32 @@ public class SystemController extends JFrame {
             userManager.addToNormalUserWishlist(itemID2, "test");
         }
 
-
-        int[] defaultThresholds = tryReadThresholds();
-        assert defaultThresholds != null;
-        userManager.getThresholdSystem().setAllThresholds(defaultThresholds);
+        int[] fileThresholds = tryReadThresholds();
+        assert fileThresholds != null;
+        checkThresholdChange(fileThresholds);
+        userManager.getThresholdSystem().setAllThresholds(fileThresholds);
 
         handleIncompleteTrades();
+    }
+
+    private void checkThresholdChange(int[] fileThresholds) {
+
+        int[] currThresholds = userManager.getThresholdSystem().getAllThresholds();
+
+        for (int i = 0; i < currThresholds.length; i++) {
+
+            if (fileThresholds[i] != currThresholds[i]) {
+
+                /* Notify all users of threshold change */
+                for (String normalUsername : userManager.getAllNormalUsernames()) {
+                    userManager.notifyUser(normalUsername).thresholdUpdate
+                            ("THRESHOLD CHANGE", normalUsername, "", i, fileThresholds[i]);
+                }
+                /* Log threshold change via text file */
+                userManager.notifyUser(userManager.getAdminUsernameByID(1)).thresholdUpdate
+                        ("LOG THRESHOLD CHANGE VIA FILE", "", "", i, fileThresholds[i]);
+            }
+        }
     }
 
     private void handleIncompleteTrades() {
@@ -196,14 +215,11 @@ public class SystemController extends JFrame {
             notifSystem = (NotificationSystem) readWriter.readFromFile(NOTIF_SYSTEM_PATH, 4);
 
             /*
-             * Adds the notification system as an observer to all normal users in the system and the
-             * initial admin, since it gets lost during serialization.
+             * Adds the notification system as an observer to all users in the system,
+             * since it gets lost during serialization.
              */
-            for (NormalUser u : userManager.getAllNormals()) {
+            for (User u : userManager.getAllUsers()) {
                 u.addObserver(notifSystem);
-            }
-            if (!userManager.getAllAdmins().isEmpty()) {
-                userManager.getAllAdmins().get(0).addObserver(notifSystem);
             }
         } catch (IOException e) {
             systemPresenter.exceptionMessage(1, "Reading", "NotificationSystem");
@@ -247,7 +263,7 @@ public class SystemController extends JFrame {
             String[] adminCredentials = readWriter.readAdminFromFile(INIT_ADMIN_PATH);
             userManager.createAdminUser(adminCredentials[0], adminCredentials[1], adminCredentials[2]);
 
-            // Add observer only to initial admin (all other admins not observed by notif system)
+            // Add observer to initial admin
             userManager.getAdminByUsername(adminCredentials[0]).addObserver(notifSystem);
 
         } catch (IOException e) {

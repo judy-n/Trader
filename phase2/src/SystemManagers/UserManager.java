@@ -94,6 +94,21 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
+     * Takes in an admin ID and returns the associated admin's username.
+     *
+     * @param adminID the ID of the admin whose username is being retrieved
+     * @return the username of the admin associated with the given ID.
+     */
+    public String getAdminUsernameByID(int adminID) {
+        for (AdminUser adminUser : allAdmins) {
+            if (adminUser.getAdminID() == adminID) {
+                return adminUser.getUsername();
+            }
+        }
+        return ("");
+    }
+
+    /**
      * Takes the given username and returns the associated <NormalUser></NormalUser>.
      *
      * @param username the username of the normal user being retrieved
@@ -636,8 +651,8 @@ public class UserManager extends Manager implements Serializable {
      * create notifications triggered by certain user actions.
      *
      * @param username the username of the user being notified
-     *                 (except in the case where the initial admin's username is passed in,
-     *                 which doesn't notify the init admin but records an action in the activity log)
+     *                 (except in the case where an admin's username is passed in,
+     *                 which doesn't notify the admin but records an action in the activity log)
      * @return the notification helper
      */
     public UserNotificationHelper notifyUser(String username) {

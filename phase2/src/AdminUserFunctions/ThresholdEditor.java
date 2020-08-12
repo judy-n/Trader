@@ -96,8 +96,11 @@ public class ThresholdEditor {
                 /* Notify all users of threshold change */
                 for (String normalUsername : userManager.getAllNormalUsernames()) {
                     userManager.notifyUser(normalUsername).thresholdUpdate
-                            ("THRESHOLD ALL USERS", normalUsername, currUsername, i, newThreshold);
+                            ("THRESHOLD CHANGE", normalUsername, "", i, newThreshold);
                 }
+                /* Log threshold change */
+                userManager.notifyUser(currUsername).thresholdUpdate
+                        ("LOG THRESHOLD CHANGE VIA PROGRAM", "", currUsername, i, newThreshold);
             }
         }
     }

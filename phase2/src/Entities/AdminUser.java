@@ -11,11 +11,11 @@ import java.io.Serializable;
  * @author Liam Huff
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-12
+ * last modified 2020-08-11
  */
 
 public class AdminUser extends User implements Serializable {
-    private final int adminID;
+    private final int ADMIN_ID;
 
     /**
      * Creates an <AdminUser></AdminUser> with the given username, email, password, and admin ID.
@@ -27,7 +27,7 @@ public class AdminUser extends User implements Serializable {
      */
     public AdminUser(String username, String email, String password, int adminID) {
         super(username, email, password);
-        this.adminID = adminID;
+        ADMIN_ID = adminID;
     }
 
     /**
@@ -36,6 +36,6 @@ public class AdminUser extends User implements Serializable {
      * @return this <AdminUser></AdminUser>'s admin ID
      */
     public int getAdminID() {
-        return adminID;
+        return ADMIN_ID;
     }
 }

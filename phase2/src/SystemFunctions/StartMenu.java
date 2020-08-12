@@ -266,5 +266,6 @@ public class StartMenu extends JPanel {
         invalid.setForeground(Color.red);
         this.add(invalid);
         invalid.setLocation(X_POS, 380);
+        this.repaint();
     }
 }
