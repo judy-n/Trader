@@ -14,7 +14,7 @@ import SystemManagers.ItemManager;
  * @author Ning Zhang
  * @version 2.0
  * @since 2020-07-05
- * last modified 2020-08-07
+ * last modified 2020-08-12
  */
 
 public class AdminDashboard extends Dashboard {
@@ -191,35 +191,82 @@ public class AdminDashboard extends Dashboard {
         return userManager.getAdminID(currUsername);
     }
 
+    /**
+     * Returns the admin user's username
+     * @return the admin user's username
+     */
     @Override
     public String getUsername() {
         return currUsername;
     }
 
+    /**
+     * Returns int indicating the type of dashboard
+     * @return the int indicating the type of dashboard
+     */
     @Override
     public int getType() {
         return 0;
     }
 
+    /**
+     * Returns Strings used for JComponents on the <DashFrame></DashFrame>
+     * @param type the type of string
+     * @return the string needed
+     */
     @Override
     public String setUpDash(int type) {
         return systemPresenter.setUpAdminDash(type);
     }
 
+    /**
+     * Sets the String needed for pop up display on the <DashFrame></DashFrame>
+     * @param type the type of message needed
+     */
     @Override
     public void setPopUpMessage(int type) {
         popUpMessage = systemPresenter.getAdminPopUpMessage(type);
     }
 
+    /**
+     * Returns Strings used used for pop up display on the <DashFrame></DashFrame>
+     * @return the need pop message
+     */
     @Override
     public String getPopUpMessage() {
         return popUpMessage;
     }
 
+    /**
+     * Resets the pop up message
+     */
     @Override
     public void resetPopUpMessage() {
         popUpMessage = "";
     }
 
+    /**
+     * Returns the admin user's info in a String array
+     * @return the admin user's info
+     */
+    @Override
+    public String[] getUserInfo() {
+        return systemPresenter.getAdminUserInfo(currUsername, userManager.getAdminByUsername(currUsername).getEmail(),
+                userManager.getUserPassword(currUsername), userManager.getAdminID(currUsername));
+    }
+
+    /**
+     * Validates the new password
+     * @param password the new password
+     * @param validatePassword the new password again
+     */
+    @Override
+    public void validatePasswordChange(String password, String validatePassword) {
+        if(password.matches("[\\S]{6,20}")&&validatePassword.equals(password)){
+            userManager.changeUserPassword(currUsername, password);
+        }else{
+            setPopUpMessage(2);
+        }
+    }
 
 }

@@ -58,6 +58,14 @@ public abstract class User extends Observable implements Serializable {
     }
 
     /**
+     * Setter for this <User></User>'s password
+     * @param newPassword the new password
+     */
+    public void setPassword(String newPassword){
+        password = newPassword;
+    }
+
+    /**
      * Gives other classes (namely <UserNotificationHelper></UserNotificationHelper>) access to
      * the setChanged() method of <Observable></Observable>s.
      */

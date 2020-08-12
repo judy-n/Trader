@@ -65,4 +65,13 @@ public class DemoDashboard extends Dashboard {
     @Override
     public void resetPopUpMessage() {
     }
+
+    @Override
+    public String[] getUserInfo() {
+        return new String[0];
+    }
+
+    @Override
+    public void validatePasswordChange(String password, String validatePassword) {
+    }
 }

@@ -89,6 +89,18 @@ public class SystemPresenter {
     }
 
     /**
+     * Returns the normal user's information in a String array
+     * @param username the normal user's username
+     * @param email the normal user's email
+     * @param password the normal user's password
+     * @param homeCity the normal user's homeCity
+     * @return the normal user's information
+     */
+    public String[] getNormalUserInfo(String username, String email, String password, String homeCity){
+        return normalDashPresenter.getUserInfo(username, email, password, homeCity);
+    }
+
+    /**
      * Returns Strings used for JComponents on an admin user's dashboard
      * @param type the type of String needed
      * @return the String for display
@@ -113,6 +125,17 @@ public class SystemPresenter {
      */
     public String getAdminPopUpMessage(int type) {
         return adminDashPresenter.getPopUpMessage(type);
+    }
+
+    /**
+     * Returns the admin user's info in a String array
+     * @param username the admin user's username
+     * @param email the admin user's email
+     * @param id the admin user's id
+     * @return the admin user's info
+     */
+    public String[] getAdminUserInfo(String username, String email, String password, int id){
+        return adminDashPresenter.getUserInfo(username, email, password, id);
     }
 
     /**
