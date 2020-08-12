@@ -1,6 +1,6 @@
 package SystemFunctions;
 
-import NormalUserFunctions.DemoDashboard;
+import DemoUserFunctions.DemoDashboard;
 import NormalUserFunctions.NormalDashboard;
 import AdminUserFunctions.AdminDashboard;
 

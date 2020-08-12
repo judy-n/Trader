@@ -24,6 +24,12 @@ public class LoginSystem {
         this.userManager = userManager;
     }
 
+    /**
+     * Checks if the inputs are valid
+     * @param usernameOrEmail inputted username or email
+     * @param password inputted password
+     * @return a list of int indicating the type of error, empty if all valid
+     */
     public ArrayList<Integer> validateInput(String usernameOrEmail, String password) {
         ArrayList<Integer> invalidInput = new ArrayList<>();
         if (!userManager.usernameExists(usernameOrEmail) && !userManager.emailExists(usernameOrEmail)) {

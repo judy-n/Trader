@@ -26,6 +26,14 @@ public class SignUpSystem {
         this.userManager = userManager;
     }
 
+    /**
+     * Checks if the inputs are valid
+     * @param username inputted username
+     * @param email inputted email
+     * @param password inputted password
+     * @param validatePassword inputted validate password
+     * @return a list of int indicating the type of error, empty if all valid
+     */
     public ArrayList<Integer> validateInput(String username, String email, String password, String validatePassword) {
 
         ArrayList<Integer> invalidInputCases = new ArrayList<>();
@@ -65,6 +73,15 @@ public class SignUpSystem {
         return invalidInputCases;
     }
 
+    /**
+     * Checks if the inputs are valid for a normal user
+     * @param username inputted username
+     * @param email inputted email
+     * @param password inputted password
+     * @param validatePassword inputted validate password
+     * @param homeCity inputted home city
+     * @return a list of int indicating the type of error, empty if all valid
+     */
     public ArrayList<Integer> validateInputNormal(String username, String email, String password,
                                                   String validatePassword, String homeCity) {
 
