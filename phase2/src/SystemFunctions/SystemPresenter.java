@@ -51,6 +51,7 @@ public class SystemPresenter {
     public String signUpSystem(int input) {
         return startMenuPresenter.signUpSystem(input);
     }
+
     /**
      * Returns Strings used for display on the log in page
      * @param input the type of String needed
@@ -89,13 +90,18 @@ public class SystemPresenter {
 
     /**
      * Returns Strings used for JComponents on an admin user's dashboard
-     * @param type the type of string needed
-     * @return the string for display
+     * @param type the type of String needed
+     * @return the String for display
      */
     public String setUpAdminDash(int type) {
         return adminDashPresenter.setUpDash(type);
     }
 
+    /**
+     * Returns Strings used for JComponents on the demo dashboard
+     * @param type the type of String needed
+     * @return the String for display
+     */
     public String setUpDemoDash(int type){
         return demoDashPresenter.setUpDash(type);
     }

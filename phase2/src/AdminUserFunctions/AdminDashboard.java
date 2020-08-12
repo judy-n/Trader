@@ -40,7 +40,6 @@ public class AdminDashboard extends Dashboard {
      */
     public AdminDashboard(String username, ItemManager itemManager,
                           UserManager userManager, NotificationSystem notifSystem) {
-
         this.currUsername = username;
         this.userManager = userManager;
         this.notifSystem = notifSystem;
@@ -51,7 +50,6 @@ public class AdminDashboard extends Dashboard {
         thresholdEditor = new ThresholdEditor(username, userManager);
         adminCreator = new AdminCreator(username, userManager);
         actionReverter = new ActionReverter(username, itemManager, userManager, notifSystem);
-
     }
 
     /**

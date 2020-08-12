@@ -1,5 +1,4 @@
 package SystemFunctions;
-import java.awt.*;
 import javax.swing.*;
 
 /**
@@ -11,13 +10,13 @@ import javax.swing.*;
  * last modified 2020-07-24
  */
 public class Launcher extends JFrame{
-    /**
-     * Main method.
-     * Starts the program by creating a <SystemController></SystemController>.
-     */
+
     public JFrame programWindow;
     public StartMenu startMenu;
 
+    /**
+     * The system's launcher
+     */
     public Launcher(){
         programWindow = new JFrame("CSC207 | Group 0043");
         programWindow.setSize(820, 576);
@@ -30,7 +29,10 @@ public class Launcher extends JFrame{
         programWindow.setVisible(true);
 
     }
-
+    /**
+     * Main method.
+     * Starts the program by creating a program window.
+     */
     public static void main(String[] args) {
         new Launcher();
     }

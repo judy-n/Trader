@@ -31,9 +31,6 @@ import java.io.ObjectOutputStream;
 
 public class ReadWriter {
 
-    public ReadWriter() {
-    }
-
     /**
      * Deserializes the .ser file that contains a <Manager></Manager>'s serialization.
      *

@@ -1,11 +1,11 @@
 package SystemFunctions;
 
-import DemoUserFunctions.DemoDashboard;
 import Entities.NormalUser;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
+import DemoUserFunctions.DemoDashboard;
 import NormalUserFunctions.NormalDashboard;
 import AdminUserFunctions.AdminDashboard;
 
@@ -108,20 +108,48 @@ public class SystemController extends JFrame {
         tradeManager.clearCancelledUserPairs();
     }
 
+    /**
+     * Checks if the inputs are valid when a normal user signs up
+     * @param username inputted username
+     * @param email inputted email
+     * @param password inputted password
+     * @param validatePassword inputted validate password
+     * @param homeCity inputted home city
+     * @return a list of int indicating the types of errors, empty if all inputs are valid
+     */
     public ArrayList<Integer> normalUserSignUpCheck(String username, String email, String password,
                                                     String validatePassword, String homeCity) {
         return new SignUpSystem(userManager).validateInputNormal(username, email, password, validatePassword, homeCity);
     }
 
+    /**
+     * Creates a new Normal user and a new dashboard
+     * @param username inputted username
+     * @param email inputted email
+     * @param password inputted password
+     * @param homeCity inputted home city
+     * @param parent the initial program window
+     */
     public void normalUserSignUp(String username, String email, String password, String homeCity, JFrame parent) {
         new SignUpSystem(userManager).createNewNormal(username, email, password, homeCity, notifSystem);
         new DashboardFrame(new NormalDashboard(username, itemManager, userManager, tradeManager, notifSystem), parent);
     }
 
+    /**
+     * Checks if the input are all valid when a normal user logs in
+     * @param usernameOrEmail inputted username or email
+     * @param password inputted password
+     * @return a list of int indicating the types of error, empty if all valid
+     */
     public ArrayList<Integer> userLogin(String usernameOrEmail, String password) {
         return new LoginSystem(userManager).validateInput(usernameOrEmail, password);
     }
 
+    /**
+     * Lets a user login
+     * @param usernameOrEmail inputted username or email
+     * @param parent the initial program window
+     */
     public void userLogin(String usernameOrEmail, JFrame parent) {
         String currUsername = userManager.getUserByUsernameOrEmail(usernameOrEmail).getUsername();
         if (userManager.isAdmin(currUsername)) {
@@ -131,6 +159,10 @@ public class SystemController extends JFrame {
         }
     }
 
+    /**
+     * Makes a demo dashboard
+     * @param parent the initial program window
+     */
     public void demoUser(JFrame parent) {
         new DashboardFrame(new DemoDashboard(itemManager), parent);
     }
@@ -180,6 +212,9 @@ public class SystemController extends JFrame {
         }
     }
 
+    /**
+     * Saves the system's managers to an external file
+     */
     public void tryWriteManagers() {
         try {
             readWriter.saveToFile(USER_MANAGER_PATH, userManager);
