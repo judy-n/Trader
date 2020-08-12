@@ -54,7 +54,7 @@ public class NormalDashboard extends Dashboard {
         systemPresenter = new SystemPresenter();
         catalogViewer = new CatalogViewer(currUsername, itemManager, userManager, tradeManager);
         wishlistEditor = new WishlistEditor(currUsername, itemManager, userManager);
-        inventoryEditor = new InventoryEditor(currUsername, itemManager, userManager, tradeManager);
+        inventoryEditor = new InventoryEditor(currUsername, itemManager, userManager, tradeManager, notifSystem);
         ongoingTradesViewer = new OngoingTradesViewer(currUsername, itemManager, userManager, tradeManager);
         tradeRequestViewer = new TradeRequestViewer(currUsername, itemManager, userManager, tradeManager);
         completedTradesViewer = new CompletedTradesViewer(currUsername, itemManager, tradeManager);
@@ -375,6 +375,10 @@ public class NormalDashboard extends Dashboard {
      */
     public void markNotifAsRead(int index){
         notificationViewer.markNotifAsRead(index);
+    }
+
+    public String setUpDashTitles(int type){
+        return systemPresenter.setUpNormalDashTitles(type);
     }
 
     /**

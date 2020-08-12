@@ -132,8 +132,70 @@ public class NormalDashPresenter {
                 return ("Send Unfreeze Request");
             case 9:
                 return ("View Notifications");
+            case 10:
+                return ("Remove");
+            case 11:
+                return ("Add");
+            case 12:
+                return ("Confirm");
+            case 13:
+                return ("Name:");
+            case 14:
+                return ("Description:");
+            case 15:
+                return ("Accept Request");
+            case 16:
+                return ("Deny Request");
+            case 17:
+                return ("Suggest Time:");
+            case 18:
+                return ("Suggest Place:");
+            case 19:
+                return ("Permanent");
+            case 20:
+                return ("Temporary");
+            case 21:
+                return ("Trade");
+            case 22:
+                return ("Send Trade Request");
+            case 23:
+                return ("Wishlist");
+            case 24:
+                return ("Cancel");
+            case 25:
+                return ("Agree");
+            case 26:
+                return ("Confirm Transaction");
+            case 27:
+                return ("Edit Trade");
+            case 28:
+                return ("Mark as Read");
             default:
                 return null;
+        }
+    }
+
+
+    public String setUpNormalDashTitles(int type){
+        switch (type){
+            case 1:
+                return ("Pending Inventory");
+            case 2:
+                return ("Top Three Trade Partners");
+            case 3:
+                return ("Suggest Meeting Details");
+            case 4:
+                return ("Initiated Trade Requests");
+            case 5:
+                return ("Suggested items to lend in this trade request:");
+            case 6:
+                return ("Suggest");
+            case 7:
+                return ("Time:");
+            case 8:
+                return ("Place:");
+            default:
+                return "";
         }
     }
 

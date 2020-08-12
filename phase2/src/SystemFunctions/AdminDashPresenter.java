@@ -29,6 +29,36 @@ public class AdminDashPresenter {
                 return ("Create New Admin");
             case 6:
                 return ("Undo User Activity");
+            case 7:
+                return ("Freeze All");
+            case 8:
+                return ("Unfreeze");
+            case 9:
+                return ("Username:");
+            case 10:
+                return ("Email:");
+            case 11:
+                return ("Password:");
+            case 12:
+                return ("Create");
+            case 13:
+                return ("Confirm");
+            case 14:
+                return ("Approve Item");
+            case 15:
+                return ("Deny Item");
+            case 16:
+                return ("Weekly Trade Max:");
+            case 17:
+                return ("Meeting Edit Max:");
+            case 18:
+                return ("Lend Minimum:");
+            case 19:
+                return ("Incomplete Trade max:");
+            case 20:
+                return ("Undo");
+            case 21:
+                return ("View Full Activity Log");
             default:
                 return null;
         }

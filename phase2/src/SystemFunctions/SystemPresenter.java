@@ -1,6 +1,7 @@
 package SystemFunctions;
 
 import Entities.Trade;
+import NormalUserFunctions.DemoDashPresenter;
 import SystemManagers.ExceptionPresenter;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class SystemPresenter {
     private final NormalDashPresenter normalDashPresenter;
     private final AdminDashPresenter adminDashPresenter;
     private final ExceptionPresenter exceptionPresenter;
+    private final DemoDashPresenter demoDashPresenter;
 
     /**
      * The system's presenter
@@ -28,6 +30,7 @@ public class SystemPresenter {
         normalDashPresenter = new NormalDashPresenter();
         adminDashPresenter = new AdminDashPresenter();
         exceptionPresenter = new ExceptionPresenter();
+        demoDashPresenter = new DemoDashPresenter();
     }
 
     /**
@@ -65,11 +68,22 @@ public class SystemPresenter {
 
     /**
      * Returns Strings used for JComponents on a normal user's dashboard
+     * on user function panel and user input panel
      * @param type the type of string needed
      * @return the string for display
      */
     public String setUpNormalDash(int type) {
         return normalDashPresenter.setUpDash(type);
+    }
+
+    /**
+     * Returns Strings used for JComponents on a normal user's dashboard
+     * on optional panel
+     * @param type the type of String needed
+     * @return the Sting needed
+     */
+    public String setUpNormalDashTitles(int type){
+        return normalDashPresenter.setUpNormalDashTitles(type);
     }
 
     /**
@@ -79,6 +93,10 @@ public class SystemPresenter {
      */
     public String setUpAdminDash(int type) {
         return adminDashPresenter.setUpDash(type);
+    }
+
+    public String setUpDemoDash(int type){
+        return demoDashPresenter.setUpDash(type);
     }
 
     /**

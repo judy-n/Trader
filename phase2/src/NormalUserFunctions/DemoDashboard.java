@@ -1,6 +1,7 @@
 package NormalUserFunctions;
 
 import SystemFunctions.Dashboard;
+import SystemFunctions.SystemPresenter;
 import SystemManagers.ItemManager;
 
 /**
@@ -15,6 +16,7 @@ import SystemManagers.ItemManager;
 
 public class DemoDashboard extends Dashboard {
     private ItemManager itemManager;
+    private SystemPresenter systemPresenter;
     private String username;
 
     /**
@@ -24,6 +26,7 @@ public class DemoDashboard extends Dashboard {
      */
     public DemoDashboard(ItemManager itemManager) {
         this.itemManager = itemManager;
+        systemPresenter = new SystemPresenter();
         username = "Demo";
     }
 
@@ -47,7 +50,7 @@ public class DemoDashboard extends Dashboard {
 
     @Override
     public String setUpDash(int type) {
-        return null;
+        return systemPresenter.setUpDemoDash(type);
     }
 
     @Override

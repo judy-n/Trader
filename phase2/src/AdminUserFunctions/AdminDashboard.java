@@ -20,6 +20,7 @@ import SystemManagers.ItemManager;
 public class AdminDashboard extends Dashboard {
     private String currUsername;
     private UserManager userManager;
+    private NotificationSystem notifSystem;
     private AccountFreezer accountFreezer;
     private AccountUnfreezer accountUnfreezer;
     private CatalogEditor catalogEditor;
@@ -42,7 +43,7 @@ public class AdminDashboard extends Dashboard {
 
         this.currUsername = username;
         this.userManager = userManager;
-
+        this.notifSystem = notifSystem;
         systemPresenter = new SystemPresenter();
         accountFreezer = new AccountFreezer(username, userManager);
         accountUnfreezer = new AccountUnfreezer(username, userManager);
@@ -51,7 +52,6 @@ public class AdminDashboard extends Dashboard {
         adminCreator = new AdminCreator(username, userManager);
         actionReverter = new ActionReverter(username, itemManager, userManager, notifSystem);
 
-//        NEED TO ADD CASE undo action
     }
 
     /**
@@ -147,12 +147,36 @@ public class AdminDashboard extends Dashboard {
         }
     }
 
+    /**
+     * Returns all revertible notifications in the system in a String array
+     * @return all revertible notifications
+     */
     public String[] getRevertibleNotifs(){
         return actionReverter.getRevertibleNotifs();
     }
 
+    /**
+     * Reverts a selected user action
+     * @param index the index of the action
+     */
     public void revertUserAction(int index){
         actionReverter.revertAction(index);
+    }
+
+    /**
+     * Returns all the activity log in the system in a String array
+     * @return all the activity log in the system
+     */
+    public String[] getFullActivityLogStrings(){
+        return notifSystem.getFullActivityLogStrings();
+    }
+
+    /**
+     * Returns the ID of the current admin user
+     * @return the ID of the current admin user
+     */
+    public int getAdminID(){
+        return userManager.getAdminID(currUsername);
     }
 
     @Override
