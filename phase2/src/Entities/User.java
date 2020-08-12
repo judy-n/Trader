@@ -10,7 +10,7 @@ import java.util.Observable;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-08-09
+ * last modified 2020-08-12
  */
 public abstract class User extends Observable implements Serializable {
     private String username;
@@ -58,18 +58,14 @@ public abstract class User extends Observable implements Serializable {
     }
 
     /**
-     * Gives other classes (namely <UserNotificationHelper></UserNotificationHelper>) access to
-     * the setChanged() method of <Observable></Observable>s.
+     * Updates the NotificationSystem and generates a new notification for this user
+     * using the given information in the string array passed in.
+     *
+     * @param notifArg the information needed to create the right notification
      */
-    public void setChangedUser() {
+    public void updateUser(String[] notifArg) {
         setChanged();
-    }
-
-    /**
-     * Gives other classes (namely <UserNotificationHelper></UserNotificationHelper>) access to
-     * the clearChanged() method of <Observable></Observable>s.
-     */
-    public void clearChangedUser() {
+        notifyObservers(notifArg);
         clearChanged();
     }
 }

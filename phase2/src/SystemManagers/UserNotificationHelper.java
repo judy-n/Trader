@@ -10,31 +10,69 @@ import java.io.Serializable;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-08-02
- * last modified 2020-08-11
+ * last modified 2020-08-12
  */
 public class UserNotificationHelper implements Serializable {
     private User currUserToNotify;
 
+    /**
+     * Sets the current user to notify to the given user.
+     *
+     * @param newUserToNotify the new current user to notify
+     */
     public void setCurrUserToNotify(User newUserToNotify) {
         currUserToNotify = newUserToNotify;
     }
 
+    /**
+     * Helps build the argument array for a notification involving two usernames.
+     *
+     * @param action the action generating a notification
+     * @param usernameNotified the username of the user being notified
+     * @param otherParty the username of the other user involved in the notification
+     */
     public void basicUpdate(String action, String usernameNotified, String otherParty) {
         String[] notifArg = {action, usernameNotified, otherParty};
         notifyUser(notifArg);
     }
 
+    /**
+     * Helps build the argument array for a notification involving two usernames and an item name.
+     *
+     * @param action the action generating a notification
+     * @param usernameNotified the username of the user being notified
+     * @param otherParty the username of the other user involved in the notification
+     * @param itemName the name of the item involved in the notification
+     */
     public void itemUpdate(String action, String usernameNotified, String otherParty, String itemName) {
         String[] notifArg = {action, usernameNotified, otherParty, itemName};
         notifyUser(notifArg);
     }
 
+    /**
+     * Helps build the argument array for a notification involving two usernames, an item name, and the item's ID.
+     *
+     * @param action the action generating a notification
+     * @param usernameNotified the username of the user being notified
+     * @param otherParty the username of the other user involved in the notification
+     * @param itemName the name of the item involved in the notification
+     * @param itemID the item ID of the item involved in the notification
+     */
     public void itemUpdateWithID(String action, String usernameNotified, String otherParty,
                                  String itemName, long itemID) {
         String[] notifArg = {action, usernameNotified, otherParty, itemName, String.valueOf(itemID)};
         notifyUser(notifArg);
     }
 
+    /**
+     * Helps build the argument array for a notification regarding a change in threshold values.
+     *
+     * @param action the action generating a notification
+     * @param usernameNotified the username of the user being notified
+     * @param otherParty the username of the other user involved in the notification
+     * @param thresholdTypeInt the number corresponding to the threshold type that was changed
+     * @param newValue the new value of the threshold type that was changed
+     */
     public void thresholdUpdate(String action, String usernameNotified, String otherParty,
                                 int thresholdTypeInt, int newValue) {
         String thresholdType;
@@ -60,19 +98,30 @@ public class UserNotificationHelper implements Serializable {
         notifyUser(notifArg);
     }
 
-    public void threeUsernameUpdate(String action, String usernameNotified, String otherParty, String adminUsername) {
-        String[] notifArg = {action, usernameNotified, otherParty, adminUsername};
+    /**
+     * Helps build the argument array for a notification involving three usernames.
+     *
+     * @param action the action generating a notification
+     * @param usernameNotified the username of the user being notified
+     * @param otherParty the username of the other user involved in the notification
+     * @param thirdParty the username of a third party user
+     */
+    public void threeUsernameUpdate(String action, String usernameNotified, String otherParty, String thirdParty) {
+        String[] notifArg = {action, usernameNotified, otherParty, thirdParty};
         notifyUser(notifArg);
     }
 
+    /**
+     * Helps record the creation of a new admin in the system.
+     *
+     * @param newUsername the username of the new admin
+     */
     public void recordAdminCreation(String newUsername) {
         String[] notifArg = {newUsername};
         notifyUser(notifArg);
     }
 
     private void notifyUser(String[] notifArg) {
-        currUserToNotify.setChangedUser();
-        currUserToNotify.notifyObservers(notifArg);
-        currUserToNotify.clearChangedUser();
+        currUserToNotify.updateUser(notifArg);
     }
 }

@@ -1,0 +1,31 @@
+====================
+Design Patterns used
+====================
+
+Observer Design Pattern
+    Classes involved: NotificationSystem, User (and its subclasses NormalUser/AdminUser), and UserNotificationHelper
+        We used the observer design pattern to help create notifications for normal users and log user activity by making the
+    NotificationSystem class implement the Observer interface and making the User class extend Observable.
+    Then, we made sure that all Users in the system are observed by the same instance of NotificationSystem.
+        The observer design pattern was chosen because it allows NotificationSystem to receive updates and record user activity
+    without User and NotificationSystem knowing anything about each other, leading to lower coupling in the design.
+    This means User can notify objects without assuming that they are a NotificationSystem—it could be any Observer, which makes the program more extensible.
+
+    This design pattern also encapsulates the cause—a certain action done by a user in the program—from its effect, which includes:
+        a) decisions on who gets notified and whether or not to record the action in the activity log,
+        b) creation of a notification about the action and storing it in a list of notifications mapped to the username of the account being notified, and
+        c) making a matching entry for it in the activity log.
+
+        An extra class called UserNotificationHelper was added to separate out the methods that organize the information
+    needed for creating the correct notification corresponding to a user action.
+
+Strategy Design Pattern
+    Classes involved: ConfirmAndClosePermTrade and ConfirmAndCloseTempTrade
+        We implemented these classes without the strategy pattern that uses an interface, but they are still
+    two classes specifically made to store different algorithms that serve a similar purpose.
+    ConfirmAndClosePermTrade and ConfirmAndCloseTempTrade confirm the final transaction for a trade and close it if both users involved
+    have confirmed that transaction. They were separated into different "strategies" because the things that happen at the end
+    of a permanent trade aren't the same as the things that happen at the end of a temporary trade.
+        Using the strategy design pattern separates these algorithms from the class they are used in (OngoingTradesViewer), so we
+    could easily reuse them in another class if we wanted to in the future. It also encapsulates the algorithms being used in classes
+    that facilitate the confirmation and closing of trades.

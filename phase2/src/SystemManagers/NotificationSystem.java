@@ -405,5 +405,4 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
         }
         fullActivityLog.add(0, activityToRecord);
     }
-
 }
