@@ -254,13 +254,20 @@ public class NormalDashboard extends Dashboard {
     }
 
     /**
-     * Returns true if the normal user is frozen false otherwise
+     * Returns true if the normal user is frozen, false otherwise
      * @return if the normal user is frozen
      */
     public boolean isFrozen(){
         return userManager.getNormalUserIsFrozen(currUsername);
     }
 
+    /**
+     * Returns true if the normal user is on vacation, false otherwise
+     * @return if the normal use is on vacation
+     */
+    public boolean isOnVacation(){
+        return userManager.getNormalUserOnVacation(currUsername);
+    }
     /**
      * Accepts the selected trade request
      * @param index the index of the trade request

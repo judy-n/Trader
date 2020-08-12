@@ -158,6 +158,22 @@ public class DashboardFrame extends JDialog {
             normalDashboard.editUserStatus();
             resetEverything();
             dashboardWindow.remove(scrollablePane);
+            if(normalDashboard.isOnVacation()){
+                inventory.setEnabled(false);
+                wishlist.setEnabled(false);
+                tradeRequest.setEnabled(false);
+                catalog.setEnabled(false);
+                ongoingTrade.setEnabled(false);
+                completeTrade.setEnabled(false);
+            }else{
+                inventory.setEnabled(true);
+                wishlist.setEnabled(true);
+                tradeRequest.setEnabled(true);
+                catalog.setEnabled(true);
+                ongoingTrade.setEnabled(true);
+                completeTrade.setEnabled(true);
+            }
+
             dashboardWindow.repaint();
             dashboardWindow.setVisible(true);
         });
@@ -169,6 +185,15 @@ public class DashboardFrame extends JDialog {
             drawUserInputPane(NOTIF);
         });
 
+        JButton unfreeze = new JButton(normalDashboard.setUpDash(8));
+        unfreeze.addActionListener(e -> {
+            normalDashboard.sendUnfreezeRequest();
+            resetEverything();
+            dashboardWindow.remove(scrollablePane);
+            dashboardWindow.repaint();
+            dashboardWindow.setVisible(true);
+        });
+
         initializeButton(catalog, 200, 35, userFunctionPanel);
         initializeButton(inventory, 200, 35, userFunctionPanel);
         initializeButton(wishlist, 200, 35, userFunctionPanel);
@@ -178,18 +203,20 @@ public class DashboardFrame extends JDialog {
         initializeButton(vacation, 200, 35, userFunctionPanel);
         initializeButton(notifications, 200, 35, userFunctionPanel);
 
+        if(normalDashboard.isOnVacation()){
+            inventory.setEnabled(false);
+            wishlist.setEnabled(false);
+            tradeRequest.setEnabled(false);
+            catalog.setEnabled(false);
+            ongoingTrade.setEnabled(false);
+            completeTrade.setEnabled(false);
+        }
         if(normalDashboard.isFrozen()) {
-            JButton unfreeze = new JButton(normalDashboard.setUpDash(8));
-            unfreeze.addActionListener(e -> {
-                normalDashboard.sendUnfreezeRequest();
-                resetEverything();
-                dashboardWindow.remove(scrollablePane);
-                dashboardWindow.repaint();
-                dashboardWindow.setVisible(true);
-            });
+
             initializeButton(unfreeze, 200, 35, userFunctionPanel);
         }
     }
+
 
     private void drawAdminDash() {
         JButton catalogEditor = new JButton(adminDashboard.setUpDash(1));
@@ -277,7 +304,6 @@ public class DashboardFrame extends JDialog {
 
             case WISHLIST:
                 JButton removeWishlist = new JButton("Remove");
-                removeWishlist.setText("Remove");
                 initializeButton(removeWishlist, 100, 20, userInputPanel);
                 userInputPanel.add(removeWishlist);
                 userInputPanel.repaint();
@@ -294,15 +320,10 @@ public class DashboardFrame extends JDialog {
             case INVENTORY:
                 JButton removeInv = new JButton("Remove");
                 JButton addInv = new JButton("Add");
-                JLabel name = new JLabel("Name: ");
                 JTextField nameInput = new JTextField(20);
-                JLabel description = new JLabel("Description: ");
                 JTextField descripInput = new JTextField(20);
-                userInputPanel.add(name);
-                userInputPanel.add(nameInput);
-                userInputPanel.add(description);
-                userInputPanel.add(descripInput);
-                userInputPanel.repaint();
+                initializeLabelledTextField(nameInput, "Name:", userInputPanel);
+                initializeLabelledTextField(descripInput, "Description:", userInputPanel);
                 initializeButton(addInv, 100, 20, userInputPanel);
                 initializeButton(removeInv, 100, 20, userInputPanel);
 
