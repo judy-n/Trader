@@ -3,6 +3,7 @@ package AdminUserFunctions;
 import SystemManagers.ItemManager;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
+import java.util.List;
 
 /**
  * Helps let admins undo a normal user's actions in the program.
@@ -11,7 +12,7 @@ import SystemManagers.UserManager;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-08-07
- * last modified 2020-08-10
+ * last modified 2020-08-11
  */
 public class ActionReverter {
     private String currUsername;
@@ -60,8 +61,7 @@ public class ActionReverter {
             String recipient = usernamesInvolved[1];
 
             // Remove trade request from both users' accounts
-            userManager.removeTradeRequests(usernamesInvolved, sender);
-            userManager.removeTradeRequests(usernamesInvolved, recipient);
+            userManager.removeTradeRequestBothUsers(usernamesInvolved);
 
             /* Notify both users of trade request revert (NotificationSystem handles notif to recipient) */
             userManager.notifyUser(sender).threeUsernameUpdate
@@ -77,6 +77,14 @@ public class ActionReverter {
             // Remove item from its owner's inventory (but not from the system)
             userManager.removeFromNormalUserInventory(itemID, itemOwner);
             itemManager.setItemIsRemoved(itemID);
+
+            // Remove all trade requests involving the item
+            List<String[]> involvedUsernames = userManager.removeTradeRequestByItemID(itemOwner, itemID);
+            for (String[] usernames : involvedUsernames) {
+                /* Notify both users of trade request revert due to item disapproval */
+                userManager.notifyUser(usernames[0]).threeUsernameUpdate
+                        ("TRADE REQUEST ITEM DISAPPROVAL", usernames[0], usernames[1], currUsername);
+            }
 
             /* Notify the item owner of the item approval being retracted */
             userManager.notifyUser(itemOwner).itemUpdate

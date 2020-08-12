@@ -422,14 +422,20 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Getter for if a normal user is requested in trade based on the item's ID and the user's username.
+     * Getter for if the given item ID is involved in the given user's trade requests.
      *
      * @param username the normal user's username
-     * @param ID       the item ID
+     * @param itemID   the item ID
      * @return true iff the item is requested in trade
      */
-    public boolean isRequestedInTrade(String username, long ID) {
-        return getNormalByUsername(username).isRequestedInTrade(ID);
+    public boolean isRequestedInTrade(String username, long itemID) {
+        NormalUser currUser = getNormalByUsername(username);
+        for (Map.Entry<String[], long[]> entry : currUser.getTradeRequests().entrySet()) {
+            if (entry.getValue()[0] == itemID || entry.getValue()[1] == itemID) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -444,6 +450,45 @@ public class UserManager extends Manager implements Serializable {
         NormalUser recipient = getNormalByUsername(usernames[1]);
         initiator.addTradeRequest(usernames, itemIDs);
         recipient.addTradeRequest(usernames, itemIDs);
+    }
+
+    /**
+     * Removes the trade request with the given key from both accounts involved in the request.
+     *
+     * @param usernames the usernames of the two traders
+     */
+    public void removeTradeRequestBothUsers(String[] usernames) {
+        NormalUser initiator = getNormalByUsername(usernames[0]);
+        NormalUser recipient = getNormalByUsername(usernames[1]);
+        initiator.removeTradeRequest(usernames);
+        recipient.removeTradeRequest(usernames);
+    }
+
+    /**
+     * Remove all trade requests involving the given item ID from both accounts involved in the request.
+     *
+     * @param username the username of the owner of the given item
+     * @param itemID   the item ID to remove trade requests for
+     * @return the keys of the trade requests removed
+     */
+    public List<String[]> removeTradeRequestByItemID(String username, long itemID) {
+        NormalUser currUser = getNormalByUsername(username);
+        String otherUsername;
+        List<String[]> otherUsernames = new ArrayList<>();
+
+        for (Map.Entry<String[], long[]> entry : currUser.getTradeRequests().entrySet()) {
+            if (entry.getValue()[0] == itemID || entry.getValue()[1] == itemID) {
+                if (entry.getKey()[0].equals(username)) {
+                    otherUsername = entry.getKey()[1];
+                } else {
+                    otherUsername = entry.getKey()[0];
+                }
+                currUser.getTradeRequests().remove(entry.getKey());
+                getNormalByUsername(otherUsername).getTradeRequests().remove(entry.getKey());
+                otherUsernames.add(entry.getKey());
+            }
+        }
+        return otherUsernames;
     }
 
     /**
@@ -539,7 +584,7 @@ public class UserManager extends Manager implements Serializable {
     /**
      * Takes in an item ID and returns whether or not it's in the given user's wishlist
      *
-     * @param itemID the item ID to query
+     * @param itemID   the item ID to query
      * @param username the username of the account whose wishlist is being searched
      * @return true iff the given item ID is in the given user's wishlist
      */
@@ -636,15 +681,5 @@ public class UserManager extends Manager implements Serializable {
      */
     public Map<String[], long[]> getNormalUserTradeRequests(String username) {
         return getNormalByUsername(username).getTradeRequests();
-    }
-
-    /**
-     * Removes the trade request with the given key from the account associated with the given username
-     *
-     * @param key      the key of the trade request to be removed
-     * @param username the username of the account whose trade requests are being modified
-     */
-    public void removeTradeRequests(String[] key, String username) {
-        getNormalByUsername(username).removeTradeRequests(key);
     }
 }

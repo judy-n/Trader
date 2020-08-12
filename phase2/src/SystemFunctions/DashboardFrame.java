@@ -1,6 +1,6 @@
 package SystemFunctions;
 
-import NormalUserFunctions.DemoDashboard;
+import DemoUserFunctions.DemoDashboard;
 import NormalUserFunctions.NormalDashboard;
 import AdminUserFunctions.AdminDashboard;
 
@@ -15,7 +15,6 @@ import java.awt.*;
  * @since 2020-08-01
  * last modified 2020-08-11
  */
-
 public class DashboardFrame extends JDialog {
     private Dashboard dashboard;
     private NormalDashboard normalDashboard;

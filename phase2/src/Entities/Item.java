@@ -123,6 +123,9 @@ public class Item implements Serializable {
      */
     @Override
     public String toString() {
+        if (isRemoved) {
+            return name + ": " + description + ("   (removed from inventory)");
+        }
         if (isAvailable) {
             return name + ": " + description;
         } else {

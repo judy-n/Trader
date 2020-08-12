@@ -6,7 +6,7 @@ Mandatory extensions:
 
 - Gave admins ability to undo every action taken by normal users that can reasonably be undone
     > un-send a trade request for any user
-    > retract the approval of any user's item
+    > retract the approval of any user's item -- this will also remove all trade requests involving the item
 
 - Automatic suggestion of items to lend to a given user
     > when setting up a trade request, the suggested items will appear on the side so the user can see them while choosing an item from their inventory to lend
@@ -19,7 +19,7 @@ Mandatory extensions:
 
 - Created a new status for normal users that allows them to take their account down for the duration of a vacation
     > their account will be invisible to other users
-    > their account's functionality is limited to changing their status back to 'not on vacation'
+    > their account's functionality is limited to changing their status back to 'not on vacation' and viewing notifications
 
 Extensions chosen from given list:
 

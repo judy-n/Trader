@@ -1,4 +1,5 @@
-package SystemManagers;
+package SystemFunctions;
+
 /**
  * Returns strings used for display when an exception occurs in the program
  *

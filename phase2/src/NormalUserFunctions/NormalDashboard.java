@@ -56,7 +56,7 @@ public class NormalDashboard extends Dashboard {
         wishlistEditor = new WishlistEditor(currUsername, itemManager, userManager);
         inventoryEditor = new InventoryEditor(currUsername, itemManager, userManager, tradeManager, notifSystem);
         ongoingTradesViewer = new OngoingTradesViewer(currUsername, itemManager, userManager, tradeManager);
-        tradeRequestViewer = new TradeRequestViewer(currUsername, itemManager, userManager, tradeManager);
+        tradeRequestViewer = new TradeRequestViewer(currUsername, itemManager, userManager, tradeManager, notifSystem);
         completedTradesViewer = new CompletedTradesViewer(currUsername, itemManager, tradeManager);
         unfreezeRequester = new UnfreezeRequester(currUsername, userManager);
         statusEditor = new StatusEditor(currUsername, userManager);

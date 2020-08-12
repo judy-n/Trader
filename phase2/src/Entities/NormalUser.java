@@ -96,7 +96,7 @@ public class NormalUser extends User implements Serializable {
      *
      * @param key the key of the trade request to be removed
      */
-    public void removeTradeRequests(String[] key) {
+    public void removeTradeRequest(String[] key) {
         tradeRequests.remove(key);
     }
 
@@ -248,7 +248,7 @@ public class NormalUser extends User implements Serializable {
      * @param itemID the ID of the item being searched for in trade requests
      * @return true if the item is involved in a trade request, false otherwise
      */
-    public boolean isRequestedInTrade(long itemID) {
+    public boolean isInvolvedInTradeRequest(long itemID) {
         for (Map.Entry<String[], long[]> entry : tradeRequests.entrySet()) {
             if (entry.getValue()[0] == itemID || entry.getValue()[1] == itemID) {
                 return true;

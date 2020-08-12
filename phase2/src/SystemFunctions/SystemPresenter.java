@@ -4,7 +4,6 @@ import Entities.Trade;
 import DemoUserFunctions.DemoDashPresenter;
 import NormalUserFunctions.NormalDashPresenter;
 import AdminUserFunctions.AdminDashPresenter;
-import SystemManagers.ExceptionPresenter;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 2.0
  * @since 2020-07-03
- * last modified 2020-08-10
+ * last modified 2020-08-11
  */
 public class SystemPresenter {
     private final StartMenuPresenter startMenuPresenter;

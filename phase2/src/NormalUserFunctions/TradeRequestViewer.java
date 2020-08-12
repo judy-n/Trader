@@ -1,6 +1,7 @@
 package NormalUserFunctions;
 
 import SystemFunctions.DateTimeHandler;
+import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
@@ -18,13 +19,14 @@ import java.util.ArrayList;
  * @author Yingjia Liu
  * @version 2.0
  * @since 2020-06-29
- * last modified 2020-08-10
+ * last modified 2020-08-11
  */
 public class TradeRequestViewer {
     private String currUsername;
     private ItemManager itemManager;
     private UserManager userManager;
     private TradeManager tradeManager;
+    private NotificationSystem notifSystem;
 
     private LinkedHashMap<String[], long[]> initiatedTrades;
     private LinkedHashMap<String[], long[]> receivedTrades;
@@ -42,21 +44,23 @@ public class TradeRequestViewer {
     private SystemPresenter systemPresenter;
 
     /**
-     * Creates an <TradeRequestViewer></TradeRequestViewer> with the given normal user and
-     * item/user/trade managers.
+     * Creates an <TradeRequestViewer></TradeRequestViewer> with the given normal user,
+     * item/user/trade managers, and notification system.
      *
      * @param currUsername the username of the normal user who's currently logged in
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
+     * @param notifSystem the system's notification manager
      */
     public TradeRequestViewer(String currUsername, ItemManager itemManager, UserManager userManager,
-                              TradeManager tradeManager) {
+                              TradeManager tradeManager, NotificationSystem notifSystem) {
 
         this.currUsername = currUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;
         this.tradeManager = tradeManager;
+        this.notifSystem = notifSystem;
 
         dateTimeHandler = new DateTimeHandler();
         systemPresenter = new SystemPresenter();
@@ -199,8 +203,14 @@ public class TradeRequestViewer {
         userManager.notifyUser(senderUsername).itemUpdate
                 ("TRADE REQUEST ACCEPTED", senderUsername, currUsername, tradeItemNames[1]);
 
-        userManager.removeTradeRequests(getKeyToRemove(), currUsername);
-        userManager.removeTradeRequests(getKeyToRemove(), senderUsername);
+        // Remove trade request from both user's accounts and
+        // get rid of the revertible notif associated with the trade request being removed
+        userManager.removeTradeRequestBothUsers(getKeyToRemove());
+        notifSystem.removeRevertibleNotif(senderUsername, currUsername);
+
+        // Also get rid of the revertible notifs associated with the approval of all items involved in this trade request
+        notifSystem.removeRevertibleNotif(itemToBorrowID);
+        notifSystem.removeRevertibleNotif(itemToLendID);
     }
 
     /**
@@ -218,8 +228,10 @@ public class TradeRequestViewer {
         userManager.notifyUser(senderUsername).itemUpdate
                 ("TRADE REQUEST REJECTED", senderUsername, currUsername, tradeItemNames[1]);
 
-        userManager.removeTradeRequests(getKeyToRemove(), currUsername);
-        userManager.removeTradeRequests(getKeyToRemove(), senderUsername);
+        // Remove trade request from both user's accounts and
+        // get rid of the revertible notif associated with the trade request being removed
+        userManager.removeTradeRequestBothUsers(getKeyToRemove());
+        notifSystem.removeRevertibleNotif(senderUsername, currUsername);
     }
 
     private String[] getTradeHelper(int index) {

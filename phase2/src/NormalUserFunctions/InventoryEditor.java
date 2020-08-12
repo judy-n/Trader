@@ -104,7 +104,9 @@ public class InventoryEditor {
         long selectedItemID = userManager.getNormalUserInventory(currUsername).get(index);
         userManager.removeFromNormalUserInventory(selectedItemID, currUsername);
         itemManager.setItemIsRemoved(selectedItemID);
-        //notifSystem.removeRevertibleNotif();
+
+        // Get rid of the revertible notif associated with the approval of the item being removed
+        notifSystem.removeRevertibleNotif(selectedItemID);
     }
 
     /**

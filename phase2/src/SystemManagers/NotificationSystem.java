@@ -131,6 +131,18 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
     }
 
     /**
+     * Removes the revertible notification of type "TRADE REQUEST" involving the given usernames.
+     *
+     * @param senderUsername    the username of the sender of the trade request being removed
+     * @param recipientUsername the username of the recipient of the trade request being removed
+     */
+    public void removeRevertibleNotif(String senderUsername, String recipientUsername) {
+        revertibleActivityLog.removeIf(rn -> rn.getType().equals("TRADE REQUEST") &&
+                rn.getRevertedUsername().equals(senderUsername) &&
+                rn.getSubject().equals(recipientUsername));
+    }
+
+    /**
      * Returns an array of string representations of the full activity log.
      *
      * @return an array of string representations of the full activity log
@@ -321,6 +333,17 @@ public class NotificationSystem extends Manager implements Observer, Serializabl
 
                 // Notify the other user as well.
                 String mirrorMessage = "A trade request sent to you from " + usernameNotified + " was removed by an admin.";
+                userToNotifMap.get(otherParty).add(0, new Notification(mirrorMessage));
+                break;
+            case "TRADE REQUEST ITEM DISAPPROVAL":
+                mainMessage = "Your trade request to " + otherParty + " was removed due to an admin " +
+                        "retracting the approval of one of the items involved.";
+                recordMessage = "Trade request sent by " + usernameNotified + " to " + otherParty + " removed by admin " +
+                        subjectName + " due to them retracting the approval of one of the items involved.";
+
+                // Notify the other user as well.
+                mirrorMessage = "A trade request sent to you from " + usernameNotified + " was removed due to an admin " +
+                        "retracting the approval of one of the items involved.";
                 userToNotifMap.get(otherParty).add(0, new Notification(mirrorMessage));
                 break;
             default:
