@@ -13,12 +13,12 @@ import java.util.List;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-08-07
- * last modified 2020-08-11
+ * last modified 2020-08-12
  */
 public class NormalDashPresenter {
 
     /**
-     * Returns the text displayed on a pop up window
+     * Returns the text displayed on a pop up window.
      *
      * @param type int indicating the type of message
      * @return the String needed to be displayed
@@ -123,7 +123,7 @@ public class NormalDashPresenter {
 
     /**
      * Returns the text displayed on JComponents when a admin user's
-     * dashboard is displayed
+     * dashboard is displayed.
      *
      * @param type int indicating type of JComponent
      * @return the String needed to be displayed
@@ -197,6 +197,12 @@ public class NormalDashPresenter {
         }
     }
 
+    /**
+     * Returns Strings needed for display on the optional panel of <DashboardFrame></DashboardFrame>.
+     *
+     * @param type the type of String needed
+     * @return the String
+     */
     public String setUpNormalDashTitles(int type) {
         switch (type) {
             case 1:
@@ -218,12 +224,19 @@ public class NormalDashPresenter {
         }
     }
 
+    /**
+     * Returns String showing the number of edits the normal user has made to the chosen
+     * ongoing trade, displayed on the optional panel of the <DashFrame></DashFrame>.
+     *
+     * @param numEditStr the number of edits in a string
+     * @return the string for display on the optional panel
+     */
     public String setUpNormalDashTitles(String numEditStr) {
         return ("<html>Suggest Meeting Details<br/>" + numEditStr + "<br/> v  v <html>");
     }
 
     /**
-     * Presents trade requests user has initiated
+     * Presents trade requests user has initiated.
      *
      * @param itemNames  the names of the items in the initiated trade requests
      * @param recipients the recipients of the initiated trade requests
@@ -244,7 +257,7 @@ public class NormalDashPresenter {
     }
 
     /**
-     * Presents trade requests user has received
+     * Presents trade requests user has received.
      *
      * @param itemNames the names of the items in the received trade requests
      * @param senders   the senders the received trade requests
@@ -265,7 +278,7 @@ public class NormalDashPresenter {
     }
 
     /**
-     * Presents the number of edits a user has made, and if they are on their final edit
+     * Presents the number of edits a user has made, and if they are on their final edit.
      *
      * @param numEdits    the number of edits the user has made
      * @param isFinalEdit true iff this is the user's final edit
@@ -279,6 +292,12 @@ public class NormalDashPresenter {
         }
     }
 
+    /**
+     * Returns a String warning for when user is violating the lend minimum rule.
+     *
+     * @param lendMinimum the lend minimum of the system
+     * @return the String warning
+     */
     public String lendWarning(int lendMinimum) {
         return ("You're borrowing too much! You need to lend AT LEAST " + lendMinimum + " more item(s) than you've borrowed.");
     }
@@ -373,7 +392,7 @@ public class NormalDashPresenter {
     }
 
     /**
-     * Returns the normal user's information in a String array
+     * Returns the normal user's information in a String array.
      *
      * @param username the normal user's username
      * @param email    the normal user's email
@@ -387,11 +406,16 @@ public class NormalDashPresenter {
     }
 
     /**
-     * Returns a message used to display on the help section of the dashboard
+     * Returns a message used to display on the help section of the dashboard.
      *
      * @return a message used to display on the help section of the dashboard
      */
     public String getHelpMessage() {
-        return "";
+        return "<html>Catalog Viewer: you can switch between wishlisting the item<br/>" +
+                "and trading for the item by selecting and unselecting the toggle button. <br/>" +
+                "<br/>Trade Request Viewer: you can switch between accepting and denying the trade request<br/>" +
+                "by selecting and un-selecting the toggle button. <br/>" +
+                "You can also switch between permanent and temporary trade by selecting and <br/>" +
+                "un-selecting the second toggle button. <html>";
     }
 }

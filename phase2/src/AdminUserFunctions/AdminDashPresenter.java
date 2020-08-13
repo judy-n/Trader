@@ -126,7 +126,8 @@ public class AdminDashPresenter {
      * @return a message used to display on the help section of the dashboard
      */
     public String getHelpMessage() {
-        return "";
+        return "<html>Catalog Editor: you can switch between approving or denying the item <br/>" +
+                "by selecting and unselecting the toggle button. <html>";
     }
 
 

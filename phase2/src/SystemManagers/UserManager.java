@@ -171,24 +171,6 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Getter for all normal users in the user database.
-     *
-     * @return a list of all normal users in the user database
-     */
-    public List<NormalUser> getAllNormals() {
-        return allNormals;
-    }
-
-    /**
-     * Getter for all admins in the user database.
-     *
-     * @return a list of all admins in the user database
-     */
-    public List<AdminUser> getAllAdmins() {
-        return allAdmins;
-    }
-
-    /**
      * Checks if a user with the given email already exists in the user database,
      * regardless of what type of user is passed in.
      *

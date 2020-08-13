@@ -412,6 +412,8 @@ public class DashboardFrame extends JDialog {
                             }
                         }
                         listDisplay.clearSelection();
+                        initialTimeInput.setText("");
+                        initialPlaceInput.setText("");
                         redrawDisplayList(normalDashboard.getReceivedTrades());
                     });
                     initializeToggleButton(acceptOrDeny, normalDashboard.setUpDash(15), normalDashboard.setUpDash(16), userInputPanel);
