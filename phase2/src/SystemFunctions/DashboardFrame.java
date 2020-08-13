@@ -393,7 +393,7 @@ public class DashboardFrame extends JDialog {
 
             case TRADE_REQUEST:
                 if (normalDashboard.isFrozen()) {
-                    normalDashboard.setPopUpMessage(36);
+                    normalDashboard.setPopUpMessage(37);
                     drawPopUpMessage();
                 } else {
                     JToggleButton acceptOrDeny = new JToggleButton();
