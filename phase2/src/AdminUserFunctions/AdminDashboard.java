@@ -269,4 +269,13 @@ public class AdminDashboard extends Dashboard {
         }
     }
 
+    /**
+     * Returns a message displayed for the help section of the admin dashboard
+     * @return the message
+     */
+    @Override
+    public String getHelpMessage() {
+        return systemPresenter.getAdminHelpMessage();
+    }
+
 }

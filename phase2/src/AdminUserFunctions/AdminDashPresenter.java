@@ -105,7 +105,6 @@ public class AdminDashPresenter {
         return thresholdStrings;
     }
 
-
     /**
      * Returns the admin user's info in a String array
      * @param username the admin user's username
@@ -116,4 +115,14 @@ public class AdminDashPresenter {
     public String[] getUserInfo(String username, String email, String password,  int id){
         return new String[]{"Username: " + username, "Email: " + email, "Password: " + password, "ID: " + id};
     }
+
+    /**
+     * Returns a message used to display on the help section of the dashboard
+     * @return a message used to display on the help section of the dashboard
+     */
+    public String getHelpMessage(){
+        return "";
+    }
+
+
 }

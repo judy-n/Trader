@@ -111,6 +111,8 @@ public class NormalDashPresenter {
                         "to lend and press \"Send Trade Request\"." +
                         "<br/>To make it one-way, don't select anything and press the button.");
             case 36:
+                return ("You can't go on vacation right now as you have ongoing trades!");
+            case 37:
                 return ("<html>You cannot initiate any trades at the moment due to your account being frozen." +
                         "<br/>Any trade requests you've sent won't be visible to their recipients until you are unfrozen.");
 
@@ -383,4 +385,11 @@ public class NormalDashPresenter {
                "Password: " + password, "Home City: " + homeCity};
     }
 
+    /**
+     * Returns a message used to display on the help section of the dashboard
+     * @return a message used to display on the help section of the dashboard
+     */
+    public String getHelpMessage(){
+        return "";
+    }
 }

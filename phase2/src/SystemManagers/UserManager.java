@@ -248,17 +248,6 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Checks if a normal user with the given username already exists in the user database.
-     * Needed for checking when admin enters a username in threshold editor.
-     *
-     * @param username the username being checked for whether it's already taken or not
-     * @return true if user with given username exists, false otherwise
-     */
-    public boolean normalUsernameExists(String username) {
-        return allNormalUsernames.contains(username);
-    }
-
-    /**
      * Return usernames of all accounts that needs to be frozen.
      *
      * @return the list of usernames belonging to accounts that need to be frozen
@@ -290,15 +279,6 @@ public class UserManager extends Manager implements Serializable {
      */
     public List<String> getUnfreezeRequests() {
         return unfreezeRequests;
-    }
-
-    /**
-     * Returns the total number of unfreeze requests.
-     *
-     * @return the total number of unfreeze requests
-     */
-    public int getNumUnfreezeRequest() {
-        return unfreezeRequests.size();
     }
 
     /**
@@ -364,15 +344,6 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Returns usernames of all account that are on vacation.
-     *
-     * @return usernamesOnVacation
-     */
-    public List<String> getUsernamesOnVacation() {
-        return usernamesOnVacation;
-    }
-
-    /**
      * Adds the given username to the list of usernames on vacation
      * and sets their account status to on vacation.
      *
@@ -412,16 +383,6 @@ public class UserManager extends Manager implements Serializable {
      */
     public String getNormalUserHomeCity(String username) {
         return getNormalByUsername(username).getHomeCity();
-    }
-
-    /**
-     * Setter for the home city of the normal user with the given username.
-     *
-     * @param username the username
-     * @param homeCity the home city
-     */
-    public void setNormalUserHomeCity(String username, String homeCity) {
-        getNormalByUsername(username).setHomeCity(homeCity);
     }
 
     /**

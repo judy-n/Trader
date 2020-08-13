@@ -22,13 +22,12 @@ public class StartMenu extends JPanel {
     private String validateInputtedPassword;
     private String inputtedHomeCity;
     private SystemPresenter systemPresenter;
+    private Integer[] allTypeInvalidInput;
+    private JFrame parent;
     private final int FIRST_LINE_Y = 100;
     private final int X_POS = 160;
     private final int Y_SPACE = 70;
-    private final int X_SPACE = 200;
-    private JLabel invalid;
-    private Integer[] allTypeInvalidInput;
-    private JFrame parent;
+    private final JLabel invalid;
 
     /**
      * Creates a <StartMenu></StartMenu> with the given system controller and parent frame

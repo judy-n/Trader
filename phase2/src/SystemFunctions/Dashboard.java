@@ -18,4 +18,5 @@ public abstract class Dashboard{
     public abstract void resetPopUpMessage();
     public abstract String[] getUserInfo();
     public abstract void validatePasswordChange(String password, String validatePassword);
+    public abstract String getHelpMessage();
 }

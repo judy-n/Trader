@@ -60,7 +60,7 @@ public class NormalDashboard extends Dashboard {
         tradeRequestViewer = new TradeRequestViewer(currUsername, itemManager, userManager, tradeManager, notifSystem);
         completedTradesViewer = new CompletedTradesViewer(currUsername, itemManager, tradeManager);
         unfreezeRequester = new UnfreezeRequester(currUsername, userManager);
-        statusEditor = new StatusEditor(currUsername, userManager);
+        statusEditor = new StatusEditor(currUsername, userManager, tradeManager);
         notificationViewer = new NotificationViewer(currUsername, notifSystem);
     }
 
@@ -68,7 +68,9 @@ public class NormalDashboard extends Dashboard {
      * Switches the normal user's vacation status.
      */
     public void editUserStatus() {
-        statusEditor.switchVacationStatus();
+        if(!statusEditor.switchVacationStatus()){
+            setPopUpMessage(36);
+        }
     }
 
     /**
@@ -457,6 +459,15 @@ public class NormalDashboard extends Dashboard {
         }else{
             setPopUpMessage(30);
         }
+    }
+
+    /**
+     * Returns a message displayed for the help section of the normal dashboard
+     * @return the message
+     */
+    @Override
+    public String getHelpMessage() {
+        return systemPresenter.getNormalHelpMessage();
     }
 
     /**

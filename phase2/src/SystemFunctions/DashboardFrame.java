@@ -7,6 +7,7 @@ import AdminUserFunctions.AdminDashboard;
 import javax.swing.*;
 import java.awt.*;
 
+
 /**
  * JFrame that displays the user's dashboard.
  *
@@ -29,7 +30,6 @@ public class DashboardFrame extends JDialog {
     private JPanel notifPanel;
     private JPanel optionalPanel;
     private JButton editTrade;
-
     private JList<String> listDisplay;
     private JScrollPane scrollablePane;
     private JLabel nothingToDisplay;
@@ -74,6 +74,7 @@ public class DashboardFrame extends JDialog {
         listDisplay = new JList<>();
 
         userFunctionPanel.setLayout(new BoxLayout(userFunctionPanel, BoxLayout.Y_AXIS));
+        userFunctionPanel.setPreferredSize(new Dimension(200,576));
         userInputPanel.setLayout(new FlowLayout());
         notifPanel.setLayout(new FlowLayout());
         optionalPanel.setLayout(new BoxLayout(optionalPanel, BoxLayout.Y_AXIS));
@@ -85,18 +86,18 @@ public class DashboardFrame extends JDialog {
         dashboardWindow.setLayout(new BorderLayout());
         dashboardWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         JButton profilePic = new JButton();
-        profilePic.setBackground(Color.BLACK);
-        profilePic.setMaximumSize(new Dimension(200, 200));
-        profilePic.setMinimumSize(new Dimension(200, 200));
-        userFunctionPanel.add(profilePic);
-
+        initializeButton(profilePic, 200,200, userFunctionPanel);
+        profilePic.setIcon(new ImageIcon("src/default.png"));
         profilePic.addActionListener(e -> {
             resetEverything();
+            optionalPanel.setVisible(false);
             drawListDisplay(dashboard.getUserInfo());
-            if(dashboard.getUserInfo().length != 0){
+            if(dashboard.getType() != 2){
                 drawUserInputPane(USER_INFO);
             }
         });
+
+        initializeMenuBar();
 
         if (dashboard.getType() == 0) {
             adminDashboard = (AdminDashboard) dashboard;
@@ -225,7 +226,6 @@ public class DashboardFrame extends JDialog {
             completeTrade.setEnabled(false);
         }
         if (normalDashboard.isFrozen()) {
-
             initializeButton(unfreeze, 200, 35, userFunctionPanel);
         }
     }
@@ -324,7 +324,10 @@ public class DashboardFrame extends JDialog {
         switch (type) {
             case DEMO:
                 JButton fakeTrade = new JButton(demoDashboard.setUpDash(2));
-                fakeTrade.addActionListener(e -> JOptionPane.showMessageDialog(parent, demoDashboard.setUpDash(3)));
+                fakeTrade.addActionListener(e -> {
+                    demoDashboard.setPopUpMessage(1);
+                    drawPopUpMessage();
+                });
                 initializeButton(fakeTrade, 100, 40, userInputPanel);
                 break;
 
@@ -757,4 +760,14 @@ public class DashboardFrame extends JDialog {
         }
     }
 
+    private void initializeMenuBar(){
+        JMenuBar menuBar = new JMenuBar();
+        JMenu about = new JMenu("About");
+        JMenuItem help = new JMenuItem("Help");
+        about.add(help);
+        menuBar.add(about);
+        help.addActionListener(e -> JOptionPane.showMessageDialog(parent, dashboard.getHelpMessage()));
+        dashboardWindow.setJMenuBar(menuBar);
+
+    }
 }
