@@ -17,7 +17,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-11
+ * last modified 2020-08-12
  */
 public class CatalogViewer {
     private String currUsername;
@@ -121,6 +121,7 @@ public class CatalogViewer {
     /**
      * Checks if the catalog item at the given index can be requested in a trade.
      * - the user hasn't lent enough items more than they've borrowed
+     *
      * @return the lend minimum if the user violated this rule
      */
     public int canTradeRequestItem() {
@@ -173,10 +174,10 @@ public class CatalogViewer {
             }
         }
 
-        String[] suggestedItemStrings ;
+        String[] suggestedItemStrings;
 
         if (suggestedItems.isEmpty()) {
-            suggestedItemStrings  = new String[1];
+            suggestedItemStrings = new String[1];
             suggestedItemStrings[0] = systemPresenter.tradeRequestSetup(1);
         } else {
             suggestedItemStrings = itemManager.getItemStringsID(suggestedItems, false);
@@ -187,18 +188,11 @@ public class CatalogViewer {
 
     /**
      * Sets the index of the item requested
+     *
      * @param indexOfItemRequested the index of the item requested
      */
-    public void setIndexOfItemRequested(int indexOfItemRequested){
+    public void setIndexOfItemRequested(int indexOfItemRequested) {
         this.indexOfItemRequested = indexOfItemRequested;
-    }
-
-    /**
-     * Returns the index of the item requested
-     * @return the index of the item requested
-     */
-    public int getIndexOfItemRequested(){
-        return indexOfItemRequested;
     }
 
     /**

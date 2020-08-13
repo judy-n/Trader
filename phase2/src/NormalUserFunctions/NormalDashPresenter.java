@@ -76,7 +76,7 @@ public class NormalDashPresenter {
             case 22:
                 return ("You may not cancel a trade after the meeting has already been scheduled.");
             case 23:
-                return ("Confirm the latest meeting took place");
+                return ("Latest transaction confirmed!");
             case 24:
                 return ("You and your trade partner have already agreed upon a meeting.");
             case 25:
@@ -97,12 +97,13 @@ public class NormalDashPresenter {
             case 30:
                 return ("Invalid input. Please try again.");
             case 31:
-                return ("You've already sent a request to borrow this item!");
+                return ("<html>You've already sent a request to borrow this item or" +
+                        "<br/>received a request in which this item is being offered to you in a trade.");
             case 32:
                 return ("Your first trade request must be a two-way trade!");
             case 33:
-                return ("Sorry, to maintain the balance of how many more items you've lent than you've borrowed," +
-                        "you must choose an item to lend to the other user.");
+                return ("<html>Sorry! To maintain the balance of how many more items you've lent than you've borrowed," +
+                        "<br/>you must choose an item to lend to the other user.");
             case 34:
                 return ("Item successfully added to your wishlist!");
             case 35:
@@ -152,11 +153,11 @@ public class NormalDashPresenter {
             case 14:
                 return ("Description:");
             case 15:
-                return ("Accept Request");
+                return ("Accept");
             case 16:
-                return ("Deny Request");
+                return ("Reject");
             case 17:
-                return ("Suggest Time:");
+                return ("Suggest Time (yyyy/MM/dd-HH:mm) :");
             case 18:
                 return ("Suggest Place:");
             case 19:
@@ -190,15 +191,12 @@ public class NormalDashPresenter {
         }
     }
 
-
     public String setUpNormalDashTitles(int type) {
         switch (type) {
             case 1:
                 return ("Pending Inventory");
             case 2:
                 return ("Top Three Trade Partners");
-            case 3:
-                return ("Suggest Meeting Details");
             case 4:
                 return ("Initiated Trade Requests");
             case 5:
@@ -206,12 +204,16 @@ public class NormalDashPresenter {
             case 6:
                 return ("Suggest");
             case 7:
-                return ("Time:");
+                return ("Time (yyyy/MM/dd-HH:mm) :");
             case 8:
                 return ("Place:");
             default:
                 return "";
         }
+    }
+
+    public String setUpNormalDashTitles(String numEditStr) {
+        return ("<html>Suggest Meeting Details<br/>" + numEditStr + "<br/> v  v <html>");
     }
 
     /**

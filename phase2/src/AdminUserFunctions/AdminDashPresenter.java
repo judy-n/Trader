@@ -46,7 +46,7 @@ public class AdminDashPresenter {
             case 14:
                 return ("Approve Item");
             case 15:
-                return ("Deny Item");
+                return ("Reject Item");
             case 16:
                 return ("Weekly Trade Max:");
             case 17:

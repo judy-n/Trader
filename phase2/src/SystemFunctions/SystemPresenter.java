@@ -36,6 +36,7 @@ public class SystemPresenter {
 
     /**
      * Returns Strings used for display on the start menu
+     *
      * @param input the type of String needed
      * @return the String used for display
      */
@@ -45,6 +46,7 @@ public class SystemPresenter {
 
     /**
      * Returns Strings used for display on the sign up page
+     *
      * @param input the type of String needed
      * @return the String used for display
      */
@@ -54,13 +56,17 @@ public class SystemPresenter {
 
     /**
      * Returns Strings used for display on the log in page
+     *
      * @param input the type of String needed
      * @return the String used for display
      */
-    public String loginSystem(int input) { return startMenuPresenter.loginSystem(input);}
+    public String loginSystem(int input) {
+        return startMenuPresenter.loginSystem(input);
+    }
 
     /**
      * Returns a pop up message for display on a normal user's dashboard
+     *
      * @param type the type of pop up message
      * @return the pop up message for display
      */
@@ -71,6 +77,7 @@ public class SystemPresenter {
     /**
      * Returns Strings used for JComponents on a normal user's dashboard
      * on user function panel and user input panel
+     *
      * @param type the type of string needed
      * @return the string for display
      */
@@ -81,10 +88,22 @@ public class SystemPresenter {
     /**
      * Returns Strings used for JComponents on a normal user's dashboard
      * on optional panel
+     *
+     * @param strNeeded the string to include in the label
+     * @return the string to display
+     */
+    public String setUpNormalDashTitles(String strNeeded) {
+        return normalDashPresenter.setUpNormalDashTitles(strNeeded);
+    }
+
+    /**
+     * Returns Strings used for JComponents on a normal user's dashboard
+     * on optional panel. Special case taking string as argument.
+     *
      * @param type the type of String needed
      * @return the Sting needed
      */
-    public String setUpNormalDashTitles(int type){
+    public String setUpNormalDashTitles(int type) {
         return normalDashPresenter.setUpNormalDashTitles(type);
     }
 
@@ -102,6 +121,7 @@ public class SystemPresenter {
 
     /**
      * Returns Strings used for JComponents on an admin user's dashboard
+     *
      * @param type the type of String needed
      * @return the String for display
      */
@@ -111,15 +131,17 @@ public class SystemPresenter {
 
     /**
      * Returns Strings used for JComponents on the demo dashboard
+     *
      * @param type the type of String needed
      * @return the String for display
      */
-    public String setUpDemoDash(int type){
+    public String setUpDemoDash(int type) {
         return demoDashPresenter.setUpDash(type);
     }
 
     /**
      * Returns a pop up message for display on an admin user's dashboard
+     *
      * @param type the type of pop up message
      * @return the pop up message for display
      */

@@ -57,12 +57,14 @@ public class SystemController extends JFrame {
             new SignUpSystem(userManager).createNewNormal("t","b@c.v","p","homeCity", notifSystem);
             long itemID = itemManager.createItem("fruit", "it's a strawberry", "test");
             long itemID2 = itemManager.createItem("AHHH", "OMG", "test");
-            long itemID3 = itemManager.createItem("PEND", "INg", "test");
+            long itemID3 = itemManager.createItem("PEND", "INg", "t");
             itemManager.approveItem(itemID);
             itemManager.approveItem(itemID2);
-            userManager.addToNormalUserPending(itemID3, "test");
+            itemManager.approveItem(itemID3);
             userManager.addToNormalUserInventory(itemID, "test");
-            userManager.addToNormalUserWishlist(itemID2, "test");
+            userManager.addToNormalUserInventory(itemID2, "test");
+            userManager.addToNormalUserInventory(itemID3, "t");
+            userManager.addToNormalUserWishlist(itemID3, "test");
         }
 
         int[] fileThresholds = tryReadThresholds();

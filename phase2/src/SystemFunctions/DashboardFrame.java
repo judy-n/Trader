@@ -8,9 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * JFrame that displays the user's dashboard
+ * JFrame that displays the user's dashboard.
  *
  * @author Ning Zhang
+ * @author Yingjia Liu
  * @version 1.0
  * @since 2020-08-01
  * last modified 2020-08-12
@@ -398,8 +399,8 @@ public class DashboardFrame extends JDialog {
                             normalDashboard.rejectTradeRequest(listDisplay.getSelectedIndex());
                         } else {
                             normalDashboard.acceptTradeRequest(listDisplay.getSelectedIndex(),
-                                    initialTimeInput.getText(), initialPlaceInput.getText(), permOrTemp.isSelected());
-
+                                    initialTimeInput.getText(), initialPlaceInput.getText(), !permOrTemp.isSelected());
+                            drawPopUpMessage();
                         }
                     }
                     listDisplay.clearSelection();
@@ -425,12 +426,15 @@ public class DashboardFrame extends JDialog {
                         } else {
                             normalDashboard.setIndexOfItemRequested(listDisplay.getSelectedIndex());
                             drawPopUpMessage();
-                            drawOptionalDisplayPanel(normalDashboard.getSuggestedItems(listDisplay.getSelectedIndex()), CATALOG_VIEWER);
-                            listDisplay.clearSelection();
-                            redrawDisplayList(normalDashboard.currentUserInventoryInCatalog());
-                            sendTrade.setEnabled(true);
-                            trade.setEnabled(false);
-                            wishlistOrTrade.setEnabled(false);
+
+                            if (normalDashboard.canSetUpTradeRequest(listDisplay.getSelectedIndex())) {
+                                drawOptionalDisplayPanel(normalDashboard.getSuggestedItems(listDisplay.getSelectedIndex()), CATALOG_VIEWER);
+                                listDisplay.clearSelection();
+                                redrawDisplayList(normalDashboard.currentUserInventoryInCatalog());
+                                sendTrade.setEnabled(true);
+                                trade.setEnabled(false);
+                                wishlistOrTrade.setEnabled(false);
+                            }
                         }
                     }
                 });
@@ -463,24 +467,33 @@ public class DashboardFrame extends JDialog {
                 editTrade = new JButton(normalDashboard.setUpDash(27));
 
                 cancelTrade.addActionListener(e -> {
+                    optionalPanel.removeAll();
+                    optionalPanel.setVisible(false);
                     if (!listDisplay.isSelectionEmpty()) {
                         normalDashboard.cancelTrade(listDisplay.getSelectedIndex());
+                        drawPopUpMessage();
                         listDisplay.clearSelection();
                         redrawDisplayList(normalDashboard.getOngoingTrades());
                     }
                 });
 
                 confirmTransaction.addActionListener(e -> {
+                    optionalPanel.removeAll();
+                    optionalPanel.setVisible(false);
                     if (!listDisplay.isSelectionEmpty()) {
                         normalDashboard.confirmTrade(listDisplay.getSelectedIndex());
+                        drawPopUpMessage();
                         listDisplay.clearSelection();
                         redrawDisplayList(normalDashboard.getOngoingTrades());
                     }
                 });
 
                 agreeTrade.addActionListener(e -> {
+                    optionalPanel.removeAll();
+                    optionalPanel.setVisible(false);
                     if (!listDisplay.isSelectionEmpty()) {
                         normalDashboard.agreeTrade(listDisplay.getSelectedIndex());
+                        drawPopUpMessage();
                         listDisplay.clearSelection();
                         redrawDisplayList(normalDashboard.getOngoingTrades());
                     }
@@ -488,9 +501,12 @@ public class DashboardFrame extends JDialog {
 
                 editTrade.addActionListener(e -> {
                     if (!listDisplay.isSelectionEmpty()) {
-                        editTrade.setEnabled(false);
-                        new JOptionPane(normalDashboard.getNumEdits(listDisplay.getSelectedIndex()));
-                        drawOptionalInputPanel(ONGOING);
+                        if (normalDashboard.canEditMeeting(listDisplay.getSelectedIndex())) {
+                            editTrade.setEnabled(false);
+                            drawOptionalInputPanel(ONGOING);
+                        } else {
+                            drawPopUpMessage();
+                        }
                     }
                 });
 
@@ -501,7 +517,6 @@ public class DashboardFrame extends JDialog {
                 break;
 
             case NOTIF:
-                optionalPanel.setVisible(false);
                 JButton markAsRead = new JButton(normalDashboard.setUpDash(28));
                 initializeButton(markAsRead, 100, 20, userInputPanel);
                 markAsRead.addActionListener(e -> {
@@ -654,7 +669,8 @@ public class DashboardFrame extends JDialog {
 
         switch (type) {
             case ONGOING:
-                optionalLabelTitle.setText(normalDashboard.setUpDashTitles(3));
+                optionalLabelTitle.setText(normalDashboard.setUpDashTitles
+                        (normalDashboard.getNumEdits(listDisplay.getSelectedIndex())));
                 JTextField timeSuggestionInput = new JTextField(20);
                 JTextField placeSuggestionInput = new JTextField(20);
                 JButton suggest = new JButton(normalDashboard.setUpDashTitles(6));
@@ -666,6 +682,7 @@ public class DashboardFrame extends JDialog {
                         listDisplay.clearSelection();
                         redrawDisplayList(normalDashboard.getOngoingTrades());
                         optionalPanel.removeAll();
+                        optionalPanel.setVisible(false);
                         editTrade.setEnabled(true);
                     }
                 });

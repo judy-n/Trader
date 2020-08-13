@@ -13,11 +13,11 @@ import java.time.format.DateTimeFormatter;
  * @author Yingjia Liu
  * @version 1.0
  * @since 2020-07-08
- * last modified 2020-08-07
+ * last modified 2020-08-12
  */
 public class DateTimeHandler {
     private final String DATE_FORMAT = "yyyy/MM/dd";
-    private final String DATE_TIME_FORMAT = DATE_FORMAT + "-hh:mm";
+    private final String DATE_TIME_FORMAT = DATE_FORMAT + "-HH:mm";
     private String[] dateTime;
     private String[] date;
     private String[] time;
@@ -123,11 +123,11 @@ public class DateTimeHandler {
             return false;
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-        sdf.setLenient(false);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
+        simpleDateFormat.setLenient(false);
 
         try {
-            sdf.parse(dateToValidate);
+            simpleDateFormat.parse(dateToValidate);
         } catch (ParseException e) {
             return false;
         }

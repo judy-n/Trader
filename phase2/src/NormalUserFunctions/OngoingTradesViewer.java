@@ -209,7 +209,6 @@ public class OngoingTradesViewer {
      */
     public int canConfirmLatestTransaction(int index) {
         Trade selectedTrade = tradeManager.getOngoingTrades(currUsername).get(index);
-        String traderUsername = selectedTrade.getOtherUsername(currUsername);
 
         /* can't confirm transaction if no agreed meeting */
         if (!selectedTrade.getHasAgreedMeeting()) {
@@ -220,7 +219,10 @@ public class OngoingTradesViewer {
         if ((selectedTrade instanceof TemporaryTrade &&
                 ((TemporaryTrade) selectedTrade).hasSecondMeeting() &&
                 ((TemporaryTrade) selectedTrade).getUserSecondTransactionConfirmation(currUsername)) ||
-                selectedTrade.getUserFirstTransactionConfirmation(currUsername)) {
+                (selectedTrade instanceof TemporaryTrade && !((TemporaryTrade) selectedTrade).hasSecondMeeting()
+                        && selectedTrade.getUserFirstTransactionConfirmation(currUsername)) ||
+                (selectedTrade instanceof PermanentTrade &&
+                        selectedTrade.getUserFirstTransactionConfirmation(currUsername)))  {
             return 21;
         }
 
