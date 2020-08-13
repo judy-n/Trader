@@ -39,30 +39,6 @@ public class TradeManager extends Manager implements Serializable {
     }
 
     /**
-     * Getter for all trades in the system.
-     *
-     * @return a list of all trades in the system
-     */
-    public List<Trade> getAllTrades() {
-        return allTrades;
-    }
-
-    /**
-     * Getter for all temporary trades in the system.
-     *
-     * @return a list of all temporary trades in the system
-     */
-    public List<TemporaryTrade> getAllTempTrades() {
-        List<TemporaryTrade> allTempTrades = new ArrayList<>();
-        for (Trade t : allTrades) {
-            if (t instanceof TemporaryTrade) {
-                allTempTrades.add((TemporaryTrade) t);
-            }
-        }
-        return allTempTrades;
-    }
-
-    /**
      * Getter for all of the ongoing trades that have not been cancelled.
      *
      * @return a list of all ongoing trades that have not been cancelled
@@ -174,21 +150,6 @@ public class TradeManager extends Manager implements Serializable {
     }
 
     /**
-     * Getter for all permanent trades in the system.
-     *
-     * @return a list of all permanent trades in the system
-     */
-    public List<PermanentTrade> getAllPermTrades() {
-        List<PermanentTrade> allPermTrades = new ArrayList<>();
-        for (Trade t : allTrades) {
-            if (t instanceof PermanentTrade) {
-                allPermTrades.add((PermanentTrade) t);
-            }
-        }
-        return allPermTrades;
-    }
-
-    /**
      * Creates a new <TemporaryTrade></TemporaryTrade> with the given information,
      * then adds it to the list of all trades.
      *
@@ -214,15 +175,6 @@ public class TradeManager extends Manager implements Serializable {
     public void createPermTrade(String[] usernames, long[] itemIDs, LocalDateTime firstDateTime, String firstLocation) {
         PermanentTrade newPermTrade = new PermanentTrade(usernames, itemIDs, firstDateTime, firstLocation);
         allTrades.add(newPermTrade);
-    }
-
-    /**
-     * Removes the given trade from the list of all Trades.
-     *
-     * @param tradeToRemove the trade being removed
-     */
-    public void removeTrade(Trade tradeToRemove) {
-        allTrades.remove(tradeToRemove);
     }
 
     /**

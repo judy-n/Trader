@@ -99,24 +99,6 @@ public class ItemManager extends Manager implements Serializable {
     }
 
     /**
-     * Returns the total number of approved items in the system, excluding those removed from inventory.
-     *
-     * @return the total number of approved items in the system, excluding those removed from inventory
-     */
-    public int getNumApprovedItems() {
-        return getApprovedItems().size();
-    }
-
-    /**
-     * Returns the total number of pending items in the system.
-     *
-     * @return the total number of pending items in the system
-     */
-    public int getNumPendingItems() {
-        return pendingItems.size();
-    }
-
-    /**
      * Takes in an item ID and returns the associated <Item></Item> object.
      *
      * @param itemID the ID of an item
@@ -124,16 +106,6 @@ public class ItemManager extends Manager implements Serializable {
      */
     public Item getItem(long itemID) {
         return idGetItem(getAllItems(), itemID);
-    }
-
-    /**
-     * Returns the approved item found at the given index.
-     *
-     * @param index the index of an item in the list of approved items
-     * @return the item at the given index
-     */
-    public Item getApprovedItem(int index) {
-        return approvedItems.get(index);
     }
 
     /**

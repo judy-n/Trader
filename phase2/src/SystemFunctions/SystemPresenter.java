@@ -161,6 +161,22 @@ public class SystemPresenter {
     }
 
     /**
+     * Returns a pop up message for display on the demo dashboard
+     * @return the String
+     */
+    public String getDemoPopMessage(){
+        return demoDashPresenter.getPopUpMessage();
+    }
+
+    /**
+     * Returns a String array used for display when demo user clicks their user info
+     * @return the String array
+     */
+    public String[] getDemoUserInfo(){
+        return demoDashPresenter.getUserInfo();
+    }
+
+    /**
      * Presents trade requests user has initiated
      *
      * @param itemNames  the names of the items in the initiated trade requests
@@ -243,5 +259,30 @@ public class SystemPresenter {
     public void exceptionMessage(int input, String process, String type) {
         exceptionPresenter.exceptionMessage(input, process, type);
     }
+
+    /**
+     * Returns a message displayed for the help sectiong of the demo dashboard
+     * @return the message
+     */
+    public String getDemoHelpMessage(){
+        return demoDashPresenter.getHelpMessage();
+    }
+
+    /**
+     * Returns a message displayed for the help section of the normal dashboard
+     * @return the message
+     */
+    public String getNormalHelpMessage(){
+        return normalDashPresenter.getHelpMessage();
+    }
+
+    /**
+     * Returns a message displayed for the help section of the admin dashboard
+     * @return the message
+     */
+    public String getAdminHelpMessage(){
+        return adminDashPresenter.getHelpMessage();
+    }
+
 
 }

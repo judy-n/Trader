@@ -22,7 +22,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-07-03
- * last modified 2020-08-11
+ * last modified 2020-08-12
  */
 public class SystemController extends JFrame {
     private UserManager userManager;
@@ -52,19 +52,6 @@ public class SystemController extends JFrame {
 
         if (userManager.getAllUsers().isEmpty()) {
             tryReadAdmin();
-            //for testing
-            new SignUpSystem(userManager).createNewNormal("test", "a@b.com", "p", "homeCity", notifSystem);
-            new SignUpSystem(userManager).createNewNormal("t","b@c.v","p","homeCity", notifSystem);
-            long itemID = itemManager.createItem("fruit", "it's a strawberry", "test");
-            long itemID2 = itemManager.createItem("AHHH", "OMG", "test");
-            long itemID3 = itemManager.createItem("PEND", "INg", "t");
-            itemManager.approveItem(itemID);
-            itemManager.approveItem(itemID2);
-            itemManager.approveItem(itemID3);
-            userManager.addToNormalUserInventory(itemID, "test");
-            userManager.addToNormalUserInventory(itemID2, "test");
-            userManager.addToNormalUserInventory(itemID3, "t");
-            userManager.addToNormalUserWishlist(itemID3, "test");
         }
 
         int[] fileThresholds = tryReadThresholds();

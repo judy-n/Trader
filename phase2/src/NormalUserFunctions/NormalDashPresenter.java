@@ -110,6 +110,8 @@ public class NormalDashPresenter {
                 return ("<html>To request a two-way trade, select an item from your inventory (shown on left) " +
                         "to lend and press \"Send Trade Request\"." +
                         "<br/>To make it one-way, don't select anything and press the button.");
+            case 36:
+                return ("You can't go on vacation right now as you have ongoing trades!");
             default:
                 return ("");
         }
@@ -377,6 +379,14 @@ public class NormalDashPresenter {
     public String[] getUserInfo(String username, String email, String password, String homeCity){
        return new String[]{"Username: " + username, "Email: " + email,
                "Password: " + password, "Home City: " + homeCity};
+    }
+
+    /**
+     * Returns a message used to display on the help section of the dashboard
+     * @return a message used to display on the help section of the dashboard
+     */
+    public String getHelpMessage(){
+        return "";
     }
 
 }
