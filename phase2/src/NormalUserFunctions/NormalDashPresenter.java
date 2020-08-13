@@ -197,6 +197,11 @@ public class NormalDashPresenter {
         }
     }
 
+    /**
+     * Returns Strings needed for display on the optional panel of <DashboardFrame></DashboardFrame>
+     * @param type the type of String needed
+     * @return the String
+     */
     public String setUpNormalDashTitles(int type) {
         switch (type) {
             case 1:
@@ -218,6 +223,12 @@ public class NormalDashPresenter {
         }
     }
 
+    /**
+     * Returns String showing the number of edits the normal user has made to the chosen
+     * ongoing trade, displayed on the optional panel of the <DashFrame></DashFrame>
+     * @param numEditStr the number of edits in a string
+     * @return the string for display on the optional panel
+     */
     public String setUpNormalDashTitles(String numEditStr) {
         return ("<html>Suggest Meeting Details<br/>" + numEditStr + "<br/> v  v <html>");
     }
@@ -279,6 +290,11 @@ public class NormalDashPresenter {
         }
     }
 
+    /**
+     * Returns a String warning for when user is violating the lend minimum rule
+     * @param lendMinimum the lend minimum of the system
+     * @return the String warning
+     */
     public String lendWarning(int lendMinimum) {
         return ("You're borrowing too much! You need to lend AT LEAST " + lendMinimum + " more item(s) than you've borrowed.");
     }
@@ -390,6 +406,11 @@ public class NormalDashPresenter {
      * @return a message used to display on the help section of the dashboard
      */
     public String getHelpMessage(){
-        return "";
+        return "<html>Catalog Viewer: you can switch between wishlisting the item<br/>" +
+                "and trading for the item by selecting and unselecting the toggle button. <br/>" +
+                "<br/>Trade Request Viewer: you can switch between accepting and denying the trade request<br/>" +
+                "by selecting and unselecting the toggle button. <br/>" +
+                "You can also switch between permanent and temporary trade by selecting and <br/>" +
+                "unselecting the second toggle button. <html>";
     }
 }

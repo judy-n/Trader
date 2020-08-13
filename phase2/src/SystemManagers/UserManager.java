@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-09
+ * last modified 2020-08-12
  */
 public class UserManager extends Manager implements Serializable {
     private List<NormalUser> allNormals;
@@ -139,41 +139,12 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Takes the given email and returns the associated <NormalUser></NormalUser>.
-     *
-     * @param email the email of the normal user being retrieved
-     * @return the normal user associated with the given email
-     */
-    public NormalUser getNormalByEmail(String email) {
-        for (NormalUser u : allNormals) {
-            if (u.getEmail().equals(email)) {
-                return u;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Changes the <User></User>'s password
      * @param username the username of the user
      * @param newPassword the new password
      */
     public void changeUserPassword(String username, String newPassword){
         getUserByUsername(username).setPassword(newPassword);
-    }
-    /**
-     * Takes the given email that belongs to an admin and returns the associated <AdminUser></AdminUser>.
-     *
-     * @param email the email of the admin being retrieved
-     * @return the admin associated with the given email
-     */
-    public AdminUser getAdminByEmail(String email) {
-        for (AdminUser u : allAdmins) {
-            if (u.getEmail().equals(email)) {
-                return u;
-            }
-        }
-        return null;
     }
 
     /**
@@ -195,24 +166,6 @@ public class UserManager extends Manager implements Serializable {
      */
     public List<String> getAllNormalUsernames() {
         return allNormalUsernames;
-    }
-
-    /**
-     * Getter for all normal users in the user database.
-     *
-     * @return a list of all normal users in the user database
-     */
-    public List<NormalUser> getAllNormals() {
-        return allNormals;
-    }
-
-    /**
-     * Getter for all admins in the user database.
-     *
-     * @return a list of all admins in the user database
-     */
-    public List<AdminUser> getAllAdmins() {
-        return allAdmins;
     }
 
     /**
