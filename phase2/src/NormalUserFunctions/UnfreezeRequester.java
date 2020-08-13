@@ -26,7 +26,9 @@ public class UnfreezeRequester {
         this.userManager = userManager;
     }
 
-    /* Sends a request to be unfrozen. */
+    /**
+     *  Sends a request to be unfrozen if the current user hasn't already sent one.
+     */
     public boolean requestUnfreeze() {
         if (!userManager.getUnfreezeRequests().contains(currUsername)) {
             userManager.addUnfreezeRequest(currUsername);

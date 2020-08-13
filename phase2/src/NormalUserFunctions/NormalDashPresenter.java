@@ -110,6 +110,10 @@ public class NormalDashPresenter {
                 return ("<html>To request a two-way trade, select an item from your inventory (shown on left) " +
                         "to lend and press \"Send Trade Request\"." +
                         "<br/>To make it one-way, don't select anything and press the button.");
+            case 36:
+                return ("<html>You cannot initiate any trades at the moment due to your account being frozen." +
+                        "<br/>Any trade requests you've sent won't be visible to their recipients until you are unfrozen.");
+
             default:
                 return ("");
         }

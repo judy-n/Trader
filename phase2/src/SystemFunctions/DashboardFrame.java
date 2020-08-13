@@ -200,6 +200,7 @@ public class DashboardFrame extends JDialog {
         JButton unfreeze = new JButton(normalDashboard.setUpDash(8));
         unfreeze.addActionListener(e -> {
             normalDashboard.sendUnfreezeRequest();
+            drawPopUpMessage();
             resetEverything();
             dashboardWindow.remove(scrollablePane);
             dashboardWindow.repaint();
@@ -388,29 +389,34 @@ public class DashboardFrame extends JDialog {
                 break;
 
             case TRADE_REQUEST:
-                JToggleButton acceptOrDeny = new JToggleButton();
-                JToggleButton permOrTemp = new JToggleButton();
-                JTextField initialTimeInput = new JTextField(10);
-                JTextField initialPlaceInput = new JTextField(10);
-                JButton confirm = new JButton(normalDashboard.setUpDash(12));
-                confirm.addActionListener(e -> {
-                    if (!listDisplay.isSelectionEmpty()) {
-                        if (acceptOrDeny.isSelected()) {
-                            normalDashboard.rejectTradeRequest(listDisplay.getSelectedIndex());
-                        } else {
-                            normalDashboard.acceptTradeRequest(listDisplay.getSelectedIndex(),
-                                    initialTimeInput.getText(), initialPlaceInput.getText(), !permOrTemp.isSelected());
-                            drawPopUpMessage();
+                if (normalDashboard.isFrozen()) {
+                    normalDashboard.setPopUpMessage(36);
+                    drawPopUpMessage();
+                } else {
+                    JToggleButton acceptOrDeny = new JToggleButton();
+                    JToggleButton permOrTemp = new JToggleButton();
+                    JTextField initialTimeInput = new JTextField(10);
+                    JTextField initialPlaceInput = new JTextField(10);
+                    JButton confirm = new JButton(normalDashboard.setUpDash(12));
+                    confirm.addActionListener(e -> {
+                        if (!listDisplay.isSelectionEmpty()) {
+                            if (acceptOrDeny.isSelected()) {
+                                normalDashboard.rejectTradeRequest(listDisplay.getSelectedIndex());
+                            } else {
+                                normalDashboard.acceptTradeRequest(listDisplay.getSelectedIndex(),
+                                        initialTimeInput.getText(), initialPlaceInput.getText(), !permOrTemp.isSelected());
+                                drawPopUpMessage();
+                            }
                         }
-                    }
-                    listDisplay.clearSelection();
-                    redrawDisplayList(normalDashboard.getReceivedTrades());
-                });
-                initializeToggleButton(acceptOrDeny, normalDashboard.setUpDash(15), normalDashboard.setUpDash(16), userInputPanel);
-                initializeLabelledTextField(initialTimeInput, normalDashboard.setUpDash(17), userInputPanel);
-                initializeLabelledTextField(initialPlaceInput, normalDashboard.setUpDash(18), userInputPanel);
-                initializeToggleButton(permOrTemp, normalDashboard.setUpDash(19), normalDashboard.setUpDash(20), userInputPanel);
-                initializeButton(confirm, 100, 20, userInputPanel);
+                        listDisplay.clearSelection();
+                        redrawDisplayList(normalDashboard.getReceivedTrades());
+                    });
+                    initializeToggleButton(acceptOrDeny, normalDashboard.setUpDash(15), normalDashboard.setUpDash(16), userInputPanel);
+                    initializeLabelledTextField(initialTimeInput, normalDashboard.setUpDash(17), userInputPanel);
+                    initializeLabelledTextField(initialPlaceInput, normalDashboard.setUpDash(18), userInputPanel);
+                    initializeToggleButton(permOrTemp, normalDashboard.setUpDash(19), normalDashboard.setUpDash(20), userInputPanel);
+                    initializeButton(confirm, 100, 20, userInputPanel);
+                }
                 break;
 
             case CATALOG_VIEWER:

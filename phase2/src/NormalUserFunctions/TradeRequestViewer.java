@@ -118,7 +118,8 @@ public class TradeRequestViewer {
         receivedOwners.clear();
 
         for (String[] key : userManager.getNormalUserTradeRequests(currUsername).keySet()) {
-            if (!userManager.getNormalUserIsFrozen(key[0]) && currUsername.equals(key[1])) {
+            if (!userManager.getNormalUserIsFrozen(key[0]) && !userManager.getNormalUserOnVacation(key[0])
+                    && currUsername.equals(key[1])) {
                 receivedTrades.put(key, userManager.getNormalUserTradeRequests(currUsername).get(key));
             }
         }

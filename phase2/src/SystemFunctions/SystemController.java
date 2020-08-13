@@ -65,6 +65,7 @@ public class SystemController extends JFrame {
             userManager.addToNormalUserInventory(itemID2, "test");
             userManager.addToNormalUserInventory(itemID3, "t");
             userManager.addToNormalUserWishlist(itemID3, "test");
+            userManager.freezeNormalUser("test");
         }
 
         int[] fileThresholds = tryReadThresholds();

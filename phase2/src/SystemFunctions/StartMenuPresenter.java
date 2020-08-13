@@ -87,7 +87,6 @@ public class StartMenuPresenter {
         }
     }
 
-
     /**
      * Returns the labels for elements on the login screen of the program.
      *
