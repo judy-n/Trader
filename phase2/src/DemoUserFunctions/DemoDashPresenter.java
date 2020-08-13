@@ -42,8 +42,8 @@ public class DemoDashPresenter {
      * @return a message used to display on the help section of the dashboard
      */
     public String getHelpMessage() {
-        return "<html>To see all items available to trade right now, <br/>" +
-                "click the \"View Catalog\" button!<html>";
+        return "<html>To see all items available to trade right now," +
+                "<br/>click the \"View Catalog\" button!<html>";
     }
 
     /**

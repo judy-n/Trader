@@ -31,13 +31,24 @@ Strategy Design Pattern
     that facilitate the confirmation and closing of trades.
 
 Facade Design Pattern
-    Class involved: SystemPresenter 
-	The SystemPresenter class encapsulates the NormalDashPresenter, AdminDashPresenter, DemoDashPresenter and ExceptionPresenter classes. We hid the more complex implementation of the presenters used for different cases in the SystemPresenter class. This is a direct improvement to our phase 1 code based on the feedback we got that the class SystemPresent was too big. We made SystemPresent a facade so the exisiting calls to its methods do not have to change instead the SystemPresent will call the appropriate method in the appropriate presenter it contains. This improves encapsulation since the client code does not have direct access to the subsystem the facade contains, the client code can only communicate with the subsystem via the SystemPresent facade class.
+    Classes involved: SystemPresenter (the facade class); NormalDashPresenter, AdminDashPresenter, DemoDashPresenter, and ExceptionPresenter (the classes stored in the facade class)
+	    The SystemPresenter class encapsulates the NormalDashPresenter, AdminDashPresenter, DemoDashPresenter, and ExceptionPresenter classes.
+	We hid the more complex implementation of the presenters used for different cases in the SystemPresenter class.
+	This is a direct improvement from our phase 1 code based on the feedback we got that the class SystemPresenter was too big.
+	    We made SystemPresenter a facade so the existing calls to its methods do not have to change; instead, SystemPresenter will call the
+	appropriate method in the appropriate presenter stored in SystemPresenter. This encapsulates the code better since the client code
+	does not have direct access to the subsystem the facade contains—the client code can only communicate with the subsystem via the SystemPresenter facade.
 
 Possible Usage of Strategy Design Pattern: 
     Classes involved: AdminDashboard and NormalDashboard 
-	The two classes uses algorithms stored in other controllers rather than storing those algorithms themselves. For example: in the NormalDashboard class, to change the normal user's status to vacation, the NormalDashboard class calls the switchVacationStatus method in StatusEditor instead of modifying the NormalUser entity itself. This encapsulates the algorithm so they are not stored in the NormalDashboard class. This also makes the NormalDashboard class more concise and more extensible, because we can easily attach other controller classes to the NormalDashboard class if we were to create more functions for the NormalUser. 
+	The two classes uses algorithms stored in other controllers rather than storing those algorithms themselves.
+	For example: in the NormalDashboard class, to change the normal user's status to vacation, the NormalDashboard class calls the switchVacationStatus method
+	in StatusEditor instead of modifying the NormalUser entity itself. This encapsulates the algorithm so they are not stored in the NormalDashboard class.
+	This also makes the NormalDashboard class more concise and more extensible, because we can easily attach other controller classes
+	to the NormalDashboard class if we were to create more functions for the NormalUser.
 
 Another Possible Usage of Strategy Design Pattern:
     Class involved: DashFrame
-	We tried to limit any type of algorithm in the DashFrame class to avoid it getting more complex then it already is. We did this by making most of the JButton actionlisteners a direct call to a dashboard class controller so the inputs can be interpreted in the dashboard controller instead of inside the DashFrame class.
+	We tried to limit any type of algorithm in the DashFrame class to avoid it getting more complex then it already is.
+	We did this by making most of the JButton actionlisteners a direct call to a dashboard class controller so the inputs
+	can be interpreted in the dashboard controller instead of inside the DashFrame class.

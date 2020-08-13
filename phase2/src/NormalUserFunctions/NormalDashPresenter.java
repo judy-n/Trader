@@ -131,9 +131,9 @@ public class NormalDashPresenter {
     public String setUpDash(int type) {
         switch (type) {
             case 1:
-                return ("Inventory Editor");
+                return ("View Inventory");
             case 2:
-                return ("Wishlist Editor");
+                return ("View Wishlist");
             case 3:
                 return ("View Trade Requests");
             case 4:
@@ -417,6 +417,6 @@ public class NormalDashPresenter {
                 "<br/>Where the toggle button is used:" +
                 "<br/>- Viewing Catalog: switch between wishlist-ing and trading for the selected catalog item" +
                 "<br/>- Viewing Trade Requests: switch between accepting and rejecting a received trade request," +
-                "<br/>and switch between making it a permanent or temporary trade when accepting the request.<html>";
+                "<br/>and switch between making it a permanent or temporary trade when accepting the request<html>";
     }
 }

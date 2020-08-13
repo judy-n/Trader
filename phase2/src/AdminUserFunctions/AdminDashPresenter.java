@@ -20,13 +20,13 @@ public class AdminDashPresenter {
     public String setUpDash(int type) {
         switch (type) {
             case 1:
-                return ("Catalog Editor");
+                return ("Approve Items");
             case 2:
                 return ("Freeze Accounts");
             case 3:
                 return ("Unfreeze Accounts");
             case 4:
-                return ("Threshold Editor");
+                return ("Edit Thresholds");
             case 5:
                 return ("Create New Admin");
             case 6:
@@ -126,8 +126,11 @@ public class AdminDashPresenter {
      * @return a message used to display on the help section of the dashboard
      */
     public String getHelpMessage() {
-        return "<html>Catalog Editor: you can switch between approving or denying the item <br/>" +
-                "by selecting and unselecting the toggle button. <html>";
+        return "<html>Info on how to use the toggle button:" +
+                "<br/>Once you've selected an entry in the main panel to take action for, the toggle button's label" +
+                "<br/>will display the action that will be taken once you click the \"Confirm\" button next to it." +
+                "<br/>Where the toggle button is used:" +
+                "<br/>- Approving Items: switch between approving and rejecting an item";
     }
 
 

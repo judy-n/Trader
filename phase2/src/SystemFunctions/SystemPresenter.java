@@ -14,7 +14,7 @@ import java.util.List;
  * @author Yingjia Liu
  * @version 2.0
  * @since 2020-07-03
- * last modified 2020-08-11
+ * last modified 2020-08-13
  */
 public class SystemPresenter {
     private final StartMenuPresenter startMenuPresenter;
@@ -24,7 +24,8 @@ public class SystemPresenter {
     private final DemoDashPresenter demoDashPresenter;
 
     /**
-     * The system's presenter
+     * Creates a new <SystemPresenter></SystemPresenter>, which is a facade class that stores different presenters
+     * separated based on which GUI class uses them.
      */
     public SystemPresenter() {
         startMenuPresenter = new StartMenuPresenter();
@@ -35,7 +36,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns Strings used for display on the start menu
+     * Returns Strings used for display on the start menu.
      *
      * @param input the type of String needed
      * @return the String used for display
@@ -45,7 +46,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns Strings used for display on the sign up page
+     * Returns Strings used for display on the sign up page.
      *
      * @param input the type of String needed
      * @return the String used for display
@@ -55,7 +56,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns Strings used for display on the log in page
+     * Returns Strings used for display on the log in page.
      *
      * @param input the type of String needed
      * @return the String used for display
@@ -65,7 +66,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns a pop up message for display on a normal user's dashboard
+     * Returns a pop up message for display on a normal user's dashboard.
      *
      * @param type the type of pop up message
      * @return the pop up message for display
@@ -76,7 +77,7 @@ public class SystemPresenter {
 
     /**
      * Returns Strings used for JComponents on a normal user's dashboard
-     * on user function panel and user input panel
+     * on user function panel and user input panel.
      *
      * @param type the type of string needed
      * @return the string for display
@@ -86,8 +87,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns Strings used for JComponents on a normal user's dashboard
-     * on optional panel
+     * Returns Strings used for JComponents on a normal user's dashboard on optional panel.
      *
      * @param strNeeded the string to include in the label
      * @return the string to display
@@ -108,7 +108,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns the normal user's information in a String array
+     * Returns the normal user's information in a String array.
      *
      * @param username the normal user's username
      * @param email    the normal user's email
@@ -121,7 +121,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns Strings used for JComponents on an admin user's dashboard
+     * Returns Strings used for JComponents on an admin user's dashboard.
      *
      * @param type the type of String needed
      * @return the String for display
@@ -141,7 +141,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns a pop up message for display on an admin user's dashboard
+     * Returns a pop up message for display on an admin user's dashboard.
      *
      * @param type the type of pop up message
      * @return the pop up message for display
@@ -151,7 +151,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns the admin user's info in a String array
+     * Returns the admin user's info in a String array.
      *
      * @param username the admin user's username
      * @param email    the admin user's email
@@ -163,7 +163,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns a pop up message for display on the demo dashboard
+     * Returns a pop up message for display on the demo dashboard.
      *
      * @return the String
      */
@@ -172,7 +172,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns a String array used for display when demo user clicks their user info
+     * Returns a String array used for display when demo user clicks their user info.
      *
      * @return the String array
      */
@@ -181,7 +181,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents trade requests user has initiated
+     * Presents trade requests user has initiated.
      *
      * @param itemNames  the names of the items in the initiated trade requests
      * @param recipients the recipients of the initiated trade requests
@@ -191,7 +191,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents trade requests user has received
+     * Presents trade requests user has received.
      *
      * @param itemNames the names of the items in the received trade requests
      * @param senders   the senders the received trade requests
@@ -211,7 +211,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents the number of edits a user has made, and if they are on their final edit
+     * Presents the number of edits a user has made, and if they are on their final edit.
      *
      * @param numEdits    the number of edits the user has made
      * @param isFinalEdit true iff this is the user's final edit
@@ -236,7 +236,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns the labels of the thresholds in an array
+     * Returns the labels of the thresholds in an array.
      *
      * @param currThresholds the current threshold values of the system
      */
@@ -254,7 +254,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Presents errors based on a type and a process, based off an input
+     * Presents errors based on a type and a process, based off an input.
      *
      * @param input   the input
      * @param process the process
@@ -265,7 +265,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns a message displayed for the help sectiong of the demo dashboard
+     * Returns a message displayed for the help sectiong of the demo dashboard.
      *
      * @return the message
      */
@@ -274,7 +274,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns a message displayed for the help section of the normal dashboard
+     * Returns a message displayed for the help section of the normal dashboard.
      *
      * @return the message
      */
@@ -283,7 +283,7 @@ public class SystemPresenter {
     }
 
     /**
-     * Returns a message displayed for the help section of the admin dashboard
+     * Returns a message displayed for the help section of the admin dashboard.
      *
      * @return the message
      */

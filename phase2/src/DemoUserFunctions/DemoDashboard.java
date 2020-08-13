@@ -11,7 +11,7 @@ import SystemManagers.ItemManager;
  * @author Ning Zhang
  * @version 2.0
  * @since 2020-07-19
- * last modified 2020-08-12
+ * last modified 2020-08-13
  */
 public class DemoDashboard extends Dashboard {
     private ItemManager itemManager;
@@ -31,12 +31,12 @@ public class DemoDashboard extends Dashboard {
     }
 
     /**
-     * Returns all items available in the system for trade in a String array
+     * Returns all items available in the system for trade in a String array.
      *
      * @return all items available in the system for trade
      */
     public String[] getDemoCatalog() {
-        return itemManager.getItemStrings(itemManager.getApprovedItems(), true);
+        return itemManager.getItemStrings(itemManager.getApprovedItems(""), true);
     }
 
     /**
@@ -50,7 +50,7 @@ public class DemoDashboard extends Dashboard {
     }
 
     /**
-     * Returns a int indicating the type of dashboard
+     * Returns a int indicating the type of dashboard.
      *
      * @return the int
      */
@@ -60,7 +60,7 @@ public class DemoDashboard extends Dashboard {
     }
 
     /**
-     * Returns String used for display on JComponents on <DashboardFrame></DashboardFrame>
+     * Returns String used for display on JComponents on <DashboardFrame></DashboardFrame>.
      *
      * @param type the type of String needed
      * @return the String
@@ -71,7 +71,7 @@ public class DemoDashboard extends Dashboard {
     }
 
     /**
-     * Sets the String needed for pop up display on the <DashFrame></DashFrame>
+     * Sets the String needed for pop up display on the <DashFrame></DashFrame>.
      *
      * @param type the type of message needed
      */
@@ -81,7 +81,7 @@ public class DemoDashboard extends Dashboard {
     }
 
     /**
-     * Returns Strings used used for pop up display on the <DashFrame></DashFrame>
+     * Returns Strings used used for pop up display on the <DashFrame></DashFrame>.
      *
      * @return the need pop message
      */
@@ -91,7 +91,7 @@ public class DemoDashboard extends Dashboard {
     }
 
     /**
-     * Resets the pop up message
+     * Resets the pop up message.
      */
     @Override
     public void resetPopUpMessage() {
@@ -99,7 +99,7 @@ public class DemoDashboard extends Dashboard {
     }
 
     /**
-     * Returns String array used for display when demo user clicks their user info
+     * Returns String array used for display when demo user clicks their user info.
      *
      * @return the String array
      */
@@ -109,7 +109,7 @@ public class DemoDashboard extends Dashboard {
     }
 
     /**
-     * Not used since demo users don't have a password
+     * Not used since demo users don't have a password.
      *
      * @param password         new password
      * @param validatePassword validate new password
@@ -119,7 +119,7 @@ public class DemoDashboard extends Dashboard {
     }
 
     /**
-     * Returns a message displayed for the help sectiong of the demo dashboard
+     * Returns a message displayed for the help sectiong of the demo dashboard.
      *
      * @return the message
      */
