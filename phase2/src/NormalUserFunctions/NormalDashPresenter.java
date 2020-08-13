@@ -411,11 +411,12 @@ public class NormalDashPresenter {
      * @return a message used to display on the help section of the dashboard
      */
     public String getHelpMessage() {
-        return "<html>Catalog Viewer: you can switch between wishlisting the item<br/>" +
-                "and trading for the item by selecting and unselecting the toggle button. <br/>" +
-                "<br/>Trade Request Viewer: you can switch between accepting and denying the trade request<br/>" +
-                "by selecting and un-selecting the toggle button. <br/>" +
-                "You can also switch between permanent and temporary trade by selecting and <br/>" +
-                "un-selecting the second toggle button. <html>";
+        return "<html>Info on how to use the toggle button:" +
+                "<br/>Once you've selected an entry in the main panel to take action for, the toggle button's label" +
+                "<br/>will display the action that will be taken once you click the \"Confirm\" button next to it." +
+                "<br/>Where the toggle button is used:" +
+                "<br/>- Viewing Catalog: switch between wishlist-ing and trading for the selected catalog item" +
+                "<br/>- Viewing Trade Requests: switch between accepting and rejecting a received trade request," +
+                "<br/>and switch between making it a permanent or temporary trade when accepting the request.<html>";
     }
 }
