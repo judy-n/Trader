@@ -49,7 +49,7 @@ public class DashboardFrame extends JDialog {
     private final int CREATE = 11;
     private final int THRESHOLD = 12;
     private final int NOTIF = 13;
-
+    private final int USER_INFO = 14;
     private final String NOTHING_MESSAGE = "    Nothing here yet!";
 
     /**
@@ -62,7 +62,6 @@ public class DashboardFrame extends JDialog {
     public DashboardFrame(Dashboard dashboard, JFrame parent) {
         this.dashboard = dashboard;
         this.parent = parent;
-        String username = dashboard.getUsername();
         userFunctionPanel = new JPanel();
         userInputPanel = new JPanel();
         notifPanel = new JPanel();
@@ -78,7 +77,7 @@ public class DashboardFrame extends JDialog {
         notifPanel.setLayout(new FlowLayout());
         optionalPanel.setLayout(new BoxLayout(optionalPanel, BoxLayout.Y_AXIS));
         optionalPanel.setPreferredSize(new Dimension(300, 576));
-        dashboardWindow = new JDialog(parent, "Dashboard | " + username, true);
+        dashboardWindow = new JDialog(parent, "Dashboard | " + dashboard.getUsername(), true);
         dashboardWindow.setSize(820, 576);
         dashboardWindow.setResizable(false);
         dashboardWindow.setUndecorated(false);
@@ -90,6 +89,14 @@ public class DashboardFrame extends JDialog {
         profilePic.setMinimumSize(new Dimension(200, 200));
         userFunctionPanel.add(profilePic);
 
+        profilePic.addActionListener(e -> {
+            resetEverything();
+            drawListDisplay(dashboard.getUserInfo());
+            if(dashboard.getUserInfo().length != 0){
+                drawUserInputPane(USER_INFO);
+            }
+        });
+
         if (dashboard.getType() == 0) {
             adminDashboard = (AdminDashboard) dashboard;
             drawAdminDash();
@@ -100,6 +107,7 @@ public class DashboardFrame extends JDialog {
             demoDashboard = (DemoDashboard) dashboard;
             drawDemoDash();
         }
+
         dashboardWindow.add(userFunctionPanel, BorderLayout.WEST);
         dashboardWindow.add(userInputPanel, BorderLayout.SOUTH);
         dashboardWindow.add(notifPanel, BorderLayout.NORTH);
@@ -309,7 +317,6 @@ public class DashboardFrame extends JDialog {
     }
 
     private void drawUserInputPane(int type) {
-
         optionalPanel.setVisible(false);
 
         switch (type) {
@@ -317,6 +324,22 @@ public class DashboardFrame extends JDialog {
                 JButton fakeTrade = new JButton(demoDashboard.setUpDash(2));
                 fakeTrade.addActionListener(e -> JOptionPane.showMessageDialog(parent, demoDashboard.setUpDash(3)));
                 initializeButton(fakeTrade, 100, 40, userInputPanel);
+                break;
+
+            case USER_INFO:
+                JTextField newPassword = new JTextField(20);
+                JTextField reNewPassword = new JTextField(20);
+                JButton changePassword = new JButton(dashboard.setUpDash(31));
+                initializeLabelledTextField(newPassword, dashboard.setUpDash(29), userInputPanel);
+                initializeLabelledTextField(reNewPassword, dashboard.setUpDash(30), userInputPanel);
+                initializeButton(changePassword, 100, 40,  userInputPanel);
+                changePassword.addActionListener(e -> {
+                    dashboard.validatePasswordChange(newPassword.getText(), reNewPassword.getText());
+                    drawPopUpMessage();
+                    newPassword.setText("");
+                    reNewPassword.setText("");
+                    redrawDisplayList(dashboard.getUserInfo());
+                });
                 break;
 
             case WISHLIST:
@@ -513,9 +536,6 @@ public class DashboardFrame extends JDialog {
                 break;
 
             case CREATE:
-                JLabel username = new JLabel(adminDashboard.setUpDash(9));
-                JLabel email = new JLabel(adminDashboard.setUpDash(10));
-                JLabel password = new JLabel(adminDashboard.setUpDash(11));
                 JTextField usernameInput = new JTextField(10);
                 JTextField emailInput = new JTextField(10);
                 JTextField passwordInput = new JTextField(10);
@@ -528,12 +548,9 @@ public class DashboardFrame extends JDialog {
                     passwordInput.setText("");
                     drawPopUpMessage();
                 });
-                userInputPanel.add(username);
-                userInputPanel.add(usernameInput);
-                userInputPanel.add(email);
-                userInputPanel.add(emailInput);
-                userInputPanel.add(password);
-                userInputPanel.add(passwordInput);
+                initializeLabelledTextField(usernameInput, adminDashboard.setUpDash(9), userInputPanel);
+                initializeLabelledTextField(emailInput, adminDashboard.setUpDash(10), userInputPanel);
+                initializeLabelledTextField(passwordInput, adminDashboard.setUpDash(11), userInputPanel);
                 initializeButton(addAdmin, 100, 20, userInputPanel);
                 break;
 
@@ -598,7 +615,6 @@ public class DashboardFrame extends JDialog {
     }
 
     private void drawOptionalDisplayPanel(String[] stringArray, int type) {
-
         optionalPanel.setVisible(true);
 
         switch (type) {
@@ -634,7 +650,6 @@ public class DashboardFrame extends JDialog {
     }
 
     private void drawOptionalInputPanel(int type) {
-
         optionalPanel.setVisible(true);
 
         switch (type) {

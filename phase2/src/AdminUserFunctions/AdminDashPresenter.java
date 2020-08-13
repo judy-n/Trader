@@ -59,6 +59,12 @@ public class AdminDashPresenter {
                 return ("Undo");
             case 21:
                 return ("View Full Activity Log");
+            case 29:
+                return ("New password: ");
+            case 30:
+                return ("Validate password: ");
+            case 31:
+                return ("Change");
             default:
                 return null;
         }
@@ -99,4 +105,15 @@ public class AdminDashPresenter {
         return thresholdStrings;
     }
 
+
+    /**
+     * Returns the admin user's info in a String array
+     * @param username the admin user's username
+     * @param email the admin user's email
+     * @param id the admin users's admin id
+     * @return the admin user's info
+     */
+    public String[] getUserInfo(String username, String email, String password,  int id){
+        return new String[]{"Username: " + username, "Email: " + email, "Password: " + password, "ID: " + id};
+    }
 }

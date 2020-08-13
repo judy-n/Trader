@@ -41,7 +41,6 @@ public class SignUpSystem {
         if (username.trim().isEmpty()) {
             invalidInputCases.add(12);
         } else {
-
             if (userManager.usernameExists(username)) {     invalidInputCases.add(5);
             } else if (!username.matches("[a-zA-Z0-9]+([_.][a-zA-Z0-9]+)*") || username.length() < 3) {
                 invalidInputCases.add(6);

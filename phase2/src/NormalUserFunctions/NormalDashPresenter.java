@@ -179,6 +179,12 @@ public class NormalDashPresenter {
                 return ("Suggest Trade Meeting");
             case 28:
                 return ("Mark as Read");
+            case 29:
+                return ("New password: ");
+            case 30:
+                return ("Validate password: ");
+            case 31:
+                return ("Change");
             default:
                 return null;
         }
@@ -356,6 +362,19 @@ public class NormalDashPresenter {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Returns the normal user's information in a String array
+     * @param username the normal user's username
+     * @param email the normal user's email
+     * @param password the normal user's password
+     * @param homeCity the normal user's homeCity
+     * @return the normal user's information
+     */
+    public String[] getUserInfo(String username, String email, String password, String homeCity){
+       return new String[]{"Username: " + username, "Email: " + email,
+               "Password: " + password, "Home City: " + homeCity};
     }
 
 }

@@ -154,6 +154,14 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
+     * Changes the <User></User>'s password
+     * @param username the username of the user
+     * @param newPassword the new password
+     */
+    public void changeUserPassword(String username, String newPassword){
+        getUserByUsername(username).setPassword(newPassword);
+    }
+    /**
      * Takes the given email that belongs to an admin and returns the associated <AdminUser></AdminUser>.
      *
      * @param email the email of the admin being retrieved

@@ -257,7 +257,6 @@ public class NormalDashboard extends Dashboard {
         return tradeRequestViewer.getReceivedTrades();
     }
 
-
     /**
      * Returns the normal user's three most recent trades in a string array
      *
@@ -413,6 +412,11 @@ public class NormalDashboard extends Dashboard {
         notificationViewer.markNotifAsRead(index);
     }
 
+    /**
+     * Returns strings used for JComponents on the Dash frame's optional panel
+     * @param type the type of string needed
+     * @return the string needed
+     */
     public String setUpDashTitles(int type) {
         return systemPresenter.setUpNormalDashTitles(type);
     }
@@ -426,33 +430,83 @@ public class NormalDashboard extends Dashboard {
         this.popUpMessage = popUpMessage;
     }
 
+    /**
+     * Validates the new password
+     * @param password the new password
+     * @param validatePassword the new password again
+     */
+    @Override
+    public void validatePasswordChange(String password, String validatePassword){
+        if(password.matches("[\\S]{6,20}")&&validatePassword.equals(password)){
+            userManager.changeUserPassword(currUsername, password);
+        }else{
+            setPopUpMessage(30);
+        }
+    }
+
+    /**
+     * Returns Strings used for JComponents on the <DashFrame></DashFrame>
+     * @param type the type of string
+     * @return the string needed
+     */
     @Override
     public String setUpDash(int type) {
         return systemPresenter.setUpNormalDash(type);
     }
 
+    /**
+     * Sets the String needed for pop up display on the <DashFrame></DashFrame>
+     * @param type the type of message needed
+     */
     @Override
     public void setPopUpMessage(int type) {
         popUpMessage = systemPresenter.getNormalPopUpMessage(type);
     }
 
+    /**
+     * Returns the normal user's username
+     * @return the normal user's username
+     */
     @Override
     public String getUsername() {
         return currUsername;
     }
 
+    /**
+     * Returns int indicating the type of dashboard
+     * @return the int indicating the type of dashboard
+     */
     @Override
     public int getType() {
         return 1;
     }
 
+    /**
+     * Returns Strings used used for pop up display on the <DashFrame></DashFrame>
+     * @return the need pop message
+     */
     @Override
     public String getPopUpMessage() {
         return popUpMessage;
     }
 
+    /**
+     * Resets the pop up message
+     */
     @Override
     public void resetPopUpMessage() {
         popUpMessage = "";
+    }
+
+    /**
+     * Returns the normal user's info in a String array
+     * @return the normal user's info
+     */
+    @Override
+    public String[] getUserInfo() {
+        return systemPresenter.getNormalUserInfo(currUsername,
+                userManager.getNormalByUsername(currUsername).getEmail(),
+                userManager.getUserPassword(currUsername),
+                userManager.getNormalUserHomeCity(currUsername));
     }
 }
