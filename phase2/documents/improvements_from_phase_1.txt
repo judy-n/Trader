@@ -1,0 +1,33 @@
+Improves based on feedback from phase 1:
+(We will paraphrase the feedback we received then explain how we improved our code)
+
+	- User Logging Process can be be shorter
+	We removed the question in the beginning of the log in process that asks if the user is an admin or not,the log in process now looks the same regardless of if the user is a normal or an admin user. This also helped hide the existence of admin users from normal users.
+
+	- use proper variable names that describe variable use
+	We changed all our abbreviated variables names (ex. um for UserManager) to their full forms so all variable names are meaningful. 
+
+	- The class "SystemPresenter" is a very large class
+	We made the SystemPresenter class more concise and better encapsulated using the facade design pattern.
+
+	- leave useful comments in javadoc
+	We tried to improve this by writing longer javadoc that explains the algorithm and leaving more annotations in the code. Examples of this can be seen in classes like OngoingTradesViewer and TradeRequestViewer where there are more complex algorithms. We accompanied them with annotations enplaning how the algorithms worked.
+
+	- user/pass for the admin user is hard-coded in your code
+	We moved the credentials of the initial admin user to an external txt file instead of hard coding it. Now the program will read in the initial admin user when it is running for the first time.
+
+	-several Gateway classes that are used to do the same responsibility
+	We removed the repeated code by implementing the ReadWriter class, now all reading from and writing to external files is handled in that class instead of having several very similar gateway classes with repeated code.
+
+	- Size of methods are good except in the "SystemPresenter" class
+	We implemented the facade method in SystemPresenter for this. Furthermore since we are using GUI instead of text UI we were able to shorten a lot of methods that included a lot of different Strings. However, we are unable to shorten some of the methods in NormalDashPresenter and AdminDashPresenter specifically the getPopUpMessage method. Since there are too many ways a User could violate the rules of the program so we decided to warn them for each different case with a pop up message instead of not warning them when something is wrong. 
+
+	- You can use packaging to organize your classes
+	We package organized our classes for phase 2.
+
+	- avoid repeated code
+	We tried our best to avoid repeated code by implementing helper methods, specially in the DashFrame class. We attempted to make separate DashFrame classes (or subclasses of it for different types of users) in order to make it smaller, but our attempts did not work (see git log of where we tried this). We also realized that it might generate a lot of repeated code. For example: initializing all the different panels will be the same for all type of DashFrame. 
+
+	-avoid using method names with numbers 
+	We replaced all methods names with numbers with all words.
+

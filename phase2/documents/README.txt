@@ -24,7 +24,7 @@ Password: pa55word
 
 Our program uses a GUI. Successfully logging in, signing up, or choosing to demo the program will open a new window where you
 use the actual trade program. To log out, close the dashboard window and click the logout button on the remaining window.
-The original window is not closable using the [X] button on the window--please exit the program using the "Exit the program" button on the start menu.
+Please exit the program using the "Exit the program" button on the start menu.
 
 - administrative users are separated from normal users in that they cannot trade and do not have an inventory, wishlist, etc.
 
@@ -95,5 +95,3 @@ When logged in as an admin, the following apply:
 - when viewing accounts that need to be frozen, you can either freeze all of them or none of them
 
 - when viewing requests to be unfrozen, you can either accept a request or leave it there
-
-- upon choosing the 'edit a user's threshold values' option, you must enter the username of the normal user whose thresholds you wish to change
