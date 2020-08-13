@@ -1,8 +1,9 @@
 package SystemManagers;
 
-import Entities.User;
-import Entities.NormalUser;
 import Entities.AdminUser;
+import Entities.NormalUser;
+import Entities.User;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Map;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-09
+ * last modified 2020-08-12
  */
 public class UserManager extends Manager implements Serializable {
     private List<NormalUser> allNormals;
@@ -139,41 +140,13 @@ public class UserManager extends Manager implements Serializable {
     }
 
     /**
-     * Takes the given email and returns the associated <NormalUser></NormalUser>.
-     *
-     * @param email the email of the normal user being retrieved
-     * @return the normal user associated with the given email
-     */
-    public NormalUser getNormalByEmail(String email) {
-        for (NormalUser u : allNormals) {
-            if (u.getEmail().equals(email)) {
-                return u;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Changes the <User></User>'s password
-     * @param username the username of the user
+     *
+     * @param username    the username of the user
      * @param newPassword the new password
      */
-    public void changeUserPassword(String username, String newPassword){
+    public void changeUserPassword(String username, String newPassword) {
         getUserByUsername(username).setPassword(newPassword);
-    }
-    /**
-     * Takes the given email that belongs to an admin and returns the associated <AdminUser></AdminUser>.
-     *
-     * @param email the email of the admin being retrieved
-     * @return the admin associated with the given email
-     */
-    public AdminUser getAdminByEmail(String email) {
-        for (AdminUser u : allAdmins) {
-            if (u.getEmail().equals(email)) {
-                return u;
-            }
-        }
-        return null;
     }
 
     /**

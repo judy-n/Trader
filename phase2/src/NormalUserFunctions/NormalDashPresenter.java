@@ -374,22 +374,24 @@ public class NormalDashPresenter {
 
     /**
      * Returns the normal user's information in a String array
+     *
      * @param username the normal user's username
-     * @param email the normal user's email
+     * @param email    the normal user's email
      * @param password the normal user's password
      * @param homeCity the normal user's homeCity
      * @return the normal user's information
      */
-    public String[] getUserInfo(String username, String email, String password, String homeCity){
-       return new String[]{"Username: " + username, "Email: " + email,
-               "Password: " + password, "Home City: " + homeCity};
+    public String[] getUserInfo(String username, String email, String password, String homeCity) {
+        return new String[]{"Username: " + username, "Email: " + email,
+                "Password: " + password, "Home City: " + homeCity};
     }
 
     /**
      * Returns a message used to display on the help section of the dashboard
+     *
      * @return a message used to display on the help section of the dashboard
      */
-    public String getHelpMessage(){
+    public String getHelpMessage() {
         return "";
     }
 }

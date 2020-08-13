@@ -118,11 +118,12 @@ public class SystemController extends JFrame {
 
     /**
      * Checks if the inputs are valid when a normal user signs up
-     * @param username inputted username
-     * @param email inputted email
-     * @param password inputted password
+     *
+     * @param username         inputted username
+     * @param email            inputted email
+     * @param password         inputted password
      * @param validatePassword inputted validate password
-     * @param homeCity inputted home city
+     * @param homeCity         inputted home city
      * @return a list of int indicating the types of errors, empty if all inputs are valid
      */
     public ArrayList<Integer> normalUserSignUpCheck(String username, String email, String password,
@@ -132,11 +133,12 @@ public class SystemController extends JFrame {
 
     /**
      * Creates a new Normal user and a new dashboard
+     *
      * @param username inputted username
-     * @param email inputted email
+     * @param email    inputted email
      * @param password inputted password
      * @param homeCity inputted home city
-     * @param parent the initial program window
+     * @param parent   the initial program window
      */
     public void normalUserSignUp(String username, String email, String password, String homeCity, JFrame parent) {
         new SignUpSystem(userManager).createNewNormal(username, email, password, homeCity, notifSystem);
@@ -145,8 +147,9 @@ public class SystemController extends JFrame {
 
     /**
      * Checks if the input are all valid when a normal user logs in
+     *
      * @param usernameOrEmail inputted username or email
-     * @param password inputted password
+     * @param password        inputted password
      * @return a list of int indicating the types of error, empty if all valid
      */
     public ArrayList<Integer> userLogin(String usernameOrEmail, String password) {
@@ -155,8 +158,9 @@ public class SystemController extends JFrame {
 
     /**
      * Lets a user login
+     *
      * @param usernameOrEmail inputted username or email
-     * @param parent the initial program window
+     * @param parent          the initial program window
      */
     public void userLogin(String usernameOrEmail, JFrame parent) {
         String currUsername = userManager.getUserByUsernameOrEmail(usernameOrEmail).getUsername();
@@ -169,6 +173,7 @@ public class SystemController extends JFrame {
 
     /**
      * Makes a demo dashboard
+     *
      * @param parent the initial program window
      */
     public void demoUser(JFrame parent) {

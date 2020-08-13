@@ -1,10 +1,11 @@
 package NormalUserFunctions;
 
-import SystemManagers.UserManager;
-import SystemManagers.ItemManager;
-import SystemManagers.TradeManager;
 import Entities.Item;
 import SystemFunctions.SystemPresenter;
+import SystemManagers.ItemManager;
+import SystemManagers.TradeManager;
+import SystemManagers.UserManager;
+
 import java.util.ArrayList;
 import java.util.List;
 

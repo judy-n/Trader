@@ -1,7 +1,7 @@
 package AdminUserFunctions;
 
-import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
+import SystemManagers.UserManager;
 
 /**
  * Helps show admins all items waiting for approval and let them approve or reject pending items.

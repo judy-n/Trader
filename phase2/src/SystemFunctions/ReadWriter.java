@@ -5,6 +5,7 @@ import SystemManagers.Manager;
 import SystemManagers.NotificationSystem;
 import SystemManagers.TradeManager;
 import SystemManagers.UserManager;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -28,7 +29,6 @@ import java.io.ObjectOutputStream;
  * @since 2020-07-17
  * last modified 2020-08-09
  */
-
 public class ReadWriter {
 
     /**

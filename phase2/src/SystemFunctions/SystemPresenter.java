@@ -109,13 +109,14 @@ public class SystemPresenter {
 
     /**
      * Returns the normal user's information in a String array
+     *
      * @param username the normal user's username
-     * @param email the normal user's email
+     * @param email    the normal user's email
      * @param password the normal user's password
      * @param homeCity the normal user's homeCity
      * @return the normal user's information
      */
-    public String[] getNormalUserInfo(String username, String email, String password, String homeCity){
+    public String[] getNormalUserInfo(String username, String email, String password, String homeCity) {
         return normalDashPresenter.getUserInfo(username, email, password, homeCity);
     }
 
@@ -151,28 +152,31 @@ public class SystemPresenter {
 
     /**
      * Returns the admin user's info in a String array
+     *
      * @param username the admin user's username
-     * @param email the admin user's email
-     * @param id the admin user's id
+     * @param email    the admin user's email
+     * @param id       the admin user's id
      * @return the admin user's info
      */
-    public String[] getAdminUserInfo(String username, String email, String password, int id){
+    public String[] getAdminUserInfo(String username, String email, String password, int id) {
         return adminDashPresenter.getUserInfo(username, email, password, id);
     }
 
     /**
      * Returns a pop up message for display on the demo dashboard
+     *
      * @return the String
      */
-    public String getDemoPopMessage(){
+    public String getDemoPopMessage() {
         return demoDashPresenter.getPopUpMessage();
     }
 
     /**
      * Returns a String array used for display when demo user clicks their user info
+     *
      * @return the String array
      */
-    public String[] getDemoUserInfo(){
+    public String[] getDemoUserInfo() {
         return demoDashPresenter.getUserInfo();
     }
 
@@ -262,27 +266,28 @@ public class SystemPresenter {
 
     /**
      * Returns a message displayed for the help sectiong of the demo dashboard
+     *
      * @return the message
      */
-    public String getDemoHelpMessage(){
+    public String getDemoHelpMessage() {
         return demoDashPresenter.getHelpMessage();
     }
 
     /**
      * Returns a message displayed for the help section of the normal dashboard
+     *
      * @return the message
      */
-    public String getNormalHelpMessage(){
+    public String getNormalHelpMessage() {
         return normalDashPresenter.getHelpMessage();
     }
 
     /**
      * Returns a message displayed for the help section of the admin dashboard
+     *
      * @return the message
      */
-    public String getAdminHelpMessage(){
+    public String getAdminHelpMessage() {
         return adminDashPresenter.getHelpMessage();
     }
-
-
 }

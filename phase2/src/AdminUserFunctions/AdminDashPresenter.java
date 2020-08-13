@@ -1,4 +1,5 @@
 package AdminUserFunctions;
+
 /**
  * The presenter used for the AdminUser's dashboard, returns strings to display.
  *
@@ -12,11 +13,12 @@ public class AdminDashPresenter {
     /**
      * Returns the text displayed on JComponents when a normal user's
      * dashboard is displayed
+     *
      * @param type int indicating type of JComponent
      * @return the String needed to be displayed
      */
-    public String setUpDash(int type){
-        switch (type){
+    public String setUpDash(int type) {
+        switch (type) {
             case 1:
                 return ("Catalog Editor");
             case 2:
@@ -72,11 +74,12 @@ public class AdminDashPresenter {
 
     /**
      * Returns the text displayed on a pop up window
+     *
      * @param type int indicating the type of message
      * @return the String needed to be displayed
      */
-    public String getPopUpMessage(int type){
-        switch (type){
+    public String getPopUpMessage(int type) {
+        switch (type) {
             case 1:
                 return ("Threshold values must be positive integers!");
             case 2:
@@ -107,20 +110,22 @@ public class AdminDashPresenter {
 
     /**
      * Returns the admin user's info in a String array
+     *
      * @param username the admin user's username
-     * @param email the admin user's email
-     * @param id the admin users's admin id
+     * @param email    the admin user's email
+     * @param id       the admin users's admin id
      * @return the admin user's info
      */
-    public String[] getUserInfo(String username, String email, String password,  int id){
+    public String[] getUserInfo(String username, String email, String password, int id) {
         return new String[]{"Username: " + username, "Email: " + email, "Password: " + password, "ID: " + id};
     }
 
     /**
      * Returns a message used to display on the help section of the dashboard
+     *
      * @return a message used to display on the help section of the dashboard
      */
-    public String getHelpMessage(){
+    public String getHelpMessage() {
         return "";
     }
 

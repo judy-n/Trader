@@ -1,4 +1,5 @@
 package SystemFunctions;
+
 import javax.swing.*;
 
 /**
@@ -9,7 +10,7 @@ import javax.swing.*;
  * @since 2020-06-26
  * last modified 2020-07-24
  */
-public class Launcher extends JFrame{
+public class Launcher extends JFrame {
 
     public JFrame programWindow;
     public StartMenu startMenu;
@@ -17,7 +18,7 @@ public class Launcher extends JFrame{
     /**
      * The system's launcher
      */
-    public Launcher(){
+    public Launcher() {
         programWindow = new JFrame("CSC207 | Group 0043");
         programWindow.setSize(820, 576);
         programWindow.setResizable(false);
@@ -29,6 +30,7 @@ public class Launcher extends JFrame{
         programWindow.setVisible(true);
 
     }
+
     /**
      * Main method.
      * Starts the program by creating a program window.

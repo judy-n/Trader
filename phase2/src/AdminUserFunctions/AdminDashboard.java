@@ -3,9 +3,9 @@ package AdminUserFunctions;
 import SystemFunctions.Dashboard;
 import SystemFunctions.SignUpSystem;
 import SystemFunctions.SystemPresenter;
+import SystemManagers.ItemManager;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
-import SystemManagers.ItemManager;
 
 /**
  * Controller for all administrative user's dashboard functions.
@@ -193,6 +193,7 @@ public class AdminDashboard extends Dashboard {
 
     /**
      * Returns the admin user's username
+     *
      * @return the admin user's username
      */
     @Override
@@ -202,6 +203,7 @@ public class AdminDashboard extends Dashboard {
 
     /**
      * Returns int indicating the type of dashboard
+     *
      * @return the int indicating the type of dashboard
      */
     @Override
@@ -211,6 +213,7 @@ public class AdminDashboard extends Dashboard {
 
     /**
      * Returns Strings used for JComponents on the <DashFrame></DashFrame>
+     *
      * @param type the type of string
      * @return the string needed
      */
@@ -221,6 +224,7 @@ public class AdminDashboard extends Dashboard {
 
     /**
      * Sets the String needed for pop up display on the <DashFrame></DashFrame>
+     *
      * @param type the type of message needed
      */
     @Override
@@ -230,6 +234,7 @@ public class AdminDashboard extends Dashboard {
 
     /**
      * Returns Strings used used for pop up display on the <DashFrame></DashFrame>
+     *
      * @return the need pop message
      */
     @Override
@@ -247,6 +252,7 @@ public class AdminDashboard extends Dashboard {
 
     /**
      * Returns the admin user's info in a String array
+     *
      * @return the admin user's info
      */
     @Override
@@ -257,20 +263,22 @@ public class AdminDashboard extends Dashboard {
 
     /**
      * Validates the new password
-     * @param password the new password
+     *
+     * @param password         the new password
      * @param validatePassword the new password again
      */
     @Override
     public void validatePasswordChange(String password, String validatePassword) {
-        if(password.matches("[\\S]{6,20}")&&validatePassword.equals(password)){
+        if (password.matches("[\\S]{6,20}") && validatePassword.equals(password)) {
             userManager.changeUserPassword(currUsername, password);
-        }else{
+        } else {
             setPopUpMessage(2);
         }
     }
 
     /**
      * Returns a message displayed for the help section of the admin dashboard
+     *
      * @return the message
      */
     @Override

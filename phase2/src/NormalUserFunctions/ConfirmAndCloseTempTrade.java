@@ -1,7 +1,7 @@
 package NormalUserFunctions;
 
-import SystemManagers.ItemManager;
 import Entities.TemporaryTrade;
+import SystemManagers.ItemManager;
 
 /**
  * Confirms and closes temporary trades.

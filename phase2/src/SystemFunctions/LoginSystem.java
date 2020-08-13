@@ -1,6 +1,7 @@
 package SystemFunctions;
 
 import SystemManagers.UserManager;
+
 import java.util.ArrayList;
 
 /**
@@ -12,7 +13,6 @@ import java.util.ArrayList;
  * @since 2020-06-26
  * last modified 2020-07-30
  */
-
 public class LoginSystem {
     private UserManager userManager;
 
@@ -26,8 +26,9 @@ public class LoginSystem {
 
     /**
      * Checks if the inputs are valid
+     *
      * @param usernameOrEmail inputted username or email
-     * @param password inputted password
+     * @param password        inputted password
      * @return a list of int indicating the type of error, empty if all valid
      */
     public ArrayList<Integer> validateInput(String usernameOrEmail, String password) {

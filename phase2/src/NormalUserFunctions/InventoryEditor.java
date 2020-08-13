@@ -1,9 +1,9 @@
 package NormalUserFunctions;
 
-import SystemManagers.NotificationSystem;
-import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
+import SystemManagers.NotificationSystem;
 import SystemManagers.TradeManager;
+import SystemManagers.UserManager;
 
 /**
  * Helps show the user their inventory and let them edit it through user input.
@@ -30,7 +30,7 @@ public class InventoryEditor {
      * @param itemManager  the system's item manager
      * @param userManager  the system's user manager
      * @param tradeManager the system's trade manager
-     * @param notifSystem the system's notification manager
+     * @param notifSystem  the system's notification manager
      */
     public InventoryEditor(String currUsername, ItemManager itemManager, UserManager userManager,
                            TradeManager tradeManager, NotificationSystem notifSystem) {

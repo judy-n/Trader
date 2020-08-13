@@ -1,13 +1,14 @@
 package NormalUserFunctions;
 
+import Entities.PermanentTrade;
+import Entities.TemporaryTrade;
+import Entities.Trade;
 import SystemFunctions.DateTimeHandler;
-import SystemManagers.UserManager;
+import SystemFunctions.SystemPresenter;
 import SystemManagers.ItemManager;
 import SystemManagers.TradeManager;
-import Entities.Trade;
-import Entities.TemporaryTrade;
-import Entities.PermanentTrade;
-import SystemFunctions.SystemPresenter;
+import SystemManagers.UserManager;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -222,7 +223,7 @@ public class OngoingTradesViewer {
                 (selectedTrade instanceof TemporaryTrade && !((TemporaryTrade) selectedTrade).hasSecondMeeting()
                         && selectedTrade.getUserFirstTransactionConfirmation(currUsername)) ||
                 (selectedTrade instanceof PermanentTrade &&
-                        selectedTrade.getUserFirstTransactionConfirmation(currUsername)))  {
+                        selectedTrade.getUserFirstTransactionConfirmation(currUsername))) {
             return 21;
         }
 

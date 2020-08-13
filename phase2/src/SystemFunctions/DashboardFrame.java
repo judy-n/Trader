@@ -7,7 +7,6 @@ import AdminUserFunctions.AdminDashboard;
 import javax.swing.*;
 import java.awt.*;
 
-
 /**
  * JFrame that displays the user's dashboard.
  *
@@ -74,7 +73,7 @@ public class DashboardFrame extends JDialog {
         listDisplay = new JList<>();
 
         userFunctionPanel.setLayout(new BoxLayout(userFunctionPanel, BoxLayout.Y_AXIS));
-        userFunctionPanel.setPreferredSize(new Dimension(200,576));
+        userFunctionPanel.setPreferredSize(new Dimension(200, 576));
         userInputPanel.setLayout(new FlowLayout());
         notifPanel.setLayout(new FlowLayout());
         optionalPanel.setLayout(new BoxLayout(optionalPanel, BoxLayout.Y_AXIS));
@@ -86,13 +85,13 @@ public class DashboardFrame extends JDialog {
         dashboardWindow.setLayout(new BorderLayout());
         dashboardWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         JButton profilePic = new JButton();
-        initializeButton(profilePic, 200,200, userFunctionPanel);
+        initializeButton(profilePic, 200, 200, userFunctionPanel);
         profilePic.setIcon(new ImageIcon("src/default.png"));
         profilePic.addActionListener(e -> {
             resetEverything();
             optionalPanel.setVisible(false);
             drawListDisplay(dashboard.getUserInfo());
-            if(dashboard.getType() != 2){
+            if (dashboard.getType() != 2) {
                 drawUserInputPane(USER_INFO);
             }
         });
@@ -169,6 +168,7 @@ public class DashboardFrame extends JDialog {
         JButton vacation = new JButton(normalDashboard.setUpDash(7));
         vacation.addActionListener(e -> {
             normalDashboard.editUserStatus();
+            drawPopUpMessage();
             resetEverything();
             dashboardWindow.remove(scrollablePane);
             if (normalDashboard.isOnVacation()) {
@@ -337,7 +337,7 @@ public class DashboardFrame extends JDialog {
                 JButton changePassword = new JButton(dashboard.setUpDash(31));
                 initializeLabelledTextField(newPassword, dashboard.setUpDash(29), userInputPanel);
                 initializeLabelledTextField(reNewPassword, dashboard.setUpDash(30), userInputPanel);
-                initializeButton(changePassword, 100, 40,  userInputPanel);
+                initializeButton(changePassword, 100, 40, userInputPanel);
                 changePassword.addActionListener(e -> {
                     dashboard.validatePasswordChange(newPassword.getText(), reNewPassword.getText());
                     drawPopUpMessage();
@@ -760,7 +760,7 @@ public class DashboardFrame extends JDialog {
         }
     }
 
-    private void initializeMenuBar(){
+    private void initializeMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu about = new JMenu("About");
         JMenuItem help = new JMenuItem("Help");

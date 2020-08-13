@@ -13,7 +13,6 @@ import java.io.Serializable;
  * @since 2020-06-26
  * last modified 2020-08-11
  */
-
 public class AdminUser extends User implements Serializable {
     private final int ADMIN_ID;
 

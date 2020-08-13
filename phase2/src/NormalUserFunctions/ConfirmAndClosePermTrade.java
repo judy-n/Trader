@@ -1,8 +1,8 @@
 package NormalUserFunctions;
 
-import SystemManagers.UserManager;
-import SystemManagers.ItemManager;
 import Entities.PermanentTrade;
+import SystemManagers.ItemManager;
+import SystemManagers.UserManager;
 
 /**
  * Confirms and closes permanent trades.

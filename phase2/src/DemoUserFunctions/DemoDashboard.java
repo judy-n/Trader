@@ -13,7 +13,6 @@ import SystemManagers.ItemManager;
  * @since 2020-07-19
  * last modified 2020-08-12
  */
-
 public class DemoDashboard extends Dashboard {
     private ItemManager itemManager;
     private SystemPresenter systemPresenter;
@@ -33,14 +32,16 @@ public class DemoDashboard extends Dashboard {
 
     /**
      * Returns all items available in the system for trade in a String array
+     *
      * @return all items available in the system for trade
      */
-    public String[] getDemoCatalog(){
+    public String[] getDemoCatalog() {
         return itemManager.getItemStrings(itemManager.getApprovedItems(), true);
     }
 
     /**
      * Returns the current username
+     *
      * @return the current username
      */
     @Override
@@ -50,6 +51,7 @@ public class DemoDashboard extends Dashboard {
 
     /**
      * Returns a int indicating the type of dashboard
+     *
      * @return the int
      */
     @Override
@@ -59,6 +61,7 @@ public class DemoDashboard extends Dashboard {
 
     /**
      * Returns String used for display on JComponents on <DashboardFrame></DashboardFrame>
+     *
      * @param type the type of String needed
      * @return the String
      */
@@ -69,6 +72,7 @@ public class DemoDashboard extends Dashboard {
 
     /**
      * Sets the String needed for pop up display on the <DashFrame></DashFrame>
+     *
      * @param type the type of message needed
      */
     @Override
@@ -78,6 +82,7 @@ public class DemoDashboard extends Dashboard {
 
     /**
      * Returns Strings used used for pop up display on the <DashFrame></DashFrame>
+     *
      * @return the need pop message
      */
     @Override
@@ -95,6 +100,7 @@ public class DemoDashboard extends Dashboard {
 
     /**
      * Returns String array used for display when demo user clicks their user info
+     *
      * @return the String array
      */
     @Override
@@ -104,7 +110,8 @@ public class DemoDashboard extends Dashboard {
 
     /**
      * Not used since demo users don't have a password
-     * @param password new password
+     *
+     * @param password         new password
      * @param validatePassword validate new password
      */
     @Override
@@ -113,6 +120,7 @@ public class DemoDashboard extends Dashboard {
 
     /**
      * Returns a message displayed for the help sectiong of the demo dashboard
+     *
      * @return the message
      */
     @Override

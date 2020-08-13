@@ -1,7 +1,7 @@
 package NormalUserFunctions;
 
-import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
+import SystemManagers.UserManager;
 
 /**
  * Helps show the user their wishlist and let them edit it through user input.

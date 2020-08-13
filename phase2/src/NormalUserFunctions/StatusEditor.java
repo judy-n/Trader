@@ -21,8 +21,8 @@ public class StatusEditor {
     /**
      * Creates a <StatusEditor></StatusEditor> with the given normal username and user manager.
      *
-     * @param username     the username of the normal user who's currently logged in
-     * @param userManager  the system's user manager
+     * @param username    the username of the normal user who's currently logged in
+     * @param userManager the system's user manager
      */
     public StatusEditor(String username, UserManager userManager, TradeManager tradeManager) {
         currUsername = username;
@@ -40,9 +40,9 @@ public class StatusEditor {
             /* Notify user of vacation status OFF */
             userManager.notifyUser(currUsername).basicUpdate("OFF VACATION", currUsername, "");
         } else {
-            if(!tradeManager.getOngoingTrades(currUsername).isEmpty()){
+            if (!tradeManager.getOngoingTrades(currUsername).isEmpty()) {
                 return false;
-            }else {
+            } else {
                 userManager.addUsernamesOnVacation(currUsername);
 
                 /* Notify user of vacation status ON */

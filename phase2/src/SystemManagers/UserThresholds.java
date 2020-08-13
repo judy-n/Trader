@@ -119,7 +119,7 @@ public class UserThresholds implements Serializable {
             case 1:
                 return ("meeting edit max");
             case 2:
-                return("lend minimum");
+                return ("lend minimum");
             case 3:
                 return ("incomplete trade max");
             default:

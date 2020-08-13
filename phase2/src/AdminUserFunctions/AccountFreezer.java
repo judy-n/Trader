@@ -24,17 +24,6 @@ public class AccountFreezer {
     public AccountFreezer(String username, UserManager userManager) {
         this.currUsername = username;
         this.userManager = userManager;
-
-        // Header: systemPresenter.accountFreezer(1) for "Here are the users that need to be frozen:"
-        // 1. Display list of usernames to freeze: getFreezeList()
-        // 2. Check if list is empty
-        //      > if empty, display "nothing here yet": systemPresenter.emptyListMessage()
-        //      > if NOT empty,
-        //          3. Ask if they want to freeze all (y/n): systemPresenter.accountFreezer(2)
-        //              - maybe just a freeze all button?
-
-        //              > if they choose to freeze all: freezeAll()
-        //                  4. Display "all frozen!": systemPresenter.accountFreezer()
     }
 
     /**

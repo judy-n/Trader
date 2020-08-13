@@ -3,6 +3,7 @@ package AdminUserFunctions;
 import SystemManagers.ItemManager;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
+
 import java.util.List;
 
 /**
@@ -25,11 +26,11 @@ public class ActionReverter {
      * item/user managers, and notification system.
      *
      * @param currUsername the username of the admin who's currently logged in
-     * @param itemManager the system's item manager
-     * @param userManager the system's user manager
-     * @param notifSystem the system's notification manager
+     * @param itemManager  the system's item manager
+     * @param userManager  the system's user manager
+     * @param notifSystem  the system's notification manager
      */
-    public ActionReverter(String currUsername, ItemManager itemManager, UserManager userManager, NotificationSystem notifSystem){
+    public ActionReverter(String currUsername, ItemManager itemManager, UserManager userManager, NotificationSystem notifSystem) {
         this.currUsername = currUsername;
         this.itemManager = itemManager;
         this.userManager = userManager;

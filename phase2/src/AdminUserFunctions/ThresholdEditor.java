@@ -1,8 +1,9 @@
 package AdminUserFunctions;
 
 import SystemFunctions.ReadWriter;
-import SystemManagers.UserManager;
 import SystemFunctions.SystemPresenter;
+import SystemManagers.UserManager;
+
 import java.io.IOException;
 
 /**
@@ -34,24 +35,6 @@ public class ThresholdEditor {
         this.userManager = userManager;
         readWriter = new ReadWriter();
         systemPresenter = new SystemPresenter();
-
-        // 1. Display the current value of each threshold and have a field where the user can enter a value?
-        //    Lets admins change multiple values at once ig
-        //
-        //      e.g. The current weekly trade max is 5. Change it to: _________
-        //
-        //           The current meeting edit max is 3. Change it to: ---------
-        //
-        //           etc...
-        //
-        //      > getThresholdStrings() for array of labels
-        // 2. If "Set thresholds" button is clicked (label: systemPresenter.thresholdEditor(1)),
-        //      create String array with text from all fields (I'll handle empty strings)
-        //      in the order: weekly trade, meeting edit, lend min, incomplete trade
-        //
-        // 3. Pass String array into thresholdInputValidate() to validate input
-        //      > if returns false, display error message: systemPresenter.thresholdEditor(2);
-        //      > if true, applyThresholdChanges()
     }
 
     /**

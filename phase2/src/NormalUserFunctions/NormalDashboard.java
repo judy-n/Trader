@@ -2,10 +2,10 @@ package NormalUserFunctions;
 
 import SystemFunctions.Dashboard;
 import SystemFunctions.SystemPresenter;
-import SystemManagers.NotificationSystem;
-import SystemManagers.UserManager;
 import SystemManagers.ItemManager;
+import SystemManagers.NotificationSystem;
 import SystemManagers.TradeManager;
+import SystemManagers.UserManager;
 
 /**
  * Controller for all Normal user's dashboard functions.
@@ -68,7 +68,7 @@ public class NormalDashboard extends Dashboard {
      * Switches the normal user's vacation status.
      */
     public void editUserStatus() {
-        if(!statusEditor.switchVacationStatus()){
+        if (!statusEditor.switchVacationStatus()) {
             setPopUpMessage(36);
         }
     }
@@ -449,20 +449,22 @@ public class NormalDashboard extends Dashboard {
 
     /**
      * Validates the new password
-     * @param password the new password
+     *
+     * @param password         the new password
      * @param validatePassword the new password again
      */
     @Override
-    public void validatePasswordChange(String password, String validatePassword){
-        if(password.matches("[\\S]{6,20}")&&validatePassword.equals(password)){
+    public void validatePasswordChange(String password, String validatePassword) {
+        if (password.matches("[\\S]{6,20}") && validatePassword.equals(password)) {
             userManager.changeUserPassword(currUsername, password);
-        }else{
+        } else {
             setPopUpMessage(30);
         }
     }
 
     /**
      * Returns a message displayed for the help section of the normal dashboard
+     *
      * @return the message
      */
     @Override
@@ -472,6 +474,7 @@ public class NormalDashboard extends Dashboard {
 
     /**
      * Returns Strings used for JComponents on the <DashFrame></DashFrame>
+     *
      * @param type the type of string
      * @return the string needed
      */
@@ -482,6 +485,7 @@ public class NormalDashboard extends Dashboard {
 
     /**
      * Sets the String needed for pop up display on the <DashFrame></DashFrame>
+     *
      * @param type the type of message needed
      */
     @Override
@@ -491,6 +495,7 @@ public class NormalDashboard extends Dashboard {
 
     /**
      * Returns the normal user's username
+     *
      * @return the normal user's username
      */
     @Override
@@ -500,6 +505,7 @@ public class NormalDashboard extends Dashboard {
 
     /**
      * Returns int indicating the type of dashboard
+     *
      * @return the int indicating the type of dashboard
      */
     @Override
@@ -509,6 +515,7 @@ public class NormalDashboard extends Dashboard {
 
     /**
      * Returns Strings used used for pop up display on the <DashFrame></DashFrame>
+     *
      * @return the need pop message
      */
     @Override
@@ -526,6 +533,7 @@ public class NormalDashboard extends Dashboard {
 
     /**
      * Returns the normal user's info in a String array
+     *
      * @return the normal user's info
      */
     @Override

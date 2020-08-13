@@ -17,7 +17,7 @@ import java.util.Map;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-06
+ * last modified 2020-08-12
  */
 public class NormalUser extends User implements Serializable {
     private List<Long> inventory;
@@ -47,12 +47,12 @@ public class NormalUser extends User implements Serializable {
      */
     public NormalUser(String username, String email, String password, String homeCity) {
         super(username, email, password);
-        this.homeCity  = homeCity;
+        this.homeCity = homeCity;
         inventory = new ArrayList<>();
         pendingInventory = new ArrayList<>();
         wishlist = new ArrayList<>();
         tradeRequests = new HashMap<>();
-        this.homeCity  = homeCity;
+        this.homeCity = homeCity;
         isFrozen = false;
         isOnVacation = false;
     }
@@ -243,21 +243,6 @@ public class NormalUser extends User implements Serializable {
     }
 
     /**
-     * Finds whether or not the given item is involved in this normal user's trade requests.
-     *
-     * @param itemID the ID of the item being searched for in trade requests
-     * @return true if the item is involved in a trade request, false otherwise
-     */
-    public boolean isInvolvedInTradeRequest(long itemID) {
-        for (Map.Entry<String[], long[]> entry : tradeRequests.entrySet()) {
-            if (entry.getValue()[0] == itemID || entry.getValue()[1] == itemID) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Returns where the NormalUser is on Vacation or not.
      *
      * @return true if this user is on vacation, else false
@@ -271,22 +256,17 @@ public class NormalUser extends User implements Serializable {
      *
      * @param vacationStatus this user's vacation status (true if on vacation, false otherwise).
      */
-    public void setOnVacation(boolean vacationStatus) { isOnVacation = vacationStatus;}
+    public void setOnVacation(boolean vacationStatus) {
+        isOnVacation = vacationStatus;
+    }
 
     /**
      * Getter for this user's home city
+     *
      * @return this user's home city
      */
     public String getHomeCity() {
         return homeCity;
-    }
-
-    /**
-     * Setter for the home city of this user
-     * @param homeCity the home city
-     */
-    public void setHomeCity(String homeCity) {
-        this.homeCity = homeCity;
     }
 }
 

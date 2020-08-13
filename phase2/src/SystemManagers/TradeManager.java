@@ -1,8 +1,9 @@
 package SystemManagers;
 
-import Entities.Trade;
-import Entities.TemporaryTrade;
 import Entities.PermanentTrade;
+import Entities.TemporaryTrade;
+import Entities.Trade;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

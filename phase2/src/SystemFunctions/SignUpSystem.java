@@ -3,6 +3,7 @@ package SystemFunctions;
 import SystemManagers.NotificationSystem;
 import SystemManagers.UserManager;
 import Entities.NormalUser;
+
 import java.util.ArrayList;
 
 /**
@@ -28,9 +29,10 @@ public class SignUpSystem {
 
     /**
      * Checks if the inputs are valid
-     * @param username inputted username
-     * @param email inputted email
-     * @param password inputted password
+     *
+     * @param username         inputted username
+     * @param email            inputted email
+     * @param password         inputted password
      * @param validatePassword inputted validate password
      * @return a list of int indicating the type of error, empty if all valid
      */
@@ -41,7 +43,8 @@ public class SignUpSystem {
         if (username.trim().isEmpty()) {
             invalidInputCases.add(12);
         } else {
-            if (userManager.usernameExists(username)) {     invalidInputCases.add(5);
+            if (userManager.usernameExists(username)) {
+                invalidInputCases.add(5);
             } else if (!username.matches("[a-zA-Z0-9]+([_.][a-zA-Z0-9]+)*") || username.length() < 3) {
                 invalidInputCases.add(6);
             }
@@ -74,11 +77,12 @@ public class SignUpSystem {
 
     /**
      * Checks if the inputs are valid for a normal user
-     * @param username inputted username
-     * @param email inputted email
-     * @param password inputted password
+     *
+     * @param username         inputted username
+     * @param email            inputted email
+     * @param password         inputted password
      * @param validatePassword inputted validate password
-     * @param homeCity inputted home city
+     * @param homeCity         inputted home city
      * @return a list of int indicating the type of error, empty if all valid
      */
     public ArrayList<Integer> validateInputNormal(String username, String email, String password,

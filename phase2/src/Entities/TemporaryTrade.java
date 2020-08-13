@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
  * @since 2020-06-26
  * last modified 2020-07-30
  */
-
 public class TemporaryTrade extends Trade implements Serializable, Comparable<Trade> {
     private LocalDateTime secondMeetingDateTime;
     private String secondMeetingLocation;
@@ -80,7 +79,7 @@ public class TemporaryTrade extends Trade implements Serializable, Comparable<Tr
              * Second meeting automatically set to 30 days after the first
              * at the same location.
              */
-            secondMeetingDateTime= getFirstMeetingDateTime().plusDays(TIME_LIMIT);
+            secondMeetingDateTime = getFirstMeetingDateTime().plusDays(TIME_LIMIT);
         }
     }
 

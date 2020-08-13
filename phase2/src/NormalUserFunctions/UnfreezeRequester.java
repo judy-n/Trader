@@ -1,4 +1,5 @@
 package NormalUserFunctions;
+
 import SystemManagers.UserManager;
 
 /**
@@ -18,7 +19,7 @@ public class UnfreezeRequester {
     /**
      * Creates an <UnfreezeRequester></UnfreezeRequester> with the given normal username and user manager.
      *
-     * @param currUsername  the username of the normal user who's currently logged in
+     * @param currUsername the username of the normal user who's currently logged in
      * @param userManager  the system's user manager
      */
     public UnfreezeRequester(String currUsername, UserManager userManager) {
@@ -27,7 +28,7 @@ public class UnfreezeRequester {
     }
 
     /**
-     *  Sends a request to be unfrozen if the current user hasn't already sent one.
+     * Sends a request to be unfrozen if the current user hasn't already sent one.
      */
     public boolean requestUnfreeze() {
         if (!userManager.getUnfreezeRequests().contains(currUsername)) {

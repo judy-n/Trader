@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
  * @since 2020-06-26
  * last modified 2020-08-03
  */
-
 public abstract class Trade implements Serializable, Comparable<Trade> {
     private final String[] involvedUsernames = new String[2];
     private final long[] involvedItemIDs = new long[2];
