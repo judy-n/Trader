@@ -16,7 +16,7 @@ import java.util.List;
  * @author Judy Naamani
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-10
+ * last modified 2020-08-13
  */
 public class ItemManager extends Manager implements Serializable {
     private List<Item> approvedItems;
@@ -44,21 +44,6 @@ public class ItemManager extends Manager implements Serializable {
         Item newItem = new Item(name, description, owner);
         pendingItems.add(newItem);
         return newItem.getID();
-    }
-
-    /**
-     * Getter for all approved items in the system, excluding those that have been removed from inventory.
-     *
-     * @return a list of all approved items in the system, excluding those that have been removed from inventory
-     */
-    public List<Item> getApprovedItems() {
-        List<Item> approved = new ArrayList<>();
-        for (Item i : approvedItems) {
-            if (i.isInInventory()) {
-                approved.add(i);
-            }
-        }
-        return approved;
     }
 
     /**

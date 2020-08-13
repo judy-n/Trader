@@ -10,7 +10,7 @@ import java.awt.event.ItemEvent;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-08-11
+ * last modified 2020-08-13
  */
 public class StartMenu extends JPanel {
     private SystemController systemController;
@@ -28,6 +28,7 @@ public class StartMenu extends JPanel {
     private final int X_POS = 160;
     private final int Y_SPACE = 70;
     private final JLabel invalid;
+    private final JLabel titleBar;
 
     /**
      * Creates a <StartMenu></StartMenu> with the given system controller and parent frame
@@ -41,12 +42,18 @@ public class StartMenu extends JPanel {
         this.systemController = systemController;
         systemPresenter = new SystemPresenter();
         invalid = new JLabel();
+        titleBar = new JLabel("  CSC207 | Group 0043");
+        titleBar.setSize(new Dimension(820, 25));
+        titleBar.setLocation(0, 0);
+        titleBar.setBackground(Color.WHITE);
+        titleBar.setOpaque(true);
         this.setPreferredSize(new Dimension(820, 576));
         this.setLayout(null);
         mainMenu();
     }
 
     private void mainMenu() {
+        this.add(titleBar);
         JButton login = new JButton(systemPresenter.loginSystem(6));
         JButton signUp = new JButton(systemPresenter.signUpSystem(19));
         JButton demo = new JButton(systemPresenter.startMenu(4));
@@ -65,7 +72,7 @@ public class StartMenu extends JPanel {
         welcomeText.setForeground(Color.BLACK);
 
         this.add(welcomeText);
-        welcomeText.setLocation(310, 50);
+        welcomeText.setLocation(310, 100);
 
         login.addActionListener(e ->
         {
@@ -102,15 +109,16 @@ public class StartMenu extends JPanel {
     }
 
     private void getUserInfo(String title) {
+        this.add(titleBar);
         JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(font);
         titleLabel.setSize(new Dimension(300, 40));
         titleLabel.setForeground(Color.BLACK);
         this.add(titleLabel);
-        titleLabel.setLocation(100, 50);
+        titleLabel.setLocation(100, 60);
 
         JButton exit = new JButton(systemPresenter.startMenu(3));
-        initializeButton(exit, 65, 25, 20, 10);
+        initializeButton(exit, 65, 25, 30, 40);
         exit.addActionListener(e -> {
             this.removeAll();
             this.revalidate();
@@ -235,7 +243,6 @@ public class StartMenu extends JPanel {
         this.revalidate();
         JButton logoutButton = new JButton(systemPresenter.loginSystem(7));
         initializeButton(logoutButton, 200, 40, X_POS, FIRST_LINE_Y + Y_SPACE);
-
         logoutButton.addActionListener(e -> {
             this.removeAll();
             this.revalidate();
@@ -247,6 +254,7 @@ public class StartMenu extends JPanel {
         loggedInMsg.setSize(400, 40);
         loggedInMsg.setFont(font);
         this.add(loggedInMsg);
+        this.add(titleBar);
         loggedInMsg.setLocation(X_POS, FIRST_LINE_Y);
         this.repaint();
     }
