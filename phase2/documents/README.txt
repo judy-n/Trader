@@ -1,3 +1,9 @@
+Group member git log names:
+    Ning Zhang = Allistari
+    Yingjia Liu = liuyjca
+    Liam Huff = Liam
+    Judy Naamani = Judy Naamani
+    Kushagra Mehta = mehtaku6
 
 The files used to save information outside of the program will be created during the first execution of the program.
 Due to the fixed file path of these external files, please ensure that the project is open under the phase1 folder and not the group_0043 folder or anything else.
@@ -16,7 +22,9 @@ Password: pa55word
 
 =======================================================================
 
-Our program uses a text UI so all navigation of the program will be through typing a response and hitting enter to proceed.
+Our program uses a GUI. Successfully logging in, signing up, or choosing to demo the program will open a new window where you
+use the actual trade program. To log out, close the dashboard window and click the logout button on the remaining window.
+The original window is not closable using the [X] button on the window--please exit the program using the "Exit the program" button on the start menu.
 
 - administrative users are separated from normal users in that they cannot trade and do not have an inventory, wishlist, etc.
 

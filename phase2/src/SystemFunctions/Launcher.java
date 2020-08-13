@@ -8,7 +8,7 @@ import javax.swing.*;
  * @author Ning Zhang
  * @version 1.0
  * @since 2020-06-26
- * last modified 2020-07-24
+ * last modified 2020-08-13
  */
 public class Launcher extends JFrame {
 
@@ -16,19 +16,18 @@ public class Launcher extends JFrame {
     public StartMenu startMenu;
 
     /**
-     * The system's launcher
+     * Creates a <Launcher></Launcher>, the first window in the program.
      */
     public Launcher() {
         programWindow = new JFrame("CSC207 | Group 0043");
         programWindow.setSize(820, 576);
         programWindow.setResizable(false);
         programWindow.setUndecorated(false);
-        programWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        programWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         SystemController systemController = new SystemController();
         startMenu = new StartMenu(systemController, programWindow);
         programWindow.add(startMenu);
         programWindow.setVisible(true);
-
     }
 
     /**
